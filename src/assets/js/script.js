@@ -725,7 +725,7 @@
 			}
 
 			if ( isIE < 11 ) {
-				$.getScript( 'js/pointer-events.min.js' )
+				$.getScript( 'assets/js/pointer-events.min.js' )
 					.done( function () {
 						$html.addClass( "ie-10" );
 						PointerEventsPolyfill.initialize( {} );
