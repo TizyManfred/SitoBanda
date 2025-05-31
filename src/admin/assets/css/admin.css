@@ -1,0 +1,335 @@
+/**
+ * Admin CSS Styles
+ * 
+ * Custom styles for the SitoBanda admin area
+ * Following coding standards with clean, maintainable CSS
+ */
+
+/* Basic reset and core styles */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f8f9fa;
+    color: #333;
+    padding-bottom: 20px;
+}
+
+/* Sidebar styles */
+.sidebar {
+    min-height: calc(100vh - 56px);
+    background-color: #343a40;
+    transition: width 0.3s ease-in-out;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.sidebar .nav-link {
+    color: rgba(255, 255, 255, 0.8);
+    padding: 0.75rem 1rem;
+    font-weight: 500;
+    border-left: 3px solid transparent;
+}
+
+.sidebar .nav-link:hover {
+    color: #fff;
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.sidebar .nav-link.active {
+    color: #fff;
+    border-left: 3px solid #0d6efd;
+    background-color: rgba(13, 110, 253, 0.25);
+}
+
+.sidebar .nav-link i {
+    margin-right: 0.5rem;
+    width: 20px;
+    text-align: center;
+}
+
+.sidebar-heading {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.5);
+    padding: 1rem;
+    margin-bottom: 0;
+}
+
+/* Main content area */
+.main-content {
+    padding: 1.5rem;
+}
+
+/* Card styles */
+.card {
+    border: none;
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+    margin-bottom: 1.5rem;
+}
+
+.card-header {
+    background-color: #fff;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.125);
+    font-weight: 500;
+}
+
+.card-header-tabs {
+    margin-bottom: -0.75rem;
+}
+
+/* Stats cards */
+.stats-card {
+    border-left: 4px solid;
+    transition: transform 0.2s;
+}
+
+.stats-card:hover {
+    transform: translateY(-5px);
+}
+
+.stats-card.primary {
+    border-color: #0d6efd;
+}
+
+.stats-card.success {
+    border-color: #198754;
+}
+
+.stats-card.warning {
+    border-color: #ffc107;
+}
+
+.stats-card.danger {
+    border-color: #dc3545;
+}
+
+.stats-card .stats-icon {
+    font-size: 1.75rem;
+    width: 60px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background-color: rgba(13, 110, 253, 0.1);
+    color: #0d6efd;
+}
+
+.stats-card.success .stats-icon {
+    background-color: rgba(25, 135, 84, 0.1);
+    color: #198754;
+}
+
+.stats-card.warning .stats-icon {
+    background-color: rgba(255, 193, 7, 0.1);
+    color: #ffc107;
+}
+
+.stats-card.danger .stats-icon {
+    background-color: rgba(220, 53, 69, 0.1);
+    color: #dc3545;
+}
+
+/* Form styles */
+.form-control:focus {
+    box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.25);
+}
+
+/* Custom buttons */
+.btn-icon {
+    width: 36px;
+    height: 36px;
+    padding: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Tables */
+.table th {
+    font-weight: 600;
+    background-color: #f8f9fa;
+}
+
+.table-action-buttons .btn {
+    padding: 0.25rem 0.5rem;
+    margin-right: 0.25rem;
+}
+
+/* Navbar */
+.navbar-admin {
+    background-color: #fff;
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+}
+
+.navbar-brand img {
+    height: 40px;
+}
+
+.user-dropdown .dropdown-toggle::after {
+    display: none;
+}
+
+.user-dropdown .dropdown-toggle img {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+/* Login page */
+.login-page {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .sidebar {
+        width: 100%;
+        position: relative;
+        min-height: auto;
+    }
+    
+    .sidebar .nav-link i {
+        margin-right: 0.25rem;
+    }
+    
+    .main-content {
+        padding: 1rem;
+    }
+}
+
+/* Utility classes */
+.cursor-pointer {
+    cursor: pointer;
+}
+
+.rotate-icon {
+    transition: transform 0.3s;
+}
+
+.rotate-icon.rotate-90 {
+    transform: rotate(90deg);
+}
+
+/* WYSIWYG Editor */
+.tox-tinymce {
+    border-radius: 0.25rem;
+}
+
+.tox .tox-statusbar__branding {
+    display: none;
+}
+
+/* File uploader */
+.custom-file-uploader {
+    position: relative;
+    display: inline-block;
+    width: 100%;
+}
+
+.custom-file-uploader input[type="file"] {
+    position: absolute;
+    top: 0;
+    left: 0;
+    opacity: 0;
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+}
+
+.upload-preview {
+    max-width: 100%;
+    max-height: 200px;
+    border-radius: 0.25rem;
+    margin-top: 0.5rem;
+}
+
+/* Toast notifications */
+.toast-container {
+    position: fixed;
+    top: 1rem;
+    right: 1rem;
+    z-index: 1050;
+}
+
+/* Calendar styles */
+.fc-event {
+    cursor: pointer;
+}
+
+/* Light mode / Dark mode toggle */
+.mode-toggle {
+    width: 48px;
+    height: 24px;
+    border-radius: 12px;
+    background-color: #ced4da;
+    position: relative;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.mode-toggle.dark {
+    background-color: #495057;
+}
+
+.mode-toggle::before {
+    content: '';
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background-color: #fff;
+    top: 2px;
+    left: 2px;
+    transition: transform 0.3s;
+}
+
+.mode-toggle.dark::before {
+    transform: translateX(24px);
+}
+
+/* Dark mode styles */
+body.dark-mode {
+    background-color: #121212;
+    color: #e0e0e0;
+}
+
+body.dark-mode .card,
+body.dark-mode .navbar-admin {
+    background-color: #1e1e1e;
+    color: #e0e0e0;
+}
+
+body.dark-mode .card-header {
+    background-color: #2d2d2d;
+    border-color: #333;
+}
+
+body.dark-mode .table th {
+    background-color: #2d2d2d;
+    color: #e0e0e0;
+}
+
+body.dark-mode .table {
+    color: #e0e0e0;
+}
+
+body.dark-mode .table td,
+body.dark-mode .table th {
+    border-color: #333;
+}
+
+body.dark-mode .form-control,
+body.dark-mode .custom-select {
+    background-color: #2d2d2d;
+    border-color: #444;
+    color: #e0e0e0;
+}
+
+body.dark-mode .form-control:focus,
+body.dark-mode .custom-select:focus {
+    background-color: #2d2d2d;
+    color: #e0e0e0;
+}

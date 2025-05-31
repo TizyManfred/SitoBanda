@@ -1,0 +1,17 @@
+# SitoBanda - Apache Configuration File
+
+# Basic settings
+Options -Indexes -MultiViews
+AddDefaultCharset UTF-8
+DirectoryIndex index.php index.html
+
+# Enable mod_rewrite for URL rewriting
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+
+    # Keep the /admin path accessible directly
+    RewriteRule ^admin(/.*)?$ - [L]
+
+    RewriteCond %{REQUEST_URI} !^/public
+    RewriteRule ^(.*)$ /public/$1 [NC,L]
+</IfModule>

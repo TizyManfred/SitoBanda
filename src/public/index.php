@@ -1,24 +1,47 @@
+<?php
+/**
+ * Index Page
+ *
+ * Main homepage for SitoBanda website
+ *
+ * @author   SitoBanda Team
+ * @version  1.0.0
+ */
+
+// Define ABSPATH to prevent direct file access
+define('ABSPATH', dirname(__DIR__) . '/');
+
+// Include configuration
+require_once ABSPATH . 'includes/config.php';
+?>
 <!DOCTYPE html>
-<html class="wide wow-animation" lang="en">
+<html class="wide wow-animation" lang="it">
 
 <head>
-  <title>Home - Banda Folk di Castello Tesino</title>
+  <title>Banda Folk di Castello Tesino - Musica Tradizionale dal 1901</title>
+  <meta name="description" content="La Banda Folk di Castello Tesino, attiva dal 1901, porta avanti la tradizione musicale del Trentino con concerti, eventi e corsi di musica.">
   <meta name="format-detection" content="telephone=no">
-  <meta name="viewport"
-    content="width=device-width, height=device-height, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta charset="utf-8">
-  <link rel="icon" href="assets/images/favicon.ico" type="image/x-icon">
+  <link rel="icon" href="<?= SITE_URL ?>/assets/images/favicon.ico" type="image/x-icon">
+  
+  <!-- Open Graph / Social Media Meta Tags -->
+  <meta property="og:title" content="Banda Folk di Castello Tesino - Tradizione dal 1901">
+  <meta property="og:description" content="Scopri la Banda Folk di Castello Tesino, custode della tradizione musicale trentina dal 1901.">
+  <meta property="og:image" content="<?= SITE_URL ?>/assets/images/FotoSanIppolito1.jpg">
+  <meta property="og:url" content="<?= SITE_URL ?>">
+  <meta property="og:type" content="website">
   <!-- Stylesheets-->
   <link rel="stylesheet" type="text/css"
     href="//fonts.googleapis.com/css?family=Poppins:400,500%7CTeko:300,400,500%7CMaven+Pro:500">
-  <link rel="stylesheet" href="assets/css/bootstrap.css">
+  <link rel="stylesheet" href="<?= SITE_URL ?>/assets/css/bootstrap.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-  <link rel="stylesheet" href="assets/css/fonts.css">
-  <link rel="stylesheet" href="assets/css/style.css">
+  <link rel="stylesheet" href="<?= SITE_URL ?>/assets/css/fonts.css">
+  <link rel="stylesheet" href="<?= SITE_URL ?>/assets/css/style.css">
   <!--[if lt IE 10]>
-    <div style="background: #212121; padding: 10px 0; box-shadow: 3px 3px 5px 0 rgba(0,0,0,.3); clear: both; text-align:center; position: relative; z-index:1;"><a href="http://windows.microsoft.com/en-US/internet-explorer/"><img src="assets/images/ie8-panel/warning_bar_0000_us.jpg" border="0" height="42" width="820" alt="You are using an outdated browser. For a faster, safer browsing experience, upgrade for free today."></a></div>
-    <script src="assets/js/html5shiv.min.js"></script>
+    <div style="background: #212121; padding: 10px 0; box-shadow: 3px 3px 5px 0 rgba(0,0,0,.3); clear: both; text-align:center; position: relative; z-index:1;"><a href="http://windows.microsoft.com/en-US/internet-explorer/"><img src="<?= SITE_URL ?>/assets/images/ie8-panel/warning_bar_0000_us.jpg" border="0" height="42" width="820" alt="You are using an outdated browser. For a faster, safer browsing experience, upgrade for free today."></a></div>
+    <script src="<?= SITE_URL ?>/assets/js/html5shiv.min.js"></script>
     <![endif]-->
 </head>
 
@@ -31,114 +54,14 @@
   </div>
 
   <div class="page">
-    <!-- Page Header-->
-    <header class="section page-header">
-      <!-- RD Navbar-->
-      <div class="rd-navbar-wrap">
-        <nav class="rd-navbar rd-navbar-classic" data-layout="rd-navbar-fixed" data-sm-layout="rd-navbar-fixed"
-          data-md-layout="rd-navbar-fixed" data-md-device-layout="rd-navbar-fixed" data-lg-layout="rd-navbar-static"
-          data-lg-device-layout="rd-navbar-fixed" data-xl-layout="rd-navbar-static"
-          data-xl-device-layout="rd-navbar-static" data-xxl-layout="rd-navbar-static"
-          data-xxl-device-layout="rd-navbar-static" data-lg-stick-up-offset="46px" data-xl-stick-up-offset="46px"
-          data-xxl-stick-up-offset="46px" data-lg-stick-up="true" data-xl-stick-up="true" data-xxl-stick-up="true">
-          <div class="rd-navbar-main-outer">
-            <div class="rd-navbar-main">
+    <?php include_once TEMPLATES_PATH . 'header.php'; ?>
+    
 
-              <!-- RD Navbar Panel-->
-              <div class="rd-navbar-panel">
-                <!-- RD Navbar Toggle-->
-                <button class="rd-navbar-toggle" data-rd-navbar-toggle=".rd-navbar-nav-wrap"><span></span></button>
-                <!-- RD Navbar Brand-->
-                <div class="rd-navbar-brand">
-                  <a class="brand" href="index.html">
-                    <h3>Banda Folk di Castello Tesino</h3>
-                  </a>
-                </div>
-                <div class="rd-navbar-brand"><a class="brand" href="index.html"><img
-                      src="assets/images/logo-default-229x43.png" alt="" width="229" height="43" /></a></div>
-              </div>
-
-
-              <div class="rd-navbar-main-element">
-                <div class="rd-navbar-nav-wrap">
-
-                  <!-- RD Navbar Search-->
-                  <div class="rd-navbar-search">
-                    <button class="rd-navbar-search-toggle"
-                      data-rd-navbar-toggle=".rd-navbar-search"><span></span></button>
-                    <form class="rd-search" action="#" method="GET">
-                      <div class="form-wrap">
-                        <label class="form-label" for="rd-navbar-search-form-input">Search...</label>
-                        <input class="rd-navbar-search-form-input form-input" id="rd-navbar-search-form-input"
-                          type="text" name="s" autocomplete="off" />
-                      </div>
-                      <button class="rd-search-form-submit fl-bigmug-line-search74" type="submit"></button>
-                    </form>
-                  </div>
-
-                  <!-- RD Navbar Share -->
-                  <div class="rd-navbar-share fl-bigmug-line-share27" data-rd-navbar-toggle=".rd-navbar-share-list">
-                    <ul class="list-inline rd-navbar-share-list">
-                      <!-- Facebook Share -->
-                      <li class="rd-navbar-share-list-item">
-                        <a class="icon fa fa-facebook"
-                          href="https://www.facebook.com/sharer/sharer.php?u=https://www.yourwebsite.com"
-                          target="_blank" rel="noopener noreferrer" title="Condividi su Facebook"></a>
-                      </li>
-
-                      <!-- Twitter Share -->
-                      <li class="rd-navbar-share-list-item">
-                        <a class="icon fa fa-twitter"
-                          href="https://twitter.com/intent/tweet?url=https://www.yourwebsite.com&text=Check%20this%20out!"
-                          target="_blank" rel="noopener noreferrer" title="Condividi su Twitter"></a>
-                      </li>
-
-                      <!-- Instagram (Link al profilo o al sito) -->
-                      <li class="rd-navbar-share-list-item">
-                        <a class="icon fa fa-instagram" href="https://www.instagram.com/yourprofile" target="_blank"
-                          rel="noopener noreferrer" title="Visita il nostro Instagram"></a>
-                      </li>
-                    </ul>
-                  </div>
-
-                  <!-- RD Navbar Nav-->
-                  <ul class="rd-navbar-nav">
-                    <li class="rd-nav-item active"><a class="rd-nav-link" href="index.html">Home</a>
-                    </li>
-                    <li class="rd-nav-item"><a class="rd-nav-link" href="chi-siamo.html">Chi Siamo</a>
-                      <ul class="rd-menu rd-navbar-dropdown">
-                        <li class="rd-dropdown-item"><a class="rd-dropdown-link" href="storia.html">Storia</a></li>
-                        <li class="rd-dropdown-item"><a class="rd-dropdown-link" href="abito-tradizionale.html">L'Abito Tradizionale</a></li>
-                        <li class="rd-dropdown-item"><a class="rd-dropdown-link" href="maestro.html">Maestro</a></li>
-                        <li class="rd-dropdown-item"><a class="rd-dropdown-link" href="organico.html">Organico</a></li>
-                        <li class="rd-dropdown-item"><a class="rd-dropdown-link" href="repertorio.html">Repertorio</a></li>
-                      </ul>
-                    </li>
-                    <li class="rd-nav-item"><a class="rd-nav-link" href="corsi-di-musica.html">Corsi di Musica</a>
-                    </li>
-                    <li class="rd-nav-item"><a class="rd-nav-link" href="eventi.html">Eventi</a>
-                      <ul class="rd-menu rd-navbar-dropdown">
-                        <li class="rd-dropdown-item"><a class="rd-dropdown-link" href="concerti.html">Concerti</a></li>
-                      </ul>
-                    </li>
-                    <li class="rd-nav-item"><a class="rd-nav-link" href="gallery.html">Gallery</a>
-                    </li>
-                    <li class="rd-nav-item"><a class="rd-nav-link" href="contatti.html">Contatti</a>
-                    </li>
-                  </ul>
-                </div>
-              </div>
-            </div>
-          </div>
-        </nav>
-      </div>
-    </header>
-
-    <!-- Swiper-->
+    <!-- Hero Slider -->
     <section class="section swiper-container swiper-slider swiper-slider-classic" data-loop="true" data-autoplay="5000"
-      data-simulate-touch="true" data-direction="vertical" data-nav="false">
+      data-simulate-touch="true" data-direction="vertical" data-nav="false" aria-label="Slideshow principale">
       <div class="swiper-wrapper text-center">
-        <div class="swiper-slide context-dark" data-slide-bg="assets/images/FotoSanIppolito1.jpg">
+        <div class="swiper-slide context-dark" data-slide-bg="assets/images/FotoSanIppolito1.jpg" aria-label="Primo slide - Banda a San Ippolito">
           <div class="swiper-slide-caption section-md">
             <div class="container">
               <div class="row">
@@ -152,7 +75,7 @@
           </div>
         </div>
 
-        <div class="swiper-slide context-dark" data-slide-bg="assets/images/FotoShanghai1.jpeg">
+        <div class="swiper-slide context-dark" data-slide-bg="assets/images/FotoShanghai1.jpeg" aria-label="Secondo slide - Banda a Shanghai">
           <div class="swiper-slide-caption section-md">
             <div class="container">
               <h1 data-caption-animate="fadeInLeft" data-caption-delay="0">Banda folk Castello Tesino</h1>
@@ -164,7 +87,7 @@
           </div>
         </div>
 
-        <div class="swiper-slide context-dark" data-slide-bg="assets/images/FotoRoma1.jpeg">
+        <div class="swiper-slide context-dark" data-slide-bg="assets/images/FotoRoma1.jpeg" aria-label="Terzo slide - Banda a Roma">
           <div class="swiper-slide-caption section-md">
             <div class="container">
               <h1 data-caption-animate="fadeInLeft" data-caption-delay="0">Banda folk <br> Castello Tesino</h1>
@@ -189,16 +112,17 @@
 
 
     <!-- See all services-->
-    <section class="section section-sm section-first bg-default text-center">
+    <!-- Chi Siamo Section -->
+    <section class="section section-sm section-first bg-default">
       <div class="container">
         <div class="row row-30 justify-content-center">
           <div class="col-md-7 col-lg-5 col-xl-6 text-lg-left wow fadeInUp">
-            <div class="figure-classic figure-classic-left"><img src="assets/images/FotoBiagio1.jpg" alt="" width="513"
-                height="561" />
+            <div class="figure-classic figure-classic-left">
+              <img src="assets/images/FotoBiagio1.jpg" alt="Banda Folk di Castello Tesino in concerto" width="513" height="561" loading="lazy" />
             </div>
           </div>
 
-          <div class="col-lg-7 col-xl-6">
+          <div class="col-lg-7 col-xl-6 d-flex align-items-center">
             <div class="row row-30">
 
               <div class="col-sm-6 wow fadeInRight">
@@ -410,11 +334,11 @@
       </div>
     </section>
 
-    <!-- Years of experience-->
-    <section class="section section-sm bg-default">
+    <!-- La Nostra Storia -->
+    <section class="section section-sm bg-default" id="storia">
       <div class="container">
         <div class="row row-50 row-xl-24 justify-content-center align-items-center align-items-lg-start text-left">
-          <div class="col-md-6 col-lg-5 col-xl-4 text-center"><a class="text-img" href="about-us.html">
+          <div class="col-md-6 col-lg-5 col-xl-4 text-center"><a class="text-img" href="<?= SITE_URL ?>/storia.php">
             <span class="counter">120</span></a>
           </div>
 
@@ -424,7 +348,7 @@
             <div class="text-width-extra-small offset-top-lg-24 wow fadeInUp">
               <h3 class="title-decoration-lines-left">Anni di storia</h3>
               <p class="text-gray-500">Storia ormai secolare che ha unito generazioni tutte accumunate per la stessa passione per la musica. Di padre in figlio questa tradizione è stata tramandata negli anni</p>
-              <a class="button button-secondary button-pipaluk" href="#">Scopri di più</a>
+              <a class="button button-secondary button-pipaluk" href="<?= SITE_URL ?>/storia.php">Scopri di più</a>
             </div>
           </div>
 
@@ -443,7 +367,7 @@
             <article class="quote-modern quote-modern-custom">
               <div class="unit unit-spacing-md align-items-center">
                 <div class="unit-left"><a class="quote-modern-figure" href="#"><img class="img-circles"
-                      src="assets/images/user-11-75x75.jpg" alt="" width="75" height="75" /></a></div>
+                      src="<?= SITE_URL ?>/assets/images/user-11-75x75.jpg" alt="" width="75" height="75" /></a></div>
                 <div class="unit-body">
                   <h5 class="quote-modern-cite"><a href="#">Catherine Williams</a></h5>
                   <p class="quote-modern-status">Local shop owner</p>
@@ -461,7 +385,7 @@
             <article class="quote-modern quote-modern-custom">
               <div class="unit unit-spacing-md align-items-center">
                 <div class="unit-left"><a class="quote-modern-figure" href="#"><img class="img-circles"
-                      src="assets/images/user-12-75x75.jpg" alt="" width="75" height="75" /></a></div>
+                      src="<?= SITE_URL ?>/assets/images/user-12-75x75.jpg" alt="" width="75" height="75" /></a></div>
                 <div class="unit-body">
                   <h5 class="quote-modern-cite"><a href="#">Rupert Wood</a></h5>
                   <p class="quote-modern-status">House owner</p>
@@ -478,7 +402,7 @@
             <article class="quote-modern quote-modern-custom">
               <div class="unit unit-spacing-md align-items-center">
                 <div class="unit-left"><a class="quote-modern-figure" href="#"><img class="img-circles"
-                      src="assets/images/user-20-75x75.jpg" alt="" width="75" height="75" /></a></div>
+                      src="<?= SITE_URL ?>/assets/images/user-20-75x75.jpg" alt="" width="75" height="75" /></a></div>
                 <div class="unit-body">
                   <h5 class="quote-modern-cite"><a href="#">Samantha Brown</a></h5>
                   <p class="quote-modern-status">Freelancer</p>
@@ -495,7 +419,7 @@
             <article class="quote-modern quote-modern-custom">
               <div class="unit unit-spacing-md align-items-center">
                 <div class="unit-left"><a class="quote-modern-figure" href="#"><img class="img-circles"
-                      src="assets/images/user-11-75x75.jpg" alt="" width="75" height="75" /></a></div>
+                      src="<?= SITE_URL ?>/assets/images/user-11-75x75.jpg" alt="" width="75" height="75" /></a></div>
                 <div class="unit-body">
                   <h5 class="quote-modern-cite"><a href="#">Catherine Williams</a></h5>
                   <p class="quote-modern-status">Local shop owner</p>
@@ -513,7 +437,7 @@
             <article class="quote-modern quote-modern-custom">
               <div class="unit unit-spacing-md align-items-center">
                 <div class="unit-left"><a class="quote-modern-figure" href="#"><img class="img-circles"
-                      src="assets/images/user-12-75x75.jpg" alt="" width="75" height="75" /></a></div>
+                      src="<?= SITE_URL ?>/assets/images/user-12-75x75.jpg" alt="" width="75" height="75" /></a></div>
                 <div class="unit-body">
                   <h5 class="quote-modern-cite"><a href="#">Rupert Wood</a></h5>
                   <p class="quote-modern-status">House owner</p>
@@ -530,7 +454,7 @@
             <article class="quote-modern quote-modern-custom">
               <div class="unit unit-spacing-md align-items-center">
                 <div class="unit-left"><a class="quote-modern-figure" href="#"><img class="img-circles"
-                      src="assets/images/user-20-75x75.jpg" alt="" width="75" height="75" /></a></div>
+                      src="<?= SITE_URL ?>/assets/images/user-20-75x75.jpg" alt="" width="75" height="75" /></a></div>
                 <div class="unit-body">
                   <h5 class="quote-modern-cite"><a href="#">Samantha Brown</a></h5>
                   <p class="quote-modern-status">Freelancer</p>
@@ -547,109 +471,155 @@
     </section>
 
 
-    <!-- Page Footer-->
-    <footer class="section section-fluid footer-classic">
-      <div class="container-fluid">
+    <!-- Upcoming Events Section -->
+    <section class="section section-sm bg-default" id="prossimi-eventi">
+      <div class="container">
+        <h3 class="wow fadeInLeft">Prossimi Eventi</h3>
+        <p class="wow fadeInRight" data-wow-delay=".1s">Ecco i nostri prossimi appuntamenti dove potrete ascoltarci dal vivo</p>
+        
         <div class="row row-30 justify-content-center">
-
-          <div class="col-md-10 col-lg-12 col-xl-4 wow fadeInRight">
-            <div class="box-footer box-footer-small">
-              <div class="footer-brand"><a href="index.html"><img src="assets/images/logo-inverse-229x43.png" alt=""
-                    width="229" height="43" /></a></div>
-              <p class="text-width-medium">Our design studio helps clients make wise decisions and avoid costly
-                mistakes. Allow our designers and architectors to make your dream space a reality.</p>
-              <div class="contact-classic">
-                <div class="contact-classic-item">
-                  <div class="unit align-items-center">
-                    <div class="unit-left">
-                      <h6 class="contact-classic-title">Address</h6>
-                    </div>
-                    <div class="unit-body contact-classic-link"><a href="#">4730 Crystal Springs Dr, Los Angeles, CA
-                        90027</a></div>
-                  </div>
+          <!-- Event Card 1 -->
+          <div class="col-md-6 col-lg-4 wow fadeInUp">
+            <article class="card event-card">
+              <div class="card-body">
+                <time datetime="2025-06-15T20:00" class="event-date">
+                  <span class="event-day">15</span>
+                  <span class="event-month">Giugno</span>
+                </time>
+                <h4 class="event-title">Concerto Estivo</h4>
+                <p class="event-location"><i class="bi bi-geo-alt"></i> Piazza Maggiore, Castello Tesino</p>
+                <p class="event-time"><i class="bi bi-clock"></i> 20:00</p>
+                <a href="<?= SITE_URL ?>/eventi.php" class="button button-primary button-ujarak">Dettagli</a>
+              </div>
+            </article>
+          </div>
+          
+          <!-- Event Card 2 -->
+          <div class="col-md-6 col-lg-4 wow fadeInUp" data-wow-delay=".1s">
+            <article class="card event-card">
+              <div class="card-body">
+                <time datetime="2025-07-10T21:00" class="event-date">
+                  <span class="event-day">10</span>
+                  <span class="event-month">Luglio</span>
+                </time>
+                <h4 class="event-title">Festival Folkloristico</h4>
+                <p class="event-location"><i class="bi bi-geo-alt"></i> Pieve Tesino</p>
+                <p class="event-time"><i class="bi bi-clock"></i> 21:00</p>
+                <a href="<?= SITE_URL ?>/eventi.php" class="button button-primary button-ujarak">Dettagli</a>
+              </div>
+            </article>
+          </div>
+          
+          <!-- Event Card 3 -->
+          <div class="col-md-6 col-lg-4 wow fadeInUp" data-wow-delay=".2s">
+            <article class="card event-card">
+              <div class="card-body">
+                <time datetime="2025-08-05T19:30" class="event-date">
+                  <span class="event-day">5</span>
+                  <span class="event-month">Agosto</span>
+                </time>
+                <h4 class="event-title">Concerto in Piazza</h4>
+                <p class="event-location"><i class="bi bi-geo-alt"></i> Cinte Tesino</p>
+                <p class="event-time"><i class="bi bi-clock"></i> 19:30</p>
+                <a href="<?= SITE_URL ?>/eventi.php" class="button button-primary button-ujarak">Dettagli</a>
+              </div>
+            </article>
+          </div>
+        </div>
+        
+        <div class="text-center mt-5">
+          <a href="<?= SITE_URL ?>/eventi.php" class="button button-lg button-primary">Vedi Tutti gli Eventi</a>
+        </div>
+      </div>
+    </section>
+    
+    <!-- Music Player Section -->
+    <section class="section section-sm bg-default" id="ascolta">
+      <div class="container">
+        <h3 class="wow fadeInLeft">Ascolta la Nostra Musica</h3>
+        <p class="wow fadeInRight" data-wow-delay=".1s">Ecco alcune delle nostre esecuzioni più recenti</p>
+        
+        <div class="music-player-container">
+          <div class="row">
+            <div class="col-lg-8 mx-auto wow fadeIn">
+              <div class="music-player">
+                <div class="track-info">
+                  <h4 class="track-title">Marcia Trentina</h4>
+                  <p class="track-album">Album: Tradizioni Tesine</p>
                 </div>
-                <div class="contact-classic-item">
-                  <div class="unit align-items-center">
-                    <div class="unit-left">
-                      <h6 class="contact-classic-title">Phones</h6>
-                    </div>
-                    <div class="unit-body contact-classic-link"><a href="tel:#">+1 323-913-4688</a>, <a href="tel:#"> +1
-                        323-888-4554</a>
-                    </div>
-                  </div>
+                <div class="player-controls">
+                  <audio id="audio-player" controls preload="metadata">
+                    <source src="assets/audio/sample-track.mp3" type="audio/mpeg">
+                    Il tuo browser non supporta l'elemento audio.
+                  </audio>
                 </div>
-                <div class="contact-classic-item">
-                  <div class="unit align-items-center">
-                    <div class="unit-left">
-                      <h6 class="contact-classic-title">E-mails</h6>
-                    </div>
-                    <div class="unit-body contact-classic-link"><a href="mailto:#"> info@demolink.org</a>, <a
-                        href="mailto:#"> mail@demolink.org</a>
-                    </div>
+                <div class="track-list mt-4">
+                  <div class="track-item active">
+                    <span class="track-number">1.</span>
+                    <span class="track-name">Marcia Trentina</span>
+                    <span class="track-duration">3:45</span>
+                  </div>
+                  <div class="track-item">
+                    <span class="track-number">2.</span>
+                    <span class="track-name">Inno del Tesino</span>
+                    <span class="track-duration">4:12</span>
+                  </div>
+                  <div class="track-item">
+                    <span class="track-number">3.</span>
+                    <span class="track-name">Valsugana</span>
+                    <span class="track-duration">3:28</span>
                   </div>
                 </div>
               </div>
-              <ul class="list-inline list-inline-sm footer-social-list">
-                <li><a class="icon fa fa-facebook" href="#"></a></li>
-                <li><a class="icon fa fa-twitter" href="#"></a></li>
-                <li><a class="icon fa fa-google-plus" href="#"></a></li>
-                <li><a class="icon fa fa-instagram" href="#"></a></li>
-              </ul>
-            </div>
-          </div>
-
-          <div class="col-md-10 col-lg-6 col-xl-4 wow fadeInRight" data-wow-delay=".1s">
-            <div class="box-footer">
-              <h3 class="font-weight-normal">Questions? Contact Us</h3>
-              <form class="rd-form rd-mailform" data-form-output="form-output-global" data-form-type="contact"
-                method="post" action="bat/rd-mailform.php">
-                <div class="form-wrap">
-                  <input class="form-input" id="contact-name-6" type="text" name="name" data-constraints="@Required" />
-                  <label class="form-label" for="contact-name-6">Name</label>
-                </div>
-                <div class="form-wrap">
-                  <input class="form-input" id="contact-email-6" type="email" name="email"
-                    data-constraints="@Email @Required" />
-                  <label class="form-label" for="contact-email-6">E-mail</label>
-                </div>
-                <div class="form-wrap">
-                  <label class="form-label" for="contact-message-6">Message</label>
-                  <textarea class="form-input" id="contact-message-6" name="message"
-                    data-constraints="@Required"></textarea>
-                </div>
-                <button class="button button-block button-ujarak button-secondary" type="submit">Send Message</button>
-              </form>
-            </div>
-          </div>
-
-          <div class="col-md-10 col-lg-6 col-xl-4 wow fadeInRight" data-wow-delay=".2s">
-            <div class="box-footer">
-              <h3 class="font-weight-normal">See how we work</h3>
-              <ul class="footer-list-category">
-                <li class="heading-5"><a href="#">Home design<span></span></a></li>
-                <li class="heading-5"><a href="#">Commercial design<span></span></a></li>
-                <li class="heading-5"><a href="#">Office design<span></span></a></li>
-                <li class="heading-5"><a href="#">Consultations<span></span></a></li>
-                <li class="heading-5"><a href="#">Architect services<span></span></a></li>
-              </ul>
             </div>
           </div>
         </div>
       </div>
-      <div class="container footer-bottom-panel wow fadeInUp">
-        <!-- Rights-->
-        <p class="rights"><span>&copy;&nbsp;</span><span class="copyright-year"></span> <span>Creator</span>. All rights
-          reserved. <span> Design&nbsp;by&nbsp;<a href="https://www.templatemonster.com">TemplateMonster</a></span>
-        </p>
-      </div>
-    </footer>
+    </section>
+    
+        <?php include_once TEMPLATES_PATH . 'footer.php'; ?>
   </div>
   <!-- Global Mailform Output-->
   <div class="snackbars" id="form-output-global"></div>
+  <!-- Structured Data for Band Website -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "MusicGroup",
+    "name": "Banda Folk di Castello Tesino",
+    "url": "https://www.bandafolkcastellotesino.it",
+    "image": "assets/images/FotoSanIppolito1.jpg",
+    "description": "La Banda Folk di Castello Tesino è attiva dal 1901 e porta avanti la tradizione musicale del Trentino con concerti, eventi e corsi di musica.",
+    "genre": "Folk Music",
+    "foundingDate": "1901",
+    "event": [
+      {
+        "@type": "Event",
+        "name": "Concerto Estivo",
+        "startDate": "2025-06-15T20:00",
+        "location": {
+          "@type": "Place",
+          "name": "Piazza Maggiore",
+          "address": "Castello Tesino, Trentino, Italia"
+        }
+      },
+      {
+        "@type": "Event",
+        "name": "Festival Folkloristico",
+        "startDate": "2025-07-10T21:00",
+        "location": {
+          "@type": "Place",
+          "name": "Pieve Tesino",
+          "address": "Pieve Tesino, Trentino, Italia"
+        }
+      }
+    ]
+  }
+  </script>
+  
   <!-- Javascript-->
-  <script src="assets/js/core.min.js"></script>
-  <script src="assets/js/script.js"></script>
-  <!-- coded by Himic-->
+  <script src="<?= SITE_URL ?>/assets/js/core.min.js"></script>
+  <script src="<?= SITE_URL ?>/assets/js/script.js"></script>
 </body>
 
 </html>
