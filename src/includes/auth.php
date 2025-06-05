@@ -35,9 +35,17 @@ class Auth
         
         // Get user from database
         $user = Database::getRow(
-            "SELECT * FROM users WHERE username = ? AND active = 1 LIMIT 1",
+            "SELECT * FROM users WHERE username = ? AND is_active = 1 LIMIT 1",
             [$username]
         );
+        
+        // Debug password verification
+        if ($user) {
+            error_log("Attempting to verify password for user: {$user['username']}");
+            error_log("Input password: {$password}");
+            error_log("Stored hash: {$user['password']}");
+            error_log("Password verification result: " . (password_verify($password, $user['password']) ? 'true' : 'false'));
+        }
         
         // Check if user exists and verify password
         if ($user && password_verify($password, $user['password'])) {
@@ -168,7 +176,7 @@ class Auth
         $userAgent = $_SERVER['HTTP_USER_AGENT'] ?? 'unknown';
         
         return (bool)Database::query(
-            "INSERT INTO activity_logs (user_id, action, details, ip_address, user_agent) 
+            "INSERT INTO user_activity_log (user_id, action_type, description, ip_address, user_agent) 
              VALUES (?, ?, ?, ?, ?)",
             [$userId, $action, $details, $ip, $userAgent]
         );

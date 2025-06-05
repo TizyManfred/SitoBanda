@@ -3,99 +3,199 @@
  * 
  * Main JavaScript file for the SitoBanda admin area
  * Handles UI interactions, AJAX requests, and dashboard functionality
+ * Following best practices for performance and accessibility
  */
 
 document.addEventListener('DOMContentLoaded', function() {
     'use strict';
     
     // Initialize variables and cache DOM elements
+    const body = document.body;
     const sidebar = document.querySelector('.sidebar');
     const mainContent = document.querySelector('.main-content');
-    const sidebarToggleBtn = document.getElementById('sidebarToggle');
+    const navbar = document.querySelector('.navbar-admin');
+    const sidebarToggle = document.querySelector('.sidebar-toggle');
     
     /**
      * UI Enhancement Functions
+     * These functions improve the user experience and accessibility
      */
     
-    // Initialize Bootstrap components
+    // Initialize Bootstrap components with accessibility enhancements
     function initBootstrapComponents() {
-        // Initialize tooltips
-        $('[data-toggle="tooltip"]').tooltip();
+        // Initialize tooltips with a11y improvements
+        $('[data-toggle="tooltip"]').tooltip({
+            trigger: 'hover focus',
+            container: 'body',
+            boundary: 'window'
+        });
         
-        // Initialize popovers
-        $('[data-toggle="popover"]').popover();
+        // Initialize popovers with a11y improvements
+        $('[data-toggle="popover"]').popover({
+            trigger: 'focus',
+            container: 'body',
+            html: true,
+            sanitize: false
+        });
+        
+        // Make popovers dismissible by escape key
+        $(document).on('keydown.popover', function(e) {
+            if (e.key === 'Escape') {
+                $('[data-toggle="popover"]').popover('hide');
+            }
+        });
         
         // Initialize Bootstrap custom file input
         $('.custom-file-input').on('change', function() {
             let fileName = $(this).val().split('\\').pop();
-            $(this).next('.custom-file-label').addClass('selected').html(fileName);
+            if (!fileName) fileName = 'Nessun file selezionato';
+            
+            const fileLabel = $(this).next('.custom-file-label');
+            fileLabel.addClass('selected').html(fileName);
+            fileLabel.attr('title', fileName);
             
             // Preview image if it's an image upload
             if (this.files && this.files[0]) {
-                const reader = new FileReader();
-                const preview = $(this).closest('.form-group').find('.upload-preview');
-                
-                reader.onload = function(e) {
-                    if (preview.length) {
-                        preview.attr('src', e.target.result);
-                    }
-                };
-                
-                reader.readAsDataURL(this.files[0]);
+                const file = this.files[0];
+                // Check if file is an image
+                if (file.type.match('image.*')) {
+                    const reader = new FileReader();
+                    const preview = $(this).closest('.form-group').find('.upload-preview');
+                    
+                    reader.onload = function(e) {
+                        if (preview.length) {
+                            preview.attr('src', e.target.result);
+                            preview.attr('alt', 'Anteprima di ' + fileName);
+                            preview.removeClass('d-none');
+                        }
+                    };
+                    
+                    reader.readAsDataURL(file);
+                }
             }
+        });
+        
+        // Auto-dismiss alerts after 5 seconds
+        $('.alert-dismissible:not(.alert-important)').each(function() {
+            const $alert = $(this);
+            setTimeout(function() {
+                $alert.alert('close');
+            }, 5000);
         });
     }
     
-    // Handle sidebar toggle
+    // Handle sidebar toggle and responsive behavior
     function setupSidebarToggle() {
-        if (sidebarToggleBtn) {
-            sidebarToggleBtn.addEventListener('click', function() {
-                sidebar.classList.toggle('toggled');
-                mainContent.classList.toggle('sidebar-toggled');
+        if (sidebarToggle) {
+            sidebarToggle.addEventListener('click', function(e) {
+                e.preventDefault();
+                body.classList.toggle('sidebar-collapsed');
+                
+                // Update aria attributes for accessibility
+                const isCollapsed = body.classList.contains('sidebar-collapsed');
+                sidebarToggle.setAttribute('aria-expanded', !isCollapsed);
+                sidebar.setAttribute('aria-expanded', !isCollapsed);
                 
                 // Store sidebar state in localStorage
-                localStorage.setItem('sidebarToggled', sidebar.classList.contains('toggled'));
+                localStorage.setItem('sidebarCollapsed', isCollapsed);
+                
+                // Update icon based on state
+                const icon = sidebarToggle.querySelector('i');
+                if (icon) {
+                    if (isCollapsed) {
+                        icon.classList.remove('fa-chevron-left');
+                        icon.classList.add('fa-chevron-right');
+                    } else {
+                        icon.classList.remove('fa-chevron-right');
+                        icon.classList.add('fa-chevron-left');
+                    }
+                }
             });
             
             // Check for stored sidebar state
-            if (localStorage.getItem('sidebarToggled') === 'true') {
-                sidebar.classList.add('toggled');
-                mainContent.classList.add('sidebar-toggled');
+            if (localStorage.getItem('sidebarCollapsed') === 'true') {
+                body.classList.add('sidebar-collapsed');
+                const icon = sidebarToggle.querySelector('i');
+                if (icon) {
+                    icon.classList.remove('fa-chevron-left');
+                    icon.classList.add('fa-chevron-right');
+                }
+                sidebarToggle.setAttribute('aria-expanded', 'false');
+                sidebar.setAttribute('aria-expanded', 'false');
             }
+        }
+        
+        // Handle mobile sidebar behavior
+        const mobileToggle = document.querySelector('.navbar-toggler');
+        if (mobileToggle) {
+            mobileToggle.addEventListener('click', function(e) {
+                e.preventDefault();
+                body.classList.toggle('sidebar-open');
+            });
         }
         
         // Close sidebar when clicking outside on mobile
         document.addEventListener('click', function(e) {
             if (window.innerWidth < 768) {
-                if (!e.target.closest('.sidebar') && !e.target.closest('#sidebarToggle')) {
-                    if (sidebar.classList.contains('toggled')) {
-                        sidebar.classList.remove('toggled');
-                        mainContent.classList.remove('sidebar-toggled');
-                    }
+                if (!e.target.closest('.sidebar') && 
+                    !e.target.closest('.sidebar-toggle') &&
+                    !e.target.closest('.navbar-toggler')) {
+                    body.classList.remove('sidebar-open');
                 }
             }
         });
     }
     
-    // Setup dark mode toggle
+    // Setup dark mode toggle with preference detection
     function setupDarkModeToggle() {
         const darkModeToggle = document.querySelector('.mode-toggle');
-        const body = document.body;
         
         if (darkModeToggle) {
-            // Check for stored theme preference
-            if (localStorage.getItem('darkMode') === 'true') {
+            // Check for system preference first, then stored preference
+            const prefersDarkMode = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+            const storedPreference = localStorage.getItem('darkMode');
+            
+            if ((storedPreference === null && prefersDarkMode) || storedPreference === 'true') {
                 body.classList.add('dark-mode');
-                darkModeToggle.classList.add('dark');
+                darkModeToggle.classList.add('active');
+                darkModeToggle.setAttribute('aria-pressed', 'true');
+                darkModeToggle.setAttribute('title', 'Passa alla modalità chiara');
+            } else {
+                darkModeToggle.setAttribute('aria-pressed', 'false');
+                darkModeToggle.setAttribute('title', 'Passa alla modalità scura');
             }
             
             darkModeToggle.addEventListener('click', function() {
                 body.classList.toggle('dark-mode');
-                this.classList.toggle('dark');
+                const isDarkMode = body.classList.contains('dark-mode');
+                
+                // Update UI and accessibility attributes
+                this.classList.toggle('active');
+                this.setAttribute('aria-pressed', isDarkMode);
+                this.setAttribute('title', isDarkMode ? 'Passa alla modalità chiara' : 'Passa alla modalità scura');
                 
                 // Store theme preference
-                localStorage.setItem('darkMode', body.classList.contains('dark-mode'));
+                localStorage.setItem('darkMode', isDarkMode);
             });
+            
+            // Listen for system preference changes
+            if (window.matchMedia) {
+                window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', function(e) {
+                    if (localStorage.getItem('darkMode') === null) {
+                        if (e.matches) {
+                            body.classList.add('dark-mode');
+                            darkModeToggle.classList.add('active');
+                            darkModeToggle.setAttribute('aria-pressed', 'true');
+                            darkModeToggle.setAttribute('title', 'Passa alla modalità chiara');
+                        } else {
+                            body.classList.remove('dark-mode');
+                            darkModeToggle.classList.remove('active');
+                            darkModeToggle.setAttribute('aria-pressed', 'false');
+                            darkModeToggle.setAttribute('title', 'Passa alla modalità scura');
+                        }
+                    }
+                });
+            }
         }
     }
     
@@ -262,11 +362,73 @@ document.addEventListener('DOMContentLoaded', function() {
         return new Date(dateString).toLocaleDateString('it-IT', options);
     };
     
+    // Setup notifications dropdown interaction
+    function setupNotificationsDropdown() {
+        const notificationsDropdown = document.querySelector('#notificationsDropdown');
+        const messagesDropdown = document.querySelector('#messagesDropdown');
+        
+        if (notificationsDropdown) {
+            // Mark notifications as read when opened
+            $(notificationsDropdown).on('shown.bs.dropdown', function() {
+                const badge = this.querySelector('.badge-counter');
+                if (badge) {
+                    // Animate badge count reduction
+                    const count = parseInt(badge.textContent);
+                    if (count > 0) {
+                        badge.classList.add('fade-out');
+                        setTimeout(function() {
+                            badge.textContent = '0';
+                            badge.classList.remove('fade-out');
+                        }, 500);
+                    }
+                }
+            });
+        }
+        
+        // Same for messages dropdown
+        if (messagesDropdown) {
+            $(messagesDropdown).on('shown.bs.dropdown', function() {
+                const badge = this.querySelector('.badge-counter');
+                if (badge && parseInt(badge.textContent) > 0) {
+                    badge.classList.add('fade-out');
+                }
+            });
+        }
+    }
+    
+    // Initialize content animations
+    function initContentAnimations() {
+        // Add animations to cards and content blocks for smoother UX
+        const animateElements = document.querySelectorAll('.card, .content-header, .page-description');
+        
+        if ('IntersectionObserver' in window) {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('fade-in');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.1 });
+            
+            animateElements.forEach(el => {
+                observer.observe(el);
+            });
+        } else {
+            // Fallback for browsers that don't support IntersectionObserver
+            animateElements.forEach(el => {
+                el.classList.add('fade-in');
+            });
+        }
+    }
+    
     // Initialize all UI components
     function initUI() {
         initBootstrapComponents();
         setupSidebarToggle();
         setupDarkModeToggle();
+        setupNotificationsDropdown();
+        initContentAnimations();
         setupTaskCheckboxes();
         setupAjaxForms();
         setupDeleteConfirmations();

@@ -1,0 +1,470 @@
+/**
+ * Gallery Admin CSS
+ * 
+ * Styles specific to the gallery management in the admin area
+ * Following BEM naming convention and best practices
+ */
+
+/* Gallery cards and thumbnails */
+.gallery-preview__thumb {
+  position: relative;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.gallery-preview__drag-handle {
+  z-index: 10;
+  padding: 0.25rem 0.5rem;
+  opacity: 0.7;
+  transition: opacity 0.2s ease, background-color 0.2s ease;
+}
+
+.gallery-preview__drag-handle:hover {
+  opacity: 1;
+  background-color: rgba(0, 0, 0, 0.1);
+  cursor: move; /* Fallback for some browsers */
+  cursor: grab;
+}
+
+.gallery-preview__drag-handle:active {
+  cursor: grabbing;
+}
+
+/* Sortable drag and drop styles */
+.sortable-ghost {
+  opacity: 0.5;
+  background: #f8f9fa;
+}
+
+.sortable-chosen {
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+  transform: scale(1.02);
+}
+
+.sortable-drag {
+  opacity: 0.8;
+}
+
+/* Toggle button states */
+.toggle-publish {
+  position: relative;
+  z-index: 5;
+}
+
+.toggle-publish .fa-eye {
+  color: #28a745;
+}
+
+.toggle-publish .fa-eye-slash {
+  color: #6c757d;
+}
+
+.toggle-publish .fa-spinner {
+  color: #007bff;
+}
+
+/* Alert animations */
+.alert.fade.show {
+  animation: slideDown 0.3s ease-out forwards;
+}
+
+.alert.fade {
+  transition: opacity 0.5s ease-out;
+}
+
+@keyframes slideDown {
+  from {
+    transform: translateY(-20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+.photo-gallery {
+  margin-top: 1rem;
+}
+
+.gallery-card {
+  transition: all 0.2s ease;
+  height: 100%;
+  border-radius: 0.5rem;
+  overflow: hidden;
+  position: relative;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.gallery-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+}
+
+.gallery-card__header {
+  padding: 0.75rem;
+  background-color: rgba(0, 0, 0, 0.03);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.125);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.gallery-card__img-container {
+  position: relative;
+  padding-top: 75%; /* 4:3 Aspect Ratio */
+  overflow: hidden;
+  background-color: #f8f9fa;
+}
+
+.gallery-card__img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.gallery-card:hover .gallery-card__img {
+  transform: scale(1.05);
+}
+
+.gallery-card__body {
+  padding: 1rem;
+}
+
+.gallery-card__title {
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.gallery-card__text {
+  color: #6c757d;
+  font-size: 0.875rem;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.gallery-card__footer {
+  padding: 0.75rem 1rem;
+  background-color: rgba(0, 0, 0, 0.03);
+  border-top: 1px solid rgba(0, 0, 0, 0.125);
+}
+
+/* Photo item in album view */
+.photo-item {
+  position: relative;
+  margin-bottom: 1.5rem;
+  border-radius: 0.5rem;
+  overflow: hidden;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: all 0.2s ease-in-out, box-shadow 0.3s ease;
+}
+
+.photo-item:focus-within {
+  box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.25), 0 4px 6px rgba(0, 0, 0, 0.1);
+  outline: none;
+}
+
+.photo-item.bg-light {
+  background-color: #f8f9fa !important;
+  border: 1px solid #e9ecef;
+}
+
+.photo-item__img-container {
+  position: relative;
+  padding-top: 75%; /* 4:3 Aspect Ratio */
+  overflow: hidden;
+  background-color: #f8f9fa;
+}
+
+.photo-item__img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: all 0.3s ease;
+}
+
+.photo-item:hover .photo-item__img {
+  transform: scale(1.05);
+}
+
+.photo-item__overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.photo-item:hover .photo-item__overlay,
+.photo-item:focus-within .photo-item__overlay {
+  opacity: 1;
+}
+
+.photo-item__overlay button {
+  margin: 0 0.15rem;
+  transition: transform 0.2s ease;
+}
+
+.photo-item__overlay button:hover {
+  transform: scale(1.1);
+}
+
+.photo-item__actions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.photo-item__body {
+  padding: 0.75rem;
+}
+
+.photo-item__title {
+  font-weight: 600;
+  font-size: 0.9rem;
+  margin-bottom: 0.25rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.photo-checkbox {
+  position: absolute;
+  top: 0.5rem;
+  left: 0.5rem;
+  z-index: 10;
+}
+
+.photo-checkbox .custom-control-label::before,
+.photo-checkbox .custom-control-label::after {
+  top: 0;
+  left: 0;
+  background-color: white;
+  border-color: rgba(0, 0, 0, 0.2);
+}
+
+/* Drag and drop for sorting */
+.sortable-ghost {
+  opacity: 0.5;
+  background-color: #e9ecef;
+}
+
+.sortable-drag {
+  opacity: 0.9;
+}
+
+.photo-item-ghost {
+  background-color: #e9ecef !important;
+  border: 2px dashed #6c757d !important;
+  box-shadow: none !important;
+}
+
+.photo-item__drag-handle {
+  cursor: grab;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s ease;
+}
+
+.photo-item__drag-handle:active {
+  cursor: grabbing;
+}
+
+.photo-item__drag-handle:hover {
+  transform: scale(1.1);
+}
+
+/* Save order button */
+.save-order {
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% {
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+  }
+  50% {
+    box-shadow: 0 4px 20px rgba(40, 167, 69, 0.3);
+  }
+  100% {
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+  }
+}
+
+/* Upload zone */
+.upload-zone {
+  border: 2px dashed #dee2e6;
+  border-radius: 0.5rem;
+  padding: 2rem;
+  text-align: center;
+  transition: all 0.3s ease;
+  background-color: #f8f9fa;
+  cursor: pointer;
+}
+
+.upload-zone:hover,
+.upload-zone.dragover {
+  border-color: #0d6efd;
+  background-color: rgba(13, 110, 253, 0.05);
+}
+
+.upload-zone:focus {
+  outline: none;
+  border-color: #0d6efd;
+  box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.25);
+}
+
+.upload-zone.dragover .upload-zone__icon {
+  transform: scale(1.1);
+  color: #0d6efd;
+}
+
+.upload-zone__icon {
+  font-size: 3rem;
+  color: #6c757d;
+  transition: all 0.3s ease;
+}
+
+.upload-zone:hover .upload-zone__icon {
+  color: #0d6efd;
+}
+
+.upload-zone__icon {
+  font-size: 3rem;
+  color: #6c757d;
+  transition: all 0.3s ease;
+  margin-bottom: 1rem;
+}
+
+.upload-preview {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+.upload-preview__item {
+  position: relative;
+  width: 100px;
+  height: 100px;
+  border-radius: 0.25rem;
+  overflow: hidden;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.upload-preview__img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.upload-preview__remove {
+  position: absolute;
+  top: 0.25rem;
+  right: 0.25rem;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background-color: rgba(220, 53, 69, 0.9);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 0.75rem;
+}
+
+/* Album badge */
+.album-badge {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  z-index: 10;
+}
+
+/* Lightbox for photo preview */
+.gallery-lightbox {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.9);
+  z-index: 1050;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+.gallery-lightbox.show {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.gallery-lightbox__content {
+  max-width: 90%;
+  max-height: 90%;
+  position: relative;
+}
+
+.gallery-lightbox__img {
+  max-width: 100%;
+  max-height: 90vh;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+}
+
+.gallery-lightbox__close {
+  position: absolute;
+  top: -2rem;
+  right: 0;
+  color: white;
+  font-size: 2rem;
+  cursor: pointer;
+  line-height: 1;
+}
+
+.gallery-lightbox__nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 50px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(0, 0, 0, 0.5);
+  color: white;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 1.5rem;
+}
+
+.gallery-lightbox__prev {
+  left: -75px;
+}
+
+.gallery-lightbox__next {
+  right: -75px;
+}

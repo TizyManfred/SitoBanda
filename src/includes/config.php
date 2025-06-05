@@ -16,15 +16,17 @@ if (!defined('ABSPATH')) {
 
 // Basic site settings
 define('SITE_URL', 'http://localhost:11001');  // Change in production
+define('APP_VERSION', '1.0.0');
 define('SITE_NAME', 'Banda Folk di Castello Tesino');
 define('SITE_EMAIL', 'info@bandafolkcastellotesino.it');
 define('SITE_PHONE', '+39 340 123 4567');
+define('SITE_VERSION', '1.0.0');  // Current site version
 
 // Database settings (if using MySQL)
-define('DB_HOST', 'localhost');
-define('DB_NAME', 'sitobanda');
+define('DB_HOST', 'mysql');
+define('DB_NAME', 'mydb');
 define('DB_USER', 'root');           // Change in production
-define('DB_PASSWORD', '');           // Change in production
+define('DB_PASSWORD', 'rootpassword');           // Change in production
 define('DB_CHARSET', 'utf8mb4');
 define('DB_COLLATE', 'utf8mb4_unicode_ci');
 
@@ -52,8 +54,14 @@ define('UPLOADS_PATH', ABSPATH . 'public/uploads/');
 define('LOGS_PATH', ABSPATH . 'logs/');
 
 // Error reporting settings
+// Check if we're running in CLI mode
+$isCLI = (php_sapi_name() === 'cli');
+
 // Development
-if ($_SERVER['SERVER_NAME'] === 'localhost' || $_SERVER['SERVER_ADDR'] === '127.0.0.1') {
+if ($isCLI || 
+    (isset($_SERVER['SERVER_NAME']) && $_SERVER['SERVER_NAME'] === 'localhost') || 
+    (isset($_SERVER['SERVER_ADDR']) && $_SERVER['SERVER_ADDR'] === '127.0.0.1')
+) {
     ini_set('display_errors', 1);
     ini_set('display_startup_errors', 1);
     error_reporting(E_ALL);

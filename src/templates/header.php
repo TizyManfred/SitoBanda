@@ -17,11 +17,11 @@
                 <button class="rd-navbar-toggle" data-rd-navbar-toggle=".rd-navbar-nav-wrap"><span></span></button>
                 <!-- RD Navbar Brand-->
                 <div class="rd-navbar-brand">
-                  <a class="brand" href="index.html">
+                  <a class="brand" href="index.php">
                     <h3>Banda Folk di Castello Tesino</h3>
                   </a>
                 </div>
-                <div class="rd-navbar-brand"><a class="brand" href="index.html"><img
+                <div class="rd-navbar-brand"><a class="brand" href="index.php"><img
                       src="assets/images/logo-default-229x43.png" alt="" width="229" height="43" /></a></div>
               </div>
 
@@ -49,48 +49,50 @@
                       <!-- Facebook Share -->
                       <li class="rd-navbar-share-list-item">
                         <a class="icon fa fa-facebook"
-                          href="https://www.facebook.com/sharer/sharer.php?u=https://www.yourwebsite.com"
-                          target="_blank" rel="noopener noreferrer" title="Condividi su Facebook"></a>
+                          href="<?php echo SOCIAL_FACEBOOK; ?>"
+                          target="_blank" rel="noopener noreferrer" title="Seguici su Facebook"></a>
                       </li>
 
-                      <!-- Twitter Share -->
+                      <!-- Instagram -->
                       <li class="rd-navbar-share-list-item">
-                        <a class="icon fa fa-twitter"
-                          href="https://twitter.com/intent/tweet?url=https://www.yourwebsite.com&text=Check%20this%20out!"
-                          target="_blank" rel="noopener noreferrer" title="Condividi su Twitter"></a>
+                        <a class="icon fa fa-instagram" 
+                          href="<?php echo SOCIAL_INSTAGRAM; ?>" 
+                          target="_blank" rel="noopener noreferrer" title="Seguici su Instagram"></a>
                       </li>
 
-                      <!-- Instagram (Link al profilo o al sito) -->
+                      <!-- YouTube -->
                       <li class="rd-navbar-share-list-item">
-                        <a class="icon fa fa-instagram" href="https://www.instagram.com/yourprofile" target="_blank"
-                          rel="noopener noreferrer" title="Visita il nostro Instagram"></a>
+                        <a class="icon fa fa-youtube-play" 
+                          href="<?php echo SOCIAL_YOUTUBE; ?>" 
+                          target="_blank" rel="noopener noreferrer" title="Guarda i nostri video"></a>
                       </li>
                     </ul>
                   </div>
 
                   <!-- RD Navbar Nav-->
                   <ul class="rd-navbar-nav">
-                    <li class="rd-nav-item active"><a class="rd-nav-link" href="index.html">Home</a>
+                    <li class="rd-nav-item<?php echo (basename($_SERVER['PHP_SELF']) == 'index.php') ? ' active' : ''; ?>"><a class="rd-nav-link" href="index.php">Home</a>
                     </li>
-                    <li class="rd-nav-item"><a class="rd-nav-link" href="chi-siamo.html">Chi Siamo</a>
+                    <li class="rd-nav-item<?php echo (basename($_SERVER['PHP_SELF']) == 'chi-siamo.php') ? ' active' : ''; ?>"><a class="rd-nav-link" href="chi-siamo.php">Chi Siamo</a>
                       <ul class="rd-menu rd-navbar-dropdown">
-                        <li class="rd-dropdown-item"><a class="rd-dropdown-link" href="storia.html">Storia</a></li>
-                        <li class="rd-dropdown-item"><a class="rd-dropdown-link" href="abito-tradizionale.html">L'Abito Tradizionale</a></li>
-                        <li class="rd-dropdown-item"><a class="rd-dropdown-link" href="maestro.html">Maestro</a></li>
-                        <li class="rd-dropdown-item"><a class="rd-dropdown-link" href="organico.html">Organico</a></li>
-                        <li class="rd-dropdown-item"><a class="rd-dropdown-link" href="repertorio.html">Repertorio</a></li>
+                        <li class="rd-dropdown-item"><a class="rd-dropdown-link" href="storia.php">Storia</a></li>
+                        <li class="rd-dropdown-item"><a class="rd-dropdown-link" href="abito-tradizionale.php">L'Abito Tradizionale</a></li>
+                        <li class="rd-dropdown-item"><a class="rd-dropdown-link" href="maestro.php">Maestro</a></li>
+                        <li class="rd-dropdown-item"><a class="rd-dropdown-link" href="organico.php">Organico</a></li>
+                        <li class="rd-dropdown-item"><a class="rd-dropdown-link" href="repertorio.php">Repertorio</a></li>
                       </ul>
                     </li>
-                    <li class="rd-nav-item"><a class="rd-nav-link" href="corsi-di-musica.html">Corsi di Musica</a>
+                    <li class="rd-nav-item<?php echo (basename($_SERVER['PHP_SELF']) == 'corsi-di-musica.php') ? ' active' : ''; ?>"><a class="rd-nav-link" href="corsi-di-musica.php">Corsi di Musica</a>
                     </li>
-                    <li class="rd-nav-item"><a class="rd-nav-link" href="eventi.html">Eventi</a>
+                    <li class="rd-nav-item<?php echo (in_array(basename($_SERVER['PHP_SELF']), ['concerti.php', 'italia-gira-banda.php'])) ? ' active' : ''; ?>"><a class="rd-nav-link" href="concerti.php">Eventi</a>
                       <ul class="rd-menu rd-navbar-dropdown">
-                        <li class="rd-dropdown-item"><a class="rd-dropdown-link" href="concerti.html">Concerti</a></li>
+                        <li class="rd-dropdown-item"><a class="rd-dropdown-link" href="concerti.php">Concerti</a></li>
+                        <li class="rd-dropdown-item"><a class="rd-dropdown-link" href="italia-gira-banda.php">Italia Gira Banda</a></li>
                       </ul>
                     </li>
-                    <li class="rd-nav-item"><a class="rd-nav-link" href="gallery.html">Gallery</a>
+                    <li class="rd-nav-item<?php echo (basename($_SERVER['PHP_SELF']) == 'gallery.php') ? ' active' : ''; ?>"><a class="rd-nav-link" href="gallery.php">Gallery</a>
                     </li>
-                    <li class="rd-nav-item"><a class="rd-nav-link" href="contatti.html">Contatti</a>
+                    <li class="rd-nav-item<?php echo (basename($_SERVER['PHP_SELF']) == 'contatti.php') ? ' active' : ''; ?>"><a class="rd-nav-link" href="contatti.php">Contatti</a>
                     </li>
                   </ul>
                 </div>

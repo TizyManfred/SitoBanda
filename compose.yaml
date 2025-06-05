@@ -1,7 +1,7 @@
 services:
   php:
     image: php:8.4-apache
-    command: sh -c "a2enmod rewrite && apache2-foreground"
+    command: sh -c "docker-php-ext-install mysqli pdo pdo_mysql && a2enmod rewrite && apache2-foreground"
     volumes:
       - ./src:/var/www/html
     ports:

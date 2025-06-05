@@ -1,0 +1,148 @@
+/**
+ * Custom Admin Styles for Banda Folk di Castello Tesino
+ * Extends AdminLTE 3 theme with band-specific customizations
+ */
+
+/* Brand colors */
+:root {
+    --primary-color: #3f51b5;
+    --secondary-color: #ff4081;
+    --success-color: #4caf50;
+    --warning-color: #ff9800;
+    --danger-color: #f44336;
+    --info-color: #2196f3;
+}
+
+/* Custom brand colors */
+.navbar-primary {
+    background-color: var(--primary-color) !important;
+}
+
+.sidebar-primary {
+    background-color: var(--primary-color);
+}
+
+/* Custom buttons */
+.btn-brand {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+    color: #fff;
+}
+
+.btn-brand:hover, 
+.btn-brand:focus {
+    background-color: #303f9f;
+    border-color: #303f9f;
+    color: #fff;
+}
+
+/* Custom card styles */
+.card-band {
+    border-top: 3px solid var(--primary-color);
+}
+
+/* Stats card customization */
+.stats-card {
+    border-radius: 0.5rem;
+    transition: transform 0.2s;
+}
+
+.stats-card:hover {
+    transform: translateY(-5px);
+}
+
+.stats-card.primary {
+    border-left: 4px solid var(--primary-color);
+}
+
+.stats-card.success {
+    border-left: 4px solid var(--success-color);
+}
+
+.stats-card.warning {
+    border-left: 4px solid var(--warning-color);
+}
+
+.stats-card.danger {
+    border-left: 4px solid var(--danger-color);
+}
+
+/* Sidebar brand customization */
+.brand-link {
+    height: 57px;
+    display: flex;
+    align-items: center;
+}
+
+.brand-link .brand-image {
+    margin-top: 0;
+}
+
+/* Toast container positioning */
+.toast-container {
+    z-index: 1090;
+    bottom: 1rem;
+    right: 1rem;
+    max-width: 350px;
+}
+
+/* Dark mode customization */
+body.dark-mode .content-wrapper {
+    background-color: #1a1d21;
+}
+
+body.dark-mode .card {
+    background-color: #2a2d35;
+    color: #eee;
+}
+
+body.dark-mode .card-header {
+    background-color: rgba(0, 0, 0, 0.2);
+    border-bottom: 1px solid #3a3d45;
+}
+
+body.dark-mode .table {
+    color: #eee;
+}
+
+body.dark-mode .table-hover tbody tr:hover {
+    color: #fff;
+    background-color: rgba(255, 255, 255, 0.075);
+}
+
+/* Login page specific styles */
+.login-page {
+    height: 100vh;
+    background: linear-gradient(135deg, rgba(63,81,181,0.7) 0%, rgba(63,81,181,0.4) 100%);
+}
+
+.login-box, 
+.register-box {
+    width: 360px;
+}
+
+.login-logo img {
+    max-height: 80px;
+    margin-bottom: 1rem;
+}
+
+.login-card-body {
+    border-radius: 10px;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+}
+
+/* Events calendar customization */
+.fc-event {
+    background-color: var(--primary-color);
+    border: 1px solid var(--primary-color);
+}
+
+.fc-button-primary {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+.fc-button-primary:hover {
+    background-color: #303f9f;
+    border-color: #303f9f;
+}

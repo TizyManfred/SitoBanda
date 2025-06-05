@@ -11,7 +11,15 @@ DirectoryIndex index.php index.html
 
     # Keep the /admin path accessible directly
     RewriteRule ^admin(/.*)?$ - [L]
+    RewriteRule ^uploads(/.*)?$ - [L]
+    
+    # Keep the /album path accessible directly
+    RewriteCond %{REQUEST_URI} ^/album
+    RewriteRule ^(.*)$ /uploads/$1 [NC,L]
+    
 
+    # Keep the /public path accessible directly
     RewriteCond %{REQUEST_URI} !^/public
     RewriteRule ^(.*)$ /public/$1 [NC,L]
+
 </IfModule>
