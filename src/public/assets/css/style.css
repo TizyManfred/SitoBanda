@@ -5856,13 +5856,14 @@ html.boxed body {
 		background: url(../images/FotoRoma3.jpg) repeat;
 		-webkit-background-clip: text;
 		background-position-y: 40%;
-		animation: imgPos 5s linear normal infinite paused;
+		background-size: 180%;
+		animation: imgPos 32s ease-in-out normal infinite;
 	}
 	.text-img > span {
 		pointer-events: none;
 	}
 	.text-img:hover {
-		animation-play-state: running;
+		font-size: 530px;
 		color: red;
 	}
 	@media (min-width: 576px) {

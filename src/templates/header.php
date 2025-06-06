@@ -17,12 +17,11 @@
                 <button class="rd-navbar-toggle" data-rd-navbar-toggle=".rd-navbar-nav-wrap"><span></span></button>
                 <!-- RD Navbar Brand-->
                 <div class="rd-navbar-brand">
-                  <a class="brand" href="index.php">
-                    <h3>Banda Folk di Castello Tesino</h3>
+                  <a class="brand d-flex align-items-center" href="/">
+                    <img src="assets/images/logo-default.png" class="mr-2" alt="" width="43" height="43" style="width: 43px; height: 43px;" />
+                    <h4>Banda Folk di Castello Tesino</h4>
                   </a>
                 </div>
-                <div class="rd-navbar-brand"><a class="brand" href="index.php"><img
-                      src="assets/images/logo-default-229x43.png" alt="" width="229" height="43" /></a></div>
               </div>
 
 
