@@ -369,3 +369,38 @@ function generate_pagination(int $current_page, int $total_pages, string $base_u
     
     return $html;
 }
+
+/**
+ * Format timestamp to a human-readable time ago string in Italian
+ *
+ * @param string $datetime Timestamp in database format
+ * @return string Formatted time ago string in Italian
+ */
+function timeAgo(string $datetime): string
+{
+    $time = strtotime($datetime);
+    $now = time();
+    $diff = $now - $time;
+
+    if ($diff < 60) {
+        return 'poco fa';
+    } elseif ($diff < 3600) {
+        $mins = floor($diff / 60);
+        return $mins . ' min' . ($mins > 1 ? ' fa' : ' fa');
+    } elseif ($diff < 86400) {
+        $hours = floor($diff / 3600);
+        return $hours . ' ora' . ($hours > 1 ? 'e fa' : ' fa');
+    } elseif ($diff < 604800) {
+        $days = floor($diff / 86400);
+        return $days . ' giorno' . ($days > 1 ? ' fa' : ' fa');
+    } elseif ($diff < 2592000) {
+        $weeks = floor($diff / 604800);
+        return $weeks . ' settimana' . ($weeks > 1 ? 'e fa' : ' fa');
+    } elseif ($diff < 31536000) {
+        $months = floor($diff / 2592000);
+        return $months . ' mese' . ($months > 1 ? ' fa' : ' fa');
+    } else {
+        $years = floor($diff / 31536000);
+        return $years . ' anno' . ($years > 1 ? ' fa' : ' fa');
+    }
+}

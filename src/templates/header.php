@@ -71,28 +71,28 @@
 
                   <!-- RD Navbar Nav-->
                   <ul class="rd-navbar-nav">
-                    <li class="rd-nav-item<?php echo (basename($_SERVER['PHP_SELF']) == 'index.php') ? ' active' : ''; ?>"><a class="rd-nav-link" href="index.php">Home</a>
+                    <li class="rd-nav-item<?php echo (basename($_SERVER['PHP_SELF']) == 'index.php') ? ' active' : ''; ?>"><a class="rd-nav-link" href="/">Home</a>
                     </li>
-                    <li class="rd-nav-item<?php echo (basename($_SERVER['PHP_SELF']) == 'chi-siamo.php') ? ' active' : ''; ?>"><a class="rd-nav-link" href="chi-siamo.php">Chi Siamo</a>
+                    <li class="rd-nav-item<?php echo (basename($_SERVER['PHP_SELF']) == 'chi-siamo.php') ? ' active' : ''; ?>"><a class="rd-nav-link" href="chi-siamo">Chi Siamo</a>
                       <ul class="rd-menu rd-navbar-dropdown">
-                        <li class="rd-dropdown-item"><a class="rd-dropdown-link" href="storia.php">Storia</a></li>
-                        <li class="rd-dropdown-item"><a class="rd-dropdown-link" href="abito-tradizionale.php">L'Abito Tradizionale</a></li>
-                        <li class="rd-dropdown-item"><a class="rd-dropdown-link" href="maestro.php">Maestro</a></li>
-                        <li class="rd-dropdown-item"><a class="rd-dropdown-link" href="organico.php">Organico</a></li>
-                        <li class="rd-dropdown-item"><a class="rd-dropdown-link" href="repertorio.php">Repertorio</a></li>
+                        <li class="rd-dropdown-item"><a class="rd-dropdown-link" href="storia">Storia</a></li>
+                        <li class="rd-dropdown-item"><a class="rd-dropdown-link" href="abito-tradizionale">L'Abito Tradizionale</a></li>
+                        <li class="rd-dropdown-item"><a class="rd-dropdown-link" href="maestro">Maestro</a></li>
+                        <li class="rd-dropdown-item"><a class="rd-dropdown-link" href="organico">Organico</a></li>
+                        <li class="rd-dropdown-item"><a class="rd-dropdown-link" href="repertorio">Repertorio</a></li>
                       </ul>
                     </li>
-                    <li class="rd-nav-item<?php echo (basename($_SERVER['PHP_SELF']) == 'corsi-di-musica.php') ? ' active' : ''; ?>"><a class="rd-nav-link" href="corsi-di-musica.php">Corsi di Musica</a>
+                    <li class="rd-nav-item<?php echo (basename($_SERVER['PHP_SELF']) == 'corsi-di-musica.php') ? ' active' : ''; ?>"><a class="rd-nav-link" href="corsi-di-musica">Corsi di Musica</a>
                     </li>
-                    <li class="rd-nav-item<?php echo (in_array(basename($_SERVER['PHP_SELF']), ['concerti.php', 'italia-gira-banda.php'])) ? ' active' : ''; ?>"><a class="rd-nav-link" href="concerti.php">Eventi</a>
+                    <li class="rd-nav-item<?php echo (in_array(basename($_SERVER['PHP_SELF']), ['concerti.php', 'italia-gira-banda.php'])) ? ' active' : ''; ?>"><a class="rd-nav-link" href="concerti">Eventi</a>
                       <ul class="rd-menu rd-navbar-dropdown">
-                        <li class="rd-dropdown-item"><a class="rd-dropdown-link" href="concerti.php">Concerti</a></li>
-                        <li class="rd-dropdown-item"><a class="rd-dropdown-link" href="italia-gira-banda.php">Italia Gira Banda</a></li>
+                        <li class="rd-dropdown-item"><a class="rd-dropdown-link" href="concerti">Concerti</a></li>
+                        <li class="rd-dropdown-item"><a class="rd-dropdown-link" href="italia-gira-banda">Italia Gira Banda</a></li>
                       </ul>
                     </li>
-                    <li class="rd-nav-item<?php echo (basename($_SERVER['PHP_SELF']) == 'gallery.php') ? ' active' : ''; ?>"><a class="rd-nav-link" href="gallery.php">Gallery</a>
+                    <li class="rd-nav-item<?php echo (basename($_SERVER['PHP_SELF']) == 'gallery.php') ? ' active' : ''; ?>"><a class="rd-nav-link" href="gallery">Gallery</a>
                     </li>
-                    <li class="rd-nav-item<?php echo (basename($_SERVER['PHP_SELF']) == 'contatti.php') ? ' active' : ''; ?>"><a class="rd-nav-link" href="contatti.php">Contatti</a>
+                    <li class="rd-nav-item<?php echo (basename($_SERVER['PHP_SELF']) == 'contatti.php') ? ' active' : ''; ?>"><a class="rd-nav-link" href="contatti">Contatti</a>
                     </li>
                   </ul>
                 </div>

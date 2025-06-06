@@ -26,32 +26,110 @@ Auth::requireLogin();
 // Get current user
 $currentUser = Auth::getCurrentUser();
 
-// Get gallery stats - In a real app, these would come from database
-$stats = [
-    'gallery' => [
-        'count' => 84,
-        'label' => 'Foto',
-        'icon' => 'images',
-        'color' => 'warning',
-        'change' => '+5 questo mese'
-    ]
-];
+$pdo = Database::getInstance();
+    
+// Total albums count
+$stmt = $pdo->query("SELECT COUNT(*) FROM gallery_albums");
+$totalAlbums = $stmt->fetchColumn();
 
-// Get recent activities - In a real app, this would come from database
-$recentActivities = [
-    [
-        'user' => 'Admin',
-        'action' => 'ha caricato nuove foto',
-        'item' => 'Galleria "Sfilata San Ippolito"',
-        'time' => '1 giorno fa',
-        'icon' => 'upload'
+// Get gallery statistics
+$galleryStats = [];
+try {
+    
+    // Total photos count
+    $stmt = $pdo->query("SELECT COUNT(*) FROM gallery_items");
+    $totalPhotos = $stmt->fetchColumn();
+    
+    // Published albums count
+    $stmt = $pdo->query("SELECT COUNT(*) FROM gallery_albums WHERE is_published = 1");
+    $publishedAlbums = $stmt->fetchColumn();
+    
+    // Photos added this month
+    $stmt = $pdo->query("SELECT COUNT(*) FROM gallery_items WHERE created_at >= DATE_SUB(NOW(), INTERVAL 1 MONTH)");
+    $recentPhotos = $stmt->fetchColumn();
+    
+    // Recent gallery activities
+    $recentActivities = [];
+    
+    // Get recently updated albums
+    $stmt = $pdo->query("SELECT title, updated_at FROM gallery_albums ORDER BY updated_at DESC LIMIT 5");
+    $recentAlbums = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    
+    foreach ($recentAlbums as $album) {
+        $timeAgo = timeAgo($album['updated_at']);
+        $recentActivities[] = [
+            'user' => 'Sistema',
+            'action' => 'aggiornato',
+            'item' => 'Album: ' . $album['title'],
+            'time' => $timeAgo,
+            'icon' => 'images'
+        ];
+    }
+    
+    // Get recently added photos
+    $stmt = $pdo->query("SELECT i.title, a.title as album_title, i.created_at 
+                        FROM gallery_items i 
+                        JOIN gallery_albums a ON i.album_id = a.id 
+                        ORDER BY i.created_at DESC LIMIT 3");
+    $recentlyAddedPhotos = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    
+    foreach ($recentlyAddedPhotos as $photo) {
+        $timeAgo = timeAgo($photo['created_at']);
+        $recentActivities[] = [
+            'user' => 'Sistema',
+            'action' => 'aggiunto foto a',
+            'item' => $photo['album_title'] . ': ' . $photo['title'],
+            'time' => $timeAgo,
+            'icon' => 'image'
+        ];
+    }
+    
+    // Sort activities by time
+    usort($recentActivities, function($a, $b) {
+        return strtotime($a['time']) - strtotime($b['time']);
+    });
+    
+    // Get the 5 most recent activities
+    $recentActivities = array_slice($recentActivities, 0, 5);
+    
+} catch (Exception $e) {
+    error_log("Error fetching gallery stats: " . $e->getMessage());
+    $totalAlbums = 0;
+    $totalPhotos = 0;
+    $publishedAlbums = 0;
+    $recentPhotos = 0;
+    $recentActivities = [];
+}
+
+// Stats for the dashboard cards
+$stats = [
+    'albums' => [
+        'count' => $totalAlbums,
+        'label' => 'Album',
+        'icon' => 'images',
+        'color' => 'info',
+        'change' => ''
     ],
-    [
-        'user' => 'Admin',
-        'action' => 'ha modificato la galleria',
-        'item' => 'Album "Concerto Estate"',
-        'time' => '3 giorni fa',
-        'icon' => 'edit'
+    'photos' => [
+        'count' => $totalPhotos,
+        'label' => 'Foto',
+        'icon' => 'camera',
+        'color' => 'success',
+        'change' => ''
+    ],
+    'published' => [
+        'count' => $publishedAlbums,
+        'label' => 'Pubblicati',
+        'icon' => 'eye',
+        'color' => 'primary',
+        'change' => ''
+    ],
+    'recent' => [
+        'count' => $recentPhotos,
+        'label' => 'Nuove foto',
+        'icon' => 'plus-circle',
+        'color' => 'warning',
+        'change' => 'questo mese'
     ]
 ];
 
@@ -88,37 +166,45 @@ include_once __DIR__ . '/templates/header_adminlte.php';
     <!-- Main content -->
     <div class="content">
         <div class="container-fluid">
-            <!-- Welcome Alert -->
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="alert alert-info alert-dismissible">
-                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-                        <h5><i class="icon fas fa-info"></i> Benvenuto, <?php echo htmlspecialchars($currentUser['first_name'] ?? $currentUser['username']); ?>!</h5>
-                        Questa è la dashboard amministrativa del sito della Banda Folk di Castello Tesino. Da qui puoi gestire tutti i contenuti del sito.
-                    </div>
-                </div>
-            </div>
 
-            <!-- Stats Cards / Info boxes -->
-            <div class="row">
-                <?php foreach ($stats as $key => $stat): ?>
-                <div class="col-md-3 col-sm-6 col-12">
-                    <div class="info-box">
-                        <span class="info-box-icon bg-<?php echo $stat['color']; ?>"><i class="fas fa-<?php echo $stat['icon']; ?>"></i></span>
-                        <div class="info-box-content">
-                            <span class="info-box-text"><?php echo $stat['label']; ?></span>
-                            <span class="info-box-number"><?php echo $stat['count']; ?></span>
-                            <span class="text-sm"><?php echo $stat['change']; ?></span>
-                            <div class="progress">
-                                <div class="progress-bar bg-<?php echo $stat['color']; ?>" style="width: 100%"></div>
+            <!-- Gallery Stats -->
+            <div class="row mb-4">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">
+                                <i class="fas fa-images mr-2"></i> Statistiche Galleria
+                            </h3>
+                            <div class="card-tools">
+                                <a href="gallery/" class="btn btn-sm btn-primary">
+                                    <i class="fas fa-folder-open mr-1"></i> Gestisci Galleria
+                                </a>
                             </div>
-                            <a href="<?php echo $key; ?>/index.php" class="text-<?php echo $stat['color']; ?> small">
-                                Visualizza dettagli <i class="fas fa-arrow-right ml-1"></i>
-                            </a>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <?php foreach ($stats as $key => $stat): ?>
+                                <div class="col-12 col-sm-6 col-md-3">
+                                    <div class="info-box mb-3">
+                                        <span class="info-box-icon bg-<?php echo $stat['color']; ?> elevation-1">
+                                            <i class="fas fa-<?php echo $stat['icon']; ?>"></i>
+                                        </span>
+                                        <div class="info-box-content">
+                                            <span class="info-box-text"><?php echo $stat['label']; ?></span>
+                                            <span class="info-box-number">
+                                                <?php echo number_format($stat['count'], 0, ',', '.'); ?>
+                                                <?php if (!empty($stat['change'])): ?>
+                                                <small class="d-block text-muted"><?php echo $stat['change']; ?></small>
+                                                <?php endif; ?>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <?php endforeach; ?>
+                            </div>
                         </div>
                     </div>
                 </div>
-                <?php endforeach; ?>
             </div>
 
             <!-- Main row -->
