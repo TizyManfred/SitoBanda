@@ -74,9 +74,9 @@ include_once TEMPLATES_PATH . 'head.php';
                   <div class="box-icon-classic-icon fl-bigmug-line-circular220"></div>
                 </div>
                 <div class="unit-body">
-                  <h5 class="box-icon-classic-title"><a href="storia.php">Storia</a></h5>
+                  <h5 class="box-icon-classic-title"><a href="storia">Storia</a></h5>
                   <p class="box-icon-classic-text">La tradizione musicale bandistica di Castello Tesino risale al 1901, con una storia ricca di eventi e cambiamenti che hanno portato alla banda che siamo oggi.</p>
-                  <a href="storia.php" class="button button-sm button-primary">Scopri di più</a>
+                  <a href="storia" class="button button-sm button-primary">Scopri di più</a>
                 </div>
               </div>
             </article>
@@ -90,9 +90,9 @@ include_once TEMPLATES_PATH . 'head.php';
                   <div class="box-icon-classic-icon fl-bigmug-line-up104"></div>
                 </div>
                 <div class="unit-body">
-                  <h5 class="box-icon-classic-title"><a href="abito-tradizionale.php">L'Abito Tradizionale</a></h5>
+                  <h5 class="box-icon-classic-title"><a href="abito-tradizionale">L'Abito Tradizionale</a></h5>
                   <p class="box-icon-classic-text">L'abito tradizionale della Valle del Tesino, risalente al XVII secolo, rappresenta la prosperità e la ricchezza culturale del nostro territorio.</p>
-                  <a href="abito-tradizionale.php" class="button button-sm button-primary">Scopri di più</a>
+                  <a href="abito-tradizionale" class="button button-sm button-primary">Scopri di più</a>
                 </div>
               </div>
             </article>
@@ -106,9 +106,9 @@ include_once TEMPLATES_PATH . 'head.php';
                   <div class="box-icon-classic-icon fl-bigmug-line-user144"></div>
                 </div>
                 <div class="unit-body">
-                  <h5 class="box-icon-classic-title"><a href="maestro.php">Il Maestro</a></h5>
+                  <h5 class="box-icon-classic-title"><a href="maestro">Il Maestro</a></h5>
                   <p class="box-icon-classic-text">Dal 2003, la banda è guidata dal Maestro Ivan Villanova, clarinettista di fama internazionale con un ricco curriculum artistico.</p>
-                  <a href="maestro.php" class="button button-sm button-primary">Scopri di più</a>
+                  <a href="maestro" class="button button-sm button-primary">Scopri di più</a>
                 </div>
               </div>
             </article>
@@ -122,9 +122,9 @@ include_once TEMPLATES_PATH . 'head.php';
                   <div class="box-icon-classic-icon fl-bigmug-line-two311"></div>
                 </div>
                 <div class="unit-body">
-                  <h5 class="box-icon-classic-title"><a href="organico.php">Organico</a></h5>
+                  <h5 class="box-icon-classic-title"><a href="organico">Organico</a></h5>
                   <p class="box-icon-classic-text">I musicisti che compongono la banda rappresentano il cuore pulsante del nostro gruppo, suddivisi per sezioni strumentali.</p>
-                  <a href="organico.php" class="button button-sm button-primary">Scopri di più</a>
+                  <a href="organico" class="button button-sm button-primary">Scopri di più</a>
                 </div>
               </div>
             </article>
@@ -138,9 +138,9 @@ include_once TEMPLATES_PATH . 'head.php';
                   <div class="box-icon-classic-icon fl-bigmug-line-note35"></div>
                 </div>
                 <div class="unit-body">
-                  <h5 class="box-icon-classic-title"><a href="repertorio.php">Repertorio</a></h5>
+                  <h5 class="box-icon-classic-title"><a href="repertorio">Repertorio</a></h5>
                   <p class="box-icon-classic-text">Il nostro repertorio spazia dalla musica tradizionale trentina a brani moderni, con un'attenzione particolare alla Blasmusik alpina.</p>
-                  <a href="repertorio.php" class="button button-sm button-primary">Scopri di più</a>
+                  <a href="repertorio" class="button button-sm button-primary">Scopri di più</a>
                 </div>
               </div>
             </article>
@@ -154,9 +154,9 @@ include_once TEMPLATES_PATH . 'head.php';
                   <div class="box-icon-classic-icon fl-bigmug-line-musical118"></div>
                 </div>
                 <div class="unit-body">
-                  <h5 class="box-icon-classic-title"><a href="corsi-di-musica.php">Corsi di Musica</a></h5>
+                  <h5 class="box-icon-classic-title"><a href="corsi-di-musica">Corsi di Musica</a></h5>
                   <p class="box-icon-classic-text">La banda organizza corsi di musica per strumenti a fiato e percussioni, aperti a tutti a partire dagli 8 anni, senza limiti di età.</p>
-                  <a href="corsi-di-musica.php" class="button button-sm button-primary">Scopri di più</a>
+                  <a href="corsi-di-musica" class="button button-sm button-primary">Scopri di più</a>
                 </div>
               </div>
             </article>
@@ -182,7 +182,7 @@ include_once TEMPLATES_PATH . 'head.php';
             <div class="box-cta">
               <h3>Vuoi Unirti alla Nostra Banda?</h3>
               <p>Sei un musicista o desideri imparare a suonare uno strumento? La Banda Folk di Castello Tesino è sempre aperta a nuovi membri!</p>
-              <a href="contatti.php" class="button button-lg button-primary">Contattaci</a>
+              <a href="contatti" class="button button-lg button-primary">Contattaci</a>
             </div>
           </div>
         </div>

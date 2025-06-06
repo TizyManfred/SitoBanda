@@ -154,7 +154,7 @@ include_once TEMPLATES_PATH . 'head.php';
           <div class="col-md-8">
             <div class="card">
               <div class="card-body text-center py-5">
-                <i class="fas fa-exclamation-circle fa-3x mb-3 text-danger"></i>
+                <i class="fl-bigmug-line-exclamation-mark2 fa-3x mb-3 text-danger"></i>
                 <h3>Errore</h3>
                 <p><?php echo htmlspecialchars($error); ?></p>
                 <a href="gallery.php" class="btn btn-primary mt-3">Torna alla Gallery</a>
@@ -214,7 +214,7 @@ include_once TEMPLATES_PATH . 'head.php';
           <div class="col-md-8">
             <div class="card">
               <div class="card-body text-center py-5">
-                <i class="fas fa-images fa-3x mb-3 text-muted"></i>
+                <i class="fl-bigmug-line-images fa-3x mb-3 text-muted"></i>
                 <h3>Nessuna foto disponibile</h3>
                 <p>Questo album non contiene ancora foto.</p>
                 <a href="gallery.php" class="btn btn-primary mt-3">Torna alla Gallery</a>
@@ -228,7 +228,7 @@ include_once TEMPLATES_PATH . 'head.php';
         <div class="row justify-content-center mt-5">
           <div class="col-md-8 text-center">
             <a href="gallery.php" class="btn btn-primary">
-              <i class="fas fa-arrow-left mr-2"></i> Torna alla Gallery
+              <i class="fl-bigmug-line-arrow-left mr-2"></i> Torna alla Gallery
             </a>
           </div>
         </div>
