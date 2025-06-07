@@ -13,18 +13,101 @@ define('ABSPATH', dirname(__DIR__) . '/');
 
 // Include configuration
 require_once ABSPATH . 'includes/config.php';
-?>
-<!DOCTYPE html>
-<html class="wide wow-animation" lang="it">
 
-<?php
+// Include database connection
+require_once ABSPATH . 'includes/database.php';
+
+// Fetch events from database
+$events = [];
+try {
+    // Get database connection
+    $pdo = Database::getInstance();
+    
+    // Query to get public events, ordered by featured status (featured first) and then by date (newest first)
+    $query = "SELECT * FROM events 
+             WHERE is_public = 1 AND start_datetime <= NOW()
+             ORDER BY is_featured DESC, start_datetime DESC";
+    $stmt = $pdo->prepare($query);
+    $stmt->execute();
+    $events = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    
+} catch (PDOException $e) {
+    // Log the error
+    error_log("Error fetching events: " . $e->getMessage());
+}
+
+// Process events data for the template
+$processedEvents = [];
+$delay = 0;
+$delayIncrement = 1; // Increment by 1 for integer operations (will be divided by 10 when used)
+
+// Fetch upcoming events (today and future)
+try {
+    $db = Database::getInstance();
+    $sql = "
+        SELECT e.*, IFNULL(g.title, '') as gallery_title
+        FROM events e
+        LEFT JOIN gallery_albums g ON e.gallery_id = g.id
+        WHERE e.is_public = 1 
+        AND e.start_datetime >= NOW()
+        ORDER BY e.start_datetime ASC
+        LIMIT 3
+    ";
+    $stmt = $db->prepare($sql);
+    $stmt->execute();
+    $upcomingEvents = $stmt->fetchAll(PDO::FETCH_ASSOC);
+} catch (Exception $e) {
+    error_log('Error fetching upcoming events: ' . $e->getMessage());
+    $upcomingEvents = [];
+}
+
+foreach ($events as $event) {
+    // Format date
+    $eventDate = new DateTime($event['start_datetime']);
+    $formattedDate = $eventDate->format('d/m/Y');
+    
+    // Set default image if none is provided
+    $imagePath = !empty($event['image_path']) ? 
+               SITE_URL . '/' . $event['image_path'] : 
+               'assets/images/event-placeholder.jpg';
+    
+    // Animation class (alternate between fadeInLeft and fadeInRight)
+    // Multiply by 10 to work with integers and avoid floating-point modulo
+    $animationClass = (int)($delay * 10) % 2 == 0 ? 'fadeInLeft' : 'fadeInRight';
+    
+    // Add featured class if event is featured
+    $featuredClass = $event['is_featured'] ? ' featured-event' : '';
+    
+    // Store processed event data
+    $processedEvents[] = [
+        'title' => $event['title'],
+        'slug' => $event['slug'],
+        'start_datetime' => $event['start_datetime'],
+        'formatted_date' => $formattedDate,
+        'location' => $event['location'] ?? '',
+        'short_description' => $event['short_description'] ?? '',
+        'image_path' => $imagePath,
+        'is_featured' => $event['is_featured'],
+        'animation_class' => $animationClass,
+        'featured_class' => $featuredClass,
+        'delay' => $delay
+    ];
+    
+    // Increment delay for next item (using integer values)
+    $delay += $delayIncrement;
+}
+
 // Define page-specific meta variables
 $pageTitle = 'Banda Folk di Castello Tesino - Musica Tradizionale dal 1901';
 $pageDescription = 'La Banda Folk di Castello Tesino, attiva dal 1901, porta avanti la tradizione musicale del Trentino con concerti, eventi e corsi di musica.';
 $ogTitle = 'Banda Folk di Castello Tesino - Tradizione dal 1901';
 $ogDescription = 'Scopri la Banda Folk di Castello Tesino, custode della tradizione musicale trentina dal 1901.';
 $ogImage = SITE_URL . '/assets/images/FotoSanIppolito1.jpg';
+?>
+<!DOCTYPE html>
+<html class="wide wow-animation" lang="it">
 
+<?php
 // Include the head template
 include_once TEMPLATES_PATH . 'head.php';
 ?>
@@ -114,7 +197,7 @@ include_once TEMPLATES_PATH . 'head.php';
                   <div>
                     <h3 class="box-icon-modern-big-title">Eventi futuri</h3>
                     <div class="box-icon-modern-decor"></div><a
-                      class="button button-md button-default-outline-2 button-wapasha" href="#">Scopri le date</a>
+                      class="button button-md button-default-outline-2 button-wapasha" href="<?php echo SITE_URL; ?>/eventi">Scopri le date</a>
                   </div>
                 </article>
               </div>
@@ -122,7 +205,7 @@ include_once TEMPLATES_PATH . 'head.php';
               <div class="col-sm-6 wow fadeInRight" data-wow-delay=".1s">
                 <article class="box-icon-modern box-icon-modern-2">
                   <div class="box-icon-modern-icon bi-hourglass-split"></div>
-                  <h5 class="box-icon-modern-title"><a href="#">La nostra storia</a></h5>
+                  <h5 class="box-icon-modern-title"><a href="<?php echo SITE_URL; ?>/storia">La nostra storia</a></h5>
                   <div class="box-icon-modern-decor"></div>
                   <p class="box-icon-modern-text">Scopri di più sulla nostra storia che nasce più di 100 anni fa</p>
                 </article>
@@ -131,7 +214,7 @@ include_once TEMPLATES_PATH . 'head.php';
               <div class="col-sm-6 wow fadeInRight" data-wow-delay=".2s">
                 <article class="box-icon-modern box-icon-modern-2">
                   <div class="box-icon-modern-icon bi-people-fill"></div>
-                  <h5 class="box-icon-modern-title"><a href="#">Organico</a></h5>
+                  <h5 class="box-icon-modern-title"><a href="<?php echo SITE_URL; ?>/organico">Organico</a></h5>
                   <div class="box-icon-modern-decor"></div>
                   <p class="box-icon-modern-text">Scopri di più sulla composizione del nostro organico</p>
                 </article>
@@ -140,9 +223,9 @@ include_once TEMPLATES_PATH . 'head.php';
               <div class="col-sm-6 wow fadeInRight" data-wow-delay=".3s">
                 <article class="box-icon-modern box-icon-modern-2">
                   <div class="box-icon-modern-icon bi-magic"></div>
-                  <h5 class="box-icon-modern-title"><a href="#">Maestro</a></h5>
+                  <h5 class="box-icon-modern-title"><a href="<?php echo SITE_URL; ?>/maestro">Maestro</a></h5>
                   <div class="box-icon-modern-decor"></div>
-                  <p class="box-icon-modern-text">Conosci la storia del nostro maestro e la sua cariera musicale</p>
+                  <p class="box-icon-modern-text">Conosci la storia del nostro maestro e la sua carriera musicale</p>
                 </article>
               </div>
 
@@ -152,177 +235,87 @@ include_once TEMPLATES_PATH . 'head.php';
       </div>
     </section>
 
-    <!-- Latest Projects-->
+    <!-- Latest events-->
     <section class="section section-sm section-fluid bg-default text-center">
       <div class="container-fluid">
         <h3 class="wow fadeInLeft">Concerti e eventi rilevanti</h3>
         <p class="wow fadeInRight" data-wow-delay=".1s">Ecco alcuni concerti e sfilate rilevanti ai quali abbiamo
           partecipato nell'ultimo periodo</p>
 
-        <!--
-          <div class="isotope-filters isotope-filters-horizontal">
-            <button class="isotope-filters-toggle button button-md button-icon button-icon-right button-default-outline button-wapasha" data-custom-toggle="#isotope-3" data-custom-toggle-hide-on-blur="true"><span class="icon fa fa-caret-down"></span>Filter</button>
-            <ul class="isotope-filters-list" id="isotope-3">
-              <li><a class="active" href="#" data-isotope-filter="*" data-isotope-group="gallery">All</a></li>
-              <li><a href="#" data-isotope-filter="Type 1" data-isotope-group="gallery">Apartments</a></li>
-              <li><a href="#" data-isotope-filter="Type 2" data-isotope-group="gallery">Offices</a></li>
-              <li><a href="#" data-isotope-filter="Type 3" data-isotope-group="gallery">Corporate designs</a></li>
-            </ul>
-          </div>
-          -->
-
-        <div class="row row-30 isotope" data-isotope-layout="fitRows" data-isotope-group="gallery"
-          data-lightgallery="group">
-          <div class="col-sm-6 col-lg-4 col-xxl-3 isotope-item wow fadeInLeft" data-filter="">
-            <article class="thumbnail thumbnail-classic thumbnail-md">
-              <div class="thumbnail-classic-figure"><img src="assets/images/FotoRoma2.jpg" alt="" width="420" height="350" />
+        <div class="row row-30 isotope" data-isotope-layout="fitRows" data-isotope-group="gallery" data-lightgallery="group">
+          <?php if (!empty($processedEvents)): ?>
+            <?php foreach ($processedEvents as $event): ?>
+              <div class="col-sm-6 col-lg-4 col-xxl-3 isotope-item wow fadeInLeft" data-wow-delay="<?php echo $event['delay'] / 10; ?>s">
+                <article class="thumbnail thumbnail-classic thumbnail-md">
+                  <div class="thumbnail-classic-figure">
+                    <img src="<?php echo htmlspecialchars($event['image_path']); ?>" 
+                         alt="<?php echo htmlspecialchars($event['title']); ?>" 
+                         width="420" 
+                         height="350" />
+                  </div>
+                  <div class="thumbnail-classic-caption">
+                    <div class="thumbnail-classic-title-wrap">
+                      <a class="icon fl-bigmug-line-zoom60" 
+                         href="<?php echo htmlspecialchars($event['image_path']); ?>" 
+                         data-lightgallery="item">
+                        <img src="<?php echo htmlspecialchars($event['image_path']); ?>" 
+                             alt="" 
+                             width="420" 
+                             height="350" />
+                      </a>
+                      <h5 class="thumbnail-classic-title">
+                        <a href="<?php echo SITE_URL; ?>/eventi/<?php echo htmlspecialchars($event['slug']); ?>">
+                          <?php echo htmlspecialchars($event['title']); ?>
+                        </a>
+                      </h5>
+                    </div>
+                    <p class="thumbnail-classic-text">
+                      <?php echo !empty($event['short_description']) ? htmlspecialchars($event['short_description']) : '&nbsp;'; ?>
+                    </p>
+                  </div>
+                </article>
               </div>
-
-              <div class="thumbnail-classic-caption">
-                <div class="thumbnail-classic-title-wrap"><a class="icon fl-bigmug-line-zoom60"
-                    href="assets/images/fullwidth-gallery-1-1200x800-original.jpg" data-lightgallery="item"><img
-                      src="assets/images/fullwidth-gallery-1-420x350.jpg" alt="" width="420" height="350" /></a>
-                  <h5 class="thumbnail-classic-title"><a href="#">Roma 2024</a></h5>
-                </div>
-                <p class="thumbnail-classic-text">Ritrovo a Roma con le bande partecipanti a Italiagirabanda suonando a
-                  piazza Montecitorio e piazza San Pietro</p>
-              </div>
-            </article>
-          </div>
-
-          <div class="col-sm-6 col-lg-4 col-xxl-3 isotope-item wow fadeInLeft" data-filter="Type 2"
-            data-wow-delay=".1s">
-            <article class="thumbnail thumbnail-classic thumbnail-md">
-              <div class="thumbnail-classic-figure"><img src="assets/images/FotoTirolo1.jpg" alt="" width="420" height="350" />
-              </div>
-
-              <div class="thumbnail-classic-caption">
-                <div class="thumbnail-classic-title-wrap"><a class="icon fl-bigmug-line-zoom60"
-                    href="assets/images/fullwidth-gallery-2-1200x800-original.jpg" data-lightgallery="item"><img
-                      src="assets/images/fullwidth-gallery-2-420x350.jpg" alt="" width="420" height="350" /></a>
-                  <h5 class="thumbnail-classic-title"><a href="#">Tirolo 2024</a></h5>
-                </div>
-                <p class="thumbnail-classic-text">Ritiro del premio transfrontaliero: "Prestazioni di eccellenza -
-                  volontariato giovanile"</p>
-              </div>
-            </article>
-          </div>
-
-          <div class="col-sm-6 col-lg-4 col-xxl-3 isotope-item wow fadeInLeft" data-filter="Type 1"
-            data-wow-delay=".2s">
-            <article class="thumbnail thumbnail-classic thumbnail-md">
-              <div class="thumbnail-classic-figure"><img src="assets/images/fullwidth-gallery-3-420x350.jpg" alt="" width="420"
-                  height="350" />
-              </div>
-              <div class="thumbnail-classic-caption">
-                <div class="thumbnail-classic-title-wrap"><a class="icon fl-bigmug-line-zoom60"
-                    href="assets/images/grid-gallery-1-1200x800-original.jpg" data-lightgallery="item"><img
-                      src="assets/images/fullwidth-gallery-3-420x350.jpg" alt="" width="420" height="350" /></a>
-                  <h5 class="thumbnail-classic-title"><a href="#">861 E. Oklahoma Dr</a></h5>
-                </div>
-                <p class="thumbnail-classic-text">We work hard on every project to deliver top-notch interior design
-                  concepts that satisfy your wishes.</p>
-              </div>
-            </article>
-          </div>
-
-          <div class="col-sm-6 col-lg-4 col-xxl-3 isotope-item wow fadeInLeft" data-filter="Type 3"
-            data-wow-delay=".3s">
-            <article class="thumbnail thumbnail-classic thumbnail-md">
-              <div class="thumbnail-classic-figure"><img src="assets/images/fullwidth-gallery-4-420x350.jpg" alt="" width="420"
-                  height="350" />
-              </div>
-              <div class="thumbnail-classic-caption">
-                <div class="thumbnail-classic-title-wrap"><a class="icon fl-bigmug-line-zoom60"
-                    href="assets/images/fullwidth-gallery-4-1200x800-original.jpg" data-lightgallery="item"><img
-                      src="assets/images/fullwidth-gallery-4-420x350.jpg" alt="" width="420" height="350" /></a>
-                  <h5 class="thumbnail-classic-title"><a href="#">14 Pulaski Str</a></h5>
-                </div>
-                <p class="thumbnail-classic-text">We work hard on every project to deliver top-notch interior design
-                  concepts that satisfy your wishes.</p>
-              </div>
-            </article>
-          </div>
-
-          <div class="col-sm-6 col-lg-4 col-xxl-3 isotope-item wow fadeInRight" data-filter="Type 2">
-            <article class="thumbnail thumbnail-classic thumbnail-md">
-              <div class="thumbnail-classic-figure"><img src="assets/images/fullwidth-gallery-5-420x350.jpg" alt="" width="420"
-                  height="350" />
-              </div>
-              <div class="thumbnail-classic-caption">
-                <div class="thumbnail-classic-title-wrap"><a class="icon fl-bigmug-line-zoom60"
-                    href="assets/images/fullwidth-gallery-5-1200x800-original.jpg" data-lightgallery="item"><img
-                      src="assets/images/fullwidth-gallery-5-420x350.jpg" alt="" width="420" height="350" /></a>
-                  <h5 class="thumbnail-classic-title"><a href="#">8381 Peg Shop Str</a></h5>
-                </div>
-                <p class="thumbnail-classic-text">We work hard on every project to deliver top-notch interior design
-                  concepts that satisfy your wishes.</p>
-              </div>
-            </article>
-          </div>
-
-          <div class="col-sm-6 col-lg-4 col-xxl-3 isotope-item wow fadeInRight" data-filter="Type 1"
-            data-wow-delay=".1s">
-            <article class="thumbnail thumbnail-classic thumbnail-md">
-              <div class="thumbnail-classic-figure"><img src="assets/images/fullwidth-gallery-6-420x350.jpg" alt="" width="420"
-                  height="350" />
-              </div>
-              <div class="thumbnail-classic-caption">
-                <div class="thumbnail-classic-title-wrap"><a class="icon fl-bigmug-line-zoom60"
-                    href="assets/images/fullwidth-gallery-6-1200x800-original.jpg" data-lightgallery="item"><img
-                      src="assets/images/fullwidth-gallery-6-420x350.jpg" alt="" width="420" height="350" /></a>
-                  <h5 class="thumbnail-classic-title"><a href="#">830 Bridge Str</a></h5>
-                </div>
-                <p class="thumbnail-classic-text">We work hard on every project to deliver top-notch interior design
-                  concepts that satisfy your wishes.</p>
-              </div>
-            </article>
-          </div>
-
-          <div class="col-sm-6 col-lg-4 col-xxl-3 isotope-item wow fadeInRight" data-filter="Type 3"
-            data-wow-delay=".2s">
-            <article class="thumbnail thumbnail-classic thumbnail-md">
-              <div class="thumbnail-classic-figure"><img src="assets/images/fullwidth-gallery-7-420x350.jpg" alt="" width="420"
-                  height="350" />
-              </div>
-              <div class="thumbnail-classic-caption">
-                <div class="thumbnail-classic-title-wrap"><a class="icon fl-bigmug-line-zoom60"
-                    href="assets/images/fullwidth-gallery-7-1200x800-original.jpg" data-lightgallery="item"><img
-                      src="assets/images/fullwidth-gallery-7-420x350.jpg" alt="" width="420" height="350" /></a>
-                  <h5 class="thumbnail-classic-title"><a href="#">29 Water Ln</a></h5>
-                </div>
-                <p class="thumbnail-classic-text">We work hard on every project to deliver top-notch interior design
-                  concepts that satisfy your wishes.</p>
-              </div>
-            </article>
-          </div>
-
-          <div class="col-sm-6 col-lg-4 col-xxl-3 isotope-item wow fadeInRight" data-filter="Type 2"
-            data-wow-delay=".3s">
-            <article class="thumbnail thumbnail-classic thumbnail-md">
-              <div class="thumbnail-classic-figure"><img src="assets/images/fullwidth-gallery-8-420x350.jpg" alt="" width="420"
-                  height="350" />
-              </div>
-              <div class="thumbnail-classic-caption">
-                <div class="thumbnail-classic-title-wrap"><a class="icon fl-bigmug-line-zoom60"
-                    href="assets/images/fullwidth-gallery-8-1200x800-original.jpg" data-lightgallery="item"><img
-                      src="assets/images/fullwidth-gallery-8-420x350.jpg" alt="" width="420" height="350" /></a>
-                  <h5 class="thumbnail-classic-title"><a href="#">7262 Blue Spring Dr</a></h5>
-                </div>
-                <p class="thumbnail-classic-text">We work hard on every project to deliver top-notch interior design
-                  concepts that satisfy your wishes.</p>
-              </div>
-            </article>
-          </div>
+            <?php endforeach; ?>
+          <?php else: ?>
+            <div class="col-12">
+              <p>Nessun evento in programma al momento. Torna presto per aggiornamenti!</p>
+            </div>
+          <?php endif; ?>
         </div>
       </div>
     </section>
+    
+    <style>
+    /* Style for featured events */
+    .featured-event {
+      order: -1; /* Move featured items to the top */
+    }
+    .featured-event .thumbnail-classic {
+      border: 2px solid #ffc107; /* Yellow border for featured events */
+      box-shadow: 0 0 15px rgba(255, 193, 7, 0.3);
+    }
+    .event-meta {
+      margin: 10px 0;
+      color: #666;
+      font-size: 0.9em;
+    }
+    .event-meta span {
+      display: block;
+      margin-bottom: 5px;
+    }
+    .badge-warning {
+      background-color: #ffc107;
+      color: #212529;
+      margin-top: 5px;
+      display: inline-block;
+    }
+    </style>
 
     <!-- La Nostra Storia -->
     <section class="section section-sm bg-default" id="storia">
       <div class="container">
         <div class="row row-50 row-xl-24 justify-content-center align-items-center align-items-lg-start text-left">
-          <div class="col-md-6 col-lg-5 col-xl-4 text-center"><a class="text-img" href="<?= SITE_URL ?>/storia.php">
+          <div class="col-md-6 col-lg-5 col-xl-4 text-center"><a class="text-img" href="<?= SITE_URL ?>/storia">
             <span class="counter">120</span></a>
           </div>
 
@@ -332,7 +325,7 @@ include_once TEMPLATES_PATH . 'head.php';
             <div class="text-width-extra-small offset-top-lg-24 wow fadeInUp">
               <h3 class="title-decoration-lines-left">Anni di storia</h3>
               <p class="text-gray-500">Storia ormai secolare che ha unito generazioni tutte accumunate per la stessa passione per la musica. Di padre in figlio questa tradizione è stata tramandata negli anni</p>
-              <a class="button button-secondary button-pipaluk" href="<?= SITE_URL ?>/storia.php">Scopri di più</a>
+              <a class="button button-secondary button-pipaluk" href="<?= SITE_URL ?>/storia">Scopri di più</a>
             </div>
           </div>
 
@@ -342,7 +335,7 @@ include_once TEMPLATES_PATH . 'head.php';
 
 
     <!-- What people Say-->
-    <section class="section section-sm section-bottom-70 section-fluid bg-default">
+    <!-- <section class="section section-sm section-bottom-70 section-fluid bg-default">
       <div class="container-fluid">
         <h3>Cosa dicono le persone</h3>
         <div class="row row-50 row-sm">
@@ -452,7 +445,7 @@ include_once TEMPLATES_PATH . 'head.php';
           </div>
         </div>
       </div>
-    </section>
+    </section> -->
 
 
     <!-- Upcoming Events Section -->
@@ -462,58 +455,53 @@ include_once TEMPLATES_PATH . 'head.php';
         <p class="wow fadeInRight" data-wow-delay=".1s">Ecco i nostri prossimi appuntamenti dove potrete ascoltarci dal vivo</p>
         
         <div class="row row-30 justify-content-center">
-          <!-- Event Card 1 -->
-          <div class="col-md-6 col-lg-4 wow fadeInUp">
-            <article class="card event-card">
-              <div class="card-body">
-                <time datetime="2025-06-15T20:00" class="event-date">
-                  <span class="event-day">15</span>
-                  <span class="event-month">Giugno</span>
-                </time>
-                <h4 class="event-title">Concerto Estivo</h4>
-                <p class="event-location"><i class="bi bi-geo-alt"></i> Piazza Maggiore, Castello Tesino</p>
-                <p class="event-time"><i class="bi bi-clock"></i> 20:00</p>
-                <a href="<?= SITE_URL ?>/eventi.php" class="button button-primary button-ujarak">Dettagli</a>
+          <?php if (!empty($upcomingEvents)): ?>
+            <?php 
+            $delay = 0;
+            foreach ($upcomingEvents as $event): 
+                // Format date and time
+                $eventDate = new DateTime($event['start_datetime']);
+                $day = $eventDate->format('j');
+                
+                // Italian month names
+                $italianMonths = [
+                    1 => 'Gennaio', 'Febbraio', 'Marzo', 'Aprile', 'Maggio', 'Giugno',
+                    'Luglio', 'Agosto', 'Settembre', 'Ottobre', 'Novembre', 'Dicembre'
+                ];
+                $month = $italianMonths[(int)$eventDate->format('n')];
+                
+                // Set animation delay
+                $animationDelay = $delay * 0.1;
+                $delay++;
+            ?>
+              <div class="col-md-6 col-lg-4 wow fadeInUp" data-wow-delay="<?php echo $animationDelay; ?>s">
+                <article class="card event-card">
+                  <div class="card-body">
+                    <time datetime="<?php echo $eventDate->format('Y-m-d\TH:i'); ?>" class="event-date">
+                      <span class="event-day"><?php echo $day; ?></span>
+                      <span class="event-month"><?php echo $month; ?></span>
+                    </time>
+                    <h4 class="event-title"><?php echo htmlspecialchars($event['title']); ?></h4>
+                    <?php if (!empty($event['location'])): ?>
+                      <p class="event-location"><i class="bi bi-geo-alt"></i> <?php echo htmlspecialchars($event['location']); ?></p>
+                    <?php endif; ?>
+                    <a href="<?php echo SITE_URL; ?>/eventi/<?php echo htmlspecialchars($event['slug']); ?>" class="button button-primary button-ujarak">Dettagli</a>
+                  </div>
+                </article>
               </div>
-            </article>
-          </div>
-          
-          <!-- Event Card 2 -->
-          <div class="col-md-6 col-lg-4 wow fadeInUp" data-wow-delay=".1s">
-            <article class="card event-card">
-              <div class="card-body">
-                <time datetime="2025-07-10T21:00" class="event-date">
-                  <span class="event-day">10</span>
-                  <span class="event-month">Luglio</span>
-                </time>
-                <h4 class="event-title">Festival Folkloristico</h4>
-                <p class="event-location"><i class="bi bi-geo-alt"></i> Pieve Tesino</p>
-                <p class="event-time"><i class="bi bi-clock"></i> 21:00</p>
-                <a href="<?= SITE_URL ?>/eventi.php" class="button button-primary button-ujarak">Dettagli</a>
-              </div>
-            </article>
-          </div>
-          
-          <!-- Event Card 3 -->
-          <div class="col-md-6 col-lg-4 wow fadeInUp" data-wow-delay=".2s">
-            <article class="card event-card">
-              <div class="card-body">
-                <time datetime="2025-08-05T19:30" class="event-date">
-                  <span class="event-day">5</span>
-                  <span class="event-month">Agosto</span>
-                </time>
-                <h4 class="event-title">Concerto in Piazza</h4>
-                <p class="event-location"><i class="bi bi-geo-alt"></i> Cinte Tesino</p>
-                <p class="event-time"><i class="bi bi-clock"></i> 19:30</p>
-                <a href="<?= SITE_URL ?>/eventi.php" class="button button-primary button-ujarak">Dettagli</a>
-              </div>
-            </article>
-          </div>
+            <?php endforeach; ?>
+          <?php else: ?>
+            <div class="col-12">
+              <p>Nessun evento in programma al momento. Torna presto per aggiornamenti!</p>
+            </div>
+          <?php endif; ?>
         </div>
         
+        <?php if (!empty($upcomingEvents)): ?>
         <div class="text-center mt-5">
-          <a href="<?= SITE_URL ?>/eventi.php" class="button button-lg button-primary">Vedi Tutti gli Eventi</a>
+          <a href="<?php echo SITE_URL; ?>/eventi" class="button button-lg button-primary">Vedi Tutti gli Eventi</a>
         </div>
+        <?php endif; ?>
       </div>
     </section>
     

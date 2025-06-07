@@ -69,40 +69,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         try {
             // Album insert/update
             if ($albumId) {
-                // Check if we need to update the cover image
-                $coverImageUpdate = '';
-                $params = [$album['title'], $album['slug'], $album['description'], $album['year'], $album['is_published']];
-                
-                // If no cover image is set, try to get the first image from the album
-                if (empty($album['cover_image'])) {
-                    $stmt = $pdo->prepare('SELECT filename FROM gallery_items WHERE album_id = ? AND is_published = 1 ORDER BY sort_order ASC, created_at ASC LIMIT 1');
-                    $stmt->execute([$albumId]);
-                    $firstImage = $stmt->fetch(PDO::FETCH_ASSOC);
-                    
-                    if ($firstImage) {
-                        $coverImageUpdate = ', cover_image = ?';
-                        $params[] = $firstImage['filename'];
-                    }
-                }
-                
-                $params[] = $albumId;
-                $stmt = $pdo->prepare('UPDATE gallery_albums SET title=?, slug=?, description=?, year=?, is_published=?' . $coverImageUpdate . ' WHERE id=?');
-                $stmt->execute($params);
+                // First update album without cover image
+                $stmt = $pdo->prepare('UPDATE gallery_albums SET title=?, slug=?, description=?, year=?, is_published=? WHERE id=?');
+                $stmt->execute([$album['title'], $album['slug'], $album['description'], $album['year'], $album['is_published'], $albumId]);
             } else {
+                // Create new album without cover image first
                 $stmt = $pdo->prepare('INSERT INTO gallery_albums (title,slug,description,year,is_published,created_at) VALUES (?, ?, ?, ?, ?, NOW())');
                 $stmt->execute([$album['title'],$album['slug'],$album['description'],$album['year'],$album['is_published']]);
                 $albumId = $pdo->lastInsertId();
-                
-                // If this is a new album and we have uploaded files, set the first one as cover
-                if (!empty($_FILES['images']['name'][0])) {
-                    $firstUploadedFile = $_FILES['images']['name'][0];
-                    $fileExtension = strtolower(pathinfo($firstUploadedFile, PATHINFO_EXTENSION));
-                    $safeFilename = uniqid('img_', true) . "." . $fileExtension;
-                    
-                    $stmt = $pdo->prepare('UPDATE gallery_albums SET cover_image = ? WHERE id = ?');
-                    $stmt->execute([$safeFilename, $albumId]);
-                }
             }
+            
             // Handle existing images
             $existingImages = $_POST['existing_images'] ?? [];
             $orders = $_POST['order'] ?? [];
@@ -229,6 +205,30 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     }
                 }
             }
+            
+            // Now handle cover image after all other operations are complete
+            $stmt = $pdo->prepare('SELECT filename FROM gallery_items WHERE album_id = ? AND is_published = 1 ORDER BY sort_order ASC, created_at ASC LIMIT 1');
+            $stmt->execute([$albumId]);
+            $firstImage = $stmt->fetch(PDO::FETCH_ASSOC);
+            
+            if ($firstImage) {
+                // Set the first published image as cover
+                $stmt = $pdo->prepare('UPDATE gallery_albums SET cover_image = ? WHERE id = ?');
+                $stmt->execute([$firstImage['filename'], $albumId]);
+            } elseif (empty($firstImage) && !empty($_FILES['images']['name'][0])) {
+                // For new albums with uploaded files, use the first uploaded file as cover
+                $firstUploadedFile = $_FILES['images']['name'][0];
+                $fileExtension = strtolower(pathinfo($firstUploadedFile, PATHINFO_EXTENSION));
+                $safeFilename = uniqid('img_', true) . "." . $fileExtension;
+                
+                $stmt = $pdo->prepare('UPDATE gallery_albums SET cover_image = ? WHERE id = ?');
+                $stmt->execute([$safeFilename, $albumId]);
+            } else {
+                // No published images, clear the cover image
+                $stmt = $pdo->prepare('UPDATE gallery_albums SET cover_image = NULL WHERE id = ?');
+                $stmt->execute([$albumId]);
+            }
+
             $pdo->commit();
             $_SESSION['success_message']='Modifiche salvate.';
         } catch (Exception $e) {

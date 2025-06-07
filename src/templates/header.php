@@ -17,8 +17,8 @@
                 <button class="rd-navbar-toggle" data-rd-navbar-toggle=".rd-navbar-nav-wrap"><span></span></button>
                 <!-- RD Navbar Brand-->
                 <div class="rd-navbar-brand">
-                  <a class="brand d-flex align-items-center" href="/">
-                    <img src="assets/images/logo-default.png" class="mr-2" alt="" width="43" height="43" style="width: 43px; height: 43px;" />
+                  <a class="brand d-flex align-items-center" href="<?=SITE_URL ?>/">
+                    <img src="<?=SITE_URL ?>/assets/images/logo-default.png" class="mr-2" alt="" width="43" height="43" style="width: 43px; height: 43px;" />
                     <h4>Banda Folk di Castello Tesino</h4>
                   </a>
                 </div>
@@ -72,26 +72,26 @@
                   <ul class="rd-navbar-nav">
                     <li class="rd-nav-item<?php echo (basename($_SERVER['PHP_SELF']) == 'index.php') ? ' active' : ''; ?>"><a class="rd-nav-link" href="/">Home</a>
                     </li>
-                    <li class="rd-nav-item<?php echo (basename($_SERVER['PHP_SELF']) == 'chi-siamo.php') ? ' active' : ''; ?>"><a class="rd-nav-link" href="chi-siamo">Chi Siamo</a>
+                    <li class="rd-nav-item<?php echo (basename($_SERVER['PHP_SELF']) == 'chi-siamo.php') ? ' active' : ''; ?>"><a class="rd-nav-link" href="<?=SITE_URL ?>/chi-siamo">Chi Siamo</a>
                       <ul class="rd-menu rd-navbar-dropdown">
-                        <li class="rd-dropdown-item"><a class="rd-dropdown-link" href="storia">Storia</a></li>
-                        <li class="rd-dropdown-item"><a class="rd-dropdown-link" href="abito-tradizionale">L'Abito Tradizionale</a></li>
-                        <li class="rd-dropdown-item"><a class="rd-dropdown-link" href="maestro">Maestro</a></li>
-                        <li class="rd-dropdown-item"><a class="rd-dropdown-link" href="organico">Organico</a></li>
-                        <li class="rd-dropdown-item"><a class="rd-dropdown-link" href="repertorio">Repertorio</a></li>
+                        <li class="rd-dropdown-item"><a class="rd-dropdown-link" href="<?=SITE_URL ?>/storia">Storia</a></li>
+                        <li class="rd-dropdown-item"><a class="rd-dropdown-link" href="<?=SITE_URL ?>/abito-tradizionale">L'Abito Tradizionale</a></li>
+                        <li class="rd-dropdown-item"><a class="rd-dropdown-link" href="<?=SITE_URL ?>/maestro">Maestro</a></li>
+                        <li class="rd-dropdown-item"><a class="rd-dropdown-link" href="<?=SITE_URL ?>/organico">Organico</a></li>
+                        <li class="rd-dropdown-item"><a class="rd-dropdown-link" href="<?=SITE_URL ?>/repertorio">Repertorio</a></li>
                       </ul>
                     </li>
-                    <li class="rd-nav-item<?php echo (basename($_SERVER['PHP_SELF']) == 'corsi-di-musica.php') ? ' active' : ''; ?>"><a class="rd-nav-link" href="corsi-di-musica">Corsi di Musica</a>
+                    <li class="rd-nav-item<?php echo (basename($_SERVER['PHP_SELF']) == 'corsi-di-musica.php') ? ' active' : ''; ?>"><a class="rd-nav-link" href="<?=SITE_URL ?>/corsi-di-musica">Corsi di Musica</a>
                     </li>
-                    <li class="rd-nav-item<?php echo (in_array(basename($_SERVER['PHP_SELF']), ['concerti.php', 'italia-gira-banda.php'])) ? ' active' : ''; ?>"><a class="rd-nav-link" href="concerti">Eventi</a>
+                    <li class="rd-nav-item<?php echo (in_array(basename($_SERVER['PHP_SELF']), ['eventi.php', 'italia-gira-banda.php'])) ? ' active' : ''; ?>"><a class="rd-nav-link" href="<?=SITE_URL ?>/eventi">Eventi</a>
                       <ul class="rd-menu rd-navbar-dropdown">
-                        <li class="rd-dropdown-item"><a class="rd-dropdown-link" href="concerti">Concerti</a></li>
-                        <li class="rd-dropdown-item"><a class="rd-dropdown-link" href="italia-gira-banda">Italia Gira Banda</a></li>
+                        <li class="rd-dropdown-item"><a class="rd-dropdown-link" href="<?=SITE_URL ?>/eventi">Eventi</a></li>
+                        <li class="rd-dropdown-item"><a class="rd-dropdown-link" href="<?=SITE_URL ?>/italia-gira-banda">Italia Gira Banda</a></li>
                       </ul>
                     </li>
-                    <li class="rd-nav-item<?php echo (basename($_SERVER['PHP_SELF']) == 'gallery.php') ? ' active' : ''; ?>"><a class="rd-nav-link" href="gallery">Gallery</a>
+                    <li class="rd-nav-item<?php echo (basename($_SERVER['PHP_SELF']) == 'gallery.php') ? ' active' : ''; ?>"><a class="rd-nav-link" href="<?=SITE_URL ?>/gallery">Gallery</a>
                     </li>
-                    <li class="rd-nav-item<?php echo (basename($_SERVER['PHP_SELF']) == 'contatti.php') ? ' active' : ''; ?>"><a class="rd-nav-link" href="contatti">Contatti</a>
+                    <li class="rd-nav-item<?php echo (basename($_SERVER['PHP_SELF']) == 'contatti.php') ? ' active' : ''; ?>"><a class="rd-nav-link" href="<?=SITE_URL ?>/contatti">Contatti</a>
                     </li>
                   </ul>
                 </div>

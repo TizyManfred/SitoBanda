@@ -92,6 +92,12 @@ $currentDir = (strpos($currentDir, '/') !== false) ? basename($currentDir) : $cu
                         </a>
                     </li>
                     <li class="nav-item">
+                        <a href="<?php echo SITE_URL; ?>/admin/events/index.php" class="nav-link <?php echo $currentDir === 'events' ? 'active' : ''; ?>">
+                            <i class="nav-icon fas fa-calendar-alt"></i>
+                            <p>Eventi</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
                         <a href="<?php echo SITE_URL; ?>/admin/migrations.php" class="nav-link <?php echo $currentPage === 'migrations' ? 'active' : ''; ?>">
                             <i class="nav-icon fas fa-code-branch"></i>
                             <p>Migrazioni</p>

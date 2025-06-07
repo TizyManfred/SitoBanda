@@ -117,7 +117,7 @@ include_once TEMPLATES_PATH . 'head.php';
                 </div>
                 <div class="event-details">
                   <p>La banda si è esibita nelle piazze di Follonica, Castiglione della Pescaia e Marina di Grosseto, in collaborazione con la Filarmonica Follonichese.</p>
-                  <a href="gallery-album.php?album=italia-gira-banda-2019" class="button button-sm button-primary">Guarda le foto</a>
+                  <a href="gallery-album/italia-gira-banda-2019" class="button button-sm button-primary">Guarda le foto</a>
                 </div>
               </div>
             </article>
@@ -136,7 +136,7 @@ include_once TEMPLATES_PATH . 'head.php';
                 </div>
                 <div class="event-details">
                   <p>Partecipazione alle manifestazioni a Chioggia e Sottomarina, con la partecipazione della Banda Cittadina di Chioggia e un grande concerto finale sul lungomare.</p>
-                  <a href="gallery-album.php?album=italia-gira-banda-2018" class="button button-sm button-primary">Guarda le foto</a>
+                  <a href="gallery-album/italia-gira-banda-2018" class="button button-sm button-primary">Guarda le foto</a>
                 </div>
               </div>
             </article>
@@ -155,7 +155,7 @@ include_once TEMPLATES_PATH . 'head.php';
                 </div>
                 <div class="event-details">
                   <p>Trasferta siciliana con esibizioni a Catania, Taormina e Siracusa insieme alle bande locali, creando un suggestivo incontro tra la tradizione alpina e quella mediterranea.</p>
-                  <a href="gallery-album.php?album=italia-gira-banda-2017" class="button button-sm button-primary">Guarda le foto</a>
+                  <a href="gallery-album/italia-gira-banda-2017" class="button button-sm button-primary">Guarda le foto</a>
                 </div>
               </div>
             </article>

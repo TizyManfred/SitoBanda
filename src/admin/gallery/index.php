@@ -207,7 +207,6 @@ include_once ABSPATH . 'admin/templates/header_adminlte.php';
             </div>
         </div>
     </div>
-    <?php include_once ABSPATH . 'admin/templates/body_end_adminlte.php'; ?>
     
     <!-- Delete Album Form (hidden) -->
     <form id="deleteAlbumForm" method="post" style="display: none;">
@@ -250,4 +249,7 @@ include_once ABSPATH . 'admin/templates/header_adminlte.php';
         });
     });
     </script>
+
+    <?php include_once ABSPATH . 'admin/templates/body_end_adminlte.php'; ?>
+
 </div>

@@ -131,7 +131,7 @@ include_once TEMPLATES_PATH . 'head.php';
               <?php foreach ($albums[$year] as $album): ?>
               <div class="col-sm-6 col-lg-4">
                 <div class="gallery-item-wrap">
-                  <a href="gallery-album.php?slug=<?php echo htmlspecialchars($album['slug']); ?>" class="gallery-album">
+                  <a href="gallery-album/<?php echo htmlspecialchars($album['slug']); ?>" class="gallery-album">
                     <div class="gallery-item">
                       <div class="gallery-img-container">
                         <img src="<?php echo SITE_URL; ?>/album/<?= $album['id'] ?>/<?= htmlspecialchars($album['cover_image']); ?>" 

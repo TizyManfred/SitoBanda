@@ -23,7 +23,7 @@ $pageTitle = 'Maestro - Banda Folk di Castello Tesino';
 $pageDescription = 'Ivan Villanova, direttore della Banda Folk di Castello Tesino dal 2003, è un clarinettista di livello internazionale che ha suonato in prestigiose orchestre in Europa, USA, Emirati Arabi e Giappone.';
 $ogTitle = 'Maestro Ivan Villanova - Banda Folk di Castello Tesino';
 $ogDescription = 'Scopri il percorso musicale e le realizzazioni del Maestro Ivan Villanova, direttore della Banda Folk di Castello Tesino.';
-$ogImage = SITE_URL . '/assets/images/maestro-villanova.jpg';
+$ogImage = SITE_URL . '/assets/images/FotoMaestro1.jpg';
 
 // Include the head template
 include_once TEMPLATES_PATH . 'head.php';
@@ -46,12 +46,12 @@ include_once TEMPLATES_PATH . 'head.php';
         <div class="container">
           <h1 class="breadcrumbs-custom-title">Il Nostro Maestro</h1>
           <ul class="breadcrumbs-custom-path">
-            <li><a href="index.php">Home</a></li>
-            <li><a href="chi-siamo.php">Chi Siamo</a></li>
+            <li><a href="<?php echo SITE_URL; ?>/index">Home</a></li>
+            <li><a href="<?php echo SITE_URL; ?>/chi-siamo">Chi Siamo</a></li>
             <li class="active">Maestro</li>
           </ul>
         </div>
-        <div class="box-position" style="background-image: url(assets/images/maestro-header.jpg);"></div>
+        <div class="box-position" style="background-image: url(<?php echo SITE_URL; ?>/assets/images/FotoMaestro1.jpg);"></div>
       </div>
     </section>
 
@@ -61,7 +61,7 @@ include_once TEMPLATES_PATH . 'head.php';
         <div class="row row-50">
           <div class="col-lg-5 pr-xl-5">
             <div class="image-height-1 wow fadeIn">
-              <img src="assets/images/maestro-villanova.jpg" alt="Maestro Ivan Villanova" width="470" loading="lazy" />
+              <img src="<?php echo SITE_URL; ?>/assets/images/FotoMaestro2.jpg" alt="Maestro Ivan Villanova" width="470" loading="lazy" />
             </div>
           </div>
           <div class="col-lg-7">
@@ -144,7 +144,7 @@ include_once TEMPLATES_PATH . 'head.php';
     "name": "Ivan Villanova",
     "jobTitle": "Direttore",
     "description": "Direttore della Banda Folk di Castello Tesino dal 2003, clarinettista di fama internazionale",
-    "image": "' . SITE_URL . '/assets/images/maestro-villanova.jpg",
+    "image": "' . SITE_URL . '/assets/images/FotoMaestro1.jpg",
     "worksFor": {
       "@type": "MusicGroup",
       "name": "Banda Folk di Castello Tesino",

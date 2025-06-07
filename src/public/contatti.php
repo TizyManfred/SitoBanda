@@ -23,7 +23,7 @@ $pageTitle = 'Contatti - Banda Folk di Castello Tesino';
 $pageDescription = 'Contatta la Banda Folk di Castello Tesino per informazioni, richieste di concerti, o iscrizioni ai corsi di musica.';
 $ogTitle = 'Contatti - Banda Folk di Castello Tesino';
 $ogDescription = 'Metti mi piace alla nostra pagina Facebook e contatta la Banda Folk di Castello Tesino per informazioni sui concerti o proposte di collaborazione.';
-$ogImage = SITE_URL . '/assets/images/contatti-header.jpg';
+$ogImage = SITE_URL . '/assets/images/FotoContatti1.jpg';
 
 // Include the head template
 include_once TEMPLATES_PATH . 'head.php';
@@ -46,11 +46,11 @@ include_once TEMPLATES_PATH . 'head.php';
         <div class="container">
           <h1 class="breadcrumbs-custom-title">Contatti</h1>
           <ul class="breadcrumbs-custom-path">
-            <li><a href="index.php">Home</a></li>
+            <li><a href="<?php echo SITE_URL; ?>/index">Home</a></li>
             <li class="active">Contatti</li>
           </ul>
         </div>
-        <div class="box-position" style="background-image: url(assets/images/contatti-header.jpg);"></div>
+        <div class="box-position" style="background-image: url(<?php echo SITE_URL; ?>/assets/images/FotoContatti1.jpg);"></div>
       </div>
     </section>
 
@@ -119,7 +119,7 @@ include_once TEMPLATES_PATH . 'head.php';
               <h2>Scrivici</h2>
               <p>Per avere informazioni sui nostri concerti o se vuoi proporci qualche nuova uscita non esitare a contattarci al numero <strong>320 8476252</strong> o inviandoci una mail compilando il form sottostante!</p>
               
-              <form class="rd-form rd-mailform" id="contact-form" method="post" action="contacts.php">
+              <form class="rd-form rd-mailform" id="contact-form" method="post" action="<?php echo SITE_URL; ?>/contatti">
                 <div class="row row-20">
                   <div class="col-md-6">
                     <div class="form-wrap">
@@ -171,20 +171,6 @@ include_once TEMPLATES_PATH . 'head.php';
             </div>
           </div>
         </div>
-        
-        <!-- Map -->
-        <div class="row mt-5">
-          <div class="col-12">
-            <h3 class="text-center">Dove Siamo</h3>
-            <div class="map-container">
-              <div class="responsive-map">
-                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2760.541791571358!2d11.623647776994011!3d46.06290787079385!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x4778343ef5a97e29%3A0xc9e9e63c4152766d!2sCastello%20Tesino!5e0!3m2!1sit!2sit!4v1624456280314!5m2!1sit!2sit" 
-                  width="800" height="450" style="border:0;" allowfullscreen="" loading="lazy" 
-                  title="Mappa di Castello Tesino" aria-label="Mappa di Castello Tesino"></iframe>
-              </div>
-            </div>
-          </div>
-        </div>
       </div>
     </section>
 
@@ -199,7 +185,7 @@ include_once TEMPLATES_PATH . 'head.php';
     "name": "Banda Folk di Castello Tesino",
     "url": "' . SITE_URL . '",
     "logo": "' . SITE_URL . '/assets/images/logo-banda.png",
-    "image": "' . SITE_URL . '/assets/images/contatti-header.jpg",
+    "image": "' . SITE_URL . '/assets/images/FotoContatti1.jpg",
     "description": "La Banda Folk di Castello Tesino è attiva dal 1901 e porta avanti la tradizione musicale del Trentino con concerti, eventi e corsi di musica.",
     "address": {
       "@type": "PostalAddress",

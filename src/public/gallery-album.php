@@ -134,14 +134,14 @@ include_once TEMPLATES_PATH . 'head.php';
             <?php echo ($album) ? htmlspecialchars($album['title']) : 'Album'; ?>
           </h1>
           <ul class="breadcrumbs-custom-path">
-            <li><a href="index.php">Home</a></li>
-            <li><a href="gallery.php">Gallery</a></li>
+            <li><a href="<?php echo SITE_URL; ?>/index">Home</a></li>
+            <li><a href="<?php echo SITE_URL; ?>/gallery">Gallery</a></li>
             <li class="active">
               <?php echo ($album) ? htmlspecialchars($album['title']) : 'Album'; ?>
             </li>
           </ul>
         </div>
-        <div class="box-position" style="background-image: url(<?php echo ($album && $album['cover_image']) ? 'album/' . $album['id'] . '/' . htmlspecialchars($album['cover_image']) : 'assets/images/gallery-header.jpg'; ?>);"></div>
+        <div class="box-position" style="background-image: url(<?php echo ($album && $album['cover_image']) ? SITE_URL . '/album/' . $album['id'] . '/' . htmlspecialchars($album['cover_image']) : 'assets/images/gallery-header.jpg'; ?>);"></div>
       </div>
     </section>
 
@@ -157,7 +157,7 @@ include_once TEMPLATES_PATH . 'head.php';
                 <i class="fl-bigmug-line-exclamation-mark2 fa-3x mb-3 text-danger"></i>
                 <h3>Errore</h3>
                 <p><?php echo htmlspecialchars($error); ?></p>
-                <a href="gallery.php" class="btn btn-primary mt-3">Torna alla Gallery</a>
+                <a href="<?php echo SITE_URL; ?>/gallery" class="btn btn-primary mt-3">Torna alla Gallery</a>
               </div>
             </div>
           </div>
@@ -185,11 +185,11 @@ include_once TEMPLATES_PATH . 'head.php';
             <article class="thumbnail-classic">
               <div class="thumbnail-classic-figure gallery-image-container">
                 <a href="<?php echo SITE_URL; ?>/album/<?= $album['id'] . '/' . $photo['filename']; ?>" 
-                   data-lightgallery="item" 
+                   data-lightgallery="item" style="height: 100%; width: 100%;"
                    data-sub-html="<h4><?php echo htmlspecialchars($photo['title']); ?></h4><p><?php echo htmlspecialchars($photo['description']); ?></p>">
                   <img src="<?php echo SITE_URL; ?>/album/<?= $album['id'] . '/' . $photo['filename']; ?>" 
                        alt="<?php echo htmlspecialchars($photo['alt_text'] ?: $photo['title']); ?>" 
-                       width="370" height="276" loading="lazy">
+                       loading="lazy">
                 </a>
               </div>
               <?php if (!empty($photo['title']) || !empty($photo['description'])): ?>
@@ -217,7 +217,7 @@ include_once TEMPLATES_PATH . 'head.php';
                 <i class="fl-bigmug-line-images fa-3x mb-3 text-muted"></i>
                 <h3>Nessuna foto disponibile</h3>
                 <p>Questo album non contiene ancora foto.</p>
-                <a href="gallery.php" class="btn btn-primary mt-3">Torna alla Gallery</a>
+                <a href="<?php echo SITE_URL; ?>/gallery" class="btn btn-primary mt-3">Torna alla Gallery</a>
               </div>
             </div>
           </div>
@@ -227,7 +227,7 @@ include_once TEMPLATES_PATH . 'head.php';
         <!-- Navigation Buttons -->
         <div class="row justify-content-center mt-5">
           <div class="col-md-8 text-center">
-            <a href="gallery.php" class="btn btn-primary">
+            <a href="<?php echo SITE_URL; ?>/gallery" class="btn btn-primary">
               <i class="fl-bigmug-line-arrow-left mr-2"></i> Torna alla Gallery
             </a>
           </div>
@@ -278,7 +278,7 @@ include_once TEMPLATES_PATH . 'head.php';
             "@type" => "ListItem",
             "position" => 2,
             "item" => [
-              "@id" => SITE_URL . "/gallery.php",
+              "@id" => SITE_URL . "/gallery",
               "name" => "Gallery"
             ]
           ],
@@ -286,7 +286,7 @@ include_once TEMPLATES_PATH . 'head.php';
             "@type" => "ListItem",
             "position" => 3,
             "item" => [
-              "@id" => SITE_URL . "/gallery-album.php?slug=" . $album['slug'],
+              "@id" => SITE_URL . "/gallery-album/" . $album['slug'],
               "name" => $album['title']
             ]
           ]

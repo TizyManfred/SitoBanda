@@ -13,13 +13,17 @@ DirectoryIndex index.php index.html
 <IfModule mod_rewrite.c>
     RewriteEngine On
     
-    # Rule 1: If example.php exists, serve it for request "example"
+    # Rule 1: Handle gallery album URLs
+    # This handles requests like /gallery-album/follonica-maggio -> /gallery-album.php?slug=follonica-maggio
+    RewriteRule ^gallery-album/([^/]+)/?$ gallery-album.php?slug=$1 [L,QSA]
+    
+    # Rule 2: If example.php exists, serve it for request "example"
     # This handles requests like /chi-siamo -> /chi-siamo.php
     RewriteCond %{REQUEST_FILENAME} !-d
     RewriteCond %{REQUEST_FILENAME}.php -f
     RewriteRule ^([^\.]+)$ $1.php [L]               # Rewrite to example.php
 
-    # Rule 2: If example.php does not exist, but example.html exists, serve it for "example"
+    # Rule 3: If example.php does not exist, but example.html exists, serve it for "example"
     # This handles requests like /somepage -> /somepage.html if /somepage.php doesn't exist
     RewriteCond %{REQUEST_FILENAME} !-d
     RewriteCond %{REQUEST_FILENAME}.php !-f

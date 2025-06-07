@@ -46,12 +46,12 @@ include_once TEMPLATES_PATH . 'head.php';
         <div class="container">
           <h1 class="breadcrumbs-custom-title">Storia</h1>
           <ul class="breadcrumbs-custom-path">
-            <li><a href="index.php">Home</a></li>
-            <li><a href="chi-siamo.php">Chi Siamo</a></li>
+            <li><a href="<?php echo SITE_URL; ?>/index">Home</a></li>
+            <li><a href="<?php echo SITE_URL; ?>/chi-siamo">Chi Siamo</a></li>
             <li class="active">Storia</li>
           </ul>
         </div>
-        <div class="box-position" style="background-image: url(assets/images/FotoStoria1.jpg);"></div>
+        <div class="box-position" style="background-image: url(<?php echo SITE_URL; ?>/assets/images/FotoStoria1.jpg);"></div>
       </div>
     </section>
 
@@ -60,9 +60,7 @@ include_once TEMPLATES_PATH . 'head.php';
       <div class="container">
         <div class="row row-50">
           <div class="col-lg-6 pr-xl-5">
-            <div class="image-height-1 wow fadeIn">
-              <img src="assets/images/FotoSanIppolito1.jpg" alt="Banda Folk di Castello Tesino in concerto" width="518" loading="lazy" />
-            </div>
+            <div class="image-height-1 wow fadeIn" style="background-image: url(<?php echo SITE_URL; ?>/assets/images/FotoStoria2.jpg);"></div>
           </div>
           <div class="col-lg-6">
             <div class="text-block">
@@ -75,13 +73,11 @@ include_once TEMPLATES_PATH . 'head.php';
 
         <div class="row row-50 pt-5">
           <div class="col-lg-6 order-lg-2">
-            <div class="image-height-1 wow fadeIn">
-              <img src="assets/images/FotoShanghai1.jpeg" alt="Banda Folk di Castello Tesino a Shanghai" width="518" loading="lazy" />
-            </div>
+            <div class="image-height-1 wow fadeIn" style="background-image: url(<?php echo SITE_URL; ?>/assets/images/FotoStoria3.jpeg);"></div>
           </div>
           <div class="col-lg-6">
             <div class="text-block wow fadeInLeft">
-              <p>Dal 2003 è guidata dal M° Ivan Villanova, ed il presidente in carica è Werner Moranduzzo. Il complesso possiede un gustoso repertorio di Blasmusik, e questa caratteristica, unita all'autenticità e bellezza dei costumi tradizionali della Valle del Tesino, porta la nostra Banda ad essere frequentemente invitata in numerose località nazionali.</p>
+              <p>Dal 2003 è guidata dal M° <a href="<?php echo SITE_URL; ?>/maestro">Ivan Villanova</a>, ed il presidente in carica è Werner Moranduzzo. Il complesso possiede un gustoso repertorio di Blasmusik, e questa caratteristica, unita all'autenticità e bellezza dei costumi tradizionali della Valle del Tesino, porta la nostra Banda ad essere frequentemente invitata in numerose località nazionali.</p>
               <p>Nel 2008 ha rappresentato a Roma il Trentino nella "Festa della Musica Popolare" in onore di Santa Cecilia, promossa dal Ministero dei Beni Culturali. Successivamente è stata ospite di numerose rassegne nazionali e internazionali tra le quali: Raduno bandistico nazionale di Gubbio (PG), Rassegna Arcadia musica e sapori (Val di Sole), Internationales Blasmusikertreffen di Wolfsberg (Austria), Traubenfest di Merano (BZ), Festival Internazionale di Giulianova (TE), FAKS Festival di Rovigno (Croazia), Rassegna Bandistica di Follonica (GR).</p>
               <p>Nel 2018 viene invitata, unica banda italiana, al Shanghai Tourism Festival, ottenendo il Best Popularity Award tra i 57 gruppi partecipanti!</p>
               <p class="font-weight-bold mt-4">Associazione di Promozione Sociale – Iscrizione n. 108/5, Sez. A del registro provinciale</p>
@@ -92,7 +88,7 @@ include_once TEMPLATES_PATH . 'head.php';
         <div class="row">
           <div class="col-12 text-center mt-5 pt-4">
             <div class="button-wrap">
-              <a class="button button-lg button-primary" href="abito-tradizionale.php">Scopri l'Abito Tradizionale</a>
+              <a class="button button-lg button-primary" href="<?php echo SITE_URL; ?>/abito-tradizionale">Scopri l'Abito Tradizionale</a>
             </div>
           </div>
         </div>

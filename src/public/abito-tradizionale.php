@@ -23,7 +23,7 @@ $pageTitle = 'L\'Abito Tradizionale - Banda Folk di Castello Tesino';
 $pageDescription = 'L\'abito tradizionale della Valle del Tesino ha origine nel XVII secolo: un costume festoso e prestigioso che testimonia la prosperità della valle attraverso gli ornamenti tipici femminili.';
 $ogTitle = 'L\'Abito Tradizionale - Banda Folk di Castello Tesino';
 $ogDescription = 'Scopri lo storico abito tradizionale della Valle del Tesino, riadottato dalla Banda Folk nel 1981 per onorarne la tradizione secolare.';
-$ogImage = SITE_URL . '/assets/images/costume-tesino.jpg';
+$ogImage = SITE_URL . '/assets/images/FotoAbito1.jpg';
 
 // Include the head template
 include_once TEMPLATES_PATH . 'head.php';
@@ -46,12 +46,12 @@ include_once TEMPLATES_PATH . 'head.php';
         <div class="container">
           <h1 class="breadcrumbs-custom-title">L'Abito Tradizionale</h1>
           <ul class="breadcrumbs-custom-path">
-            <li><a href="index.php">Home</a></li>
-            <li><a href="chi-siamo.php">Chi Siamo</a></li>
+            <li><a href="<?php echo SITE_URL; ?>/index">Home</a></li>
+            <li><a href="<?php echo SITE_URL; ?>/chi-siamo">Chi Siamo</a></li>
             <li class="active">L'Abito Tradizionale</li>
           </ul>
         </div>
-        <div class="box-position" style="background-image: url(assets/images/costume-tesino.jpg);"></div>
+        <div class="box-position" style="background-image: url(<?php echo SITE_URL; ?>/assets/images/FotoAbito1.jpg);"></div>
       </div>
     </section>
 
@@ -61,7 +61,7 @@ include_once TEMPLATES_PATH . 'head.php';
         <div class="row row-50">
           <div class="col-lg-6 pr-xl-5">
             <div class="image-height-1 wow fadeIn">
-              <img src="assets/images/costume-donne.jpg" alt="Costume tradizionale femminile tesino" width="518" loading="lazy" />
+              <img src="<?php echo SITE_URL; ?>/assets/images/FotoAbito2.jpg" alt="Costume tradizionale femminile tesino" width="518" loading="lazy" />
             </div>
           </div>
           <div class="col-lg-6">
@@ -83,7 +83,7 @@ include_once TEMPLATES_PATH . 'head.php';
         <div class="row row-50 pt-5">
           <div class="col-lg-6 order-lg-2">
             <div class="image-height-1 wow fadeIn">
-              <img src="assets/images/costume-uomini.jpg" alt="Costume tradizionale maschile tesino" width="518" loading="lazy" />
+              <img src="<?php echo SITE_URL; ?>/assets/images/FotoAbito3.jpg" alt="Costume tradizionale maschile tesino" width="518" loading="lazy" />
             </div>
           </div>
           <div class="col-lg-6">
@@ -101,7 +101,7 @@ include_once TEMPLATES_PATH . 'head.php';
         <div class="row">
           <div class="col-12 text-center mt-5 pt-4">
             <div class="button-wrap">
-              <a class="button button-lg button-primary" href="maestro.php">Scopri il nostro Maestro</a>
+              <a class="button button-lg button-primary" href="<?php echo SITE_URL; ?>/maestro">Scopri il nostro Maestro</a>
             </div>
           </div>
         </div>
@@ -118,7 +118,7 @@ include_once TEMPLATES_PATH . 'head.php';
     "@type": "Article",
     "headline": "L\'Abito Tradizionale della Banda Folk di Castello Tesino",
     "description": "Dettagli e storia del costume tradizionale della Valle del Tesino indossato dalla Banda Folk",
-    "image": "' . SITE_URL . '/assets/images/costume-tesino.jpg",
+    "image": "' . SITE_URL . '/assets/images/FotoAbito1.jpg",
     "datePublished": "2025-06-01",
     "publisher": {
       "@type": "Organization",
