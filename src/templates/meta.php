@@ -40,14 +40,14 @@
 
 <!-- Additional Meta Tags -->
 <meta name="theme-color" content="#1a365d">
-<link rel="shortcut icon" href="<?php echo SITE_URL; ?>/favicon.ico" type="image/x-icon">
-<link rel="icon" href="<?php echo SITE_URL; ?>/favicon.ico" type="image/x-icon">
+<link rel="shortcut icon" href="<?php echo SITE_URL; ?>/assets/images/favicon.ico" type="image/x-icon">
+<link rel="icon" href="<?php echo SITE_URL; ?>/assets/images/favicon.ico" type="image/x-icon">
 
 <!-- Apple Touch Icons -->
-<link rel="apple-touch-icon" sizes="180x180" href="<?php echo SITE_URL; ?>/apple-touch-icon.png">
-<link rel="icon" type="image/png" sizes="32x32" href="<?php echo SITE_URL; ?>/favicon-32x32.png">
-<link rel="icon" type="image/png" sizes="16x16" href="<?php echo SITE_URL; ?>/favicon-16x16.png">
-<link rel="manifest" href="<?php echo SITE_URL; ?>/site.webmanifest">
+<link rel="apple-touch-icon" sizes="180x180" href="<?php echo SITE_URL; ?>/assets/images/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="<?php echo SITE_URL; ?>/assets/images/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="<?php echo SITE_URL; ?>/assets/images/favicon-16x16.png">
+<link rel="manifest" href="<?php echo SITE_URL; ?>/assets/images/site.webmanifest">
 
 <!-- Preconnect to external domains -->
 <link rel="preconnect" href="https://fonts.googleapis.com">

@@ -85,7 +85,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <title>Login Admin - Banda Folk di Castello Tesino</title>
     
     <!-- Favicon -->
-    <link rel="icon" href="../public/assets/images/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="<?php echo SITE_URL; ?>/assets/images/favicon.ico" type="image/x-icon">
     
     <!-- Google Font: Source Sans Pro -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
@@ -105,7 +105,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <div class="login-box">
         <!-- Logo -->
         <div class="login-logo">
-            <img src="../public/assets/images/logo.png" alt="Banda Folk di Castello Tesino" class="img-fluid">
+            <img src="<?php echo SITE_URL; ?>/assets/images/logo.png" alt="Banda Folk di Castello Tesino" class="img-fluid">
             <p><b>Banda Folk</b> Amministrazione</p>
         </div>
         <!-- /.login-logo -->
@@ -153,7 +153,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 </form>
                 
                 <div class="mt-4 text-center">
-                    <a href="../public/index.php" class="text-center">
+                    <a href="<?php echo SITE_URL; ?>/" class="text-center">
                         <i class="fas fa-arrow-left mr-1"></i>Torna al sito
                     </a>
                 </div>
