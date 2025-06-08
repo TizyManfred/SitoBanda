@@ -23,7 +23,7 @@ $pageTitle = 'Organico - Banda Folk di Castello Tesino';
 $pageDescription = 'L\'organico della Banda Folk di Castello Tesino include musicisti di flauti, clarinetti, sassofoni, corni, trombe, tromboni, euphonium, tuba, percussioni e le tradizionali Marketenderinnen.';
 $ogTitle = 'Organico - Banda Folk di Castello Tesino';
 $ogDescription = 'Scopri i musicisti che compongono la Banda Folk di Castello Tesino, organizzati per sezioni strumentali.';
-$ogImage = SITE_URL . '/assets/images/organico-banda.jpg';
+$ogImage = SITE_URL . '/assets/images/FotoOrganico1.jpg';
 
 // Include the head template
 include_once TEMPLATES_PATH . 'head.php';
@@ -46,12 +46,12 @@ include_once TEMPLATES_PATH . 'head.php';
         <div class="container">
           <h1 class="breadcrumbs-custom-title">Organico</h1>
           <ul class="breadcrumbs-custom-path">
-            <li><a href="index.php">Home</a></li>
-            <li><a href="chi-siamo.php">Chi Siamo</a></li>
+            <li><a href="<?php echo SITE_URL; ?>/index">Home</a></li>
+            <li><a href="<?php echo SITE_URL; ?>/chi-siamo">Chi Siamo</a></li>
             <li class="active">Organico</li>
           </ul>
         </div>
-        <div class="box-position" style="background-image: url(assets/images/organico-header.jpg);"></div>
+        <div class="box-position" style="background-image: url(<?php echo SITE_URL; ?>/assets/images/FotoOrganico1.jpg);"></div>
       </div>
     </section>
 
@@ -102,7 +102,7 @@ include_once TEMPLATES_PATH . 'head.php';
     "@type": "MusicGroup",
     "name": "Banda Folk di Castello Tesino",
     "description": "Banda folk tradizionale attiva dal 1901 nella Valle del Tesino, Trentino",
-    "image": "' . SITE_URL . '/assets/images/organico-banda.jpg",
+    "image": "' . SITE_URL . '/assets/images/FotoOrganico1.jpg",
     "founder": "Martino Braus",
     "foundingDate": "1901",
     "genre": ["Folk Music", "Wind Band Music", "Traditional Trentino Music"],

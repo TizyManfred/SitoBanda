@@ -12,14 +12,6 @@
             <div class="contact-classic-item">
               <div class="unit align-items-center">
                 <div class="unit-left">
-                  <h6 class="contact-classic-title">Indirizzo</h6>
-                </div>
-                <div class="unit-body contact-classic-link"><a href="https://maps.app.goo.gl/qHzXF7JyRtHsAJcG7" target="_blank">Via Dante Alighieri, 38053 Castello Tesino (TN)</a></div>
-              </div>
-            </div>
-            <div class="contact-classic-item">
-              <div class="unit align-items-center">
-                <div class="unit-left">
                   <h6 class="contact-classic-title">Telefono</h6>
                 </div>
                 <div class="unit-body contact-classic-link"><a href="tel:+393401234567">+39 340 123 4567</a>

@@ -70,7 +70,7 @@ $pageTitle = 'Eventi - Banda Folk di Castello Tesino';
 $pageDescription = 'Calendario completo degli eventi e concerti della Banda Folk di Castello Tesino, con date, orari e luoghi degli eventi passati e futuri.';
 $ogTitle = 'Eventi e Concerti - Banda Folk di Castello Tesino';
 $ogDescription = 'Scopri tutti i nostri eventi e prossime esibizioni. La Banda Folk di Castello Tesino si esibisce in concerti, festival e celebrazioni in tutta Italia e all\'estero.';
-$ogImage = SITE_URL . '/assets/images/concerto-header.jpg';
+$ogImage = SITE_URL . '/assets/images/FotoEventi1.jpeg';
 
 // Include the head template
 include_once TEMPLATES_PATH . 'head.php';
@@ -97,7 +97,7 @@ include_once TEMPLATES_PATH . 'head.php';
             <li class="active">Eventi</li>
           </ul>
         </div>
-        <div class="box-position" style="background-image: url(assets/images/concerto-header.jpg);"></div>
+        <div class="box-position" style="background-image: url(<?php echo SITE_URL; ?>/assets/images/FotoEventi1.jpeg);"></div>
       </div>
     </section>
 
@@ -272,7 +272,7 @@ include_once TEMPLATES_PATH . 'head.php';
       "name" => "Eventi della Banda Folk di Castello Tesino",
       "description" => "Calendario degli eventi e concerti della Banda Folk di Castello Tesino",
       "url" => SITE_URL . '/eventi',
-      "image" => SITE_URL . '/assets/images/concerto-header.jpg',
+      "image" => SITE_URL . '/assets/images/FotoEventi1.jpeg',
       "organizer" => [
         "@type" => "MusicGroup",
         "name" => "Banda Folk di Castello Tesino",

@@ -14,7 +14,7 @@
               <!-- RD Navbar Panel-->
               <div class="rd-navbar-panel">
                 <!-- RD Navbar Toggle-->
-                <button class="rd-navbar-toggle" data-rd-navbar-toggle=".rd-navbar-nav-wrap"><span></span></button>
+                <button class="rd-navbar-toggle" data-rd-navbar-toggle=".rd-navbar-nav-wrap" aria-label="Toggle navigation menu" title="Toggle navigation menu"><span></span></button>
                 <!-- RD Navbar Brand-->
                 <div class="rd-navbar-brand">
                   <a class="brand d-flex align-items-center" href="<?=SITE_URL ?>/">
@@ -38,7 +38,7 @@
                         <input class="rd-navbar-search-form-input form-input" id="rd-navbar-search-form-input"
                           type="text" name="s" autocomplete="off" />
                       </div>
-                      <button class="rd-search-form-submit fl-bigmug-line-search74" type="submit"></button>
+                      <button class="rd-search-form-submit fl-bigmug-line-search74" type="submit" aria-label="Search" title="Search"></button>
                     </form>
                   </div>
 

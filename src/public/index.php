@@ -257,11 +257,15 @@ include_once TEMPLATES_PATH . 'head.php';
                     <div class="thumbnail-classic-title-wrap">
                       <a class="icon fl-bigmug-line-zoom60" 
                          href="<?php echo htmlspecialchars($event['image_path']); ?>" 
-                         data-lightgallery="item">
+                         data-lightgallery="item"
+                         aria-label="Ingrandisci immagine: <?php echo htmlspecialchars($event['title']); ?>"
+                         title="Ingrandisci immagine">
                         <img src="<?php echo htmlspecialchars($event['image_path']); ?>" 
-                             alt="" 
+                             alt="Anteprima: <?php echo htmlspecialchars($event['title']); ?>" 
                              width="420" 
-                             height="350" />
+                             height="350" 
+                             aria-hidden="true" />
+                        <span class="sr-only">Ingrandisci immagine: <?php echo htmlspecialchars($event['title']); ?></span>
                       </a>
                       <h5 class="thumbnail-classic-title">
                         <a href="<?php echo SITE_URL; ?>/eventi/<?php echo htmlspecialchars($event['slug']); ?>">

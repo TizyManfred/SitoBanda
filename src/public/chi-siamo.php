@@ -23,7 +23,7 @@ $pageTitle = 'Chi Siamo - Banda Folk di Castello Tesino';
 $pageDescription = 'La Banda Folk di Castello Tesino, attiva dal 1901, è custode della tradizione musicale trentina: scopri la nostra storia, l\'organico e il repertorio.';
 $ogTitle = 'Chi Siamo - Banda Folk di Castello Tesino';
 $ogDescription = 'Scopri la Banda Folk di Castello Tesino: la storia dal 1901 ad oggi, il nostro maestro, i musicisti e il repertorio tradizionale trentino.';
-$ogImage = SITE_URL . '/assets/images/chi-siamo-header.jpg';
+$ogImage = SITE_URL . '/assets/images/FotoChiSiamo1.jpg';
 
 // Include the head template
 include_once TEMPLATES_PATH . 'head.php';
@@ -50,7 +50,7 @@ include_once TEMPLATES_PATH . 'head.php';
             <li class="active">Chi Siamo</li>
           </ul>
         </div>
-        <div class="box-position" style="background-image: url(<?php echo SITE_URL; ?>/assets/images/chi-siamo-header.jpg);"></div>
+        <div class="box-position" style="background-image: url(<?php echo SITE_URL; ?>/assets/images/FotoChiSiamo1.jpg);"></div>
       </div>
     </section>
 
@@ -186,7 +186,7 @@ include_once TEMPLATES_PATH . 'head.php';
     "@type": "MusicGroup",
     "name": "Banda Folk di Castello Tesino",
     "description": "La Banda Folk di Castello Tesino è attiva dal 1901 e porta avanti la tradizione musicale del Trentino con concerti, eventi e corsi di musica.",
-    "image": "' . SITE_URL . '/assets/images/chi-siamo-header.jpg",
+    "image": "' . SITE_URL . '/assets/images/FotoChiSiamo1.jpg",
     "founder": "Martino Braus",
     "foundingDate": "1901",
     "genre": ["Folk Music", "Wind Band Music", "Traditional Trentino Music"],

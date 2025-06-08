@@ -63,7 +63,7 @@ $pageTitle = 'Gallery - Banda Folk di Castello Tesino';
 $pageDescription = 'Galleria fotografica delle esibizioni e dei concerti della Banda Folk di Castello Tesino in Italia e all\'estero.';
 $ogTitle = 'Galleria Fotografica - Banda Folk di Castello Tesino';
 $ogDescription = 'Sfoglia le foto dei concerti ed esibizioni della Banda Folk di Castello Tesino in Italia e all\'estero.';
-$ogImage = SITE_URL . '/assets/images/gallery-header.jpg';
+$ogImage = SITE_URL . '/assets/images/FotoGallery1.jpg';
 
 // Include the head template
 include_once TEMPLATES_PATH . 'head.php';
@@ -90,7 +90,7 @@ include_once TEMPLATES_PATH . 'head.php';
             <li class="active">Gallery</li>
           </ul>
         </div>
-        <div class="box-position" style="background-image: url(assets/images/gallery-header.jpg);"></div>
+        <div class="box-position" style="background-image: url(<?php echo SITE_URL; ?>/assets/images/FotoGallery1.jpg);"></div>
       </div>
     </section>
 
@@ -198,7 +198,7 @@ include_once TEMPLATES_PATH . 'head.php';
           "@type": "ListItem",
           "position": 2,
           "item": {
-            "@id": "' . SITE_URL . '/gallery.php",
+            "@id": "' . SITE_URL . '/gallery",
             "name": "Gallery"
           }
         }
