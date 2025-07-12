@@ -143,7 +143,7 @@
                                 <span>Castello Tesino, Trentino</span>
                             </div>
                             <p class="event-card-description">{{ __('Un weekend di musica e tradizioni con la partecipazione della Banda Musicale di Aosta e della Banda Cittadina di Cortina d\'Ampezzo.') }}</p>
-                            <a href="{{ route('galleria') }}" class="button button-sm button-default-outline-2 button-wapasha">{{ __('Guarda le Foto') }}</a>
+                            <a href="{{ route('gallery') }}" class="button button-sm button-default-outline-2 button-wapasha">{{ __('Guarda le Foto') }}</a>
                         </div>
                     </div>
                 </div>
@@ -160,7 +160,7 @@
                                 <span>Palermo, Sicilia</span>
                             </div>
                             <p class="event-card-description">{{ __('La nostra banda ha portato le melodie e le tradizioni trentine in Sicilia, esibendosi insieme alla Banda Musicale di Palermo.') }}</p>
-                            <a href="{{ route('galleria') }}" class="button button-sm button-default-outline-2 button-wapasha">{{ __('Guarda le Foto') }}</a>
+                            <a href="{{ route('gallery') }}" class="button button-sm button-default-outline-2 button-wapasha">{{ __('Guarda le Foto') }}</a>
                         </div>
                     </div>
                 </div>
@@ -177,7 +177,7 @@
                                 <span>Matera, Basilicata</span>
                             </div>
                             <p class="event-card-description">{{ __('Un evento speciale nella città dei Sassi, con concerti e sfilate che hanno visto la partecipazione di 5 bande da tutta Italia.') }}</p>
-                            <a href="{{ route('galleria') }}" class="button button-sm button-default-outline-2 button-wapasha">{{ __('Guarda le Foto') }}</a>
+                            <a href="{{ route('gallery') }}" class="button button-sm button-default-outline-2 button-wapasha">{{ __('Guarda le Foto') }}</a>
                         </div>
                     </div>
                 </div>

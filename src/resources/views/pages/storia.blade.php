@@ -125,7 +125,7 @@
                 </div>
             </div>
             <div class="text-center mt-4">
-                <a href="{{ route('galleria') }}" class="button button-primary button-winona">{{ __('Visita la Galleria Completa') }}</a>
+                <a href="{{ route('gallery') }}" class="button button-primary button-winona">{{ __('Visita la Galleria Completa') }}</a>
             </div>
         </div>
     </section>
