@@ -1,5 +1,30 @@
-
 .windsurf
 
 src/uploads/album/*
 src/uploads/events/*
+src/uploads/section_icons/*
+
+# Environment variables
+.env
+mysql_data
+
+/vendor/
+node_modules/
+npm-debug.log
+yarn-error.log
+
+storage/*.key
+.env
+Homestead.yaml
+Homestead.json
+/.vagrant
+.phpunit.result.cache
+
+/public/build
+/storage/pail
+.env.backup
+.env.production
+.phpactor.json
+auth.json
+.spdx-laravel.spdx
+.spdx-laravel.json
