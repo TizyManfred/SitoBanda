@@ -82,47 +82,47 @@
               <!-- RD Navbar Nav-->
               <ul class="rd-navbar-nav">
                 <li class="rd-nav-item {{ request()->routeIs('home') ? 'active' : '' }}">
-                  <a class="rd-nav-link" href="{{ route('home') }}">{{ __('Home') }}</a>
+                  <a class="rd-nav-link" href="{{ route('home') }}">{{ __('header.home') }}</a>
                 </li>
                 <li class="rd-nav-item {{ request()->routeIs(['chi-siamo', 'storia', 'organico', 'maestro', 'repertorio', 'abito-tradizionale']) ? 'active' : '' }} rd-nav-item--has-dropdown rd-navbar-submenu">
-                  <a class="rd-nav-link" href="{{ route('chi-siamo') }}">{{ __('Chi Siamo') }}</a>
+                  <a class="rd-nav-link" href="{{ route('chi-siamo') }}">{{ __('header.chi-siamo') }}</a>
                   <ul class="rd-menu rd-navbar-dropdown">
                     <li class="rd-dropdown-item">
-                      <a class="rd-dropdown-link" href="{{ route('storia') }}">{{ __('Storia') }}</a>
+                      <a class="rd-dropdown-link" href="{{ route('storia') }}">{{ __('header.storia') }}</a>
                     </li>
                     <li class="rd-dropdown-item">
-                      <a class="rd-dropdown-link" href="{{ route('abito-tradizionale') }}">{{ __("L'Abito Tradizionale") }}</a>
+                      <a class="rd-dropdown-link" href="{{ route('abito-tradizionale') }}">{{ __('header.abito-tradizionale') }}</a>
                     </li>
                     <li class="rd-dropdown-item">
-                      <a class="rd-dropdown-link" href="{{ route('maestro') }}">{{ __('Maestro') }}</a>
+                      <a class="rd-dropdown-link" href="{{ route('maestro') }}">{{ __('header.maestro') }}</a>
                     </li>
                     <li class="rd-dropdown-item">
-                      <a class="rd-dropdown-link" href="{{ route('organico') }}">{{ __('Organico') }}</a>
+                      <a class="rd-dropdown-link" href="{{ route('organico') }}">{{ __('header.organico') }}</a>
                     </li>
                     <li class="rd-dropdown-item">
-                      <a class="rd-dropdown-link" href="{{ route('repertorio') }}">{{ __('Repertorio') }}</a>
+                      <a class="rd-dropdown-link" href="{{ route('repertorio') }}">{{ __('header.repertorio') }}</a>
                     </li>
                   </ul>
                 </li>
                 <li class="rd-nav-item {{ request()->routeIs('corsi-di-musica') ? 'active' : '' }}">
-                  <a class="rd-nav-link" href="{{ route('corsi-di-musica') }}">{{ __('Corsi di Musica') }}</a>
+                  <a class="rd-nav-link" href="{{ route('corsi-di-musica') }}">{{ __('header.corsi-di-musica') }}</a>
                 </li>
                 <li class="rd-nav-item {{ request()->routeIs(['eventi', 'italia-gira-banda']) ? 'active' : '' }} rd-nav-item--has-dropdown rd-navbar-submenu">
-                  <a class="rd-nav-link" href="{{ route('eventi') }}">{{ __('Eventi') }}</a>
+                  <a class="rd-nav-link" href="{{ route('eventi') }}">{{ __('header.eventi') }}</a>
                   <ul class="rd-menu rd-navbar-dropdown">
                     <li class="rd-dropdown-item">
-                      <a class="rd-dropdown-link" href="{{ route('eventi') }}">{{ __('Eventi') }}</a>
+                      <a class="rd-dropdown-link" href="{{ route('eventi') }}">{{ __('header.eventi') }}</a>
                     </li>
                     <li class="rd-dropdown-item">
-                      <a class="rd-dropdown-link" href="{{ route('italia-gira-banda') }}">{{ __('Italia Gira Banda') }}</a>
+                      <a class="rd-dropdown-link" href="{{ route('italia-gira-banda') }}">{{ __('header.italia-gira-banda') }}</a>
                     </li>
                   </ul>
                 </li>
-                <li class="rd-nav-item {{ request()->routeIs('gallery') ? 'active' : '' }}">
-                  <a class="rd-nav-link" href="{{ route('gallery') }}">{{ __('Gallery') }}</a>
+                <li class="rd-nav-item {{ request()->routeIs('galleria') ? 'active' : '' }}">
+                  <a class="rd-nav-link" href="{{ LaravelLocalization::transRoute('galleria') }}">{{ __('header.galleria') }}</a>
                 </li>
                 <li class="rd-nav-item {{ request()->routeIs('contatti') ? 'active' : '' }}">
-                  <a class="rd-nav-link" href="{{ route('contatti') }}">{{ __('Contatti') }}</a>
+                  <a class="rd-nav-link" href="{{ LaravelLocalization::transRoute('contatti') }}">{{ __('header.contatti') }}</a>
                 </li>
               </ul>
             </div>

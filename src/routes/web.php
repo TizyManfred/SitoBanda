@@ -5,34 +5,49 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\GalleryController;
-use App\Http\Controllers\LanguageController;
 use App\Http\Controllers\PageController;
 
-// Home page
-Route::get('/', [HomeController::class, 'index'])->name('home');
+Route::group([
+    'prefix' => LaravelLocalization::setLocale(),
+    'middleware' => [ 'localeSessionRedirect', 'localizationRedirect', 'localeViewPath' ],
+], function() {
 
-// Static pages
-Route::get('/chi-siamo', [PageController::class, 'chiSiamo'])->name('chi-siamo');
-Route::get('/storia', [PageController::class, 'storia'])->name('storia');
-Route::get('/organico', [PageController::class, 'organico'])->name('organico');
-Route::get('/maestro', [PageController::class, 'maestro'])->name('maestro');
-Route::get('/repertorio', [PageController::class, 'repertorio'])->name('repertorio');
-Route::get('/abito-tradizionale', [PageController::class, 'abitoTradizionale'])->name('abito-tradizionale');
-Route::get('/italia-gira-banda', [PageController::class, 'italiaGiraBanda'])->name('italia-gira-banda');
-Route::get('/corsi-di-musica', [PageController::class, 'corsiDiMusica'])->name('corsi-di-musica');
-Route::get('/privacy-policy', [PageController::class, 'privacyPolicy'])->name('privacy-policy');
+    // Home page
+    Route::get('/', [HomeController::class, 'index'])->name('home');
 
-// Events
-Route::get('/eventi', [EventController::class, 'index'])->name('eventi');
-Route::get('/eventi/{slug}', [EventController::class, 'show'])->name('eventi.show');
+    // Static pages
+    Route::get(LaravelLocalization::transRoute('routes.chi-siamo'), [PageController::class, 'chiSiamo'])->name('chi-siamo');
+    Route::get(LaravelLocalization::transRoute('routes.storia'), [PageController::class, 'storia'])->name('storia');
+    Route::get(LaravelLocalization::transRoute('routes.organico'), [PageController::class, 'organico'])->name('organico');
+    Route::get(LaravelLocalization::transRoute('routes.maestro'), [PageController::class, 'maestro'])->name('maestro');
+    Route::get(LaravelLocalization::transRoute('routes.repertorio'), [PageController::class, 'repertorio'])->name('repertorio');
+    Route::get(LaravelLocalization::transRoute('routes.abito-tradizionale'), [PageController::class, 'abitoTradizionale'])->name('abito-tradizionale');
+    Route::get(LaravelLocalization::transRoute('routes.italia-gira-banda'), [PageController::class, 'italiaGiraBanda'])->name('italia-gira-banda');
+    Route::get(LaravelLocalization::transRoute('routes.corsi-di-musica'), [PageController::class, 'corsiDiMusica'])->name('corsi-di-musica');
+    Route::get(LaravelLocalization::transRoute('routes.privacy-policy'), [PageController::class, 'privacyPolicy'])->name('privacy-policy');
 
-// Gallery
-Route::get('/gallery', [GalleryController::class, 'index'])->name('gallery');
-Route::get('/gallery/{slug}', [GalleryController::class, 'show'])->name('gallery.album');
+    // Events
+    Route::get(LaravelLocalization::transRoute('routes.eventi'), [EventController::class, 'index'])->name('eventi');
+    Route::get(LaravelLocalization::transRoute('routes.eventi/{slug}'), [EventController::class, 'show'])->name('eventi.show');
 
-// Contact
-Route::get('/contatti', [ContactController::class, 'index'])->name('contatti');
-Route::post('/contatti', [ContactController::class, 'store'])->name('contatti.store');
+    // Gallery
+    Route::get(LaravelLocalization::transRoute('routes.galleria'), [GalleryController::class, 'index'])->name('galleria');
+    Route::get(LaravelLocalization::transRoute('routes.galleria/{slug}'), [GalleryController::class, 'show'])->name('galleria.album');
 
-// Language switcher
-Route::get('/language/{locale}', [LanguageController::class, 'switch'])->name('language.switch');
+    // Contact
+    Route::get(LaravelLocalization::transRoute('routes.contatti'), [ContactController::class, 'index'])->name('contatti');
+    Route::post(LaravelLocalization::transRoute('routes.contatti'), [ContactController::class, 'store'])->name('contatti.store');
+
+});
+
+Route::get('/test-translations', function() {
+    return [
+        'current_locale' => App::getLocale(),
+        'laravel_localization_locale' => LaravelLocalization::getCurrentLocale(),
+        'config_locale' => config('app.locale'),
+        'available_locales' => LaravelLocalization::getSupportedLocales(),
+        'translation_test' => __('header.repertorio'),
+        'translation_fallback' => __('header.repertorio', [], 'en'),
+        'file_exists' => file_exists(resource_path('lang/it/header.php')),
+    ];
+});

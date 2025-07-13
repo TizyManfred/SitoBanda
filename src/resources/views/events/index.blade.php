@@ -33,15 +33,13 @@
                                 <div class="col-sm-6 col-lg-6">
                                     <article class="box-event">
                                         <div class="box-event-img-wrap">
-                                            @if($event->image_path)
-                                                <a href="{{ route('eventi.show', $event->slug) }}">
-                                                    <img src="{{ asset($event->image_path) }}" alt="{{ $event->title }}" width="570" height="370" loading="lazy">
-                                                </a>
-                                            @else
-                                                <a href="{{ route('eventi.show', $event->slug) }}">
-                                                    <img src="{{ asset('images/event-default.jpg') }}" alt="{{ $event->title }}" width="570" height="370" loading="lazy">
-                                                </a>
-                                            @endif
+                                            <a href="{{ route('eventi.show', $event->slug) }}">
+                                                @if($event->image_path)
+                                                    <img src="{{ Storage::url($event->image_path) }}" alt="{{ $event->title }}" width="570" height="370" loading="lazy" class="img-fluid">
+                                                @else
+                                                    <img src="{{ asset('images/event-default.jpg') }}" alt="{{ $event->title }}" width="570" height="370" loading="lazy" class="img-fluid">
+                                                @endif
+                                            </a>
                                             <div class="box-event-date">
                                                 <div class="box-event-month">{{ $event->start_datetime->format('M') }}</div>
                                                 <div class="box-event-day">{{ $event->start_datetime->format('d') }}</div>
@@ -80,15 +78,13 @@
                                 <div class="col-sm-6 col-lg-6">
                                     <article class="box-event box-event-past">
                                         <div class="box-event-img-wrap">
-                                            @if($event->image_path)
-                                                <a href="{{ route('eventi.show', $event->slug) }}">
-                                                    <img src="{{ asset($event->image_path) }}" alt="{{ $event->title }}" width="570" height="370" loading="lazy">
-                                                </a>
-                                            @else
-                                                <a href="{{ route('eventi.show', $event->slug) }}">
-                                                    <img src="{{ asset('images/event-default.jpg') }}" alt="{{ $event->title }}" width="570" height="370" loading="lazy">
-                                                </a>
-                                            @endif
+                                            <a href="{{ route('eventi.show', $event->slug) }}">
+                                                @if($event->image_path)
+                                                    <img src="{{ Storage::url($event->image_path) }}" alt="{{ $event->title }}" width="570" height="370" loading="lazy" class="img-fluid">
+                                                @else
+                                                    <img src="{{ asset('images/event-default.jpg') }}" alt="{{ $event->title }}" width="570" height="370" loading="lazy" class="img-fluid">
+                                                @endif
+                                            </a>
                                             <div class="box-event-date">
                                                 <div class="box-event-month">{{ $event->start_datetime->format('M') }}</div>
                                                 <div class="box-event-day">{{ $event->start_datetime->format('d') }}</div>

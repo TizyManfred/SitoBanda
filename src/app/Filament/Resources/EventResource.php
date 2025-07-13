@@ -45,7 +45,8 @@ class EventResource extends Resource
                                 Forms\Components\TextInput::make('slug')
                                     ->required()
                                     ->maxLength(255)
-                                    ->unique(Event::class, 'slug', ignoreRecord: true),
+                                    ->unique(Event::class, 'slug', ignoreRecord: true)
+                                    ->readOnly(fn (string $operation): bool => $operation === 'edit'),
 
                                 Forms\Components\RichEditor::make('description')
                                     ->columnSpanFull(),
@@ -90,7 +91,23 @@ class EventResource extends Resource
                                 Forms\Components\FileUpload::make('image_path')
                                     ->label('Cover Image')
                                     ->image()
-                                    ->directory('event-images'),
+                                    ->disk('public')
+                                    ->directory('event-images')
+                                    ->preserveFilenames()
+                                    ->imageResizeMode('cover')
+                                    ->imageCropAspectRatio('16:9')
+                                    ->imageResizeTargetWidth('1200')
+                                    ->imageResizeTargetHeight('675')
+                                    ->visibility('public')
+                                    ->openable()
+                                    ->downloadable()
+                                    ->previewable(true)
+                                    ->imageEditor()
+                                    ->imageEditorAspectRatios([
+                                        '16:9',
+                                        '4:3',
+                                        '1:1',
+                                    ]),
                                 Forms\Components\Select::make('gallery_id')
                                     ->label('Photo Gallery')
                                     ->relationship('galleryAlbum', 'title')

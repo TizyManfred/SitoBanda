@@ -71,7 +71,7 @@
                 <h1 class="breadcrumbs-custom-title">{{ $album->title }}</h1>
                 <ul class="breadcrumbs-custom-path">
                     <li><a href="{{ route('home') }}">{{ __('Home') }}</a></li>
-                    <li><a href="{{ route('gallery') }}">{{ __('Galleria') }}</a></li>
+                    <li><a href="{{ route('galleria') }}">{{ __('Galleria') }}</a></li>
                     <li class="active">{{ $album->title }}</li>
                 </ul>
             </div>
@@ -210,7 +210,7 @@
                                     @endforeach
                                 </div>
                                 <div class="text-center mt-4">
-                                    <a href="{{ route('gallery') }}" class="button button-sm button-default-outline-2 button-wapasha">
+                                    <a href="{{ route('galleria') }}" class="button button-sm button-default-outline-2 button-wapasha">
                                         {{ __('Tutti gli Album') }}
                                     </a>
                                 </div>
