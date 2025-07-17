@@ -10,10 +10,10 @@
     <section class="breadcrumbs-custom-inset">
         <div class="breadcrumbs-custom context-dark bg-overlay-60">
             <div class="container">
-                <h1 class="breadcrumbs-custom-title">{{ __('Chi Siamo') }}</h1>
+                <h1 class="breadcrumbs-custom-title">{{ __('chi-siamo.breadcrumb_title') }}</h1>
                 <ul class="breadcrumbs-custom-path">
-                    <li><a href="{{ route('home') }}">{{ __('Home') }}</a></li>
-                    <li class="active">{{ __('Chi Siamo') }}</li>
+                    <li><a href="{{ route('home') }}">{{ __('chi-siamo.breadcrumb_home') }}</a></li>
+                    <li class="active">{{ __('chi-siamo.breadcrumb_title') }}</li>
                 </ul>
             </div>
             <div class="box-position" style="background-image: url({{ asset('images/FotoSanIppolito1.jpg') }});"></div>
@@ -30,92 +30,110 @@
                     </div>
                 </div>
                 <div class="col-md-10 col-lg-7 col-xl-6">
-                    <h2 class="title-decoration-lines-left">{{ __('La Banda Folk di Castello Tesino') }}</h2>
-                    <p class="text-gray-800">{{ __('La Banda Folk di Castello Tesino è un\'istituzione musicale che nasce nel 1901, vantando quindi più di 120 anni di storia. La nostra missione è quella di portare avanti la tradizione musicale del Trentino, unendo generazioni diverse attraverso la passione per la musica.') }}</p>
-                    <p class="text-gray-800">{{ __('Siamo un gruppo di musicisti amatoriali che si dedica con passione alla musica bandistica, partecipando a numerosi eventi e manifestazioni sia in Italia che all\'estero. Il nostro repertorio spazia dalla musica tradizionale trentina a brani classici e contemporanei.') }}</p>
-                    <p class="text-gray-800">{{ __('La Banda Folk è composta da circa 30 elementi di diverse età, dai giovani allievi ai veterani con decenni di esperienza. Questa diversità generazionale è uno dei nostri punti di forza, permettendo uno scambio continuo di esperienze e conoscenze.') }}</p>
+                    <h2 class="title-decoration-lines-left">{{ __('chi-siamo.section_title') }}</h2>
+                    <p class="text-gray-800">{{ __('chi-siamo.intro_p1') }}</p>
+                    <p class="text-gray-800">{{ __('chi-siamo.intro_p2') }}</p>
+                    <p class="text-gray-800">{{ __('chi-siamo.intro_p3') }}</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Discover More -->
+    <section class="section section-sm bg-gray-100 text-center">
+        <div class="container">
+            <h2 class="title-decoration-lines-left">{{ __('chi-siamo.discover_more_title') }}</h2>
+            <div class="row row-50">
+                <div class="col-md-6 col-lg-4">
+                    <article class="box-icon-modern box-icon-modern-custom">
+                        <div>
+                            <h3 class="box-icon-modern-big-title">{{ __('chi-siamo.history_title') }}</h3>
+                            <div class="box-icon-modern-decor"></div>
+                            <p class="box-icon-modern-text">{{ __('chi-siamo.history_text') }}</p>
+                            <a class="button button-md button-default-outline-2 button-wapasha" href="{{ route('storia') }}">{{ __('chi-siamo.history_button') }}</a>
+                        </div>
+                    </article>
+                </div>
+                <div class="col-md-6 col-lg-4">
+                    <article class="box-icon-modern box-icon-modern-custom">
+                        <div>
+                            <h3 class="box-icon-modern-big-title">{{ __('chi-siamo.attire_title') }}</h3>
+                            <div class="box-icon-modern-decor"></div>
+                            <p class="box-icon-modern-text">{{ __('chi-siamo.attire_text') }}</p>
+                            <a class="button button-md button-default-outline-2 button-wapasha" href="{{ route('abito-tradizionale') }}">{{ __('chi-siamo.attire_button') }}</a>
+                        </div>
+                    </article>
+                </div>
+                <div class="col-md-6 col-lg-4">
+                    <article class="box-icon-modern box-icon-modern-custom">
+                        <div>
+                            <h3 class="box-icon-modern-big-title">{{ __('chi-siamo.conductor_title') }}</h3>
+                            <div class="box-icon-modern-decor"></div>
+                            <p class="box-icon-modern-text">{{ __('chi-siamo.conductor_text') }}</p>
+                            <a class="button button-md button-default-outline-2 button-wapasha" href="{{ route('maestro') }}">{{ __('chi-siamo.conductor_button') }}</a>
+                        </div>
+                    </article>
+                </div>
+                <div class="col-md-6 col-lg-4">
+                    <article class="box-icon-modern box-icon-modern-custom">
+                        <div>
+                            <h3 class="box-icon-modern-big-title">{{ __('chi-siamo.members_title') }}</h3>
+                            <div class="box-icon-modern-decor"></div>
+                            <p class="box-icon-modern-text">{{ __('chi-siamo.members_text') }}</p>
+                            <a class="button button-md button-default-outline-2 button-wapasha" href="{{ route('organico') }}">{{ __('chi-siamo.members_button') }}</a>
+                        </div>
+                    </article>
+                </div>
+                <div class="col-md-6 col-lg-4">
+                    <article class="box-icon-modern box-icon-modern-custom">
+                        <div>
+                            <h3 class="box-icon-modern-big-title">{{ __('chi-siamo.repertoire_title') }}</h3>
+                            <div class="box-icon-modern-decor"></div>
+                            <p class="box-icon-modern-text">{{ __('chi-siamo.repertoire_text') }}</p>
+                            <a class="button button-md button-default-outline-2 button-wapasha" href="{{ route('repertorio') }}">{{ __('chi-siamo.repertoire_button') }}</a>
+                        </div>
+                    </article>
                 </div>
             </div>
         </div>
     </section>
 
     <!-- Our Values -->
-    <section class="section section-sm section-last bg-default text-md-left">
+    <section class="section section-md bg-gray-100 text-center">
         <div class="container">
-            <div class="row row-50 justify-content-center">
-                <div class="col-md-10 col-lg-7 col-xl-6">
-                    <h3>{{ __('I Nostri Valori') }}</h3>
-                    <div class="row row-30">
-                        <div class="col-sm-6">
-                            <article class="box-icon-classic">
-                                <div class="unit box-icon-classic-body flex-column flex-md-row text-md-left flex-lg-column flex-xl-row">
-                                    <div class="unit-left">
-                                        <div class="box-icon-classic-icon bi-music-note-beamed"></div>
-                                    </div>
-                                    <div class="unit-body">
-                                        <h5 class="box-icon-classic-title">{{ __('Tradizione') }}</h5>
-                                        <p class="box-icon-classic-text">{{ __('Manteniamo viva la tradizione musicale trentina, tramandandola di generazione in generazione.') }}</p>
-                                    </div>
-                                </div>
-                            </article>
-                        </div>
-                        <div class="col-sm-6">
-                            <article class="box-icon-classic">
-                                <div class="unit box-icon-classic-body flex-column flex-md-row text-md-left flex-lg-column flex-xl-row">
-                                    <div class="unit-left">
-                                        <div class="box-icon-classic-icon bi-people-fill"></div>
-                                    </div>
-                                    <div class="unit-body">
-                                        <h5 class="box-icon-classic-title">{{ __('Comunità') }}</h5>
-                                        <p class="box-icon-classic-text">{{ __('Creiamo un senso di appartenenza e comunità attraverso la musica e le esperienze condivise.') }}</p>
-                                    </div>
-                                </div>
-                            </article>
-                        </div>
-                        <div class="col-sm-6">
-                            <article class="box-icon-classic">
-                                <div class="unit box-icon-classic-body flex-column flex-md-row text-md-left flex-lg-column flex-xl-row">
-                                    <div class="unit-left">
-                                        <div class="box-icon-classic-icon bi-book"></div>
-                                    </div>
-                                    <div class="unit-body">
-                                        <h5 class="box-icon-classic-title">{{ __('Formazione') }}</h5>
-                                        <p class="box-icon-classic-text">{{ __('Offriamo corsi di musica per tutte le età, promuovendo l\'educazione musicale nel territorio.') }}</p>
-                                    </div>
-                                </div>
-                            </article>
-                        </div>
-                        <div class="col-sm-6">
-                            <article class="box-icon-classic">
-                                <div class="unit box-icon-classic-body flex-column flex-md-row text-md-left flex-lg-column flex-xl-row">
-                                    <div class="unit-left">
-                                        <div class="box-icon-classic-icon bi-globe"></div>
-                                    </div>
-                                    <div class="unit-body">
-                                        <h5 class="box-icon-classic-title">{{ __('Internazionalità') }}</h5>
-                                        <p class="box-icon-classic-text">{{ __('Portiamo la nostra musica e tradizioni oltre i confini nazionali, partecipando a eventi internazionali.') }}</p>
-                                    </div>
-                                </div>
-                            </article>
-                        </div>
-                    </div>
+            <h2 class="title-decoration-lines-left">{{ __('chi-siamo.values_title') }}</h2>
+            <div class="row row-50">
+                <div class="col-md-6 col-lg-3">
+                    <article class="box-icon-modern wow slideInUp">
+                        <div class="box-icon-modern-icon bi-music-note-beamed"></div>
+                        <h5 class="box-icon-modern-title">{{ __('chi-siamo.value_tradition_title') }}</h5>
+                        <div class="box-icon-modern-decor"></div>
+                        <p class="box-icon-modern-text">{{ __('chi-siamo.value_tradition_text') }}</p>
+                    </article>
                 </div>
-                <div class="col-md-10 col-lg-5 col-xl-6">
-                    <div class="row row-30 justify-content-center">
-                        <div class="col-sm-6">
-                            <article class="box-icon-modern box-icon-modern-custom">
-                                <div>
-                                    <h3 class="box-icon-modern-big-title">{{ __('Unisciti a Noi') }}</h3>
-                                    <div class="box-icon-modern-decor"></div>
-                                    <p class="box-icon-modern-text">{{ __('Sei appassionato di musica? Vuoi imparare a suonare uno strumento o far parte della nostra banda? Contattaci per informazioni sui corsi e sulle modalità di partecipazione.') }}</p>
-                                    <a class="button button-md button-default-outline-2 button-wapasha" href="{{ route('corsi-di-musica') }}">{{ __('Scopri i Corsi') }}</a>
-                                </div>
-                            </article>
-                        </div>
-                        <div class="col-sm-6">
-                            <img src="{{ asset('images/FotoRoma1.jpeg') }}" alt="Banda Folk di Castello Tesino a Roma" width="300" height="300" loading="lazy">
-                        </div>
-                    </div>
+                <div class="col-md-6 col-lg-3">
+                    <article class="box-icon-modern wow slideInUp" data-wow-delay=".1s">
+                        <div class="box-icon-modern-icon bi-people-fill"></div>
+                        <h5 class="box-icon-modern-title">{{ __('chi-siamo.value_community_title') }}</h5>
+                        <div class="box-icon-modern-decor"></div>
+                        <p class="box-icon-modern-text">{{ __('chi-siamo.value_community_text') }}</p>
+                    </article>
+                </div>
+                <div class="col-md-6 col-lg-3">
+                    <article class="box-icon-modern wow slideInUp" data-wow-delay=".2s">
+                        <div class="box-icon-modern-icon bi-book"></div>
+                        <h5 class="box-icon-modern-title">{{ __('chi-siamo.value_training_title') }}</h5>
+                        <div class="box-icon-modern-decor"></div>
+                        <p class="box-icon-modern-text">{{ __('chi-siamo.value_training_text') }}</p>
+                    </article>
+                </div>
+                <div class="col-md-6 col-lg-3">
+                    <article class="box-icon-modern wow slideInUp" data-wow-delay=".3s">
+                        <div class="box-icon-modern-icon bi-globe"></div>
+                        <h5 class="box-icon-modern-title">{{ __('chi-siamo.value_internationality_title') }}</h5>
+                        <div class="box-icon-modern-decor"></div>
+                        <p class="box-icon-modern-text">{{ __('chi-siamo.value_internationality_text') }}</p>
+                    </article>
                 </div>
             </div>
         </div>
