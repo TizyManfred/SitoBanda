@@ -26,7 +26,6 @@ class Member extends Model
     protected $fillable = [
         'first_name',
         'last_name',
-        'role',
         'section_id',
         'display_order',
     ];

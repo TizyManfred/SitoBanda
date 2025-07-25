@@ -94,6 +94,7 @@ return [
     'available_locales' => [
         'it' => 'Italiano',
         'en' => 'English',
+        'de' => 'Deutsch',
     ],
 
     /*

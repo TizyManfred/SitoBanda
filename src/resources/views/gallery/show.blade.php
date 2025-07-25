@@ -1,67 +1,17 @@
 @extends('layouts.app')
 
+@php
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\URL;
+use Illuminate\Support\Str;
+@endphp
+
 @section('title', $album->title . ' - Galleria - Banda Folk di Castello Tesino')
 @section('description', $album->description ? $album->description : 'Galleria fotografica ' . $album->title . ' della Banda Folk di Castello Tesino')
 @section('og_title', $album->title . ' - Galleria - Banda Folk di Castello Tesino')
 @section('og_description', $album->description ? $album->description : 'Galleria fotografica ' . $album->title . ' della Banda Folk di Castello Tesino')
-@if($album->cover_image_path)
-    @section('og_image', asset($album->cover_image_path))
-@endif
+@section('og_image', $images->count() > 0 ? Storage::url($images->first()->image_path) : asset('images/gallery-default.jpg'))
 
-@section('styles')
-<style>
-    .gallery-container {
-        margin-bottom: 30px;
-    }
-    .gallery-item {
-        margin-bottom: 30px;
-    }
-    .gallery-item img {
-        width: 100%;
-        height: 250px;
-        object-fit: cover;
-        border-radius: 5px;
-        transition: transform 0.3s ease;
-    }
-    .gallery-item a:hover img {
-        transform: scale(1.03);
-    }
-    .album-info {
-        margin-bottom: 30px;
-    }
-    .album-meta {
-        margin-bottom: 20px;
-    }
-    .album-meta-item {
-        display: inline-block;
-        margin-right: 20px;
-        color: #777;
-    }
-    .album-meta-item i {
-        margin-right: 5px;
-        color: #01b3a7;
-    }
-    .album-description {
-        margin-bottom: 30px;
-    }
-    .related-albums {
-        margin-top: 60px;
-    }
-    .related-album {
-        margin-bottom: 20px;
-    }
-    .related-album img {
-        width: 100%;
-        height: 150px;
-        object-fit: cover;
-        border-radius: 5px;
-    }
-    .related-album-title {
-        margin-top: 10px;
-        font-size: 16px;
-    }
-</style>
-@endsection
 
 @section('content')
     <!-- Breadcrumbs -->
@@ -75,62 +25,74 @@
                     <li class="active">{{ $album->title }}</li>
                 </ul>
             </div>
-            <div class="box-position" style="background-image: url({{ $album->cover_image_path ? asset($album->cover_image_path) : asset('images/gallery-default.jpg') }});"></div>
+            <div class="box-position" style="background-image: url({{ $images->count() > 0 ? Storage::url($images->first()->image_path) : asset('images/gallery-default.jpg') }}); background-position: center center;"></div>
         </div>
     </section>
 
     <!-- Gallery Content -->
     <section class="section section-sm section-first bg-default text-md-left">
         <div class="container">
-            <div class="row">
-                <div class="col-lg-8">
+            <div class="row row-50">
+                <div class="col-lg-12">
                     <!-- Album Info -->
-                    <div class="album-info">
-                        <div class="album-meta">
-                            @if($album->year)
-                                <div class="album-meta-item">
-                                    <i class="bi bi-calendar"></i> {{ $album->year }}
+                    <div class="post">
+                        <div class="box-inset-1">
+                            <h3 class="heading-3 font-weight-bold mb-4">{{ $album->title }}</h3>
+                            
+                            <div class="row box-event-modern-meta">
+                                @if($album->year)
+                                    <div class="col-auto box-event-modern-meta-item mr-3">
+                                        <i class="bi bi-calendar-check mr-1"></i> <span class="font-weight-bold">{{ $album->year }}</span>
+                                    </div>
+                                @elseif($album->start_date)
+                                    <div class="col-auto box-event-modern-meta-item mr-3">
+                                        <i class="bi bi-calendar-check mr-1"></i> <span class="font-weight-bold">{{ $album->start_date->format('Y') }}</span>
+                                    </div>
+                                @endif
+                                <div class="col-auto box-event-modern-meta-item mr-3">
+                                    <i class="bi bi-images mr-1"></i> <span class="font-weight-bold">{{ $images->count() }}</span> {{ __('foto') }}
+                                </div>
+                                <div class="col-auto box-event-modern-meta-item">
+                                    <i class="bi bi-eye mr-1"></i> <span class="font-weight-bold">{{ $album->view_count ?? 0 }}</span> {{ __('visualizzazioni') }}
+                                </div>
+                            </div>
+                            
+                            @if($album->description)
+                                <div class="mt-3">
+                                    <p class="lead font-weight-normal">{{ $album->description }}</p>
                                 </div>
                             @endif
-                            <div class="album-meta-item">
-                                <i class="bi bi-images"></i> {{ $images->count() }} {{ __('foto') }}
-                            </div>
-                            <div class="album-meta-item">
-                                <i class="bi bi-eye"></i> {{ $album->view_count ?? 0 }} {{ __('visualizzazioni') }}
-                            </div>
-                        </div>
                         
-                        @if($album->description)
-                            <div class="album-description">
-                                <p>{{ $album->description }}</p>
-                            </div>
-                        @endif
-                        
-                        @if($event)
-                            <div class="album-event">
-                                <h5>{{ __('Evento correlato') }}</h5>
-                                <div class="card mb-4">
-                                    <div class="card-body">
-                                        <div class="row align-items-center">
-                                            <div class="col-md-4">
-                                                @if($event->image_path)
-                                                    <img src="{{ asset($event->image_path) }}" alt="{{ $event->title }}" class="img-fluid rounded" loading="lazy">
-                                                @else
-                                                    <img src="{{ asset('images/event-default.jpg') }}" alt="{{ $event->title }}" class="img-fluid rounded" loading="lazy">
-                                                @endif
-                                            </div>
-                                            <div class="col-md-8">
-                                                <h5>{{ $event->title }}</h5>
-                                                <p class="text-muted">
-                                                    <i class="bi bi-calendar-event"></i> {{ $event->start_datetime->format('d/m/Y') }}
-                                                    <i class="bi bi-geo-alt ms-3"></i> {{ $event->location }}
-                                                </p>
-                                                <p>{{ Str::limit($event->short_description, 100) }}</p>
-                                                <a href="{{ route('eventi.show', $event->slug) }}" class="button button-sm button-default-outline-2 button-wapasha">
-                                                    {{ __('Dettagli Evento') }}
-                                                </a>
-                                            </div>
+                        @if(isset($event) && $event)
+                            <div class="mt-4 pt-3">
+                                <h5 class="heading-5">{{ __('Evento correlato') }}</h5>
+                                <div class="box-event-modern">
+                                    <div class="box-event-modern-figure">
+                                        @if($event->image_path)
+                                            <a href="{{ route('eventi.show', $event->slug) }}">
+                                                <img src="{{ Storage::url($event->image_path) }}" alt="{{ $event->title }}" class="img-responsive" loading="lazy">
+                                            </a>
+                                        @else
+                                            <a href="{{ route('eventi.show', $event->slug) }}">
+                                                <img src="{{ asset('images/event-default.jpg') }}" alt="{{ $event->title }}" class="img-responsive" loading="lazy">
+                                            </a>
+                                        @endif
+                                    </div>
+                                    <div class="box-event-modern-body">
+                                        <div class="box-event-modern-date">
+                                            <div class="box-event-modern-date-day">{{ $event->start_datetime->format('d') }}</div>
+                                            <div class="box-event-modern-date-month">{{ $event->start_datetime->format('M') }}</div>
                                         </div>
+                                        <h5 class="box-event-modern-title"><a href="{{ route('eventi.show', $event->slug) }}">{{ $event->title }}</a></h5>
+                                        <div class="box-event-modern-text">
+                                            <p>{{ Str::limit($event->short_description, 120) }}</p>
+                                        </div>
+                                        <div class="box-event-modern-info">
+                                            <span><i class="bi bi-geo-alt"></i> {{ $event->location }}</span>
+                                        </div>
+                                        <a href="{{ route('eventi.show', $event->slug) }}" class="button button-sm button-default-outline button-wapasha">
+                                            {{ __('Dettagli Evento') }}
+                                        </a>
                                     </div>
                                 </div>
                             </div>
@@ -138,18 +100,34 @@
                     </div>
                     
                     <!-- Gallery Images -->
-                    <div class="gallery-container">
-                        <div class="row row-30 gallery-grid">
+                    <div class="mt-5 mb-5">
+                        <h4 class="heading-4 mb-4">{{ __('Foto') }}</h4>
+                        <div class="divider"></div>
+                        
+                        <div class="row row-30 offset-top-40" data-lightgallery="group">
                             @forelse($images as $image)
-                                <div class="col-sm-6 col-lg-4 gallery-item">
-                                    <a href="{{ asset($image->file_path) }}" data-lightbox="album-gallery" data-title="{{ $image->title ?? $album->title }}">
-                                        <img src="{{ asset($image->thumbnail_path ?? $image->file_path) }}" alt="{{ $image->title ?? $album->title }}" loading="lazy">
-                                    </a>
+                                <div class="col-sm-6 col-lg-4">
+                                    <div class="thumbnail-classic">
+                                        <div class="thumbnail-classic-figure">
+                                            <a href="{{ Storage::url($image->image_path) }}" data-lightgallery="item" data-title="{{ $image->caption ?? $album->title }}">
+                                                <div class="image-height-1">
+                                                    <img src="{{ Storage::url($image->image_path) }}" alt="{{ $image->caption ?? $album->title }}" loading="lazy">
+                                                </div>
+                                            </a>
+                                        </div>
+                                        @if($image->caption)
+                                        <div class="thumbnail-classic-caption">
+                                            <div class="thumbnail-classic-title-wrap">
+                                                <h6 class="thumbnail-classic-title">{{ $image->caption }}</h6>
+                                            </div>
+                                        </div>
+                                        @endif
+                                    </div>
                                 </div>
                             @empty
                                 <div class="col-12">
-                                    <div class="alert alert-info">
-                                        {{ __('Non ci sono immagini disponibili in questo album.') }}
+                                    <div class="box-default">
+                                        <p>{{ __('Non ci sono immagini disponibili in questo album.') }}</p>
                                     </div>
                                 </div>
                             @endforelse
@@ -157,115 +135,137 @@
                         
                         <!-- Pagination -->
                         @if($images instanceof \Illuminate\Pagination\LengthAwarePaginator)
-                            <div class="pagination-wrap">
+                            <div class="pagination-wrap mt-4">
                                 {{ $images->links() }}
                             </div>
                         @endif
                     </div>
-                    
-                    <!-- Social Share -->
-                    <div class="social-share mt-4">
-                        <h5>{{ __('Condividi questa galleria') }}</h5>
-                        <ul class="list-inline">
-                            <li class="list-inline-item">
-                                <a href="https://www.facebook.com/sharer/sharer.php?u={{ urlencode(route('galleria.show', $album->slug)) }}" target="_blank" aria-label="Condividi su Facebook">
-                                    <i class="bi bi-facebook"></i>
-                                </a>
-                            </li>
-                            <li class="list-inline-item">
-                                <a href="https://twitter.com/intent/tweet?text={{ urlencode($album->title) }}&url={{ urlencode(route('galleria.show', $album->slug)) }}" target="_blank" aria-label="Condividi su Twitter">
-                                    <i class="bi bi-twitter"></i>
-                                </a>
-                            </li>
-                            <li class="list-inline-item">
-                                <a href="https://wa.me/?text={{ urlencode($album->title . ' - ' . route('galleria.show', $album->slug)) }}" target="_blank" aria-label="Condividi su WhatsApp">
-                                    <i class="bi bi-whatsapp"></i>
-                                </a>
-                            </li>
-                            <li class="list-inline-item">
-                                <a href="mailto:?subject={{ urlencode($album->title) }}&body={{ urlencode(($album->description ?? '') . ' - ' . route('galleria.show', $album->slug)) }}" aria-label="Condividi via Email">
-                                    <i class="bi bi-envelope"></i>
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
                 </div>
                 
-                <div class="col-lg-4">
-                    <div class="aside-gallery">
+                <div class="col-lg-12">
+                    <div class="aside">
                         <!-- Other Albums -->
                         @if($otherAlbums->count() > 0)
-                            <div class="aside-gallery-item">
-                                <h5 class="aside-gallery-title">{{ __('Altri Album') }}</h5>
-                                <div class="row row-20">
-                                    @foreach($otherAlbums as $otherAlbum)
-                                        <div class="col-6 col-lg-6">
-                                            <div class="related-album">
-                                                <a href="{{ route('galleria.show', $otherAlbum->slug) }}">
-                                                    <img src="{{ $otherAlbum->cover_image_path ? asset($otherAlbum->cover_image_path) : asset('images/gallery-default.jpg') }}" alt="{{ $otherAlbum->title }}" loading="lazy">
-                                                    <h6 class="related-album-title">{{ $otherAlbum->title }}</h6>
+                            <div class="aside-item mb-5">
+                                <div class="card border-0 shadow-sm">
+                                    <div class="card-header bg-light border-0">
+                                        <h5 class="mb-0">
+                                            <i class="fas fa-images me-2 text-primary"></i>
+                                            {{ __('Altri Album') }}
+                                        </h5>
+                                    </div>
+                                    <div class="card-body p-0">
+                                        <div class="list-group list-group-flush">
+                                            @foreach($otherAlbums as $otherAlbum)
+                                                <a href="{{ route('galleria.album', $otherAlbum->slug) }}" class="list-group-item list-group-item-action border-0 py-3">
+                                                    <div class="row align-items-center">
+                                                        <div class="col-auto">
+                                                            <div class="position-relative">
+                                                                @php
+                                                                    $coverImage = null;
+                                                                    if ($otherAlbum->items()->count() > 0) {
+                                                                        $coverImage = $otherAlbum->items()->where('is_featured', 1)->first() ?? $otherAlbum->items()->orderBy('sort_order', 'asc')->first();
+                                                                    }
+                                                                @endphp
+                                                                <img src="{{ $coverImage && $coverImage->image_path ? Storage::url($coverImage->image_path) : asset('images/gallery-default.jpg') }}" 
+                                                                     class="rounded" 
+                                                                     alt="{{ $otherAlbum->title }}" 
+                                                                     loading="lazy"
+                                                                     style="width: 60px; height: 60px; object-fit: cover;">
+                                                                <div class="position-absolute top-0 start-0 bg-primary text-white rounded-circle d-flex align-items-center justify-content-center" 
+                                                                     style="width: 20px; height: 20px; font-size: 10px;">
+                                                                    <i class="fas fa-images"></i>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col">
+                                                            <h6 class="mb-1 text-dark">{{ $otherAlbum->title }}</h6>
+                                                            <small class="text-muted">
+                                                                <i class="fas fa-calendar me-1"></i>
+                                                                @if($otherAlbum->year)
+                                                                    {{ $otherAlbum->year }}
+                                                                @elseif($otherAlbum->start_date)
+                                                                    {{ $otherAlbum->start_date->format('Y') }}
+                                                                @endif
+                                                                • {{ $otherAlbum->items_count }} {{ __('foto') }}
+                                                            </small>
+                                                        </div>
+                                                        <div class="col-auto">
+                                                            <i class="fas fa-chevron-right text-muted"></i>
+                                                        </div>
+                                                    </div>
                                                 </a>
-                                            </div>
+                                            @endforeach
                                         </div>
-                                    @endforeach
-                                </div>
-                                <div class="text-center mt-4">
-                                    <a href="{{ route('galleria') }}" class="button button-sm button-default-outline-2 button-wapasha">
-                                        {{ __('Tutti gli Album') }}
-                                    </a>
+                                    </div>
+                                    <div class="card-footer bg-light border-0 text-center">
+                                        <a href="{{ route('galleria') }}" class="btn btn-sm btn-outline-primary">
+                                            <i class="fas fa-th-large me-1"></i>
+                                            {{ __('Tutti gli Album') }}
+                                        </a>
+                                    </div>
                                 </div>
                             </div>
                         @endif
                         
                         <!-- Archive -->
-                        <div class="aside-gallery-item mt-5">
-                            <h5 class="aside-gallery-title">{{ __('Archivio') }}</h5>
-                            <ul class="list-marked list-marked-secondary">
-                                @foreach(range(date('Y'), date('Y') - 4) as $year)
-                                    <li><a href="{{ route('galleria', ['year' => $year]) }}">{{ $year }}</a></li>
-                                @endforeach
-                            </ul>
+                        <div class="aside-item mb-4">
+                            <div class="card border-0 shadow-sm">
+                                <div class="card-header bg-light border-0">
+                                    <h5 class="mb-0">
+                                        <i class="fas fa-calendar-alt me-2 text-primary"></i>
+                                        {{ __('Archivio') }}
+                                    </h5>
+                                </div>
+                                <div class="card-body p-3">
+                                    <div class="d-flex flex-wrap gap-1">
+                                        @foreach(range(date('Y'), date('Y') - 4) as $year)
+                                            <a href="{{ route('galleria', ['year' => $year]) }}" 
+                                               class="badge badge-pill badge-outline-primary transition-all hover-scale-sm">
+                                                {{ $year }}
+                                            </a>
+                                        @endforeach
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                         
                         <!-- Social Links -->
-                        <div class="aside-gallery-item mt-5">
-                            <h5 class="aside-gallery-title">{{ __('Seguici sui Social') }}</h5>
-                            <ul class="list-inline social-list">
-                                <li class="list-inline-item">
-                                    <a href="https://www.facebook.com/bandafolk" target="_blank" aria-label="Facebook">
-                                        <i class="bi bi-facebook"></i>
-                                    </a>
-                                </li>
-                                <li class="list-inline-item">
-                                    <a href="https://www.instagram.com/bandafolk" target="_blank" aria-label="Instagram">
-                                        <i class="bi bi-instagram"></i>
-                                    </a>
-                                </li>
-                                <li class="list-inline-item">
-                                    <a href="https://www.youtube.com/bandafolk" target="_blank" aria-label="YouTube">
-                                        <i class="bi bi-youtube"></i>
-                                    </a>
-                                </li>
-                            </ul>
+                        <div class="aside-item">
+                            <div class="card border-0 shadow-sm">
+                                <div class="card-header bg-light border-0">
+                                    <h5 class="mb-0">
+                                        <i class="fas fa-share-alt me-2 text-primary"></i>
+                                        {{ __('Seguici sui Social') }}
+                                    </h5>
+                                </div>
+                                <div class="card-body p-3">
+                                    <div class="d-flex justify-content-center gap-2">
+                                        <a href="https://www.facebook.com/bandafolk" 
+                                           target="_blank" 
+                                           class="btn btn-outline-primary btn-sm rounded-circle"
+                                           aria-label="Facebook">
+                                            <i class="fab fa-facebook-f"></i>
+                                        </a>
+                                        <a href="https://www.instagram.com/bandafolk" 
+                                           target="_blank" 
+                                           class="btn btn-outline-danger btn-sm rounded-circle"
+                                           aria-label="Instagram">
+                                            <i class="fab fa-instagram"></i>
+                                        </a>
+                                        <a href="https://www.youtube.com/bandafolk" 
+                                           target="_blank" 
+                                           class="btn btn-outline-danger btn-sm rounded-circle"
+                                           aria-label="YouTube">
+                                            <i class="fab fa-youtube"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </section>
-@endsection
-
-@section('scripts')
-<script src="https://cdn.jsdelivr.net/npm/lightbox2@2.11.3/dist/js/lightbox.min.js"></script>
-<link href="https://cdn.jsdelivr.net/npm/lightbox2@2.11.3/dist/css/lightbox.min.css" rel="stylesheet">
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        // Initialize Lightbox
-        lightbox.option({
-            'resizeDuration': 200,
-            'wrapAround': true,
-            'albumLabel': "{{ __('Immagine %1 di %2') }}"
-        });
-    });
-</script>
 @endsection

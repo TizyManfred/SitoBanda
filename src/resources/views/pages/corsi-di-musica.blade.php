@@ -16,7 +16,7 @@
                     <li class="active">{{ __('Corsi di Musica') }}</li>
                 </ul>
             </div>
-            <div class="box-position" style="background-image: url({{ asset('images/corsi-musica-header.jpg') }});"></div>
+            <div class="box-position" style="background-image: url({{ asset('images/FotoShanghai1.jpeg') }});"></div>
         </div>
     </section>
 
@@ -29,7 +29,7 @@
                     <div class="course-description-wrap">
                         <h2>{{ __('Impara a Suonare con Noi') }}</h2>
                         <div class="course-main-image">
-                            <img src="{{ asset('images/corsi-musica-main.jpg') }}" alt="{{ __('Corsi di Musica della Banda Folk di Castello Tesino') }}" class="img-fluid">
+                            <img src="{{ asset('images/FotoTrento1.jpg') }}" alt="{{ __('Corsi di Musica della Banda Folk di Castello Tesino') }}" class="img-fluid">
                         </div>
                         
                         <div class="course-text mt-4">
@@ -173,43 +173,5 @@
         </div>
     </section>
 
-    @push('structured-data')
-    <script type="application/ld+json">
-    {
-        "@context": "https://schema.org",
-        "@type": "Course",
-        "name": "Corsi di Musica della Banda Folk di Castello Tesino",
-        "description": "Corsi di musica per strumenti a fiato e percussioni organizzati dalla Banda Folk di Castello Tesino, aperti a tutti a partire dagli 8 anni.",
-        "provider": {
-            "@type": "Organization",
-            "name": "Banda Folk di Castello Tesino",
-            "sameAs": "{{ config('app.url') }}"
-        },
-        "hasCourseInstance": {
-            "@type": "CourseInstance",
-            "courseMode": ["onsite"],
-            "location": {
-                "@type": "Place",
-                "name": "Sede della Banda Folk di Castello Tesino",
-                "address": {
-                    "@type": "PostalAddress",
-                    "streetAddress": "Via Venezia 18",
-                    "addressLocality": "Castello Tesino",
-                    "addressRegion": "TN",
-                    "postalCode": "38053",
-                    "addressCountry": "IT"
-                }
-            },
-            "startDate": "2024-09-01",
-            "endDate": "2025-06-30",
-            "offers": {
-                "@type": "Offer",
-                "price": "220",
-                "priceCurrency": "EUR",
-                "description": "Comprensivo di assicurazione, con sconto di €50 dal secondo fratello"
-            }
-        }
-    }
-    </script>
-    @endpush
+    
 @endsection

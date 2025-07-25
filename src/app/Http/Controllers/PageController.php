@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Member;
 use App\Models\Section;
+use App\Models\SectionImage;
 
 class PageController extends Controller
 {
@@ -36,18 +37,38 @@ class PageController extends Controller
     public function organico()
     {
         try {
-            // Get all sections with their members, ordered by display_order
-            $sections = Section::with(['members' => function($query) {
-                $query->orderBy('display_order', 'asc');
-            }])
+            // Eager load sections with their members and images
+            $sections = Section::with([
+                'members' => function($query) {
+                    $query->orderBy('last_name', 'asc')
+                          ->orderBy('first_name', 'asc');
+                },
+                'images' => function($query) {
+                    $query->orderBy('display_order', 'asc');
+                }
+            ])
             ->orderBy('display_order', 'asc')
             ->get();
-        } catch (\Exception $e) {
-            \Log::error("Error fetching organico data: " . $e->getMessage());
-            $sections = [];
-        }
+            
+            // Calculate total number of members
+            $totalMembers = $sections->sum(function($section) {
+                return $section->members ? $section->members->count() : 0;
+            });
 
-        return view('pages.organico', compact('sections'));
+            return view('pages.organico', [
+                'sections' => $sections,
+                'totalMembers' => $totalMembers
+            ]);
+            
+        } catch (\Exception $e) {
+            // Log the error and return empty data to prevent breaking the page
+            \Log::error('Error in PageController@organico: ' . $e->getMessage());
+            
+            return view('pages.organico', [
+                'sections' => collect(),
+                'totalMembers' => 0
+            ]);
+        }
     }
 
     /**

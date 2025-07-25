@@ -6,10 +6,12 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use App\Models\Traits\SortableTrait;
+use Spatie\Translatable\HasTranslations;
 
 class GalleryItem extends Model
 {
-    use HasFactory, SoftDeletes;
+    use HasFactory, SoftDeletes, SortableTrait, HasTranslations;
 
     /**
      * The table associated with the model.
@@ -23,14 +25,17 @@ class GalleryItem extends Model
      *
      * @var array<int, string>
      */
+    public $translatable = [
+        'caption',
+    ];
+
     protected $fillable = [
         'album_id',
-        'title',
-        'description',
-        'alt_text',
-        'path',
+        'caption',
+        'image_path',
+        'is_featured',
+        'taken_at',
         'sort_order',
-        'is_published',
     ];
 
     /**
@@ -39,7 +44,13 @@ class GalleryItem extends Model
      * @var array<string, string>
      */
     protected $casts = [
-        'is_published' => 'boolean',
+        'is_featured' => 'boolean',
+        'taken_at' => 'datetime',
+    ];
+
+    public array $sortable = [
+        'order_column_name' => 'sort_order',
+        'sort_when_creating' => true,
     ];
 
     /**

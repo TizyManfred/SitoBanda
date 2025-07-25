@@ -15060,3 +15060,197 @@ Aggiunte CSS
 		right: 60px;
 	}
 }
+
+/* Shadow utilities */
+.shadow-sm {
+	box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.shadow-md {
+	box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+}
+
+.shadow-lg {
+	box-shadow: 0 0 30px rgba(0, 0, 0, 0.1);
+}
+
+/* Overflow utilities */
+.overflow-hidden {
+	overflow: hidden;
+}
+
+/* Position utilities */
+.top-0 {
+	top: 0;
+}
+
+.right-0 {
+	right: 0;
+}
+
+.bottom-0 {
+	bottom: 0;
+}
+
+.left-0 {
+	left: 0;
+}
+
+/* Background utilities */
+.bg-black-opacity-50 {
+	background-color: rgba(0, 0, 0, 0.5);
+}
+
+.bg-black-opacity-60 {
+	background-color: rgba(0, 0, 0, 0.6);
+}
+
+.bg-black-opacity-70 {
+	background-color: rgba(0, 0, 0, 0.75);
+}
+
+.bg-black-opacity-90 {
+	background-color: rgba(0, 0, 0, 0.9);
+}
+
+.bg-white-opacity-50 {
+	background-color: rgba(255, 255, 255, 0.5);
+}
+
+/* Ensure Font Awesome icons are not italic */
+.fas, .far, .fab, .fa {
+    font-style: normal !important;
+}
+
+/*
+*
+* Hover Effects and Transitions
+*/
+
+/* Scale utilities */
+.scale-hover {
+    transition: transform 0.3s ease;
+}
+
+.scale-hover:hover {
+    transform: scale(1.05);
+}
+
+.scale-hover-sm {
+    transition: transform 0.3s ease;
+}
+
+.scale-hover-sm:hover {
+    transform: scale(1.02);
+}
+
+.scale-hover-lg {
+    transition: transform 0.3s ease;
+}
+
+.scale-hover-lg:hover {
+    transform: scale(1.1);
+}
+
+/* Image hover effects */
+.img-hover-zoom {
+    overflow: hidden;
+}
+
+.img-hover-zoom img {
+    transition: transform 0.3s ease;
+}
+
+.img-hover-zoom:hover img {
+    transform: scale(1.05);
+}
+
+.img-hover-zoom-sm {
+    overflow: hidden;
+}
+
+.img-hover-zoom-sm img {
+    transition: transform 0.3s ease;
+}
+
+.img-hover-zoom-sm:hover img {
+    transform: scale(1.02);
+}
+
+.img-hover-zoom-lg {
+    overflow: hidden;
+}
+
+.img-hover-zoom-lg img {
+    transition: transform 0.3s ease;
+}
+
+.img-hover-zoom-lg:hover img {
+    transform: scale(1.1);
+}
+
+/* Card hover effects */
+.card-hover {
+    transition: all 0.3s ease;
+}
+
+.card-hover:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+.card-hover-scale {
+    transition: all 0.3s ease;
+}
+
+.card-hover-scale:hover {
+    transform: scale(1.02);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+/* Transition utilities */
+.transition-all {
+    transition: all 0.3s ease;
+}
+
+.transition-transform {
+    transition: transform 0.3s ease;
+}
+
+.transition-shadow {
+    transition: box-shadow 0.3s ease;
+}
+
+.transition-opacity {
+    transition: opacity 0.3s ease;
+}
+
+/* Duration utilities */
+.duration-150 {
+    transition-duration: 0.15s;
+}
+
+.duration-200 {
+    transition-duration: 0.2s;
+}
+
+.duration-300 {
+    transition-duration: 0.3s;
+}
+
+.duration-500 {
+    transition-duration: 0.5s;
+}
+
+/* Easing utilities */
+.ease-in-out {
+    transition-timing-function: ease-in-out;
+}
+
+.ease-out {
+    transition-timing-function: ease-out;
+}
+
+.ease-in {
+    transition-timing-function: ease-in;
+}

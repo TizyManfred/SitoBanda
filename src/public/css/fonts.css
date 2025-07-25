@@ -5,17 +5,17 @@
 /*
 *
 * Font Awesome Icons 4.7.0
-* --------------------------------------------------assets/fonts/assets/fonts/assets/fonts/assets/fonts/assets/fonts/assets/fonts/
+* --------------------------------------------------
 */
 @font-face {
 	font-family: 'FontAwesome';
 	src: url("../fonts/fontawesome-webfont.eot?v=4.7.0");
-	src: url("../fonts/fontawesome-webfont.eot?#iefix&v=4.7.0") format("assets/fonts/ed-opentype"), url("../fonts/fontawesome-webfont.woff2?v=4assets/fonts/ format("woff2"), url("../fonts/fontawesome-webfont.woff?v=4.7.0") format("woff"), url(assets/fonts/nts/fontawesome-webfont.ttf?v=4.7.0") format("truetype"), url("../fontassets/fonts/awesome-webfont.svg?v=4.7.0#fontawesomeregular") format("svg");assets/fonts/assets/fonts/
+	src: url("../fonts/fontawesome-webfont.eot?#iefix&v=4.7.0") format("embedded-opentype"), url("../fonts/fontawesome-webfont.woff2?v=4.7.0") format("woff2"), url("../fonts/fontawesome-webfont.woff?v=4.7.0") format("woff"), url("../fonts/fontawesome-webfont.ttf?v=4.7.0") format("truetype"), url("../fonts/fontawesome-webfont.svg?v=4.7.0#fontawesomeregular") format("svg");
 	font-weight: normal;
 	font-style: normal;
 }
 
-.fa {assets/fonts/assets/fonts/assets/fonts/assets/fonts/assets/fonts/assets/fonts/assets/fonts/assets/fonts/assets/fonts/
+.fa {
 	display: inline-block;
 	font-family: 'FontAwesome';
 	font-size: inherit;

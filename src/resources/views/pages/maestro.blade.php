@@ -1,9 +1,9 @@
 @extends('layouts.app')
 
 @section('title', 'Il Maestro - Banda Folk di Castello Tesino')
-@section('description', 'Conosci Marco Rossi, il maestro della Banda Folk di Castello Tesino. Scopri il suo percorso musicale e la sua visione artistica.')
+@section('description', 'Conosci Ivan Villanova, il maestro della Banda Folk di Castello Tesino. Diplomato in clarinetto, si è perfezionato con Fabio di Casola al Conservatorio della Svizzera Italiana.')
 @section('og_title', 'Il Maestro - Banda Folk di Castello Tesino')
-@section('og_description', 'Conosci Marco Rossi, il maestro della Banda Folk di Castello Tesino. Scopri il suo percorso musicale e la sua visione artistica.')
+@section('og_description', 'Conosci Ivan Villanova, il maestro della Banda Folk di Castello Tesino. Diplomato in clarinetto, si è perfezionato con Fabio di Casola al Conservatorio della Svizzera Italiana.')
 
 @section('content')
     <!-- Breadcrumbs -->
@@ -30,11 +30,12 @@
                     </div>
                 </div>
                 <div class="col-md-10 col-lg-7 col-xl-6">
-                    <h2 class="title-decoration-lines-left">{{ __('Marco Rossi') }}</h2>
-                    <h5 class="text-primary">{{ __('Maestro della Banda Folk di Castello Tesino dal 2010') }}</h5>
-                    <p class="text-gray-800">{{ __('Marco Rossi è nato a Trento nel 1975. Ha iniziato il suo percorso musicale all\'età di 8 anni, studiando pianoforte e tromba presso il Conservatorio di Trento. Successivamente, ha conseguito il diploma in Direzione d\'Orchestra presso lo stesso conservatorio, sotto la guida del maestro Antonio Bianchi.') }}</p>
-                    <p class="text-gray-800">{{ __('La sua carriera come direttore è iniziata nel 2000, quando ha assunto la direzione della Banda Giovanile del Trentino. Nel 2005 è diventato assistente del maestro Luigi Tessaro nella Banda Folk di Castello Tesino, per poi assumerne la direzione nel 2010.') }}</p>
-                    <p class="text-gray-800">{{ __('Sotto la sua guida, la Banda Folk ha ampliato il proprio repertorio, spaziando dalla musica tradizionale trentina a brani contemporanei, mantenendo sempre un forte legame con le radici culturali del territorio. Ha portato la banda a partecipare a numerosi festival internazionali, ottenendo importanti riconoscimenti.') }}</p>
+                    <h2 class="title-decoration-lines-left">{{ __('Ivan Villanova') }}</h2>
+                    <h5 class="text-primary">{{ __('Maestro della Banda Folk di Castello Tesino') }}</h5>
+                    <p class="text-gray-800">{{ __('Dopo il diploma in clarinetto si perfeziona con Fabio di Casola al Conservatorio della Svizzera Italiana e viene premiato in numerosi concorsi nazionali ed internazionali, tra i quali il 1° Premio assoluto al "Città di Stresa" 1996.') }}</p>
+                    <p class="text-gray-800">{{ __('Ha suonato come Primo Clarinetto nell\'Orchestra Sinfonica dell\'Emilia-Romagna "Fondazione Arturo Toscanini", l\'Orchestra del Gran Teatro "La Fenice", la Filarmonia Veneta e l\'Orchestra d\'Archi Italiana, collaborando inoltre con L\'Orchestra di Padova e del Veneto, l\'Orchestra del Teatro "G. Verdi" di Trieste, La Filarmonica di Modena e la Symphonica Toscanini (diretta da Lorin Maazel), con tournée in Europa, USA, Emirati Arabi e Giappone.') }}</p>
+                    <p class="text-gray-800">{{ __('È docente di Clarinetto alla Scuola Musicale di Primiero ed ha insegnato clarinetto ai Corsi Internazionali di Perfezionamento di Spilimbergo. Si diploma in Direzione all\'Istituto Superiore Europeo Bandistico sotto la guida di Jan Cober, Felix Hauswirth e Carlo Pirola, e nel 2009 vi consegue anche il Diploma Superiore, perfezionandosi poi con Jan Cober alla Bläserakademie Sächsen e con Douglas Bostock alla Bund Deutscher Blasmusikverbände.') }}</p>
+                    <p class="text-gray-800">{{ __('Direttore principale della Dolomiti Wind Orchestra, guida la Banda Folkloristica di Castello Tesino e la Banda Città di Feltre. Ha insegnato Direzione ai Corsi Internazionali di Spilimbergo, a fianco di José Rafael Pascual-Vilaplana.') }}</p>
                 </div>
             </div>
         </div>
@@ -52,8 +53,8 @@
                                 <div class="box-icon-classic-icon bi-award"></div>
                             </div>
                             <div class="unit-body">
-                                <h5 class="box-icon-classic-title">{{ __('Premio Eccellenza') }}</h5>
-                                <p class="box-icon-classic-text">{{ __('Concorso Nazionale Bande Musicali, Riva del Garda, 2015') }}</p>
+                                <h5 class="box-icon-classic-title">{{ __('1° Premio Assoluto') }}</h5>
+                                <p class="box-icon-classic-text">{{ __('Concorso "Città di Stresa" 1996') }}</p>
                             </div>
                         </div>
                     </article>
@@ -65,8 +66,8 @@
                                 <div class="box-icon-classic-icon bi-music-note-beamed"></div>
                             </div>
                             <div class="unit-body">
-                                <h5 class="box-icon-classic-title">{{ __('Pubblicazioni') }}</h5>
-                                <p class="box-icon-classic-text">{{ __('Autore di "Armonie del Tesino", raccolta di arrangiamenti per banda di musiche tradizionali trentine') }}</p>
+                                <h5 class="box-icon-classic-title">{{ __('Orchestre Prestigiose') }}</h5>
+                                <p class="box-icon-classic-text">{{ __('Primo Clarinetto in Orchestra Sinfonica Emilia-Romagna, La Fenice, Filarmonia Veneta') }}</p>
                             </div>
                         </div>
                     </article>
@@ -79,7 +80,7 @@
                             </div>
                             <div class="unit-body">
                                 <h5 class="box-icon-classic-title">{{ __('Tournée Internazionali') }}</h5>
-                                <p class="box-icon-classic-text">{{ __('Ha diretto la banda in tournée in Austria, Germania, Francia e Svizzera') }}</p>
+                                <p class="box-icon-classic-text">{{ __('Tournée in Europa, USA, Emirati Arabi e Giappone con la Symphonica Toscanini') }}</p>
                             </div>
                         </div>
                     </article>
@@ -100,11 +101,11 @@
                                 <path d="M8.9,10.5H2.5c0-5.4,4.4-9.7,9.8-9.7v5.4C10.3,6.1,8.9,8.1,8.9,10.5z M23.2,10.5h-6.4c0-5.4,4.4-9.7,9.8-9.7v5.4C24.7,6.1,23.2,8.1,23.2,10.5z"></path>
                             </svg>
                             <div class="quote-primary-text">
-                                <p>{{ __('La musica bandistica è un patrimonio culturale che va preservato e valorizzato. Il mio obiettivo come direttore è quello di mantenere viva questa tradizione, adattandola ai tempi moderni senza snaturarne l\'essenza. Credo fermamente che la banda sia un\'importante agenzia educativa e sociale, capace di unire persone di diverse generazioni e background attraverso il linguaggio universale della musica.') }}</p>
+                                <p>{{ __('La musica è un linguaggio universale che unisce le persone. Come direttore, il mio obiettivo è valorizzare sia la tradizione musicale del nostro territorio che l\'innovazione artistica, creando un ponte tra passato e futuro attraverso l\'arte bandistica.') }}</p>
                             </div>
                         </div>
                         <div class="quote-primary-footer">
-                            <cite>Marco Rossi</cite>
+                            <cite>Ivan Villanova</cite>
                         </div>
                     </div>
                     
@@ -131,13 +132,17 @@
                         <div class="aside-maestro-item">
                             <h5 class="aside-maestro-title">{{ __('Curriculum Vitae') }}</h5>
                             <ul class="list-marked list-marked-primary">
-                                <li>{{ __('Diploma in Pianoforte, Conservatorio di Trento, 1996') }}</li>
-                                <li>{{ __('Diploma in Tromba, Conservatorio di Trento, 1998') }}</li>
-                                <li>{{ __('Diploma in Direzione d\'Orchestra, Conservatorio di Trento, 2002') }}</li>
-                                <li>{{ __('Direttore Banda Giovanile del Trentino, 2000-2005') }}</li>
-                                <li>{{ __('Assistente Direttore Banda Folk di Castello Tesino, 2005-2010') }}</li>
-                                <li>{{ __('Direttore Banda Folk di Castello Tesino, dal 2010') }}</li>
-                                <li>{{ __('Docente di Teoria e Solfeggio presso la Scuola Musicale di Borgo Valsugana, dal 2003') }}</li>
+                                <li>{{ __('Diploma in Clarinetto') }}</li>
+                                <li>{{ __('Perfezionamento con Fabio di Casola al Conservatorio della Svizzera Italiana') }}</li>
+                                <li>{{ __('1° Premio assoluto al "Città di Stresa" 1996') }}</li>
+                                <li>{{ __('Primo Clarinetto Orchestra Sinfonica Emilia-Romagna "Fondazione Arturo Toscanini"') }}</li>
+                                <li>{{ __('Primo Clarinetto Orchestra del Gran Teatro "La Fenice"') }}</li>
+                                <li>{{ __('Diploma in Direzione all\'Istituto Superiore Europeo Bandistico') }}</li>
+                                <li>{{ __('Diploma Superiore in Direzione (2009)') }}</li>
+                                <li>{{ __('Docente di Clarinetto alla Scuola Musicale di Primiero') }}</li>
+                                <li>{{ __('Direttore principale della Dolomiti Wind Orchestra') }}</li>
+                                <li>{{ __('Direttore Banda Folkloristica di Castello Tesino') }}</li>
+                                <li>{{ __('Direttore Banda Città di Feltre') }}</li>
                             </ul>
                         </div>
                         
@@ -147,34 +152,34 @@
                             <div class="list-schedule">
                                 <div class="list-schedule-item">
                                     <div class="list-schedule-left">
-                                        <span>2023</span>
+                                        <span>2009</span>
                                     </div>
                                     <div class="list-schedule-right">
-                                        <span>{{ __('Masterclass di Direzione Bandistica, Salisburgo') }}</span>
+                                        <span>{{ __('Diploma Superiore in Direzione, Istituto Superiore Europeo Bandistico') }}</span>
                                     </div>
                                 </div>
                                 <div class="list-schedule-item">
                                     <div class="list-schedule-left">
-                                        <span>2020</span>
+                                        <span>Ongoing</span>
                                     </div>
                                     <div class="list-schedule-right">
-                                        <span>{{ __('Corso di Arrangiamento per Banda, Milano') }}</span>
+                                        <span>{{ __('Perfezionamento con Jan Cober alla Bläserakademie Sächsen') }}</span>
                                     </div>
                                 </div>
                                 <div class="list-schedule-item">
                                     <div class="list-schedule-left">
-                                        <span>2018</span>
+                                        <span>Ongoing</span>
                                     </div>
                                     <div class="list-schedule-right">
-                                        <span>{{ __('Seminario sulla Musica Tradizionale Europea, Vienna') }}</span>
+                                        <span>{{ __('Perfezionamento con Douglas Bostock alla Bund Deutscher Blasmusikverbände') }}</span>
                                     </div>
                                 </div>
                                 <div class="list-schedule-item">
                                     <div class="list-schedule-left">
-                                        <span>2015</span>
+                                        <span>Various</span>
                                     </div>
                                     <div class="list-schedule-right">
-                                        <span>{{ __('Corso di Perfezionamento in Direzione, Roma') }}</span>
+                                        <span>{{ __('Docente di Direzione ai Corsi Internazionali di Spilimbergo') }}</span>
                                     </div>
                                 </div>
                             </div>

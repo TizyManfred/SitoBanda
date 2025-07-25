@@ -1,184 +1,115 @@
 @extends('layouts.app')
 
-@section('title', 'Galleria - Banda Folk di Castello Tesino')
-@section('description', 'Esplora la galleria fotografica della Banda Folk di Castello Tesino. Immagini dei nostri concerti, eventi e momenti speciali.')
-@section('og_title', 'Galleria - Banda Folk di Castello Tesino')
-@section('og_description', 'Esplora la galleria fotografica della Banda Folk di Castello Tesino. Immagini dei nostri concerti, eventi e momenti speciali.')
+@section('title', __('gallery.title') . ' - ' . config('app.name'))
+@section('description', __('gallery.description'))
+@section('og_title', __('gallery.title') . ' - ' . config('app.name'))
+@section('og_description', __('gallery.description'))
+
+@php
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
+@endphp
 
 @section('styles')
-<style>
-    .gallery-album {
-        margin-bottom: 30px;
-        transition: transform 0.3s ease;
-    }
-    .gallery-album:hover {
-        transform: translateY(-5px);
-    }
-    .gallery-album-img {
-        position: relative;
-        overflow: hidden;
-        border-radius: 5px;
-    }
-    .gallery-album-img img {
-        width: 100%;
-        height: 250px;
-        object-fit: cover;
-        transition: transform 0.5s ease;
-    }
-    .gallery-album:hover .gallery-album-img img {
-        transform: scale(1.05);
-    }
-    .gallery-album-overlay {
-        position: absolute;
-        bottom: 0;
-        left: 0;
-        right: 0;
-        background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0) 100%);
-        padding: 20px;
-        color: white;
-    }
-    .gallery-album-title {
-        margin: 0;
-        font-size: 18px;
-        font-weight: 600;
-    }
-    .gallery-album-count {
-        font-size: 14px;
-        opacity: 0.8;
-    }
-    .gallery-album-year {
-        position: absolute;
-        top: 15px;
-        right: 15px;
-        background-color: rgba(1, 179, 167, 0.8);
-        color: white;
-        padding: 5px 10px;
-        border-radius: 3px;
-        font-size: 14px;
-        font-weight: 600;
-    }
-    .gallery-filter {
-        margin-bottom: 30px;
-    }
-    .gallery-filter .btn {
-        margin-right: 5px;
-        margin-bottom: 10px;
-    }
-    .gallery-filter .btn.active {
-        background-color: #01b3a7;
-        color: white;
-    }
-</style>
+<!-- Using existing classes from style.css and bootstrap.css -->
 @endsection
 
 @section('content')
-    <!-- Breadcrumbs -->
-    <section class="breadcrumbs-custom-inset">
-        <div class="breadcrumbs-custom context-dark bg-overlay-60">
-            <div class="container">
-                <h1 class="breadcrumbs-custom-title">{{ __('Galleria') }}</h1>
-                <ul class="breadcrumbs-custom-path">
-                    <li><a href="{{ route('home') }}">{{ __('Home') }}</a></li>
-                    <li class="active">{{ __('Galleria') }}</li>
-                </ul>
-            </div>
-            <div class="box-position" style="background-image: url({{ asset('images/FotoSanIppolito1.jpg') }});"></div>
-        </div>
-    </section>
-
-    <!-- Gallery Albums -->
-    <section class="section section-sm section-first bg-default text-md-left">
+<!-- Breadcrumbs -->
+<section class="breadcrumbs-custom-inset">
+    <div class="breadcrumbs-custom context-dark bg-overlay-60">
         <div class="container">
-            <h3 class="oh-desktop"><span class="d-inline-block wow slideInUp">{{ __('Album Fotografici') }}</span></h3>
-            
-            <!-- Gallery Filter -->
-            <div class="gallery-filter">
-                <div class="btn-group" role="group" aria-label="Gallery filter">
-                    <button type="button" class="btn btn-outline-primary active" data-filter="*">{{ __('Tutti') }}</button>
-                    <button type="button" class="btn btn-outline-primary" data-filter=".concerti">{{ __('Concerti') }}</button>
-                    <button type="button" class="btn btn-outline-primary" data-filter=".trasferte">{{ __('Trasferte') }}</button>
-                    <button type="button" class="btn btn-outline-primary" data-filter=".eventi">{{ __('Eventi') }}</button>
-                </div>
+            <h1 class="breadcrumbs-custom-title">{{ __('gallery.title') }}</h1>
+            <ul class="breadcrumbs-custom-path">
+                <li><a href="{{ route('home') }}">{{ __('Home') }}</a></li>
+                <li class="active">{{ __('gallery.breadcrumb') }}</li>
+            </ul>
+        </div>
+        <div class="box-position" style="background-image: url({{ asset('images/FotoGalleria1.jpg') }});"></div>
+    </div>
+</section>
+
+<!-- Gallery Section -->
+<section class="section section-sm section-first bg-default">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-12 text-center mb-5">
+                <h2 class="title-decoration-lines-center mb-3">{{ __('gallery.header') }}</h2>
+                <p class="lead text-muted">{{ __('gallery.subheader') }}</p>
             </div>
-            
-            @if($albums->count() > 0)
-                <div class="row row-30 gallery-grid">
-                    @foreach($albums as $album)
-                        <div class="col-sm-6 col-lg-4 gallery-item {{ $album->category ?? 'altri' }}">
-                            <div class="gallery-album">
-                                <a href="{{ route('galleria.show', $album->slug) }}" class="gallery-album-link">
-                                    <div class="gallery-album-img">
-                                        @if($album->cover_image_path)
-                                            <img src="{{ asset($album->cover_image_path) }}" alt="{{ $album->title }}" loading="lazy">
-                                        @else
-                                            <img src="{{ asset('images/gallery-default.jpg') }}" alt="{{ $album->title }}" loading="lazy">
-                                        @endif
-                                        <div class="gallery-album-overlay">
-                                            <h4 class="gallery-album-title">{{ $album->title }}</h4>
-                                            <div class="gallery-album-count">
-                                                {{ $album->items->count() }} {{ __('foto') }}
-                                            </div>
-                                        </div>
-                                        @if($album->year)
-                                            <div class="gallery-album-year">{{ $album->year }}</div>
-                                        @endif
+        </div>
+        
+
+        
+        <!-- Albums Grid -->
+        <div class="row">
+            @if(isset($albums) && $albums->count() > 0)
+                @foreach($albums as $album)
+                    <a href="{{ route('galleria.album', $album->slug ?? $album->slug->it) }}" class="d-block col-md-6 col-lg-4 mb-5 wow fadeInUp" data-wow-delay="0.{{ $loop->iteration }}s">
+                        <div >
+                            <div class="card h-100 border-0 shadow-sm overflow-hidden rounded-0 card-hover-scale">
+                                <div class="position-relative img-hover-zoom">
+                                    @if($album->items->first())
+                                        <img src="{{ Storage::url($album->items->first()->image_path) }}" 
+                                                class="img-fluid" 
+                                                alt="{{ $album->title }}" 
+                                                loading="lazy"
+                                                style="height: 220px; width: 100%; object-fit: cover;">
+                                    @else
+                                        <img src="{{ asset('images/placeholder-album.jpg') }}" 
+                                                class="card-img-top img-fluid" 
+                                                alt="{{ $album->title }}" 
+                                                loading="lazy"
+                                                style="height: 220px; width: 100%; object-fit: cover;">
+                                    @endif
+                                    <div class="position-absolute top-0 right-0 bg-primary text-white p-2 rounded bg-black-opacity-60">
+                                        <i class="far fa-images"></i> {{ $album->items_count }}
                                     </div>
-                                </a>
-                                <div class="gallery-album-info mt-2">
-                                    <p class="gallery-album-description">
-                                        {{ Str::limit($album->description, 100) }}
-                                    </p>
-                                    <a href="{{ route('galleria.show', $album->slug) }}" class="button button-sm button-default-outline-2 button-wapasha">
-                                        {{ __('Visualizza Album') }}
-                                    </a>
+                                </div>
+                                <div class="card-body">
+                                    <h5 class="card-title mb-2">
+                                        <span class="text-dark text-decoration-none">{{ $album->title }}</span>
+                                    </h5>
+                                    @if($album->description)
+                                        <p class="card-text text-muted small mb-3">
+                                            {{ Str::limit($album->description, 120) }}
+                                        </p>
+                                    @endif
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <span class="badge bg-light text-dark">
+                                            <i class="far fa-calendar-alt me-1"></i> {{ $album->created_at->translatedFormat(__('M Y')) }}
+                                        </span>
+                                        <span class="btn btn-sm btn-outline-primary">
+                                            {{ __('gallery.view_album') }} <i class="fas fa-arrow-right ms-1"></i>
+                                        </span>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    @endforeach
-                </div>
-                
-                <div class="pagination-wrap">
-                    {{ $albums->links() }}
-                </div>
+                    </a>
+                @endforeach
             @else
-                <div class="alert alert-info">
-                    {{ __('Non ci sono album fotografici disponibili al momento.') }}
+                <div class="col-12">
+                    <div class="text-center py-5">
+                        <div class="mb-4">
+                            <i class="far fa-images fa-4x text-primary mb-3"></i>
+                        </div>
+                        <h4 class="mb-3">{{ __('gallery.no_albums') }}</h4>
+                        <p class="text-muted mb-4">{{ __('gallery.check_back') }}</p>
+                        <a href="{{ route('home') }}" class="btn btn-primary">
+                            <i class="fas fa-home me-2"></i> {{ __('gallery.back_to_home') }}
+                        </a>
+                    </div>
                 </div>
             @endif
         </div>
-    </section>
-@endsection
-
-@section('scripts')
-<script src="https://unpkg.com/isotope-layout@3/dist/isotope.pkgd.min.js"></script>
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        // Initialize Isotope
-        var grid = document.querySelector('.gallery-grid');
-        var iso = new Isotope(grid, {
-            itemSelector: '.gallery-item',
-            layoutMode: 'fitRows'
-        });
         
-        // Filter items on button click
-        document.querySelector('.gallery-filter').addEventListener('click', function(event) {
-            if (!event.target.matches('button')) return;
-            
-            var filterValue = event.target.getAttribute('data-filter');
-            
-            // Update active class
-            document.querySelectorAll('.gallery-filter .btn').forEach(function(btn) {
-                btn.classList.remove('active');
-            });
-            event.target.classList.add('active');
-            
-            // Filter items
-            if (filterValue === '*') {
-                iso.arrange({ filter: '*' });
-            } else {
-                iso.arrange({ filter: filterValue });
-            }
-        });
-    });
-</script>
+        <!-- Pagination -->
+        @if(isset($albums) && method_exists($albums, 'hasPages') && $albums->hasPages())
+            <div class="d-flex justify-content-center mt-5">
+                {{ $albums->links('pagination::bootstrap-4') }}
+            </div>
+        @endif
+    </div>
+</section>
 @endsection

@@ -29,12 +29,10 @@ class SectionResource extends Resource
                 Forms\Components\TextInput::make('name')
                     ->required()
                     ->maxLength(255),
-                Forms\Components\Textarea::make('description')
-                    ->columnSpanFull(),
-                Forms\Components\FileUpload::make('image_path')
-                    ->label('Section Image')
-                    ->image()
-                    ->directory('section-images'),
+                Forms\Components\TextInput::make('icon_class')
+                    ->label('Icon Class')
+                    ->maxLength(255)
+                    ->helperText('e.g., fas fa-guitar'),
                 Forms\Components\TextInput::make('display_order')
                     ->required()
                     ->numeric()
@@ -46,8 +44,10 @@ class SectionResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\ImageColumn::make('image_path')->label('Image'),
                 Tables\Columns\TextColumn::make('name')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('icon_class')
+                    ->label('Icon')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('display_order')
                     ->sortable(),
@@ -70,6 +70,7 @@ class SectionResource extends Resource
     {
         return [
             RelationManagers\MembersRelationManager::class,
+            RelationManagers\SectionImagesRelationManager::class,
         ];
     }
 

@@ -119,10 +119,10 @@
                   </ul>
                 </li>
                 <li class="rd-nav-item {{ request()->routeIs('galleria') ? 'active' : '' }}">
-                  <a class="rd-nav-link" href="{{ LaravelLocalization::transRoute('galleria') }}">{{ __('header.galleria') }}</a>
+                  <a class="rd-nav-link" href="{{ route('galleria') }}">{{ __('header.galleria') }}</a>
                 </li>
                 <li class="rd-nav-item {{ request()->routeIs('contatti') ? 'active' : '' }}">
-                  <a class="rd-nav-link" href="{{ LaravelLocalization::transRoute('contatti') }}">{{ __('header.contatti') }}</a>
+                  <a class="rd-nav-link" href="{{ route('contatti') }}">{{ __('header.contatti') }}</a>
                 </li>
               </ul>
             </div>

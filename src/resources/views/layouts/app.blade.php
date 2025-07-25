@@ -18,12 +18,11 @@
     <meta name="twitter:card" content="summary_large_image">
     
     <!-- Stylesheets-->
-    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Poppins:400,500%7CTeko:300,400,500%7CMaven+Pro:500">
+    <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Poppins:400,500%7CTeko:300,400,500%7CMaven+Pro:500">
     <link rel="stylesheet" href="{{ asset('css/bootstrap.css') }}">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link rel="stylesheet" href="{{ asset('css/fonts.css') }}">
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/language-switcher.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/sections.css') }}">
     
     @yield('styles')
     
@@ -54,6 +53,7 @@
     <!-- JavaScript -->
     <script src="{{ asset('js/core.min.js') }}"></script>
     <script src="{{ asset('js/script.js') }}"></script>
+    {{-- <script src="{{ asset('js/fslightbox.js') }}"></script> --}}
     @yield('scripts')
     
     @if(View::hasSection('structured_data'))

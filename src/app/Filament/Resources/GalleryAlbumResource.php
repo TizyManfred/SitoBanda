@@ -8,6 +8,7 @@ use App\Models\GalleryAlbum;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
+use Filament\Resources\Concerns\Translatable;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
@@ -15,6 +16,8 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Support\Str;
 use Filament\Forms\Set;
 use Filament\Tables\Filters\TrashedFilter;
+use Filament\SpatieLaravelTranslatablePlugin;
+use Mvenghaus\FilamentPluginTranslatableInline\Forms\Components\TranslatableContainer;
 
 class GalleryAlbumResource extends Resource
 {
@@ -27,30 +30,43 @@ class GalleryAlbumResource extends Resource
     public static function form(Form $form): Form
     {
         return $form
+            ->columns(4)
             ->schema([
-                Forms\Components\TextInput::make('title')
+                TranslatableContainer::make(
+                    Forms\Components\TextInput::make('title')
+                        ->required()
+                        ->maxLength(255)
+                        ->live(onBlur: true),
+                    )
+                    ->columnSpan(2),
+                Forms\Components\DatePicker::make('start_date')
                     ->required()
-                    ->maxLength(255)
-                    ->live(onBlur: true)
-                    ->afterStateUpdated(fn (Set $set, ?string $state) => $set('slug', Str::slug($state))),
-                Forms\Components\TextInput::make('slug')
-                    ->required()
-                    ->maxLength(255)
-                    ->unique(GalleryAlbum::class, 'slug', ignoreRecord: true),
-                Forms\Components\Textarea::make('description')
-                    ->columnSpanFull(),
-                Forms\Components\FileUpload::make('cover_image_path')
-                    ->image()
-                    ->directory('gallery-covers'),
+                    ->native(false)
+                    ->displayFormat('d/m/Y')
+                    ->closeOnDateSelection()
+                    ->columnSpan(1),
+                Forms\Components\DatePicker::make('end_date')
+                    ->native(false)
+                    ->displayFormat('d/m/Y')
+                    ->closeOnDateSelection()
+                    ->after('start_date')
+                    ->columnSpan(1),
+                TranslatableContainer::make(
+                    Forms\Components\Textarea::make('description')
+                )->columnSpanFull(),
                 Forms\Components\TextInput::make('year')
                     ->required()
-                    ->numeric(),
-                Forms\Components\Toggle::make('is_published')
-                    ->required(),
+                    ->numeric()
+                    ->default(fn () => now()->year),
                 Forms\Components\TextInput::make('view_count')
                     ->required()
                     ->numeric()
-                    ->default(0),
+                    ->default(0)
+                    ->disabled()
+                    ->dehydrated(),
+                Forms\Components\Toggle::make('is_published')
+                    ->default(true)
+                    ->required(),
             ]);
     }
 
@@ -61,6 +77,12 @@ class GalleryAlbumResource extends Resource
                 Tables\Columns\ImageColumn::make('cover_image_path')->label('Cover'),
                 Tables\Columns\TextColumn::make('title')
                     ->searchable(),
+                Tables\Columns\TextColumn::make('start_date')
+                    ->date('d/m/Y')
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('end_date')
+                    ->date('d/m/Y')
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('year')
                     ->numeric()
                     ->sortable(),
@@ -68,7 +90,8 @@ class GalleryAlbumResource extends Resource
                     ->boolean(),
                 Tables\Columns\TextColumn::make('view_count')
                     ->numeric()
-                    ->sortable(),
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
@@ -92,6 +115,31 @@ class GalleryAlbumResource extends Resource
         return [
             RelationManagers\ItemsRelationManager::class,
         ];
+    }
+
+    public static function getModelLabel(): string
+    {
+        return __('gallery.breadcrumb');
+    }
+
+    public static function getNavigationGroup(): ?string
+    {
+        return __('content');
+    }
+
+    public static function getTranslatableAttributes(): array
+    {
+        return ['title', 'description'];
+    }
+
+    public static function getTranslatableAttributesForTable(): array
+    {
+        return ['title'];
+    }
+
+    public static function getTranslatableAttributesForForm(): array
+    {
+        return ['title', 'description'];
     }
 
     public static function getPages(): array

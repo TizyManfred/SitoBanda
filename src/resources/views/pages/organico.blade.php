@@ -7,54 +7,28 @@
 
 @section('styles')
 <style>
-    .section-card {
-        margin-bottom: 40px;
-        border-radius: 10px;
+    .section-image-container {
+        height: 360px; /* Reduced by 20% from 450px */
         overflow: hidden;
-        box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+        display: flex;
+        align-items: center;
+        justify-content: center;
     }
-    .section-header {
-        background-color: #01b3a7;
-        color: white;
-        padding: 20px;
-        position: relative;
+    .section-image-container .slick-slider,
+    .section-image-container .slick-list,
+    .section-image-container .slick-track,
+    .section-image-container .slick-slide,
+    .section-image-container .slick-slide > div,
+    .section-image-container .thumbnail-classic,
+    .section-image-container .thumbnail-classic figure,
+    .section-image-container img {
+        height: 100% !important;
+        width: 100% !important;
+        object-fit: cover;
     }
-    .section-header h4 {
-        margin: 0;
-        font-weight: 600;
-    }
-    .section-icon {
-        font-size: 24px;
-        margin-right: 10px;
-        vertical-align: middle;
-    }
-    .section-body {
-        padding: 20px;
-        background-color: #fff;
-    }
-    .member-item {
-        padding: 10px 0;
-        border-bottom: 1px solid #eee;
-    }
-    .member-item:last-child {
-        border-bottom: none;
-    }
-    .member-name {
-        font-weight: 500;
-    }
-    .member-role {
-        color: #777;
-        font-size: 14px;
-    }
-    .section-count {
-        position: absolute;
-        right: 20px;
-        top: 50%;
-        transform: translateY(-50%);
-        background-color: rgba(255, 255, 255, 0.2);
-        border-radius: 20px;
-        padding: 5px 15px;
-        font-size: 14px;
+    .card-body {
+        max-height: 380px; /* Adjusted to fit the new layout */
+        overflow-y: auto;
     }
 </style>
 @endsection
@@ -64,157 +38,148 @@
     <section class="breadcrumbs-custom-inset">
         <div class="breadcrumbs-custom context-dark bg-overlay-60">
             <div class="container">
-                <h1 class="breadcrumbs-custom-title">{{ __('Organico') }}</h1>
+                <h2 class="breadcrumbs-custom-title">Organico</h2>
                 <ul class="breadcrumbs-custom-path">
-                    <li><a href="{{ route('home') }}">{{ __('Home') }}</a></li>
-                    <li class="active">{{ __('Organico') }}</li>
+                    <li><a href="/">Home</a></li>
+                    <li class="active">Organico</li>
                 </ul>
             </div>
-            <div class="box-position" style="background-image: url({{ asset('images/FotoSanIppolito1.jpg') }});"></div>
+            <div class="box-position" style="background-image: url('/images/FotoOrganico1.jpg');"></div>
         </div>
     </section>
 
-    <!-- Organico Content -->
+    <!-- Organico Intro -->
     <section class="section section-sm section-first bg-default text-md-left">
         <div class="container">
-            <div class="row row-50 justify-content-center">
-                <div class="col-md-10 col-lg-8 col-xl-7">
-                    <h3 class="oh-desktop"><span class="d-inline-block wow slideInUp">{{ __('I Nostri Musicisti') }}</span></h3>
-                    <p class="text-gray-800">{{ __('La Banda Folk di Castello Tesino è composta da musicisti di diverse età e background, uniti dalla passione per la musica. Ogni sezione strumentale contribuisce con il proprio timbro e colore alla creazione del suono caratteristico della nostra banda.') }}</p>
-                    
-                    @if($sections->count() > 0)
-                        @foreach($sections as $section)
-                            <div class="section-card">
-                                <div class="section-header">
-                                    <h4>
-                                        @if($section->icon_class)
-                                            <i class="section-icon {{ $section->icon_class }}"></i>
+            <div class="row justify-content-center">
+                <div class="col-lg-10 col-xl-8 text-center">
+                    <h2 class="title-decoration-lines-left">I Nostri Musicisti</h2>
+                    <p class="text-gray-800">La Banda Folk di Castello Tesino è composta da musicisti di diverse età e background, uniti dalla passione per la musica. Ogni sezione strumentale contribuisce con il proprio timbro e colore alla creazione del suono caratteristico della nostra banda.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sections Loop -->
+    @if(isset($sections) && count($sections) > 0)
+        @foreach($sections as $section)
+            <section class="section section-sm {{ $loop->odd ? 'bg-gray-100' : 'bg-default' }}">
+                <div class="container">
+                    <div class="row row-50 justify-content-center align-items-xl-center">
+                        <div class="col-md-10 col-lg-6 col-xl-6 {{ $loop->even ? 'order-lg-2' : '' }}">
+                            <div class="wow fadeInRight" >
+                                @if(isset($section->images) && $section->images->count() > 0)
+                                    <div id="gallery-{{ $section->id }}" class="carousel slide" data-ride="carousel" data-interval="{{ random_int(2000, 4000) }}" data-lightgallery="group">
+                                        <div class="carousel-inner" style="overflow: hidden;">
+                                            @foreach($section->images as $index => $image)
+                                                <div class="carousel-item {{ $loop->first ? 'active' : '' }}" style="height: 350px;">
+                                                    <a href="/storage/{{ $image->image_path }}" 
+                                                       data-lightgallery="item"
+                                                       >
+                                                        <img src="/storage/{{ $image->image_path }}" 
+                                                             class="d-block w-100 h-100"
+                                                             alt="{{ $image->caption ?? 'Sezione musicale' }} - Immagine {{ $loop->iteration }}" 
+                                                             loading="lazy"
+                                                             style="object-fit: cover; cursor: pointer;"
+                                                        >
+                                                    </a>
+                                                </div>
+                                            @endforeach
+                                        </div>
+                                        @if($section->images->count() > 1)
+                                            <a class="carousel-control-prev" href="#gallery-{{ $section->id }}" role="button" data-slide="prev">
+                                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                                <span class="sr-only">Precedente</span>
+                                            </a>
+                                            <a class="carousel-control-next" href="#gallery-{{ $section->id }}" role="button" data-slide="next">
+                                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                                <span class="sr-only">Successiva</span>
+                                            </a>
                                         @endif
-                                        {{ $section->name }}
+                                    </div>
+                                @else
+                                    <div style="height: 350px; display: flex; align-items: center; justify-content: center; background-color: #f8f9fa; border-radius: 8px;">
+                                        <span class="text-muted">Nessuna immagine disponibile</span>
+                                    </div>
+                                @endif
+                            </div>
+                        </div>
+                        <div class="col-md-10 col-lg-6 col-xl-6">
+                            <div class="card border-0 shadow-sm h-100">
+                                <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+                                    <h4 class="mb-0">
+                                        @if(isset($section->icon_class) && $section->icon_class)
+                                            <i class="{{ $section->icon_class }} me-2"></i>
+                                        @endif
+                                        {{ $section->name ?? 'Sezione senza nome' }}
                                     </h4>
-                                    <span class="section-count">{{ $section->members->count() }} {{ __('musicisti') }}</span>
+                                    <span class="badge bg-white text-primary">{{ is_countable($section->members) ? count($section->members) : 0 }} Musicisti</span>
                                 </div>
-                                <div class="section-body">
-                                    @if($section->members->count() > 0)
-                                        @foreach($section->members->sortBy('display_order') as $member)
-                                            <div class="member-item">
-                                                <div class="member-name">{{ $member->first_name }} {{ $member->last_name }}</div>
-                                                @if($member->role)
-                                                    <div class="member-role">{{ $member->role }}</div>
-                                                @endif
-                                            </div>
-                                        @endforeach
+                                <div class="card-body p-0">
+                                    @if(isset($section->members) && count($section->members) > 0)
+                                        @php
+                                            $members = $section->members->sortBy('last_name')->sortBy('first_name');
+                                        @endphp
+                                        <div class="list-group list-group-flush">
+                                            @foreach($members as $member)
+                                                <div class="list-group-item border-0 py-3 px-4">
+                                                    <div class="d-flex align-items-center">
+                                                        <div class="me-3 text-muted">
+                                                            <i class="fas fa-user"></i>
+                                                        </div>
+                                                        <div class="flex-grow-1">
+                                                            <div class="d-flex justify-content-between align-items-center">
+                                                                <span class="font-weight-bold">{{ $member->first_name }} {{ $member->last_name }}</span>
+                                                                @if(isset($member->instrument) && $member->instrument)
+                                                                    <span class="badge bg-light text-dark ms-2">{{ $member->instrument }}</span>
+                                                                @endif
+                                                            </div>
+                                                            @if(isset($member->role) && $member->role)
+                                                                <div class="small text-muted mt-1">{{ $member->role }}</div>
+                                                            @endif
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            @endforeach
+                                        </div>
                                     @else
-                                        <p class="text-muted">{{ __('Nessun musicista in questa sezione.') }}</p>
+                                        <div class="p-4 text-center text-muted">
+                                            <i class="fas fa-info-circle me-2"></i>Nessun musicista in questa sezione.
+                                        </div>
                                     @endif
                                 </div>
                             </div>
-                        @endforeach
-                    @else
-                        <div class="alert alert-info">
-                            {{ __('Non ci sono sezioni disponibili al momento.') }}
                         </div>
-                    @endif
+                    </div>
                 </div>
-                
-                <div class="col-md-10 col-lg-4 col-xl-5">
-                    <div class="aside-organico">
-                        <!-- Maestro -->
-                        <div class="aside-organico-item">
-                            <h4 class="aside-organico-title">{{ __('Il Maestro') }}</h4>
-                            <div class="team-classic team-classic-sm">
-                                <figure class="team-classic-figure">
-                                    <img src="{{ asset('images/maestro.jpg') }}" alt="Maestro della Banda Folk di Castello Tesino" width="370" height="370" loading="lazy">
-                                </figure>
-                                <div class="team-classic-caption">
-                                    <h5 class="team-classic-name">Marco Rossi</h5>
-                                    <p class="team-classic-status">{{ __('Maestro dal 2010') }}</p>
-                                    <p class="team-classic-text">{{ __('Diplomato al Conservatorio di Trento in direzione d\'orchestra, ha una lunga esperienza nella direzione di formazioni bandistiche. Ha portato innovazione nel repertorio della banda, pur mantenendo un forte legame con la tradizione.') }}</p>
-                                    <a class="button button-sm button-default-outline-2 button-wapasha" href="{{ route('maestro') }}">{{ __('Biografia Completa') }}</a>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <!-- Stats -->
-                        <div class="aside-organico-item mt-5">
-                            <h4 class="aside-organico-title">{{ __('La Banda in Numeri') }}</h4>
-                            <div class="row row-30">
-                                <div class="col-6">
-                                    <div class="counter-classic">
-                                        <div class="counter-classic-number"><span class="counter">{{ $sections->count() }}</span></div>
-                                        <h5 class="counter-classic-title">{{ __('Sezioni') }}</h5>
-                                    </div>
-                                </div>
-                                <div class="col-6">
-                                    <div class="counter-classic">
-                                        <div class="counter-classic-number"><span class="counter">{{ $totalMembers }}</span></div>
-                                        <h5 class="counter-classic-title">{{ __('Musicisti') }}</h5>
-                                    </div>
-                                </div>
-                                <div class="col-6">
-                                    <div class="counter-classic">
-                                        <div class="counter-classic-number"><span class="counter">122</span></div>
-                                        <h5 class="counter-classic-title">{{ __('Anni di Storia') }}</h5>
-                                    </div>
-                                </div>
-                                <div class="col-6">
-                                    <div class="counter-classic">
-                                        <div class="counter-classic-number"><span class="counter">30</span>+</div>
-                                        <h5 class="counter-classic-title">{{ __('Concerti all\'Anno') }}</h5>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <!-- Join Us -->
-                        <div class="aside-organico-item mt-5">
-                            <div class="box-cta">
-                                <h4 class="box-cta-title">{{ __('Unisciti a Noi!') }}</h4>
-                                <p>{{ __('Sei appassionato di musica? Vuoi imparare a suonare uno strumento o far parte della nostra banda?') }}</p>
-                                <a class="button button-lg button-primary button-winona" href="{{ route('contatti') }}">{{ __('Contattaci') }}</a>
-                            </div>
-                        </div>
+            </section>
+        @endforeach
+    @else
+        <section class="section section-sm bg-default text-center">
+            <div class="container">
+                <div class="alert alert-info">
+                    <i class="fas fa-info-circle me-2"></i>
+                    Le sezioni e i musicisti non sono ancora stati caricati. Torna a trovarci presto!
+                </div>
+            </div>
+        </section>
+    @endif
+
+    <!-- Join Us CTA -->
+    <section class="section section-sm bg-gray-100">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-md-10 col-lg-8 text-center">
+                    <div class="box-cta">
+                        <h3 class="box-cta-title">Vuoi far parte della nostra banda?</h3>
+                        <p class="box-cta-text">Cerchiamo sempre nuovi talenti! Contattaci per informazioni su come unirti a noi.</p>
+                        <a class="button button-primary button-pipaluk" href="{{ route('contatti') }}">Contattaci</a>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Testimonials -->
-    <section class="section section-sm bg-default">
-        <div class="container">
-            <h3 class="oh-desktop"><span class="d-inline-block wow slideInUp">{{ __('Cosa Dicono i Nostri Musicisti') }}</span></h3>
-            <div class="row row-sm row-40 row-md-50">
-                <div class="col-sm-6 col-md-4">
-                    <article class="quote-modern">
-                        <div class="quote-modern-text">
-                            <div class="q">{{ __('Far parte della banda mi ha permesso di crescere non solo come musicista, ma anche come persona. Ho trovato amici che condividono la mia stessa passione.') }}</div>
-                        </div>
-                        <h5 class="quote-modern-author">{{ __('Laura Bianchi') }}</h5>
-                        <p class="quote-modern-status">{{ __('Clarinetto') }}</p>
-                    </article>
-                </div>
-                <div class="col-sm-6 col-md-4">
-                    <article class="quote-modern">
-                        <div class="quote-modern-text">
-                            <div class="q">{{ __('Suonare nella banda è un\'esperienza unica. La sensazione di creare musica insieme ad altri musicisti è qualcosa di magico che ti resta dentro.') }}</div>
-                        </div>
-                        <h5 class="quote-modern-author">{{ __('Marco Verdi') }}</h5>
-                        <p class="quote-modern-status">{{ __('Tromba') }}</p>
-                    </article>
-                </div>
-                <div class="col-sm-6 col-md-4">
-                    <article class="quote-modern">
-                        <div class="quote-modern-text">
-                            <div class="q">{{ __('Ho iniziato a suonare nella banda quando avevo 10 anni. Oggi, dopo 15 anni, non potrei immaginare la mia vita senza questa grande famiglia musicale.') }}</div>
-                        </div>
-                        <h5 class="quote-modern-author">{{ __('Andrea Neri') }}</h5>
-                        <p class="quote-modern-status">{{ __('Percussioni') }}</p>
-                    </article>
-                </div>
-            </div>
-        </div>
-    </section>
 @endsection
 
 @section('scripts')

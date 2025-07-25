@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\GalleryAlbum;
-use App\Models\GalleryImage;
+use App\Models\GalleryItem;
 
 class GalleryController extends Controller
 {
@@ -16,17 +16,30 @@ class GalleryController extends Controller
     public function index()
     {
         try {
-            // Get all public gallery albums
-            $albums = GalleryAlbum::where('is_public', 1)
+            // Get all public gallery albums with pagination and first image as cover
+            $albums = GalleryAlbum::where('is_published', 1)
+                ->withCount('items')
+                ->with(['items' => function($query) {
+                    $query->orderBy('created_at', 'asc')->take(1);
+                }])
                 ->orderBy('created_at', 'desc')
-                ->get();
+                ->paginate(12);
+                
+            // Get distinct years for filtering
+            $years = GalleryAlbum::where('is_published', 1)
+                ->selectRaw('YEAR(created_at) as year')
+                ->distinct()
+                ->orderBy('year', 'desc')
+                ->pluck('year')
+                ->toArray();
                 
         } catch (\Exception $e) {
             \Log::error("Error fetching gallery albums: " . $e->getMessage());
             $albums = collect([]);
+            $years = [];
         }
         
-        return view('gallery.index', compact('albums'));
+        return view('gallery.index', compact('albums', 'years'));
     }
 
     /**
@@ -38,14 +51,18 @@ class GalleryController extends Controller
     public function show($slug)
     {
         try {
-            // Find album by slug
-            $album = GalleryAlbum::where('slug', $slug)
-                ->where('is_public', 1)
-                ->firstOrFail();
+            // Find album by slug in any language
+            $album = GalleryAlbum::where('is_published', 1)
+                ->where(function($query) use ($slug) {
+                    $query->where('slug->it', $slug)
+                          ->orWhere('slug->en', $slug)
+                          ->orWhere('slug->de', $slug);
+                })
+                ->firstOrFail();    
                 
             // Get all images in this album
-            $images = GalleryImage::where('album_id', $album->id)
-                ->orderBy('display_order', 'asc')
+            $images = GalleryItem::where('album_id', $album->id)
+                ->orderBy('sort_order', 'asc')
                 ->get();
                 
             // Get related event if exists
@@ -53,10 +70,13 @@ class GalleryController extends Controller
             
             // Get other albums (for navigation)
             $otherAlbums = GalleryAlbum::where('id', '!=', $album->id)
-                ->where('is_public', 1)
+                ->where('is_published', 1)
                 ->orderBy('created_at', 'desc')
                 ->limit(4)
                 ->get();
+
+            $album->view_count = $album->view_count + 1;
+            $album->save();
                 
         } catch (\Exception $e) {
             \Log::error("Error fetching gallery album: " . $e->getMessage());
