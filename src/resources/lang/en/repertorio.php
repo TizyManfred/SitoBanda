@@ -12,6 +12,7 @@ return [
     'main_intro' => 'The repertoire of the Banda Folk di Castello Tesino is vast and varied, ranging from traditional marches to contemporary compositions. Our mission is to preserve the Trentino musical heritage, enriching it with new sounds and modern arrangements.',
     
     'repertorio_year' => 'Repertoire :year',
+    'previous_repertoire' => 'Previous Years Repertoire',
     'no_repertoire_message' => 'No repertoire available at the moment.',
     'no_pieces_message' => 'No pieces available for this program.',
     'no_programs_message' => 'No repertoire programs available at the moment. Visit this page in the future to discover our repertoire.',

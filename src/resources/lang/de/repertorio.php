@@ -20,6 +20,7 @@ return [
     'no_programs_message' => 'Derzeit keine Repertoire-Programme verfügbar. Besuchen Sie diese Seite in Zukunft, um unser Repertoire zu entdecken.',
     
     'repertorio_year' => 'Repertoire :year',
+    'previous_repertoire' => 'Repertoire der Vorjahre',
     
     // Table Headers
     'table_title' => 'Titel',

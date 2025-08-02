@@ -3,6 +3,7 @@
 return [
     // Common fields across multiple resources
     'common' => [
+        'date_time' => 'Data e Ora',
         'title' => 'Titolo',
         'description' => 'Descrizione',
         'short_description' => 'Descrizione Breve',
@@ -53,6 +54,8 @@ return [
         'decimal_format' => 'Formato decimale',
         'created_at' => 'Data Creazione',
         'title' => 'Titolo',
+        'description' => 'Descrizione',
+        'short_description' => 'Descrizione Breve',
         'trashed_filter' => 'Cestino',
         'featured_filter' => 'In Evidenza',
         'visibility_filter' => 'Visibilità',
@@ -60,6 +63,8 @@ return [
         'not_featured' => 'Non in Evidenza',
         'public' => 'Pubblico',
         'private' => 'Privato',
+        'public_helper' => 'Gli eventi pubblici sono visibili sul sito pubblico',
+        'featured_helper' => 'Gli eventi in evidenza possono essere mostrati nella homepage o nelle sezioni principali',
     ],
     
     // Gallery specific fields
@@ -93,6 +98,7 @@ return [
         'cover_image' => 'Immagine di Copertina',
         'images' => 'Immagini',
         'images_helper' => 'Puoi selezionare più immagini da caricare contemporaneamente',
+        'multiple_upload_helper' => 'Seleziona più immagini da caricare contemporaneamente'
     ],
     
     // Repertoire specific fields
@@ -115,6 +121,29 @@ return [
         'genre' => 'Genere',
         'programs' => 'Programmi',
         'subtitle' => 'Sottotitolo',
+    ],
+    
+    // RepertoireProgram specific fields
+    'repertoire_program' => [
+        'name' => 'Nome',
+        'year' => 'Anno',
+        'season' => 'Stagione',
+        'display_order' => 'Ordine Visualizzazione',
+        'is_published' => 'Pubblicato',
+        'pieces_count' => 'Numero Brani',
+    ],
+    
+    // RepertoirePiece specific fields
+    'repertoire_piece' => [
+        'program' => 'Programma',
+        'title' => 'Titolo',
+        'composer' => 'Compositore',
+        'arranger' => 'Arrangiatore',
+        'genre' => 'Genere',
+        'duration' => 'Durata',
+        'description' => 'Descrizione',
+        'display_order' => 'Ordine Visualizzazione',
+        'relation_title' => 'Brani Musicali',
     ],
     
     // Members specific fields

@@ -13,7 +13,7 @@ class ArtisanCommands extends Page
 {
     protected static ?string $navigationIcon = 'heroicon-o-command-line';
     protected static ?string $navigationLabel = 'Artisan Commands';
-    protected static ?string $navigationGroup = 'System';
+    protected static ?string $navigationGroup = 'Sistema';
     protected static string $view = 'filament.pages.artisan-commands';
     
     public ?string $selectedCommand = '';

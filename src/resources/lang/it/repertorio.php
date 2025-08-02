@@ -16,6 +16,7 @@ return [
     'no_pieces_message' => 'Nessun brano disponibile per questo programma.',
     
     'repertorio_year' => 'Repertorio :year',
+    'previous_repertoire' => 'Repertorio degli anni precedenti',
     
     'table_title' => 'Titolo',
     'table_composer' => 'Compositore',

@@ -40,10 +40,11 @@
                                                     <img src="{{ asset('images/event-default.jpg') }}" alt="{{ $event->title }}" width="570" height="370" loading="lazy" class="img-fluid" style="height: 280px; width: 100%; object-fit: cover;">
                                                 @endif
                                             </a>
-                                            <div class="position-absolute top-0 left-0 bg-primary text-white p-3 rounded-bottom bg-black-opacity-70" style="border-radius: 0 0 10px 0;">
+                                            <div class="position-absolute top-0 left-0 bg-secondary text-white p-3 rounded-bottom bg-black-opacity-70" >
                                                 <div class="text-center">
-                                                    <div class="h4 mb-0 font-weight-bold">{{ $event->start_datetime->format('d') }}</div>
-                                                    <div class="small text-uppercase">{{ $event->start_datetime->translatedFormat('M') }}</div>
+                                                    <div class="mb-0 big font-weight-bold">{{ $event->start_datetime->format('d') }}</div>
+                                                    <div class="text-uppercase">{{ $event->start_datetime->translatedFormat('M') }}</div>
+                                                    <div class="text-uppercase">{{ $event->start_datetime->translatedFormat('Y') }}</div>
                                                 </div>
                                             </div>
                                         </div>
@@ -52,10 +53,12 @@
                                                 <a href="{{ route('eventi.show', $event->slug) }}" class="text-dark text-decoration-none">{{ $event->title }}</a>
                                             </h5>
                                             <div class="d-flex mb-3 gap-4">
+                                                @if($event->start_datetime->format('H:i') != '00:00')
                                                 <div>
                                                     <i class="far fa-clock me-1"></i>
                                                     <span class="text-muted">{{ $event->start_datetime->format('H:i') }}</span>
                                                 </div>
+                                                @endif
                                                 <div>
                                                     <i class="fas fa-map-marker-alt me-1"></i>
                                                     <span class="text-muted">{{ $event->location }}</span>
@@ -96,8 +99,9 @@
                                             </a>
                                             <div class="position-absolute top-0 left-0 bg-secondary text-white p-3 rounded-bottom bg-black-opacity-70" >
                                                 <div class="text-center">
-                                                    <div class="mb-0 font-weight-bold">{{ $event->start_datetime->format('d') }}</div>
-                                                    <div class="small text-uppercase">{{ $event->start_datetime->translatedFormat('M') }}</div>
+                                                    <div class="mb-0 big font-weight-bold">{{ $event->start_datetime->format('d') }}</div>
+                                                    <div class="text-uppercase">{{ $event->start_datetime->translatedFormat('M') }}</div>
+                                                    <div class="text-uppercase">{{ $event->start_datetime->translatedFormat('Y') }}</div>
                                                 </div>
                                             </div>
                                         </div>
@@ -106,10 +110,12 @@
                                                 <a href="{{ route('eventi.show', $event->slug) }}" class="text-dark text-decoration-none">{{ $event->title }}</a>
                                             </h5>
                                             <div class="d-flex mb-3 gap-4">
+                                                @if($event->start_datetime->format('H:i') != '00:00')
                                                 <div>
                                                     <i class="far fa-clock me-1"></i>
                                                     <span class="text-muted">{{ $event->start_datetime->format('H:i') }}</span>
                                                 </div>
+                                                @endif
                                                 <div>
                                                     <i class="fas fa-map-marker-alt me-1"></i>
                                                     <span class="text-muted">{{ $event->location }}</span>

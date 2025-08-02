@@ -212,7 +212,7 @@ class ItemsRelationManager extends RelationManager
                         }
                     })
                     ->modalHeading(__('fields.gallery.upload_multiple_images'))
-                    ->modalDescription(__('fields.gallery.upload_multiple_description'))
+                    ->modalDescription(__('fields.gallery.multiple_upload_helper'))
                     ->modalSubmitActionLabel(__('fields.gallery.upload_all_images'))
                     ->modalWidth('4xl'),
             ])

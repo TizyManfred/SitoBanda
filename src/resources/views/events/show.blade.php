@@ -24,7 +24,7 @@
                     <li class="active">{{ $event->title }}</li>
                 </ul>
             </div>
-            <div class="box-position" style="background-image: url({{ $event->image_path ? asset($event->image_path) : asset('images/event-default.jpg') }});"></div>
+            <div class="box-position" style="background-image: url({{ $event->image_path ? Storage::url($event->image_path) : asset('images/event-default.jpg') }});"></div>
         </div>
     </section>
 
@@ -54,16 +54,18 @@
                                 </div>
                             </div>
                             
-                            <div class="d-flex mb-3 gap-4">
-                                <div>
-                                    <i class="far fa-clock text-primary me-2"></i>
-                                    <strong>{{ __('events.time') }}:</strong> 
-                                    {{ $event->start_datetime->format('H:i') }}
-                                    @if($event->end_datetime)
-                                        - {{ $event->end_datetime->format('H:i') }}
-                                    @endif
+                            @if($event->start_datetime->format('H:i') != '00:00')
+                                <div class="d-flex mb-3 gap-4">
+                                    <div>
+                                        <i class="far fa-clock text-primary me-2"></i>
+                                        <strong>{{ __('events.time') }}:</strong> 
+                                        {{ $event->start_datetime->format('H:i') }}
+                                        @if($event->end_datetime)
+                                            - {{ $event->end_datetime->format('H:i') }}
+                                        @endif
+                                    </div>
                                 </div>
-                            </div>
+                            @endif
                             
                             <div class="d-flex mb-0 gap-4">
                                 <div>

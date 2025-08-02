@@ -4,13 +4,10 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\SoftDeletes;
 
 class RepertoireProgram extends Model
 {
-    use HasFactory, SoftDeletes;
+    use HasFactory;
 
     /**
      * The table associated with the model.
@@ -18,43 +15,50 @@ class RepertoireProgram extends Model
      * @var string
      */
     protected $table = 'repertoire_programs';
-
+    
     /**
      * The attributes that are mass assignable.
      *
-     * @var array<int, string>
+     * @var array
      */
     protected $fillable = [
-        'year_id',
-        'title',
-        'subtitle',
-        'description',
+        'name',
+        'year',
+        'season',
         'display_order',
-        'is_active',
+        'is_published',
     ];
 
     /**
      * The attributes that should be cast.
      *
-     * @var array<string, string>
+     * @var array
      */
     protected $casts = [
-        'is_active' => 'boolean',
+        'is_published' => 'boolean',
     ];
 
     /**
-     * Get the year that the program belongs to.
+     * Get the pieces that belong to this program.
      */
-    public function year(): BelongsTo
+    public function pieces()
     {
-        return $this->belongsTo(RepertoireYear::class, 'year_id');
+        return $this->hasMany(RepertoirePiece::class, 'repertoire_program_id');
     }
 
     /**
-     * Get the pieces for the repertoire program.
+     * Scope a query to only include published programs.
      */
-    public function pieces(): HasMany
+    public function scopePublished($query)
     {
-        return $this->hasMany(RepertoirePiece::class, 'program_id');
+        return $query->where('is_published', true);
+    }
+
+    /**
+     * Scope a query to order by the display order.
+     */
+    public function scopeOrdered($query)
+    {
+        return $query->orderBy('display_order', 'asc');
     }
 }

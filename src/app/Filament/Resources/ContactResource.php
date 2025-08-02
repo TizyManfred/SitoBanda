@@ -31,7 +31,7 @@ class ContactResource extends Resource
     
     public static function getNavigationGroup(): ?string
     {
-        return __('filament.navigation_groups.website');
+        return __('filament.navigation_groups.content_management');
     }
 
     public static function canCreate(): bool

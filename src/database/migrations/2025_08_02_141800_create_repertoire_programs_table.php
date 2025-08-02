@@ -6,22 +6,30 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    public function up(): void
+    /**
+     * Run the migrations.
+     *
+     * @return void
+     */
+    public function up()
     {
         Schema::create('repertoire_programs', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('year_id')->constrained('repertoire_years')->onDelete('cascade');
-            $table->string('title');
-            $table->string('subtitle')->nullable();
-            $table->text('description')->nullable();
+            $table->string('name'); // e.g. "ESTATE 2025"
+            $table->integer('year'); // e.g. 2025
+            $table->string('season'); // e.g. "ESTATE", "BLASMUSIK", "NATALE"
             $table->integer('display_order')->default(0);
-            $table->boolean('is_active')->default(true);
+            $table->boolean('is_published')->default(true);
             $table->timestamps();
-            $table->softDeletes();
         });
     }
 
-    public function down(): void
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
+    public function down()
     {
         Schema::dropIfExists('repertoire_programs');
     }

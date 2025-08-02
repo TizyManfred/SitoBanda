@@ -34,6 +34,7 @@ class GalleryAlbumResource extends Resource
             ->schema([
                 TranslatableContainer::make(
                     Forms\Components\TextInput::make('title')
+                        ->label(__('fields.gallery.title'))
                         ->required()
                         ->maxLength(255)
                         ->live(onBlur: true),
@@ -55,6 +56,7 @@ class GalleryAlbumResource extends Resource
                     ->columnSpan(1),
                 TranslatableContainer::make(
                     Forms\Components\Textarea::make('description')
+                        ->label(__('fields.gallery.description'))
                 )->columnSpanFull(),
                 Forms\Components\TextInput::make('year')
                     ->label(__('fields.gallery.year'))
@@ -79,7 +81,17 @@ class GalleryAlbumResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\ImageColumn::make('cover_image_path')->label(__('fields.gallery.cover_image')),
+                Tables\Columns\ImageColumn::make('cover_image_path')
+                    ->label(__('fields.gallery.cover_image'))
+                    ->getStateUsing(function ($record) {
+                        // Use first image from album items as cover if available
+                        if ($record->items()->count() > 0) {
+                            return $record->items()->first()->image_path;
+                        }
+                        return $record->cover_image_path;
+                    })
+                    ->width(100)
+                    ->height(60),
                 Tables\Columns\TextColumn::make('title')
                     ->label(__('fields.gallery.title'))
                     ->searchable(),

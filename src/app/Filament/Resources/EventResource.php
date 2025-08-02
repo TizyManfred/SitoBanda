@@ -41,8 +41,6 @@ class EventResource extends Resource
     protected static ?string $model = Event::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-calendar-days';
-
-    protected static ?string $recordTitleAttribute = 'title';
     
     public static function getModelLabel(): string
     {
@@ -72,6 +70,7 @@ class EventResource extends Resource
                                     ->schema([
                                         TranslatableContainer::make(
                                             Forms\Components\TextInput::make('title')
+                                                ->label(__('fields.event.title'))
                                                 ->required()
                                                 ->maxLength(255)
                                                 ->live(onBlur: true)
@@ -133,6 +132,7 @@ class EventResource extends Resource
                                     ->schema([
                                         TranslatableContainer::make(
                                             Forms\Components\Textarea::make('short_description')
+                                                ->label(__('fields.event.short_description'))
                                                 ->maxLength(255)
                                         )->columnSpan(5),
                                         
@@ -192,6 +192,7 @@ class EventResource extends Resource
                                     ->schema([
                                         TranslatableContainer::make(
                                             Forms\Components\RichEditor::make('description')
+                                                ->label(__('fields.event.description'))
                                         )->columnSpan(5),
                                         
                                         Forms\Components\Actions::make([
@@ -315,7 +316,7 @@ class EventResource extends Resource
                                     ->preload(),
                             ]),
                         
-                        Section::make('Date & Time')
+                        Section::make(__('fields.common.date_time'))
                             ->schema([
                                 Forms\Components\DateTimePicker::make('start_datetime')
                                     ->required()
@@ -352,7 +353,9 @@ class EventResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\ImageColumn::make('image_path')->label(__('fields.event.cover_image')),
+                Tables\Columns\ImageColumn::make('image_path')->label(__('fields.event.cover_image'))
+                    ->width(100)
+                    ->height(60),
                 Tables\Columns\TextColumn::make('title')
                     ->label(__('fields.event.title'))
                     ->searchable(),
