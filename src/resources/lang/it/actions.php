@@ -1,0 +1,24 @@
+<?php
+
+return [
+    'edit' => 'Modifica',
+    'create' => 'Crea',
+    'delete' => 'Elimina',
+    'force_delete' => 'Elimina definitivamente',
+    'restore' => 'Ripristina',
+    'save' => 'Salva',
+    'cancel' => 'Annulla',
+    'select' => 'Seleziona',
+    'upload' => 'Carica',
+    'download' => 'Scarica',
+    'view' => 'Visualizza',
+    'preview' => 'Anteprima',
+    'back' => 'Indietro',
+    'close' => 'Chiudi',
+    'confirm' => 'Conferma',
+    'filter' => 'Filtra',
+    'search' => 'Cerca',
+    'reset' => 'Ripristina',
+    'export' => 'Esporta',
+    'import' => 'Importa',
+];

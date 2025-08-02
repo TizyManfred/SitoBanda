@@ -27,7 +27,9 @@ class RepertoireProgram extends Model
     protected $fillable = [
         'year_id',
         'title',
+        'subtitle',
         'description',
+        'display_order',
         'is_active',
     ];
 

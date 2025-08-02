@@ -1,82 +1,12 @@
 @extends('layouts.app')
 
-@section('title', 'Repertorio - Banda Folk di Castello Tesino')
-@section('description', 'Scopri il repertorio musicale della Banda Folk di Castello Tesino: marce tradizionali, musica folk, brani classici e contemporanei.')
-@section('og_title', 'Repertorio - Banda Folk di Castello Tesino')
-@section('og_description', 'Scopri il repertorio musicale della Banda Folk di Castello Tesino: marce tradizionali, musica folk, brani classici e contemporanei.')
+@section('title', __('repertorio.title') . ' - Banda Folk di Castello Tesino')
+@section('description', __('repertorio.description'))
+@section('og_title', __('repertorio.og_title'))
+@section('og_description', __('repertorio.og_description'))
 
 @section('styles')
-<style>
-    .repertoire-category {
-        margin-bottom: 40px;
-        border-radius: 10px;
-        overflow: hidden;
-        box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
-    }
-    .repertoire-header {
-        background-color: #01b3a7;
-        color: white;
-        padding: 20px;
-        position: relative;
-    }
-    .repertoire-header h4 {
-        margin: 0;
-        font-weight: 600;
-    }
-    .repertoire-body {
-        padding: 20px;
-        background-color: #fff;
-    }
-    .repertoire-item {
-        padding: 15px;
-        border-bottom: 1px solid #eee;
-        transition: all 0.3s ease;
-    }
-    .repertoire-item:last-child {
-        border-bottom: none;
-    }
-    .repertoire-item:hover {
-        background-color: #f9f9f9;
-    }
-    .repertoire-title {
-        font-weight: 500;
-        margin-bottom: 5px;
-    }
-    .repertoire-composer {
-        color: #777;
-        font-size: 14px;
-    }
-    .repertoire-year {
-        font-size: 12px;
-        color: #999;
-    }
-    .repertoire-description {
-        margin-top: 10px;
-        font-size: 14px;
-    }
-    .audio-player {
-        margin-top: 10px;
-        width: 100%;
-    }
-    .badge-featured {
-        background-color: #ff9a9a;
-        color: #fff;
-        font-size: 10px;
-        padding: 3px 8px;
-        border-radius: 10px;
-        margin-left: 10px;
-        vertical-align: middle;
-    }
-    .badge-new {
-        background-color: #01b3a7;
-        color: #fff;
-        font-size: 10px;
-        padding: 3px 8px;
-        border-radius: 10px;
-        margin-left: 10px;
-        vertical-align: middle;
-    }
-</style>
+<!-- No custom styles, using only style.css and bootstrap.css -->
 @endsection
 
 @section('content')
@@ -84,10 +14,10 @@
     <section class="breadcrumbs-custom-inset">
         <div class="breadcrumbs-custom context-dark bg-overlay-60">
             <div class="container">
-                <h1 class="breadcrumbs-custom-title">{{ __('Repertorio') }}</h1>
+                <h1 class="breadcrumbs-custom-title">{{ __('repertorio.breadcrumb_title') }}</h1>
                 <ul class="breadcrumbs-custom-path">
-                    <li><a href="{{ route('home') }}">{{ __('Home') }}</a></li>
-                    <li class="active">{{ __('Repertorio') }}</li>
+                    <li><a href="{{ route('home') }}">{{ __('repertorio.breadcrumb_home') }}</a></li>
+                    <li class="active">{{ __('repertorio.breadcrumb_title') }}</li>
                 </ul>
             </div>
             <div class="box-position" style="background-image: url({{ asset('images/FotoSanIppolito2.jpg') }});"></div>
@@ -99,239 +29,179 @@
         <div class="container">
             <div class="row row-50 justify-content-center">
                 <div class="col-md-10 col-lg-8">
-                    <h3 class="oh-desktop"><span class="d-inline-block wow slideInUp">{{ __('Il Nostro Repertorio') }}</span></h3>
-                    <p class="text-gray-800">{{ __('Il repertorio della Banda Folk di Castello Tesino è vasto e variegato, spaziando dalle tradizionali marce alle composizioni contemporanee. La nostra missione è quella di preservare il patrimonio musicale trentino, arricchendolo con nuove sonorità e arrangiamenti moderni.') }}</p>
+                    <h3 class="oh-desktop"><span class="d-inline-block wow slideInUp">{{ __('repertorio.main_title') }}</span></h3>
+                    <p class="text-gray-800">{{ __('repertorio.main_intro') }}</p>
                     
-                    <!-- Marce Tradizionali -->
-                    <div class="repertoire-category">
-                        <div class="repertoire-header">
-                            <h4>{{ __('Marce Tradizionali') }}</h4>
+                    @if($programs->count() > 0)
+                        @foreach($programs as $year => $yearPrograms)
+                            <h4 class="text-primary mt-5">{{ __('repertorio.repertorio_year', ['year' => $year]) }}</h4>
+                            
+                            @foreach($yearPrograms as $program)
+                                <div class="box-minimal mb-4">
+                                    <div class="box-minimal-header bg-default p-3 shadow-sm rounded">
+                                        <h5 class="box-minimal-title mt-0">{{ $program->title }}</h5>
+                                    </div>
+                                    
+                                    @if($program->description)
+                                        <div class="box-minimal-text px-3 mb-3">
+                                            {{ $program->description }}
+                                        </div>
+                                    @endif
+                                    
+                                    @if($program->pieces->count() > 0)
+                                        <div class="box-minimal-body p-0">
+                                            <div class="table-custom-responsive">
+                                                <table class="table-custom table-custom-bordered">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>{{ __('repertorio.table_title') }}</th>
+                                                            <th>{{ __('repertorio.table_composer') }}</th>
+                                                            <th>{{ __('repertorio.table_genre') }}</th>
+                                                            <th>{{ __('repertorio.table_duration') }}</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        @foreach($program->pieces as $piece)
+                                                            <tr>
+                                                                <td>
+                                                                    <div class="font-weight-bold">{{ $piece->title }}</div>
+                                                                    @if($piece->description)
+                                                                        <div class="small text-gray-600 mt-1">{{ $piece->description }}</div>
+                                                                    @endif
+                                                                </td>
+                                                                <td>
+                                                                    <div>{{ $piece->composer }}</div>
+                                                                    @if($piece->arranger)
+                                                                        <div class="small">{{ __('repertorio.table_arranger') }}: {{ $piece->arranger }}</div>
+                                                                    @endif
+                                                                </td>
+                                                                <td>{{ $piece->genre ?? '-' }}</td>
+                                                                <td>{{ $piece->duration ?? '-' }}</td>
+                                                            </tr>
+                                                        @endforeach
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    @else
+                                        <div class="box-minimal-text text-center py-3">
+                                            {{ __('repertorio.no_pieces_message') }}
+                                        </div>
+                                    @endif
+                                </div>
+                            @endforeach
+                        @endforeach
+                    @else
+                        <div class="alert alert-info">
+                            {{ __('repertorio.no_programs_message') }}
                         </div>
-                        <div class="repertoire-body">
-                            <div class="repertoire-item">
-                                <div class="repertoire-title">
-                                    {{ __('Marcia di San Ippolito') }}
-                                    <span class="badge-featured">{{ __('Brano Simbolo') }}</span>
-                                </div>
-                                <div class="repertoire-composer">{{ __('Compositore: Giovanni Broccato') }}</div>
-                                <div class="repertoire-year">{{ __('Anno: 1905') }}</div>
-                                <div class="repertoire-description">
-                                    {{ __('Composta dal fondatore della banda in onore del patrono di Castello Tesino, questa marcia è diventata il brano simbolo della nostra formazione.') }}
-                                </div>
-                                <audio class="audio-player" controls>
-                                    <source src="{{ asset('assets/audio/marcia-san-ippolito.mp3') }}" type="audio/mpeg">
-                                    {{ __('Il tuo browser non supporta l\'elemento audio.') }}
-                                </audio>
-                            </div>
-                            <div class="repertoire-item">
-                                <div class="repertoire-title">{{ __('Inno al Tesino') }}</div>
-                                <div class="repertoire-composer">{{ __('Compositore: Antonio Sordo') }}</div>
-                                <div class="repertoire-year">{{ __('Anno: 1925') }}</div>
-                                <div class="repertoire-description">
-                                    {{ __('Un omaggio musicale alla valle del Tesino, con melodie che richiamano i paesaggi montani e le tradizioni locali.') }}
-                                </div>
-                            </div>
-                            <div class="repertoire-item">
-                                <div class="repertoire-title">{{ __('Marcia Alpina') }}</div>
-                                <div class="repertoire-composer">{{ __('Compositore: Luigi Tessaro') }}</div>
-                                <div class="repertoire-year">{{ __('Anno: 1950') }}</div>
-                                <div class="repertoire-description">
-                                    {{ __('Una marcia che celebra la tradizione alpina del Trentino, con ritmi decisi e melodie evocative.') }}
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    @endif
                     
-                    <!-- Musica Folk -->
-                    <div class="repertoire-category">
-                        <div class="repertoire-header">
-                            <h4>{{ __('Musica Folk') }}</h4>
-                        </div>
-                        <div class="repertoire-body">
-                            <div class="repertoire-item">
-                                <div class="repertoire-title">{{ __('Suite Trentina') }}</div>
-                                <div class="repertoire-composer">{{ __('Compositore: Roberto Bianchi') }}</div>
-                                <div class="repertoire-year">{{ __('Anno: 1985') }}</div>
-                                <div class="repertoire-description">
-                                    {{ __('Una raccolta di melodie tradizionali trentine arrangiate per banda, che include danze popolari e canti della montagna.') }}
-                                </div>
-                                <audio class="audio-player" controls>
-                                    <source src="{{ asset('assets/audio/suite-trentina.mp3') }}" type="audio/mpeg">
-                                    {{ __('Il tuo browser non supporta l\'elemento audio.') }}
-                                </audio>
-                            </div>
-                            <div class="repertoire-item">
-                                <div class="repertoire-title">{{ __('Danze del Tesino') }}</div>
-                                <div class="repertoire-composer">{{ __('Compositore: Marco Rossi') }}</div>
-                                <div class="repertoire-year">{{ __('Anno: 2012') }}</div>
-                                <div class="repertoire-description">
-                                    {{ __('Un\'opera originale del nostro attuale maestro, che reinterpreta in chiave moderna le danze tradizionali della valle del Tesino.') }}
+                    <!-- Esempi musicali -->
+                    <div class="box-info mt-5">
+                        <h4>{{ __('repertorio.examples_title') }}</h4>
+                        <div class="row row-30">
+                            <div class="col-lg-12">
+                                <div class="unit unit-spacing-md flex-column flex-sm-row">
+                                    <div class="unit-body">
+                                        <h5>{{ __('repertorio.san_ippolito_title') }}</h5>
+                                        <span class="badge badge-secondary">{{ __('repertorio.san_ippolito_badge') }}</span>
+                                        <p class="mt-3">{{ __('repertorio.san_ippolito_description') }}</p>
+                                        <audio class="w-100 mt-2" controls>
+                                            <source src="{{ asset('assets/audio/marcia-san-ippolito.mp3') }}" type="audio/mpeg">
+                                            {{ __('Il tuo browser non supporta l\'elemento audio.') }}
+                                        </audio>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="repertoire-item">
-                                <div class="repertoire-title">
-                                    {{ __('Echi della Montagna') }}
-                                    <span class="badge-new">{{ __('Nuovo') }}</span>
+                            <div class="col-lg-12">
+                                <div class="unit unit-spacing-md flex-column flex-sm-row">
+                                    <div class="unit-body">
+                                        <h5>{{ __('repertorio.suite_trentina_title') }}</h5>
+                                        <p class="mt-3">{{ __('repertorio.suite_trentina_description') }}</p>
+                                        <audio class="w-100 mt-2" controls>
+                                            <source src="{{ asset('assets/audio/suite-trentina.mp3') }}" type="audio/mpeg">
+                                            {{ __('Il tuo browser non supporta l\'elemento audio.') }}
+                                        </audio>
+                                    </div>
                                 </div>
-                                <div class="repertoire-composer">{{ __('Compositore: Marco Rossi') }}</div>
-                                <div class="repertoire-year">{{ __('Anno: 2023') }}</div>
-                                <div class="repertoire-description">
-                                    {{ __('La nostra più recente composizione originale, che evoca i suoni e le atmosfere delle montagne trentine attraverso un linguaggio musicale contemporaneo.') }}
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <!-- Musica Classica e Operistica -->
-                    <div class="repertoire-category">
-                        <div class="repertoire-header">
-                            <h4>{{ __('Musica Classica e Operistica') }}</h4>
-                        </div>
-                        <div class="repertoire-body">
-                            <div class="repertoire-item">
-                                <div class="repertoire-title">{{ __('Selezione da "La Traviata"') }}</div>
-                                <div class="repertoire-composer">{{ __('Compositore: Giuseppe Verdi, arr. Marco Rossi') }}</div>
-                                <div class="repertoire-year">{{ __('Arrangiamento: 2015') }}</div>
-                                <div class="repertoire-description">
-                                    {{ __('Una selezione delle arie più celebri dell\'opera di Verdi, arrangiate per banda dal nostro maestro.') }}
-                                </div>
-                            </div>
-                            <div class="repertoire-item">
-                                <div class="repertoire-title">{{ __('Ouverture "Le Nozze di Figaro"') }}</div>
-                                <div class="repertoire-composer">{{ __('Compositore: W.A. Mozart, arr. Roberto Bianchi') }}</div>
-                                <div class="repertoire-year">{{ __('Arrangiamento: 1990') }}</div>
-                                <div class="repertoire-description">
-                                    {{ __('La celebre ouverture dell\'opera di Mozart, adattata per la formazione bandistica.') }}
-                                </div>
-                            </div>
-                            <div class="repertoire-item">
-                                <div class="repertoire-title">{{ __('Sinfonia n. 9 "Dal Nuovo Mondo" (estratti)') }}</div>
-                                <div class="repertoire-composer">{{ __('Compositore: Antonín Dvořák, arr. Marco Rossi') }}</div>
-                                <div class="repertoire-year">{{ __('Arrangiamento: 2018') }}</div>
-                                <div class="repertoire-description">
-                                    {{ __('Una selezione di temi dalla celebre sinfonia di Dvořák, con particolare attenzione al secondo movimento "Largo".') }}
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <!-- Musica Contemporanea -->
-                    <div class="repertoire-category">
-                        <div class="repertoire-header">
-                            <h4>{{ __('Musica Contemporanea') }}</h4>
-                        </div>
-                        <div class="repertoire-body">
-                            <div class="repertoire-item">
-                                <div class="repertoire-title">{{ __('Highlights da "Il Re Leone"') }}</div>
-                                <div class="repertoire-composer">{{ __('Compositore: Hans Zimmer, arr. Marco Rossi') }}</div>
-                                <div class="repertoire-year">{{ __('Arrangiamento: 2020') }}</div>
-                                <div class="repertoire-description">
-                                    {{ __('Una selezione delle musiche più celebri dal film Disney, arrangiate per banda.') }}
-                                </div>
-                            </div>
-                            <div class="repertoire-item">
-                                <div class="repertoire-title">
-                                    {{ __('Medley "ABBA Gold"') }}
-                                    <span class="badge-new">{{ __('Nuovo') }}</span>
-                                </div>
-                                <div class="repertoire-composer">{{ __('Compositore: ABBA, arr. Marco Rossi') }}</div>
-                                <div class="repertoire-year">{{ __('Arrangiamento: 2023') }}</div>
-                                <div class="repertoire-description">
-                                    {{ __('Un medley dei più grandi successi degli ABBA, arrangiati in chiave bandistica.') }}
-                                </div>
-                            </div>
-                            <div class="repertoire-item">
-                                <div class="repertoire-title">{{ __('Suite da "Game of Thrones"') }}</div>
-                                <div class="repertoire-composer">{{ __('Compositore: Ramin Djawadi, arr. Marco Rossi') }}</div>
-                                <div class="repertoire-year">{{ __('Arrangiamento: 2019') }}</div>
-                                <div class="repertoire-description">
-                                    {{ __('I temi principali della celebre serie TV, adattati per la nostra formazione bandistica.') }}
-                                </div>
-                                <audio class="audio-player" controls>
-                                    <source src="{{ asset('assets/audio/got-suite.mp3') }}" type="audio/mpeg">
-                                    {{ __('Il tuo browser non supporta l\'elemento audio.') }}
-                                </audio>
                             </div>
                         </div>
                     </div>
                 </div>
                 
                 <div class="col-md-10 col-lg-4">
-                    <div class="aside-repertorio">
+                    <div class="aside-component">
                         <!-- Discografia -->
-                        <div class="aside-repertorio-item">
-                            <h4 class="aside-repertorio-title">{{ __('La Nostra Discografia') }}</h4>
+                        <div class="aside-component-item bg-gray-100 rounded p-4 mb-5">
+                            <h4 class="text-primary">{{ __('repertorio.discography_title') }}</h4>
                             <div class="row row-30">
                                 <div class="col-6 col-md-6 col-lg-12">
-                                    <article class="product">
-                                        <div class="product-figure">
+                                    <article class="thumbnail-classic">
+                                        <div class="thumbnail-classic-figure">
                                             <img src="{{ asset('images/cd-echi-tesino.jpg') }}" alt="CD Echi dal Tesino" width="270" height="280" loading="lazy">
                                         </div>
-                                        <h5 class="product-title">{{ __('Echi dal Tesino') }}</h5>
-                                        <p class="product-text">{{ __('1985 - Il nostro primo album, con brani della tradizione trentina.') }}</p>
+                                        <div class="thumbnail-classic-caption">
+                                            <h5 class="thumbnail-classic-title">{{ __('repertorio.cd_echi_tesino_title') }}</h5>
+                                            <p class="thumbnail-classic-text">{{ __('repertorio.cd_echi_tesino_description') }}</p>
+                                        </div>
                                     </article>
                                 </div>
                                 <div class="col-6 col-md-6 col-lg-12">
-                                    <article class="product">
-                                        <div class="product-figure">
+                                    <article class="thumbnail-classic">
+                                        <div class="thumbnail-classic-figure">
                                             <img src="{{ asset('images/cd-centenario.jpg') }}" alt="CD Centenario" width="270" height="280" loading="lazy">
                                         </div>
-                                        <h5 class="product-title">{{ __('Centenario') }}</h5>
-                                        <p class="product-text">{{ __('2001 - Album celebrativo per i 100 anni della banda.') }}</p>
+                                        <div class="thumbnail-classic-caption">
+                                            <h5 class="thumbnail-classic-title">{{ __('repertorio.cd_centenario_title') }}</h5>
+                                            <p class="thumbnail-classic-text">{{ __('repertorio.cd_centenario_description') }}</p>
+                                        </div>
                                     </article>
                                 </div>
                                 <div class="col-6 col-md-6 col-lg-12">
-                                    <article class="product">
-                                        <div class="product-figure">
+                                    <article class="thumbnail-classic">
+                                        <div class="thumbnail-classic-figure">
                                             <img src="{{ asset('images/cd-armonie-tesino.jpg') }}" alt="CD Armonie del Tesino" width="270" height="280" loading="lazy">
                                         </div>
-                                        <h5 class="product-title">{{ __('Armonie del Tesino') }}</h5>
-                                        <p class="product-text">{{ __('2015 - Raccolta di arrangiamenti originali del maestro Marco Rossi.') }}</p>
+                                        <div class="thumbnail-classic-caption">
+                                            <h5 class="thumbnail-classic-title">{{ __('repertorio.cd_armonie_tesino_title') }}</h5>
+                                            <p class="thumbnail-classic-text">{{ __('repertorio.cd_armonie_tesino_description') }}</p>
+                                        </div>
                                     </article>
                                 </div>
                             </div>
                         </div>
                         
                         <!-- Prossimi Concerti -->
-                        <div class="aside-repertorio-item mt-5">
-                            <h4 class="aside-repertorio-title">{{ __('Prossimi Concerti') }}</h4>
-                            <div class="list-schedule">
-                                <div class="list-schedule-item">
-                                    <div class="list-schedule-left">
-                                        <span>{{ __('15 Ago') }}</span>
-                                    </div>
-                                    <div class="list-schedule-right">
-                                        <span>{{ __('Concerto di Ferragosto, Piazza Maggiore') }}</span>
-                                    </div>
-                                </div>
-                                <div class="list-schedule-item">
-                                    <div class="list-schedule-left">
-                                        <span>{{ __('10 Set') }}</span>
-                                    </div>
-                                    <div class="list-schedule-right">
-                                        <span>{{ __('Festival delle Bande, Borgo Valsugana') }}</span>
-                                    </div>
-                                </div>
-                                <div class="list-schedule-item">
-                                    <div class="list-schedule-left">
-                                        <span>{{ __('25 Dic') }}</span>
-                                    </div>
-                                    <div class="list-schedule-right">
-                                        <span>{{ __('Concerto di Natale, Chiesa Parrocchiale') }}</span>
-                                    </div>
-                                </div>
-                            </div>
+                        <div class="aside-component-item mb-5">
+                            <h4 class="text-primary">{{ __('repertorio.upcoming_concerts_title') }}</h4>
+                            @if($upcomingEvents->count() > 0)
+                                <ul class="list-schedule">
+                                    @foreach($upcomingEvents as $event)
+                                        <li class="list-schedule-item">
+                                            <div class="list-schedule-left">
+                                                <span>{{ \Carbon\Carbon::parse($event->start_datetime)->format('d M') }}</span>
+                                            </div>
+                                            <div class="list-schedule-right">
+                                                <span>{{ $event->title }}, {{ $event->location }}</span>
+                                            </div>
+                                        </li>
+                                    @endforeach
+                                </ul>
+                            @else
+                                <p>{{ __('repertorio.no_events_message') }}</p>
+                            @endif
                             <div class="text-center mt-4">
-                                <a href="{{ route('eventi') }}" class="button button-sm button-default-outline-2 button-wapasha">{{ __('Tutti gli Eventi') }}</a>
+                                <a href="{{ route('eventi') }}" class="button button-sm button-default-outline-2 button-wapasha">{{ __('repertorio.all_events_button') }}</a>
                             </div>
                         </div>
                         
                         <!-- Richiedi Spartiti -->
-                        <div class="aside-repertorio-item mt-5">
-                            <div class="box-cta">
-                                <h4 class="box-cta-title">{{ __('Richiedi gli Spartiti') }}</h4>
-                                <p>{{ __('Sei interessato agli spartiti dei nostri brani? Contattaci per maggiori informazioni.') }}</p>
-                                <a class="button button-lg button-primary button-winona" href="{{ route('contatti') }}">{{ __('Contattaci') }}</a>
+                        <div class="aside-component-item">
+                            <div class="box-contacts p-4 bg-primary">
+                                <h4 class="box-contacts-title text-white">{{ __('repertorio.sheet_music_title') }}</h4>
+                                <p class="text-white">{{ __('repertorio.sheet_music_description') }}</p>
+                                <a class="button button-lg button-white button-winona" href="{{ route('contatti') }}">{{ __('repertorio.contact_button') }}</a>
                             </div>
                         </div>
                     </div>
@@ -346,16 +216,16 @@
             <div class="row row-30 justify-content-center">
                 <div class="col-sm-10 col-lg-6">
                     <div class="box-cta-thin">
-                        <h4 class="box-cta-thin-title">{{ __('Vuoi Ascoltarci dal Vivo?') }}</h4>
-                        <p>{{ __('Consulta il nostro calendario eventi e vieni a trovarci ai nostri prossimi concerti.') }}</p>
-                        <a class="button button-lg button-primary button-winona" href="{{ route('eventi') }}">{{ __('Calendario Eventi') }}</a>
+                        <h4 class="box-cta-thin-title">{{ __('repertorio.cta_live_title') }}</h4>
+                        <p>{{ __('repertorio.cta_live_description') }}</p>
+                        <a class="button button-lg button-primary button-winona" href="{{ route('eventi') }}">{{ __('repertorio.cta_live_button') }}</a>
                     </div>
                 </div>
                 <div class="col-sm-10 col-lg-6">
                     <div class="box-cta-thin">
-                        <h4 class="box-cta-thin-title">{{ __('Vuoi Suonare con Noi?') }}</h4>
-                        <p>{{ __('Sei un musicista e vorresti entrare a far parte della nostra banda? Contattaci per informazioni.') }}</p>
-                        <a class="button button-lg button-primary button-winona" href="{{ route('contatti') }}">{{ __('Unisciti a Noi') }}</a>
+                        <h4 class="box-cta-thin-title">{{ __('repertorio.cta_join_title') }}</h4>
+                        <p>{{ __('repertorio.cta_join_description') }}</p>
+                        <a class="button button-lg button-primary button-winona" href="{{ route('contatti') }}">{{ __('repertorio.cta_join_button') }}</a>
                     </div>
                 </div>
             </div>

@@ -16,15 +16,15 @@ class EventController extends Controller
     public function index()
     {
         try {
-            // Get upcoming events
-            $upcomingEvents = Event::where('is_public', 1)
-                ->where('start_datetime', '>=', now())
+            // Get upcoming events using the scope
+            $upcomingEvents = Event::public()
+                ->upcoming()
                 ->orderBy('start_datetime', 'asc')
                 ->get();
                 
-            // Get past events
-            $pastEvents = Event::where('is_public', 1)
-                ->where('start_datetime', '<', now())
+            // Get past events using the scope
+            $pastEvents = Event::public()
+                ->past()
                 ->orderBy('start_datetime', 'desc')
                 ->paginate(9);
                 
@@ -46,9 +46,14 @@ class EventController extends Controller
     public function show($slug)
     {
         try {
-            // Find event by slug
-            $event = Event::where('slug', $slug)
-                ->where('is_public', 1)
+            // Find event by slug - support for multilanguage slugs
+            $event = Event::public()
+                ->where(function($query) use ($slug) {
+                    // Search in all language variations of the slug
+                    $query->where('slug->it', $slug)
+                          ->orWhere('slug->en', $slug)
+                          ->orWhere('slug->de', $slug);
+                })
                 ->firstOrFail();
                 
             // Get related gallery if exists
@@ -64,7 +69,7 @@ class EventController extends Controller
             
             // Get related events (same location or similar date)
             $relatedEvents = Event::where('id', '!=', $event->id)
-                ->where('is_public', 1)
+                ->public()
                 ->where(function($query) use ($event) {
                     // Same location or within 30 days of this event
                     $query->where('location', $event->location)
@@ -73,6 +78,13 @@ class EventController extends Controller
                             Carbon::parse($event->start_datetime)->addDays(30)
                         ]);
                 })
+                ->orderBy('start_datetime', 'asc')
+                ->limit(3)
+                ->get();
+                
+            // Get upcoming events for the sidebar
+            $upcomingEvents = Event::public()
+                ->upcoming()
                 ->orderBy('start_datetime', 'asc')
                 ->limit(3)
                 ->get();
@@ -87,7 +99,8 @@ class EventController extends Controller
             'gallery', 
             'formattedDate', 
             'formattedTime', 
-            'relatedEvents'
+            'relatedEvents',
+            'upcomingEvents'
         ));
     }
 }

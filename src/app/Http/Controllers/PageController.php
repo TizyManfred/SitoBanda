@@ -2,6 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Event;
+use App\Models\RepertoireProgram;
+use Carbon\Carbon;
+
 use Illuminate\Http\Request;
 use App\Models\Member;
 use App\Models\Section;
@@ -88,7 +92,21 @@ class PageController extends Controller
      */
     public function repertorio()
     {
-        return view('pages.repertorio');
+        // Get active repertoire programs with their pieces
+        $programs = RepertoireProgram::where('is_active', true)
+            ->with(['year', 'pieces' => function($query) {
+                $query->where('is_active', true);
+            }])
+            ->orderBy('created_at', 'desc')
+            ->get()
+            ->groupBy(function($program) {
+                return $program->year->year;
+            });
+
+        // Get upcoming events for sidebar
+        $upcomingEvents = Event::upcoming()->take(3)->get();
+        
+        return view('pages.repertorio', compact('programs', 'upcomingEvents'));
     }
 
     /**

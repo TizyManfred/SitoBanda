@@ -31,6 +31,7 @@ class RepertoirePiece extends Model
         'genre',
         'duration',
         'description',
+        'display_order',
         'is_active',
     ];
 

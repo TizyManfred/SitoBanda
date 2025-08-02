@@ -43,8 +43,8 @@ class AdminPanelProvider extends PanelProvider
                 Widgets\FilamentInfoWidget::class,
             ])
             ->navigationGroups([
-                'System',
-                'Content Management',
+                __('filament.navigation_groups.system'),
+                __('filament.navigation_groups.content_management'),
             ])
             ->plugin(
                 SpatieLaravelTranslatablePlugin::make()

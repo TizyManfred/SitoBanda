@@ -25,7 +25,6 @@ class RepertoireYear extends Model
      */
     protected $fillable = [
         'year',
-        'theme',
         'description',
         'is_active',
     ];

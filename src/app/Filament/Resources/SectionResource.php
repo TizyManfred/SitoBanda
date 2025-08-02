@@ -19,6 +19,21 @@ class SectionResource extends Resource
     protected static ?string $model = Section::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-user-group';
+    
+    public static function getModelLabel(): string
+    {
+        return __('filament.resources.section');
+    }
+    
+    public static function getPluralModelLabel(): string
+    {
+        return __('filament.resources.section_plural');
+    }
+    
+    public static function getNavigationGroup(): ?string
+    {
+        return __('filament.navigation_groups.content_management');
+    }
 
     protected static ?string $recordTitleAttribute = 'name';
 
@@ -27,13 +42,15 @@ class SectionResource extends Resource
         return $form
             ->schema([
                 Forms\Components\TextInput::make('name')
+                    ->label(__('fields.section.name'))
                     ->required()
                     ->maxLength(255),
                 Forms\Components\TextInput::make('icon_class')
-                    ->label('Icon Class')
+                    ->label(__('fields.section.icon_class'))
                     ->maxLength(255)
-                    ->helperText('e.g., fas fa-guitar'),
+                    ->helperText(__('fields.section.icon_helper')),
                 Forms\Components\TextInput::make('display_order')
+                    ->label(__('fields.section.display_order'))
                     ->required()
                     ->numeric()
                     ->default(0),
@@ -45,11 +62,13 @@ class SectionResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('name')
+                    ->label(__('fields.section.name'))
                     ->searchable(),
                 Tables\Columns\TextColumn::make('icon_class')
-                    ->label('Icon')
+                    ->label(__('fields.section.icon'))
                     ->searchable(),
                 Tables\Columns\TextColumn::make('display_order')
+                    ->label(__('fields.section.display_order'))
                     ->sortable(),
             ])
             ->filters([

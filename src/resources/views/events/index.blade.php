@@ -1,19 +1,19 @@
 @extends('layouts.app')
 
-@section('title', 'Eventi - Banda Folk di Castello Tesino')
-@section('description', 'Calendario degli eventi e concerti della Banda Folk di Castello Tesino. Scopri dove e quando puoi ascoltarci dal vivo.')
-@section('og_title', 'Eventi - Banda Folk di Castello Tesino')
-@section('og_description', 'Calendario degli eventi e concerti della Banda Folk di Castello Tesino. Scopri dove e quando puoi ascoltarci dal vivo.')
+@section('title', __('events.page_title'))
+@section('description', __('events.page_description'))
+@section('og_title', __('events.og_title'))
+@section('og_description', __('events.og_description'))
 
 @section('content')
     <!-- Breadcrumbs -->
     <section class="breadcrumbs-custom-inset">
         <div class="breadcrumbs-custom context-dark bg-overlay-60">
             <div class="container">
-                <h1 class="breadcrumbs-custom-title">{{ __('Eventi') }}</h1>
+                <h1 class="breadcrumbs-custom-title">{{ __('events.events') }}</h1>
                 <ul class="breadcrumbs-custom-path">
-                    <li><a href="{{ route('home') }}">{{ __('Home') }}</a></li>
-                    <li class="active">{{ __('Eventi') }}</li>
+                    <li><a href="{{ route('home') }}">{{ __('events.home') }}</a></li>
+                    <li class="active">{{ __('events.events') }}</li>
                 </ul>
             </div>
             <div class="box-position" style="background-image: url({{ asset('images/FotoSanIppolito1.jpg') }});"></div>
@@ -25,91 +25,110 @@
         <div class="container">
             <div class="row row-50">
                 <div class="col-lg-8">
-                    <h3 class="oh-desktop"><span class="d-inline-block wow slideInUp">{{ __('Prossimi Eventi') }}</span></h3>
+                    <h3 class="oh-desktop"><span class="d-inline-block wow slideInUp">{{ __('events.upcoming_events') }}</span></h3>
                     
                     @if($upcomingEvents->count() > 0)
                         <div class="row row-30">
                             @foreach($upcomingEvents as $event)
-                                <div class="col-sm-6 col-lg-6">
-                                    <article class="box-event">
-                                        <div class="box-event-img-wrap">
+                                <div class="col-sm-6 col-lg-6 mb-4 wow fadeInUp" data-wow-delay="0.{{ $loop->iteration }}s">
+                                    <div class="card h-100 border-0 shadow-sm overflow-hidden rounded-0 card-hover">
+                                        <div class="position-relative img-hover-zoom">
                                             <a href="{{ route('eventi.show', $event->slug) }}">
                                                 @if($event->image_path)
-                                                    <img src="{{ Storage::url($event->image_path) }}" alt="{{ $event->title }}" width="570" height="370" loading="lazy" class="img-fluid">
+                                                    <img src="{{ Storage::url($event->image_path) }}" alt="{{ $event->title }}" width="570" height="370" loading="lazy" class="img-fluid" style="height: 280px; width: 100%; object-fit: cover;">
                                                 @else
-                                                    <img src="{{ asset('images/event-default.jpg') }}" alt="{{ $event->title }}" width="570" height="370" loading="lazy" class="img-fluid">
+                                                    <img src="{{ asset('images/event-default.jpg') }}" alt="{{ $event->title }}" width="570" height="370" loading="lazy" class="img-fluid" style="height: 280px; width: 100%; object-fit: cover;">
                                                 @endif
                                             </a>
-                                            <div class="box-event-date">
-                                                <div class="box-event-month">{{ $event->start_datetime->format('M') }}</div>
-                                                <div class="box-event-day">{{ $event->start_datetime->format('d') }}</div>
-                                            </div>
-                                        </div>
-                                        <div class="box-event-content">
-                                            <h5 class="box-event-title"><a href="{{ route('eventi.show', $event->slug) }}">{{ $event->title }}</a></h5>
-                                            <div class="box-event-info">
-                                                <div class="box-event-time">
-                                                    <span class="icon mdi mdi-clock"></span>
-                                                    <span class="box-event-text">{{ $event->start_datetime->format('H:i') }}</span>
-                                                </div>
-                                                <div class="box-event-place">
-                                                    <span class="icon mdi mdi-map-marker"></span>
-                                                    <span class="box-event-text">{{ $event->location }}</span>
+                                            <div class="position-absolute top-0 left-0 bg-primary text-white p-3 rounded-bottom bg-black-opacity-70" style="border-radius: 0 0 10px 0;">
+                                                <div class="text-center">
+                                                    <div class="h4 mb-0 font-weight-bold">{{ $event->start_datetime->format('d') }}</div>
+                                                    <div class="small text-uppercase">{{ $event->start_datetime->translatedFormat('M') }}</div>
                                                 </div>
                                             </div>
-                                            <p class="box-event-description">{{ $event->short_description }}</p>
-                                            <a class="button button-sm button-default-outline-2 button-wapasha" href="{{ route('eventi.show', $event->slug) }}">{{ __('Dettagli') }}</a>
                                         </div>
-                                    </article>
+                                        <div class="card-body p-4">
+                                            <h5 class="card-title mb-3">
+                                                <a href="{{ route('eventi.show', $event->slug) }}" class="text-dark text-decoration-none">{{ $event->title }}</a>
+                                            </h5>
+                                            <div class="d-flex mb-3 gap-4">
+                                                <div>
+                                                    <i class="far fa-clock me-1"></i>
+                                                    <span class="text-muted">{{ $event->start_datetime->format('H:i') }}</span>
+                                                </div>
+                                                <div>
+                                                    <i class="fas fa-map-marker-alt me-1"></i>
+                                                    <span class="text-muted">{{ $event->location }}</span>
+                                                </div>
+                                            </div>
+                                            <p class="card-text mb-4">{{ $event->short_description }}</p>
+                                            <div class="text-end">
+                                                <a class="btn btn-outline-primary btn-sm" href="{{ route('eventi.show', $event->slug) }}">
+                                                    {{ __('events.details') }} <i class="fas fa-arrow-right ms-1"></i>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             @endforeach
                         </div>
                     @else
-                        <div class="alert alert-info">
-                            {{ __('Non ci sono eventi in programma al momento. Torna a visitarci presto per aggiornamenti!') }}
+                        <div class="alert alert-info shadow-sm p-4">
+                            <i class="far fa-calendar-times me-2 fa-lg"></i>
+                            {{ __('events.no_upcoming_events') }}
                         </div>
                     @endif
                     
-                    <h3 class="oh-desktop mt-5"><span class="d-inline-block wow slideInUp">{{ __('Eventi Passati') }}</span></h3>
+                    <h3 class="oh-desktop mt-5"><span class="d-inline-block wow slideInUp">{{ __('events.past_events') }}</span></h3>
                     
                     @if($pastEvents->count() > 0)
                         <div class="row row-30">
                             @foreach($pastEvents as $event)
-                                <div class="col-sm-6 col-lg-6">
-                                    <article class="box-event box-event-past">
-                                        <div class="box-event-img-wrap">
+                                <div class="col-sm-6 col-lg-6 mb-4 wow fadeInUp" data-wow-delay="0.{{ $loop->iteration }}s">
+                                    <div class="card h-100 border-0 shadow-sm overflow-hidden rounded-0 card-hover" style="opacity: 0.85;">
+                                        <div class="position-relative img-hover-zoom">
                                             <a href="{{ route('eventi.show', $event->slug) }}">
                                                 @if($event->image_path)
-                                                    <img src="{{ Storage::url($event->image_path) }}" alt="{{ $event->title }}" width="570" height="370" loading="lazy" class="img-fluid">
+                                                    <img src="{{ Storage::url($event->image_path) }}" alt="{{ $event->title }}" width="570" height="370" loading="lazy" class="img-fluid object-fit-cover" style="height: 280px; width: 100%;">
                                                 @else
-                                                    <img src="{{ asset('images/event-default.jpg') }}" alt="{{ $event->title }}" width="570" height="370" loading="lazy" class="img-fluid">
+                                                    <img src="{{ asset('images/event-default.jpg') }}" alt="{{ $event->title }}" width="570" height="370" loading="lazy" class="img-fluid object-fit-cover" style="height: 280px; width: 100%;">
                                                 @endif
                                             </a>
-                                            <div class="box-event-date">
-                                                <div class="box-event-month">{{ $event->start_datetime->format('M') }}</div>
-                                                <div class="box-event-day">{{ $event->start_datetime->format('d') }}</div>
-                                            </div>
-                                        </div>
-                                        <div class="box-event-content">
-                                            <h5 class="box-event-title"><a href="{{ route('eventi.show', $event->slug) }}">{{ $event->title }}</a></h5>
-                                            <div class="box-event-info">
-                                                <div class="box-event-time">
-                                                    <span class="icon mdi mdi-clock"></span>
-                                                    <span class="box-event-text">{{ $event->start_datetime->format('H:i') }}</span>
-                                                </div>
-                                                <div class="box-event-place">
-                                                    <span class="icon mdi mdi-map-marker"></span>
-                                                    <span class="box-event-text">{{ $event->location }}</span>
+                                            <div class="position-absolute top-0 left-0 bg-secondary text-white p-3 rounded-bottom bg-black-opacity-70" >
+                                                <div class="text-center">
+                                                    <div class="mb-0 font-weight-bold">{{ $event->start_datetime->format('d') }}</div>
+                                                    <div class="small text-uppercase">{{ $event->start_datetime->translatedFormat('M') }}</div>
                                                 </div>
                                             </div>
-                                            <p class="box-event-description">{{ $event->short_description }}</p>
-                                            @if($event->galleryAlbum)
-                                                <a class="button button-sm button-default-outline-2 button-wapasha" href="{{ route('galleria.show', $event->galleryAlbum->slug) }}">{{ __('Guarda le Foto') }}</a>
-                                            @else
-                                                <a class="button button-sm button-default-outline-2 button-wapasha" href="{{ route('eventi.show', $event->slug) }}">{{ __('Dettagli') }}</a>
-                                            @endif
                                         </div>
-                                    </article>
+                                        <div class="card-body p-4">
+                                            <h5 class="card-title mb-3">
+                                                <a href="{{ route('eventi.show', $event->slug) }}" class="text-dark text-decoration-none">{{ $event->title }}</a>
+                                            </h5>
+                                            <div class="d-flex mb-3 gap-4">
+                                                <div>
+                                                    <i class="far fa-clock me-1"></i>
+                                                    <span class="text-muted">{{ $event->start_datetime->format('H:i') }}</span>
+                                                </div>
+                                                <div>
+                                                    <i class="fas fa-map-marker-alt me-1"></i>
+                                                    <span class="text-muted">{{ $event->location }}</span>
+                                                </div>
+                                            </div>
+                                            <p class="card-text mb-4">{{ $event->short_description }}</p>
+                                            <div class="text-end">
+                                                @if($event->galleryAlbum)
+                                                    <a class="btn btn-outline-secondary btn-sm" href="{{ route('galleria.show', $event->galleryAlbum->slug) }}">
+                                                        {{ __('events.view_photos') }} <i class="fas fa-images ms-1"></i>
+                                                    </a>
+                                                @else
+                                                    <a class="btn btn-outline-secondary btn-sm" href="{{ route('eventi.show', $event->slug) }}">
+                                                        {{ __('events.details') }} <i class="fas fa-arrow-right ms-1"></i>
+                                                    </a>
+                                                @endif
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             @endforeach
                         </div>
@@ -119,7 +138,7 @@
                         </div>
                     @else
                         <div class="alert alert-info">
-                            {{ __('Non ci sono eventi passati da mostrare.') }}
+                            {{ __('events.no_past_events') }}
                         </div>
                     @endif
                 </div>
@@ -129,20 +148,20 @@
                         <div class="row row-50">
                             <div class="col-md-6 col-lg-12">
                                 <div class="aside-events-item">
-                                    <h5 class="aside-events-title">{{ __('Categorie di Eventi') }}</h5>
+                                    <h5 class="aside-events-title">{{ __('events.event_categories') }}</h5>
                                     <ul class="list-marked list-marked-secondary">
-                                        <li><a href="#">{{ __('Concerti') }}</a></li>
-                                        <li><a href="#">{{ __('Processioni') }}</a></li>
-                                        <li><a href="#">{{ __('Sagre e Feste') }}</a></li>
-                                        <li><a href="#">{{ __('Commemorazioni') }}</a></li>
-                                        <li><a href="#">{{ __('Trasferte') }}</a></li>
+                                        <li><a href="#">{{ __('events.concerts') }}</a></li>
+                                        <li><a href="#">{{ __('events.processions') }}</a></li>
+                                        <li><a href="#">{{ __('events.festivals') }}</a></li>
+                                        <li><a href="#">{{ __('events.commemorations') }}</a></li>
+                                        <li><a href="#">{{ __('events.trips') }}</a></li>
                                     </ul>
                                 </div>
                             </div>
                             
                             <div class="col-md-6 col-lg-12">
                                 <div class="aside-events-item">
-                                    <h5 class="aside-events-title">{{ __('Archivio Eventi') }}</h5>
+                                    <h5 class="aside-events-title">{{ __('events.event_archive') }}</h5>
                                     <ul class="list-marked list-marked-secondary">
                                         @foreach(range(date('Y'), date('Y') - 4) as $year)
                                             <li><a href="#">{{ $year }}</a></li>
@@ -153,7 +172,7 @@
                             
                             <div class="col-md-6 col-lg-12">
                                 <div class="aside-events-item">
-                                    <h5 class="aside-events-title">{{ __('Seguici sui Social') }}</h5>
+                                    <h5 class="aside-events-title">{{ __('events.follow_us') }}</h5>
                                     <ul class="list-inline social-list">
                                         <li class="list-inline-item">
                                             <a href="https://www.facebook.com/bandafolk" target="_blank" aria-label="Facebook">

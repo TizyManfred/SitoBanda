@@ -40,12 +40,14 @@ class GalleryAlbumResource extends Resource
                     )
                     ->columnSpan(2),
                 Forms\Components\DatePicker::make('start_date')
+                    ->label(__('fields.gallery.start_date'))
                     ->required()
                     ->native(false)
                     ->displayFormat('d/m/Y')
                     ->closeOnDateSelection()
                     ->columnSpan(1),
                 Forms\Components\DatePicker::make('end_date')
+                    ->label(__('fields.gallery.end_date'))
                     ->native(false)
                     ->displayFormat('d/m/Y')
                     ->closeOnDateSelection()
@@ -55,16 +57,19 @@ class GalleryAlbumResource extends Resource
                     Forms\Components\Textarea::make('description')
                 )->columnSpanFull(),
                 Forms\Components\TextInput::make('year')
+                    ->label(__('fields.gallery.year'))
                     ->required()
                     ->numeric()
                     ->default(fn () => now()->year),
                 Forms\Components\TextInput::make('view_count')
+                    ->label(__('fields.gallery.view_count'))
                     ->required()
                     ->numeric()
                     ->default(0)
                     ->disabled()
                     ->dehydrated(),
                 Forms\Components\Toggle::make('is_published')
+                    ->label(__('fields.gallery.is_published'))
                     ->default(true)
                     ->required(),
             ]);
@@ -74,25 +79,32 @@ class GalleryAlbumResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\ImageColumn::make('cover_image_path')->label('Cover'),
+                Tables\Columns\ImageColumn::make('cover_image_path')->label(__('fields.gallery.cover_image')),
                 Tables\Columns\TextColumn::make('title')
+                    ->label(__('fields.gallery.title'))
                     ->searchable(),
                 Tables\Columns\TextColumn::make('start_date')
+                    ->label(__('fields.gallery.start_date'))
                     ->date('d/m/Y')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('end_date')
+                    ->label(__('fields.gallery.end_date'))
                     ->date('d/m/Y')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('year')
+                    ->label(__('fields.gallery.year'))
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\IconColumn::make('is_published')
+                    ->label(__('fields.gallery.is_published'))
                     ->boolean(),
                 Tables\Columns\TextColumn::make('view_count')
+                    ->label(__('fields.gallery.view_count'))
                     ->numeric()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('created_at')
+                    ->label(__('fields.common.created_at'))
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
@@ -119,12 +131,17 @@ class GalleryAlbumResource extends Resource
 
     public static function getModelLabel(): string
     {
-        return __('gallery.breadcrumb');
+        return __('filament.resources.gallery_album');
+    }
+    
+    public static function getPluralModelLabel(): string
+    {
+        return __('filament.resources.gallery_album_plural');
     }
 
     public static function getNavigationGroup(): ?string
     {
-        return __('content');
+        return __('filament.navigation_groups.content_management');
     }
 
     public static function getTranslatableAttributes(): array

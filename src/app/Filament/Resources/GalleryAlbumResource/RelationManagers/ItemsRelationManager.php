@@ -33,12 +33,12 @@ class ItemsRelationManager extends RelationManager
                 
                 // File upload for new image (only in create mode or when replacing)
                 Forms\Components\FileUpload::make('image_path')
-                    ->label('Image')
+                    ->label(__('fields.gallery.image'))
                     ->image()
                     ->directory('gallery-items')
                     ->required(!str_contains(Request::url(), '/edit'))
                     ->columnSpanFull()
-                    ->helperText(fn () => str_contains(Request::url(), '/edit') ? 'Upload a new image to replace the existing one' : 'Upload an image')
+                    ->helperText(fn () => str_contains(Request::url(), '/edit') ? __('fields.gallery.replace_image_helper') : __('fields.gallery.upload_image_helper'))
                     ->downloadable()
                     ->openable()
                     ->previewable(true)
@@ -75,12 +75,13 @@ class ItemsRelationManager extends RelationManager
             ->defaultSort('sort_order')
             ->columns([
                 Tables\Columns\ImageColumn::make('image_path')
-                    ->label('Image')
+                    ->label(__('fields.gallery.image'))
                     ->width(200)
                     ->height(100)
                     ->square(),
 
                 Tables\Columns\TextColumn::make('caption')
+                    ->label(__('fields.gallery.caption'))
                     ->formatStateUsing(function ($record) {
                         $translations = $record->getTranslations('caption');
                         $output = [];
@@ -119,7 +120,7 @@ class ItemsRelationManager extends RelationManager
                 Tables\Columns\TextColumn::make('sort_order')
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true)
-                    ->label('Order'),
+                    ->label(__('fields.gallery.order')),
             ])
             ->actions([
                 Tables\Actions\Action::make('moveUp')
@@ -140,11 +141,11 @@ class ItemsRelationManager extends RelationManager
             ])
             ->headerActions([
                 Tables\Actions\Action::make('bulkUpload')
-                    ->label('Upload Images')
+                    ->label(__('fields.gallery.upload_multiple_images'))
                     ->icon('heroicon-o-photo')
                     ->form([
                         Forms\Components\FileUpload::make('images')
-                            ->label('Images')
+                            ->label(__('fields.gallery.images'))
                             ->multiple()
                             ->image()
                             ->directory('gallery-items')
@@ -210,9 +211,9 @@ class ItemsRelationManager extends RelationManager
                             $galleryItem->save();
                         }
                     })
-                    ->modalHeading('Upload Multiple Images')
-                    ->modalDescription('You can upload multiple images at once. All images will be added to this album.')
-                    ->modalSubmitActionLabel('Upload All Images')
+                    ->modalHeading(__('fields.gallery.upload_multiple_images'))
+                    ->modalDescription(__('fields.gallery.upload_multiple_description'))
+                    ->modalSubmitActionLabel(__('fields.gallery.upload_all_images'))
                     ->modalWidth('4xl'),
             ])
             ->actions([
@@ -224,13 +225,13 @@ class ItemsRelationManager extends RelationManager
                     Tables\Actions\DeleteBulkAction::make(),
                     Tables\Actions\BulkAction::make('show')
                         ->icon('heroicon-o-eye')
-                        ->label('Show Selected')
+                        ->label(__('fields.gallery.show_selected'))
                         ->action(fn (\Illuminate\Support\Collection $records) => 
                             $records->each->update(['is_visible' => true])
                         ),
                     Tables\Actions\BulkAction::make('hide')
                         ->icon('heroicon-m-eye-slash')
-                        ->label('Hide Selected')
+                        ->label(__('fields.gallery.hide_selected'))
                         ->action(fn (\Illuminate\Support\Collection $records) => 
                             $records->each->update(['is_visible' => false])
                         ),

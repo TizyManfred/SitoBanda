@@ -18,8 +18,21 @@ class ContactResource extends Resource
     protected static ?string $model = Contact::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-envelope';
-
-    protected static ?string $navigationGroup = 'Website';
+    
+    public static function getModelLabel(): string
+    {
+        return __('filament.resources.contact');
+    }
+    
+    public static function getPluralModelLabel(): string
+    {
+        return __('filament.resources.contact_plural');
+    }
+    
+    public static function getNavigationGroup(): ?string
+    {
+        return __('filament.navigation_groups.website');
+    }
 
     public static function canCreate(): bool
     {
@@ -51,24 +64,28 @@ class ContactResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('name')->searchable(),
-                TextColumn::make('subject')->searchable(),
+                TextColumn::make('name')
+                    ->label(__('fields.contact.name'))
+                    ->searchable(),
+                TextColumn::make('subject')
+                    ->label(__('fields.contact.subject'))
+                    ->searchable(),
                 IconColumn::make('is_read')
                     ->boolean()
-                    ->label('Read'),
+                    ->label(__('fields.contact.read')),
                 TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable(),
             ])
             ->filters([
                 TernaryFilter::make('is_read')
-                    ->label('Read Status')
+                    ->label(__('fields.contact.read_status'))
                     ->boolean()
-                    ->trueLabel('Read Messages')
-                    ->falseLabel('Unread Messages'),
+                    ->trueLabel(__('fields.contact.read_messages'))
+                    ->falseLabel(__('fields.contact.unread_messages')),
             ])
             ->actions([
-                Tables\Actions\EditAction::make()->label('View'),
+                Tables\Actions\EditAction::make()->label(__('fields.contact.view')),
                 Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([

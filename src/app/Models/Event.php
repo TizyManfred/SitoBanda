@@ -6,10 +6,20 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Spatie\Translatable\HasTranslations;
+use Illuminate\Support\Str;
+use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 
 class Event extends Model
 {
-    use HasFactory, SoftDeletes;
+    use HasFactory, SoftDeletes, HasTranslations;
+
+    /**
+     * The translatable attributes.
+     *
+     * @var array<int, string>
+     */
+    public $translatable = ['title', 'description', 'short_description', 'slug'];
 
     /**
      * The attributes that are mass assignable.
@@ -43,7 +53,31 @@ class Event extends Model
         'end_datetime' => 'datetime',
         'is_featured' => 'boolean',
         'is_public' => 'boolean',
+        'slug' => 'array',
     ];
+
+    /**
+     * The "booted" method of the model.
+     *
+     * @return void
+     */
+    protected static function booted()
+    {
+        static::saving(function ($model) {
+            // Only update slug if the title has changed or if it's a new model
+            if ($model->isDirty('title') || !$model->exists) {
+                $slugs = [];
+                $locales = LaravelLocalization::getSupportedLocales();
+                
+                foreach ($locales as $locale => $properties) {
+                    $title = $model->getTranslation('title', $locale);
+                    $slugs[$locale] = Str::slug($title);
+                }
+                
+                $model->slug = $slugs;
+            }
+        });
+    }
 
     /**
      * Get the gallery album associated with the event.
@@ -51,5 +85,37 @@ class Event extends Model
     public function galleryAlbum(): BelongsTo
     {
         return $this->belongsTo(GalleryAlbum::class, 'gallery_id');
+    }
+
+    /**
+     * Scope a query to only include public events.
+     */
+    public function scopePublic($query)
+    {
+        return $query->where('is_public', true);
+    }
+
+    /**
+     * Scope a query to only include featured events.
+     */
+    public function scopeFeatured($query)
+    {
+        return $query->where('is_featured', true);
+    }
+
+    /**
+     * Scope a query to only include upcoming events.
+     */
+    public function scopeUpcoming($query)
+    {
+        return $query->where('start_datetime', '>', now());
+    }
+
+    /**
+     * Scope a query to only include past events.
+     */
+    public function scopePast($query)
+    {
+        return $query->where('start_datetime', '<', now());
     }
 }

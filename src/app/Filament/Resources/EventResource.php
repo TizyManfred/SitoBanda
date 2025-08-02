@@ -6,9 +6,21 @@ use App\Filament\Resources\EventResource\Pages;
 use App\Filament\Resources\EventResource\RelationManagers;
 use App\Models\Event;
 use App\Models\GalleryAlbum;
+use App\Services\TranslationService;
 use Filament\Forms;
+use Filament\Forms\Components\Actions;
+use Filament\Notifications\Notification;
+use Illuminate\Support\Facades\App;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Config;
+// Import helpers for IDE support
+use function Illuminate\Support\data_get;
+use function Illuminate\Support\data_set;
+use function app;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
+use Filament\Resources\Concerns\Translatable;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
@@ -19,100 +31,316 @@ use Filament\Forms\Components\Group;
 use Filament\Forms\Components\Section;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Filters\TrashedFilter;
+use Filament\SpatieLaravelTranslatablePlugin;
+use Mvenghaus\FilamentPluginTranslatableInline\Forms\Components\TranslatableContainer;
 
 class EventResource extends Resource
 {
+    use Translatable;
+    use \App\Filament\Traits\WithAiTranslation;
     protected static ?string $model = Event::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-calendar-days';
 
     protected static ?string $recordTitleAttribute = 'title';
+    
+    public static function getModelLabel(): string
+    {
+        return __('filament.resources.event');
+    }
+    
+    public static function getPluralModelLabel(): string
+    {
+        return __('filament.resources.event_plural');
+    }
+    
+    public static function getNavigationGroup(): ?string
+    {
+        return __('filament.navigation_groups.content_management');
+    }
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
+                // Left column - Main content
                 Group::make()
                     ->schema([
-                        Section::make('Event Details')
+                        Section::make(__('fields.event.event_details'))
                             ->schema([
-                                Forms\Components\TextInput::make('title')
-                                    ->required()
-                                    ->maxLength(255)
-                                    ->live(onBlur: true)
-                                    ->afterStateUpdated(fn (Set $set, ?string $state) => $set('slug', Str::slug($state))),
-
-                                Forms\Components\TextInput::make('slug')
-                                    ->required()
-                                    ->maxLength(255)
-                                    ->unique(Event::class, 'slug', ignoreRecord: true)
-                                    ->readOnly(fn (string $operation): bool => $operation === 'edit'),
-
-                                Forms\Components\RichEditor::make('description')
-                                    ->columnSpanFull(),
-                                    
-                                Forms\Components\Textarea::make('short_description')
-                                    ->maxLength(255),
-                            ]),
-                        Section::make('Location')
+                                Forms\Components\Grid::make()
+                                    ->schema([
+                                        TranslatableContainer::make(
+                                            Forms\Components\TextInput::make('title')
+                                                ->required()
+                                                ->maxLength(255)
+                                                ->live(onBlur: true)
+                                        )->columnSpan(5),
+                                        
+                                        Forms\Components\Actions::make([
+                                            Forms\Components\Actions\Action::make('translateTitle')
+                                                ->icon('heroicon-o-language')
+                                                ->tooltip('AI Translate')
+                                                ->size('sm')
+                                                ->color('gray')
+                                                ->action(function ($livewire) {
+                                                    // Get current locale and determine source locale
+                                                    $currentLocale = $livewire->activeLocale;
+                                                    $sourceLocale = $currentLocale === 'it' ? 'en' : 'it';
+                                                    
+                                                    // Get source text from other locale
+                                                    $sourceText = data_get($livewire->data, "title.{$sourceLocale}") ?? '';
+                                                    
+                                                    if (empty(trim($sourceText))) {
+                                                        // Show notification if there's no source text to translate
+                                                        Notification::make()
+                                                            ->warning()
+                                                            ->title('No source text')
+                                                            ->body('Please add content in ' . strtoupper($sourceLocale) . ' first')
+                                                            ->send();
+                                                        return;
+                                                    }
+                                                    
+                                                    // Get translation service from container
+                                                    $translationService = app(TranslationService::class);
+                                                    
+                                                    // Call translation service to translate text
+                                                    $translated = $translationService->translate($sourceText, $sourceLocale, $currentLocale);
+                                                    
+                                                    if ($translated) {
+                                                        // Update form data with translated text
+                                                        data_set($livewire->data, "title.{$currentLocale}", $translated);
+                                                        
+                                                        // Show success notification
+                                                        Notification::make()
+                                                            ->success()
+                                                            ->title('Translation completed')
+                                                            ->send();
+                                                    } else {
+                                                        // Show error notification
+                                                        Notification::make()
+                                                            ->danger()
+                                                            ->title('Translation failed')
+                                                            ->body('Could not translate text. Please try again later.')
+                                                            ->send();
+                                                    }
+                                                })
+                                        ])->columnSpan(1),
+                                    ])
+                                    ->columns(6),
+                                
+                                Forms\Components\Grid::make()
+                                    ->schema([
+                                        TranslatableContainer::make(
+                                            Forms\Components\Textarea::make('short_description')
+                                                ->maxLength(255)
+                                        )->columnSpan(5),
+                                        
+                                        Forms\Components\Actions::make([
+                                            Forms\Components\Actions\Action::make('translateShortDescription')
+                                                ->icon('heroicon-o-language')
+                                                ->tooltip('AI Translate')
+                                                ->size('sm')
+                                                ->color('gray')
+                                                ->action(function ($livewire) {
+                                                    // Get current locale and determine source locale
+                                                    $currentLocale = $livewire->activeLocale;
+                                                    $sourceLocale = $currentLocale === 'it' ? 'en' : 'it';
+                                                    
+                                                    // Get source text from other locale
+                                                    $sourceText = data_get($livewire->data, "short_description.{$sourceLocale}") ?? '';
+                                                    
+                                                    if (empty(trim($sourceText))) {
+                                                        // Show notification if there's no source text to translate
+                                                        Notification::make()
+                                                            ->warning()
+                                                            ->title('No source text')
+                                                            ->body('Please add content in ' . strtoupper($sourceLocale) . ' first')
+                                                            ->send();
+                                                        return;
+                                                    }
+                                                    
+                                                    // Get translation service from container
+                                                    $translationService = app(TranslationService::class);
+                                                    
+                                                    // Call translation service to translate text
+                                                    $translated = $translationService->translate($sourceText, $sourceLocale, $currentLocale);
+                                                    
+                                                    if ($translated) {
+                                                        // Update form data with translated text
+                                                        data_set($livewire->data, "short_description.{$currentLocale}", $translated);
+                                                        
+                                                        // Show success notification
+                                                        Notification::make()
+                                                            ->success()
+                                                            ->title('Translation completed')
+                                                            ->send();
+                                                    } else {
+                                                        // Show error notification
+                                                        Notification::make()
+                                                            ->danger()
+                                                            ->title('Translation failed')
+                                                            ->body('Could not translate text. Please try again later.')
+                                                            ->send();
+                                                    }
+                                                })
+                                        ])->columnSpan(1),
+                                    ])
+                                    ->columns(6),
+                                
+                                Forms\Components\Grid::make()
+                                    ->schema([
+                                        TranslatableContainer::make(
+                                            Forms\Components\RichEditor::make('description')
+                                        )->columnSpan(5),
+                                        
+                                        Forms\Components\Actions::make([
+                                            Forms\Components\Actions\Action::make('translateDescription')
+                                                ->icon('heroicon-o-language')
+                                                ->tooltip('AI Translate')
+                                                ->size('sm')
+                                                ->color('gray')
+                                                ->action(function ($livewire) {
+                                                    // Get current locale and determine source locale
+                                                    $currentLocale = $livewire->activeLocale;
+                                                    $sourceLocale = $currentLocale === 'it' ? 'en' : 'it';
+                                                    
+                                                    // Get source text from other locale
+                                                    $sourceText = data_get($livewire->data, "description.{$sourceLocale}") ?? '';
+                                                    
+                                                    if (empty(trim($sourceText))) {
+                                                        // Show notification if there's no source text to translate
+                                                        Notification::make()
+                                                            ->warning()
+                                                            ->title('No source text')
+                                                            ->body('Please add content in ' . strtoupper($sourceLocale) . ' first')
+                                                            ->send();
+                                                        return;
+                                                    }
+                                                    
+                                                    // Get translation service from container
+                                                    $translationService = app(TranslationService::class);
+                                                    
+                                                    // Call translation service to translate text
+                                                    $translated = $translationService->translate($sourceText, $sourceLocale, $currentLocale);
+                                                    
+                                                    if ($translated) {
+                                                        // Update form data with translated text
+                                                        data_set($livewire->data, "description.{$currentLocale}", $translated);
+                                                        
+                                                        // Show success notification
+                                                        Notification::make()
+                                                            ->success()
+                                                            ->title('Translation completed')
+                                                            ->send();
+                                                    } else {
+                                                        // Show error notification
+                                                        Notification::make()
+                                                            ->danger()
+                                                            ->title('Translation failed')
+                                                            ->body('Could not translate text. Please try again later.')
+                                                            ->send();
+                                                    }
+                                                })
+                                        ])->columnSpan(1),
+                                    ])
+                                    ->columns(6),
+                            ])
+                            ->collapsible(),
+                            
+                        Section::make(__('fields.event.location_details'))
                             ->schema([
                                 Forms\Components\TextInput::make('location')
+                                    ->label(__('fields.event.location'))
                                     ->required()
                                     ->maxLength(255),
                                 Forms\Components\Textarea::make('address')
+                                    ->label(__('fields.event.address'))
                                     ->columnSpanFull(),
-                                Forms\Components\TextInput::make('latitude')
-                                    ->numeric(),
-                                Forms\Components\TextInput::make('longitude')
-                                    ->numeric(),
-                            ]),
+                                Forms\Components\Grid::make([
+                                    'default' => 2,
+                                ])
+                                ->schema([
+                                    Forms\Components\TextInput::make('latitude')
+                                        ->label(__('fields.event.latitude'))
+                                        ->numeric()
+                                        ->placeholder(__('fields.event.lat_placeholder'))
+                                        ->helperText(__('fields.event.decimal_format')),
+                                    Forms\Components\TextInput::make('longitude')
+                                        ->label(__('fields.event.longitude'))
+                                        ->numeric()
+                                        ->placeholder(__('fields.event.long_placeholder'))
+                                        ->helperText(__('fields.event.decimal_format')),
+                                ]),
+                            ])
+                            ->collapsible(),
                     ])
                     ->columnSpan(['lg' => 2]),
-
+                    
+                // Right sidebar
                 Group::make()
                     ->schema([
-                        Section::make('Date & Time')
-                            ->schema([
-                                Forms\Components\DateTimePicker::make('start_datetime')
-                                    ->required(),
-                                Forms\Components\DateTimePicker::make('end_datetime'),
-                            ]),
-                        
-                        Section::make('Status & Visibility')
-                            ->schema([
-                                Forms\Components\Toggle::make('is_featured')
-                                    ->required(),
-                                Forms\Components\Toggle::make('is_public')
-                                    ->required(),
-                            ]),
-
-                        Section::make('Media')
+                        Section::make(__('fields.common.media'))
                             ->schema([
                                 Forms\Components\FileUpload::make('image_path')
-                                    ->label('Cover Image')
+                                    ->label(__('fields.event.cover_image'))
                                     ->image()
                                     ->disk('public')
                                     ->directory('event-images')
                                     ->preserveFilenames()
+                                    ->imageEditor()
                                     ->imageResizeMode('cover')
-                                    ->imageCropAspectRatio('16:9')
-                                    ->imageResizeTargetWidth('1200')
-                                    ->imageResizeTargetHeight('675')
+                                    ->maxSize(5120) // 5MB
+                                    ->helperText(__('fields.common.max_filesize', ['size' => '5MB']))
+                                    ->imageEditorAspectRatios([
+                                        null,
+                                        '1:1',
+                                        '4:3',
+                                        '16:9',
+                                        '21:9',
+                                        '3:4',
+                                        '9:16',
+                                        '9:21',
+                                    ])
+                                    ->imageResizeTargetWidth('2560')
+                                    ->imageResizeTargetHeight('2560')
                                     ->visibility('public')
                                     ->openable()
                                     ->downloadable()
-                                    ->previewable(true)
-                                    ->imageEditor()
-                                    ->imageEditorAspectRatios([
-                                        '16:9',
-                                        '4:3',
-                                        '1:1',
-                                    ]),
+                                    ->previewable(true),
                                 Forms\Components\Select::make('gallery_id')
-                                    ->label('Photo Gallery')
+                                    ->label(__('fields.event.photo_gallery'))
                                     ->relationship('galleryAlbum', 'title')
                                     ->searchable()
                                     ->preload(),
+                            ]),
+                        
+                        Section::make('Date & Time')
+                            ->schema([
+                                Forms\Components\DateTimePicker::make('start_datetime')
+                                    ->required()
+                                    ->label(__('fields.event.start_datetime'))
+                                    ->native(false)
+                                    ->displayFormat('D, d M Y H:i'),
+                                Forms\Components\DateTimePicker::make('end_datetime')
+                                    ->label(__('fields.event.end_datetime'))
+                                    ->native(false)
+                                    ->displayFormat('D, d M Y H:i')
+                                    ->after('start_datetime'),
+                            ]),
+                        
+                        Section::make(__('fields.event.publication'))
+                            ->schema([
+                                Forms\Components\Toggle::make('is_featured')
+                                    ->label(__('fields.event.featured_event'))
+                                    ->helperText(__('fields.event.featured_helper'))
+                                    ->default(false)
+                                    ->required(),
+                                Forms\Components\Toggle::make('is_public')
+                                    ->label(__('fields.event.publicly_visible'))
+                                    ->helperText(__('fields.event.public_helper'))
+                                    ->default(true)
+                                    ->required(),
                             ]),
                     ])
                     ->columnSpan(['lg' => 1]),
@@ -124,44 +352,57 @@ class EventResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\ImageColumn::make('image_path')->label('Image'),
+                Tables\Columns\ImageColumn::make('image_path')->label(__('fields.event.cover_image')),
                 Tables\Columns\TextColumn::make('title')
+                    ->label(__('fields.event.title'))
                     ->searchable(),
                 Tables\Columns\TextColumn::make('location')
+                    ->label(__('fields.event.location'))
                     ->searchable(),
                 Tables\Columns\TextColumn::make('start_datetime')
+                    ->label(__('fields.event.start_datetime'))
                     ->dateTime()
                     ->sortable(),
                 Tables\Columns\IconColumn::make('is_featured')
+                    ->label(__('fields.event.featured_event'))
                     ->boolean(),
                 Tables\Columns\IconColumn::make('is_public')
+                    ->label(__('fields.event.public_event'))
                     ->boolean(),
                 Tables\Columns\TextColumn::make('created_at')
+                    ->label(__('fields.event.created_at'))
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
-                TrashedFilter::make(),
+                TrashedFilter::make()
+                    ->label(__('fields.event.trashed_filter')),
                 SelectFilter::make('is_featured')
+                    ->label(__('fields.event.featured_filter'))
                     ->options([
-                        true => 'Featured',
-                        false => 'Not Featured',
+                        true => __('fields.event.featured'),
+                        false => __('fields.event.not_featured'),
                     ]),
                 SelectFilter::make('is_public')
+                    ->label(__('fields.event.visibility_filter'))
                     ->options([
-                        true => 'Public',
-                        false => 'Private',
+                        true => __('fields.event.public'),
+                        false => __('fields.event.private'),
                     ]),
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
+                Tables\Actions\EditAction::make()
+                    ->label(__('actions.edit')),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
-                    Tables\Actions\ForceDeleteBulkAction::make(),
-                    Tables\Actions\RestoreBulkAction::make(),
+                    Tables\Actions\DeleteBulkAction::make()
+                        ->label(__('actions.delete')),
+                    Tables\Actions\ForceDeleteBulkAction::make()
+                        ->label(__('actions.force_delete')),
+                    Tables\Actions\RestoreBulkAction::make()
+                        ->label(__('actions.restore')),
                 ]),
             ]);
     }
@@ -180,5 +421,20 @@ class EventResource extends Resource
             'create' => Pages\CreateEvent::route('/create'),
             'edit' => Pages\EditEvent::route('/{record}/edit'),
         ];
+    }
+    
+    public static function getTranslatableAttributes(): array
+    {
+        return ['title', 'description', 'short_description', 'slug'];
+    }
+
+    public static function getTranslatableAttributesForTable(): array
+    {
+        return ['title'];
+    }
+
+    public static function getTranslatableAttributesForForm(): array
+    {
+        return ['title', 'description', 'short_description', 'slug'];
     }
 }

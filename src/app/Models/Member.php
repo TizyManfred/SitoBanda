@@ -27,7 +27,6 @@ class Member extends Model
         'first_name',
         'last_name',
         'section_id',
-        'display_order',
     ];
 
     /**
