@@ -28,7 +28,7 @@
     <section class="section section-sm section-first bg-default text-md-left">
         <div class="container">
             <div class="row row-50 justify-content-center">
-                <div class="col-md-10 col-lg-8">
+                <div class="col-md-12 col-lg-12">
                     <h3 class="oh-desktop"><span class="d-inline-block wow slideInUp">{{ __('repertorio.main_title') }}</span></h3>
                     <p class="text-gray-800">{{ __('repertorio.main_intro') }}</p>
                     
@@ -152,45 +152,6 @@
                     @endif
                     
                     <!-- Esempi musicali section removed as requested -->
-                </div>
-                
-                <div class="col-md-10 col-lg-4">
-                    <div class="aside-component">
-                        <!-- Discografia section removed as requested -->
-                        
-                        <!-- Prossimi Concerti -->
-                        <div class="aside-component-item mb-5">
-                            <h4 class="text-primary">{{ __('repertorio.upcoming_concerts_title') }}</h4>
-                            @if($upcomingEvents->count() > 0)
-                                <ul class="list-schedule">
-                                    @foreach($upcomingEvents as $event)
-                                        <li class="list-schedule-item">
-                                            <div class="list-schedule-left">
-                                                <span>{{ \Carbon\Carbon::parse($event->start_datetime)->format('d M') }}</span>
-                                            </div>
-                                            <div class="list-schedule-right">
-                                                <span>{{ $event->title }}, {{ $event->location }}</span>
-                                            </div>
-                                        </li>
-                                    @endforeach
-                                </ul>
-                            @else
-                                <p>{{ __('repertorio.no_events_message') }}</p>
-                            @endif
-                            <div class="text-center mt-4">
-                                <a href="{{ route('eventi') }}" class="button button-sm button-default-outline-2 button-wapasha">{{ __('repertorio.all_events_button') }}</a>
-                            </div>
-                        </div>
-                        
-                        <!-- Richiedi Spartiti -->
-                        <div class="aside-component-item">
-                            <div class="box-contacts p-4 bg-primary">
-                                <h4 class="box-contacts-title text-white">{{ __('repertorio.sheet_music_title') }}</h4>
-                                <p class="text-white">{{ __('repertorio.sheet_music_description') }}</p>
-                                <a class="button button-lg button-white button-winona" href="{{ route('contatti') }}">{{ __('repertorio.contact_button') }}</a>
-                            </div>
-                        </div>
-                    </div>
                 </div>
             </div>
         </div>

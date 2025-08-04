@@ -39,6 +39,11 @@ Route::group([
     Route::get(LaravelLocalization::transRoute('routes.contatti'), [ContactController::class, 'index'])->name('contatti');
     Route::post(LaravelLocalization::transRoute('routes.contatti'), [ContactController::class, 'store'])->name('contatti.store');
 
+    // Demo pages
+    Route::get(LaravelLocalization::transRoute('routes.generic-aside-demo'), function() {
+        return view('pages.generic-aside-demo');
+    })->name('generic-aside-demo');
+
 });
 
 Route::get('/test-translations', function() {

@@ -15,4 +15,5 @@ return [
     "eventi/{slug}"  =>  "eventi/{slug}",
     "galleria"  =>  "galleria",
     "galleria/{slug}"  =>  "galleria/{slug}",
+    "generic-aside-demo"  =>  "demo-aside-generico",
 ];

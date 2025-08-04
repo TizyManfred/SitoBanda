@@ -51,10 +51,14 @@
     <!-- Organico Intro -->
     <section class="section section-sm section-first bg-default text-md-left">
         <div class="container">
-            <div class="row justify-content-center">
-                <div class="col-lg-10 col-xl-8 text-center">
-                    <h2 class="title-decoration-lines-left">I Nostri Musicisti</h2>
-                    <p class="text-gray-800">La Banda Folk di Castello Tesino è composta da musicisti di diverse età e background, uniti dalla passione per la musica. Ogni sezione strumentale contribuisce con il proprio timbro e colore alla creazione del suono caratteristico della nostra banda.</p>
+            <div class="row row-30">
+                <div class="col-lg-12">
+                    <div class="row">
+                        <div class="col-lg-12 text-md-left">
+                            <h2 class="title-decoration-lines-left">{{ __('I Nostri Musicisti') }}</h2>
+                            <p class="text-gray-800">{{ __('La Banda Folk di Castello Tesino è composta da musicisti di diverse età e background, uniti dalla passione per la musica. Ogni sezione strumentale contribuisce con il proprio timbro e colore alla creazione del suono caratteristico della nostra banda.') }}</p>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

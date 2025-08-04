@@ -23,17 +23,21 @@
     <!-- Chi Siamo Content -->
     <section class="section section-sm section-first bg-default text-md-left">
         <div class="container">
-            <div class="row row-50 justify-content-center align-items-xl-center">
-                <div class="col-md-10 col-lg-5 col-xl-6">
-                    <div class="wow fadeInRight">
-                        <img src="{{ asset('images/FotoBiagio1.jpg') }}" alt="Banda Folk di Castello Tesino" width="519" height="564" loading="lazy">
+            <div class="row row-50 justify-content-center">
+                <div class="col-md-12 col-lg-12">
+                    <div class="row row-50 justify-content-center align-items-xl-center">
+                        <div class="col-lg-12">
+                            <h2 class="title-decoration-lines-left">{{ __('chi-siamo.section_title') }}</h2>
+                            <p class="text-gray-800">{{ __('chi-siamo.intro_p1') }}</p>
+                            <p class="text-gray-800">{{ __('chi-siamo.intro_p2') }}</p>
+                            <p class="text-gray-800">{{ __('chi-siamo.intro_p3') }}</p>
+                        </div>
+                        <div class="col-lg-12 mt-4">
+                            <div class="wow fadeInRight">
+                                <img src="{{ asset('images/FotoBiagio1.jpg') }}" alt="Banda Folk di Castello Tesino" class="img-fluid rounded shadow-sm" loading="lazy">
+                            </div>
+                        </div>
                     </div>
-                </div>
-                <div class="col-md-10 col-lg-7 col-xl-6">
-                    <h2 class="title-decoration-lines-left">{{ __('chi-siamo.section_title') }}</h2>
-                    <p class="text-gray-800">{{ __('chi-siamo.intro_p1') }}</p>
-                    <p class="text-gray-800">{{ __('chi-siamo.intro_p2') }}</p>
-                    <p class="text-gray-800">{{ __('chi-siamo.intro_p3') }}</p>
                 </div>
             </div>
         </div>

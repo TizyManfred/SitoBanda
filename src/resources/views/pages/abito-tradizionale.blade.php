@@ -46,24 +46,6 @@
             <div class="row row-30">
                 <div class="col-sm-6 col-lg-4">
                     <article class="box-icon-classic">
-                        <div class="unit-left"><div class="box-icon-classic-icon bi-person-standing-dress"></div></div>
-                        <div class="unit-body">
-                            <h5 class="box-icon-classic-title">{{ __('La Veste e il Dapè') }}</h5>
-                            <p class="box-icon-classic-text">{{ __('Veste in panno nero con fitte pieghe, più lunga dietro. Si conclude con un “dapè” (balza) rosso o giallo, che indicava lo stato civile della donna.') }}</p>
-                        </div>
-                    </article>
-                </div>
-                <div class="col-sm-6 col-lg-4">
-                    <article class="box-icon-classic">
-                        <div class="unit-left"><div class="box-icon-classic-icon bi-suit-heart-fill"></div></div>
-                        <div class="unit-body">
-                            <h5 class="box-icon-classic-title">{{ __('Il Salvacuore e la Finta') }}</h5>
-                            <p class="box-icon-classic-text">{{ __('Una pettorina rigida in velluto nero (“salvacore”), decorata a mano, protegge il petto sopra una camiciola bianca ricamata (“finta”).') }}</p>
-                        </div>
-                    </article>
-                </div>
-                <div class="col-sm-6 col-lg-4">
-                    <article class="box-icon-classic">
                         <div class="unit-left"><div class="box-icon-classic-icon bi-palette-fill"></div></div>
                         <div class="unit-body">
                             <h5 class="box-icon-classic-title">{{ __('Grembiule e Scialle') }}</h5>
@@ -106,19 +88,15 @@
     <section class="section section-sm bg-default text-md-left">
         <div class="container">
             <div class="row row-50 justify-content-center">
-                <div class="col-md-10 col-lg-8">
+                <div class="col-md-12 col-lg-12">
                     <h3 class="oh-desktop"><span class="d-inline-block wow slideInUp">{{ __('Storia e Adozione') }}</span></h3>
                     <p>{{ __('La storia del costume è legata all\'epopea dei commercianti ambulanti tesini. Per secoli, il costume femminile si è evoluto, arricchendosi di elementi esotici portati a casa dai viaggiatori. La versione maschile è più recente e risale al secolo scorso. La Banda Folkloristica di Castello Tesino ha adottato ufficialmente questo abito nel 1981, diventando un\'ambasciatrice della cultura e della storia locale. Questo abito non è solo un\'uniforme, ma un simbolo vivente della resilienza, dei viaggi e delle tradizioni della Valle del Tesino.') }}</p>
-                </div>
-                <div class="col-md-10 col-lg-4">
-                    <div class="aside-abito">
-                        <!-- Museo -->
-                        <div class="aside-abito-item mt-5">
-                            <div class="box-cta">
-                                <h5 class="box-cta-title">{{ __('Visita il Museo') }}</h5>
-                                <p>{{ __('Presso il Museo Etnografico di Castello Tesino è possibile ammirare una collezione di abiti storici.') }}</p>
-                                <a class="button button-lg button-primary button-winona" href="https://www.museotesino.it" target="_blank">{{ __('Scopri di Più') }}</a>
-                            </div>
+                    <!-- Museo -->
+                    <div class="mt-5">
+                        <div class="box-cta">
+                            <h5 class="box-cta-title">{{ __('Visita il Museo') }}</h5>
+                            <p>{{ __('Presso il Museo Etnografico di Castello Tesino è possibile ammirare una collezione di abiti storici.') }}</p>
+                            <a class="button button-lg button-primary button-winona" href="https://www.museotesino.it" target="_blank">{{ __('Scopri di Più') }}</a>
                         </div>
                     </div>
                 </div>
