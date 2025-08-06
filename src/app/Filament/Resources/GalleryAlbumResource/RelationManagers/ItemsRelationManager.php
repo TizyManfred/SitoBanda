@@ -151,7 +151,7 @@ class ItemsRelationManager extends RelationManager
                             ->directory('gallery-items')
                             ->required()
                             ->columnSpanFull()
-                            ->helperText('Select multiple images to upload at once')
+                            ->helperText(__('fields.gallery.multiple_upload_helper'))
                             ->reorderable()
                             ->appendFiles()
                             ->downloadable()
@@ -170,7 +170,8 @@ class ItemsRelationManager extends RelationManager
                                 '9:21',
                             ])
                             ->imageResizeTargetWidth('2560')
-                            ->imageResizeTargetHeight('2560'),
+                            ->imageResizeTargetHeight('2560')
+                            ->panelLayout('grid'),
                             
                     ])
                     ->action(function (array $data): void {

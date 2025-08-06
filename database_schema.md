@@ -77,14 +77,13 @@ Stores information about band members.
 ## gallery_albums
 Stores photo albums for the gallery.
 
-+--------------+-------------------+------+-----+---------+----------------+
-| Field        | Type              | Null | Key | Default | Extra          |
-+--------------+-------------------+------+-----+---------+----------------+
-| id           | bigint unsigned   | NO   | PRI | NULL    | auto_increment |
-| slug         | json              | YES  |     | NULL    |                |
-| year         | smallint unsigned | NO   |     | NULL    |                |
-| start_date   | date              | YES  |     | NULL    |                |
-| end_date     | date              | YES  |     | NULL    |                |
++--------------+-----------------+------+-----+---------+----------------+
+| Field        | Type            | Null | Key | Default | Extra          |
++--------------+-----------------+------+-----+---------+----------------+
+| id           | bigint unsigned | NO   | PRI | NULL    | auto_increment |
+| slug         | json            | YES  |     | NULL    |                |
+| start_date   | date            | YES  |     | NULL    |                |
+| end_date     | date            | YES  |     | NULL    |                |
 | is_published | tinyint(1)        | NO   |     | 0       |                |
 | view_count   | int unsigned      | NO   |     | 0       |                |
 | created_at   | timestamp         | YES  |     | NULL    |                |

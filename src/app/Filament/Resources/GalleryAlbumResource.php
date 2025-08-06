@@ -30,51 +30,54 @@ class GalleryAlbumResource extends Resource
     public static function form(Form $form): Form
     {
         return $form
-            ->columns(4)
             ->schema([
-                TranslatableContainer::make(
-                    Forms\Components\TextInput::make('title')
-                        ->label(__('fields.gallery.title'))
-                        ->required()
-                        ->maxLength(255)
-                        ->live(onBlur: true),
-                    )
-                    ->columnSpan(2),
-                Forms\Components\DatePicker::make('start_date')
-                    ->label(__('fields.gallery.start_date'))
-                    ->required()
-                    ->native(false)
-                    ->displayFormat('d/m/Y')
-                    ->closeOnDateSelection()
-                    ->columnSpan(1),
-                Forms\Components\DatePicker::make('end_date')
-                    ->label(__('fields.gallery.end_date'))
-                    ->native(false)
-                    ->displayFormat('d/m/Y')
-                    ->closeOnDateSelection()
-                    ->after('start_date')
-                    ->columnSpan(1),
-                TranslatableContainer::make(
-                    Forms\Components\Textarea::make('description')
-                        ->label(__('fields.gallery.description'))
-                )->columnSpanFull(),
-                Forms\Components\TextInput::make('year')
-                    ->label(__('fields.gallery.year'))
-                    ->required()
-                    ->numeric()
-                    ->default(fn () => now()->year),
-                Forms\Components\TextInput::make('view_count')
-                    ->label(__('fields.gallery.view_count'))
-                    ->required()
-                    ->numeric()
-                    ->default(0)
-                    ->disabled()
-                    ->dehydrated(),
-                Forms\Components\Toggle::make('is_published')
-                    ->label(__('fields.gallery.is_published'))
-                    ->default(true)
-                    ->required(),
-            ]);
+                Forms\Components\Section::make()
+                    ->schema([
+                        TranslatableContainer::make(
+                            Forms\Components\TextInput::make('title')
+                                ->label(__('fields.gallery.title'))
+                                ->required()
+                                ->maxLength(255)
+                                ->live(onBlur: true)
+                                ->columnSpanFull(),
+                        ),
+                        TranslatableContainer::make(
+                            Forms\Components\Textarea::make('description')
+                                ->label(__('fields.gallery.description'))
+                                ->columnSpanFull()
+                        ),
+                    ])
+                    ->columnSpan(['lg' => 2]),
+
+                Forms\Components\Section::make()
+                    ->schema([
+                        Forms\Components\DatePicker::make('start_date')
+                            ->label(__('fields.gallery.start_date'))
+                            ->required()
+                            ->native(false)
+                            ->displayFormat('d/m/Y')
+                            ->closeOnDateSelection(),
+                        Forms\Components\DatePicker::make('end_date')
+                            ->label(__('fields.gallery.end_date'))
+                            ->native(false)
+                            ->displayFormat('d/m/Y')
+                            ->closeOnDateSelection()
+                            ->after('start_date'),
+                        Forms\Components\TextInput::make('view_count')
+                            ->label(__('fields.gallery.view_count'))
+                            ->required()
+                            ->numeric()
+                            ->default(0)
+                            ->disabled()
+                            ->dehydrated(),
+                        Forms\Components\Toggle::make('is_published')
+                            ->label(__('fields.gallery.is_published'))
+                            ->default(true)
+                            ->required(),
+                    ])
+                    ->columnSpan(['lg' => 1]),
+            ])
+            ->columns(3);
     }
 
     public static function table(Table $table): Table

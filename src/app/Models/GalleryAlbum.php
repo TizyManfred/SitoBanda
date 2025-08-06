@@ -32,7 +32,6 @@ class GalleryAlbum extends Model
         'title',
         'slug',
         'description',
-        'year',
         'start_date',
         'end_date',
         'is_published',
