@@ -20,14 +20,15 @@ class GalleryController extends Controller
             $albums = GalleryAlbum::where('is_published', 1)
                 ->withCount('items')
                 ->with(['items' => function($query) {
-                    $query->orderBy('created_at', 'asc')->take(1);
+                    // Load up to 4 random items per album for carousel preview
+                    $query->inRandomOrder()->take(4);
                 }])
-                ->orderBy('created_at', 'desc')
+                ->orderBy('start_date', 'desc')
                 ->paginate(12);
                 
             // Get distinct years for filtering
             $years = GalleryAlbum::where('is_published', 1)
-                ->selectRaw('YEAR(created_at) as year')
+                ->selectRaw('YEAR(start_date) as year')
                 ->distinct()
                 ->orderBy('year', 'desc')
                 ->pluck('year')

@@ -40,20 +40,16 @@ use Illuminate\Support\Str;
                             <h3 class="heading-3 font-weight-bold mb-4">{{ $album->title }}</h3>
                             
                             <div class="row box-event-modern-meta">
-                                @if($album->year)
+                                @if($album->start_date)
                                     <div class="col-auto box-event-modern-meta-item mr-3">
-                                        <i class="bi bi-calendar-check mr-1"></i> <span class="font-weight-bold">{{ $album->year }}</span>
-                                    </div>
-                                @elseif($album->start_date)
-                                    <div class="col-auto box-event-modern-meta-item mr-3">
-                                        <i class="bi bi-calendar-check mr-1"></i> <span class="font-weight-bold">{{ $album->start_date->format('Y') }}</span>
+                                        <i class="fa fa-calendar mr-1"></i> <span class="font-weight-bold">{{ $album->start_date->translatedFormat(__('d M Y')) }}</span>
                                     </div>
                                 @endif
                                 <div class="col-auto box-event-modern-meta-item mr-3">
-                                    <i class="bi bi-images mr-1"></i> <span class="font-weight-bold">{{ $images->count() }}</span> {{ __('foto') }}
+                                    <i class="fa fa-image mr-1"></i> <span class="font-weight-bold">{{ $images->count() }}</span> {{ __('foto') }}
                                 </div>
                                 <div class="col-auto box-event-modern-meta-item">
-                                    <i class="bi bi-eye mr-1"></i> <span class="font-weight-bold">{{ $album->view_count ?? 0 }}</span> {{ __('visualizzazioni') }}
+                                    <i class="fa fa-eye mr-1"></i> <span class="font-weight-bold">{{ $album->view_count ?? 0 }}</span> {{ __('visualizzazioni') }}
                                 </div>
                             </div>
                             
@@ -88,7 +84,7 @@ use Illuminate\Support\Str;
                                             <p>{{ Str::limit($event->short_description, 120) }}</p>
                                         </div>
                                         <div class="box-event-modern-info">
-                                            <span><i class="bi bi-geo-alt"></i> {{ $event->location }}</span>
+                                            <span><i class="fa fa-map-marker mr-1"></i> {{ $event->location }}</span>
                                         </div>
                                         <a href="{{ route('eventi.show', $event->slug) }}" class="button button-sm button-default-outline button-wapasha">
                                             {{ __('Dettagli Evento') }}

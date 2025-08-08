@@ -39,8 +39,6 @@ use Illuminate\Support\Str;
             </div>
         </div>
         
-
-        
         <!-- Albums Grid -->
         <div class="row">
             @if(isset($albums) && $albums->count() > 0)
@@ -49,21 +47,30 @@ use Illuminate\Support\Str;
                         <div >
                             <div class="card h-100 border-0 shadow-sm overflow-hidden rounded-0 card-hover-scale">
                                 <div class="position-relative img-hover-zoom">
-                                    @if($album->items->first())
-                                        <img src="{{ Storage::url($album->items->first()->image_path) }}" 
-                                                class="img-fluid" 
-                                                alt="{{ $album->title }}" 
-                                                loading="lazy"
-                                                style="height: 220px; width: 100%; object-fit: cover;">
+                                    @if($album->items && $album->items->count() > 0)
+                                        @php $carouselId = 'album-carousel-' . $album->id; @endphp
+                                        <div id="{{ $carouselId }}" class="carousel slide" data-ride="carousel" data-interval="{{ random_int(4000, 6000) }}">
+                                            <div class="carousel-inner" style="height: 220px;">
+                                                @foreach($album->items as $loopIndex => $item)
+                                                    <div class="carousel-item {{ $loop->first ? 'active' : '' }}">
+                                                        <img src="{{ Storage::url($item->image_path) }}"
+                                                             class="d-block w-100 img-fluid"
+                                                             alt="{{ $album->title }}"
+                                                             loading="lazy"
+                                                             style="height: 220px; width: 100%; object-fit: cover;">
+                                                    </div>
+                                                @endforeach
+                                            </div>
+                                        </div>
                                     @else
                                         <img src="{{ asset('images/placeholder-album.jpg') }}" 
-                                                class="card-img-top img-fluid" 
-                                                alt="{{ $album->title }}" 
-                                                loading="lazy"
-                                                style="height: 220px; width: 100%; object-fit: cover;">
+                                             class="card-img-top img-fluid" 
+                                             alt="{{ $album->title }}" 
+                                             loading="lazy"
+                                             style="height: 220px; width: 100%; object-fit: cover;">
                                     @endif
                                     <div class="position-absolute top-0 right-0 bg-primary text-white p-2 rounded bg-black-opacity-60">
-                                        <i class="far fa-images"></i> {{ $album->items_count }}
+                                        <i class="fa fa-image"></i> {{ $album->items_count }}
                                     </div>
                                 </div>
                                 <div class="card-body">
@@ -77,10 +84,10 @@ use Illuminate\Support\Str;
                                     @endif
                                     <div class="d-flex justify-content-between align-items-center">
                                         <span class="badge bg-light text-dark">
-                                            <i class="far fa-calendar-alt me-1"></i> {{ $album->created_at->translatedFormat(__('M Y')) }}
+                                            <i class="fa fa-calendar me-1"></i> {{ $album->start_date->translatedFormat(__('M Y')) }}
                                         </span>
                                         <span class="btn btn-sm btn-outline-primary">
-                                            {{ __('gallery.view_album') }} <i class="fas fa-arrow-right ms-1"></i>
+                                            {{ __('gallery.view_album') }} <i class="fa fa-arrow-right ms-1"></i>
                                         </span>
                                     </div>
                                 </div>
@@ -97,7 +104,7 @@ use Illuminate\Support\Str;
                         <h4 class="mb-3">{{ __('gallery.no_albums') }}</h4>
                         <p class="text-muted mb-4">{{ __('gallery.check_back') }}</p>
                         <a href="{{ route('home') }}" class="btn btn-primary">
-                            <i class="fas fa-home me-2"></i> {{ __('gallery.back_to_home') }}
+                            <i class="fa fa-home me-2"></i> {{ __('gallery.back_to_home') }}
                         </a>
                     </div>
                 </div>

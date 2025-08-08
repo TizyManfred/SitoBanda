@@ -13,7 +13,13 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Request;
+use Filament\Notifications\Notification;
+use App\Models\GalleryItem;
 use Mvenghaus\FilamentPluginTranslatableInline\Forms\Components\TranslatableContainer;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
+use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
+use Illuminate\Http\UploadedFile;
 
 class ItemsRelationManager extends RelationManager
 {
@@ -144,73 +150,138 @@ class ItemsRelationManager extends RelationManager
                     ->label(__('fields.gallery.upload_multiple_images'))
                     ->icon('heroicon-o-photo')
                     ->form([
-                        Forms\Components\FileUpload::make('images')
+                        // Use our new multi-image uploader component
+                        \App\Filament\Forms\Components\MultiImageUploader::make('images')
                             ->label(__('fields.gallery.images'))
-                            ->multiple()
-                            ->image()
                             ->directory('gallery-items')
-                            ->required()
+                            ->acceptedFileTypes(['image/jpeg', 'image/png', 'image/gif', 'image/webp'])
+                            ->maxFiles(50)
+                            ->maxSize(5120) // 5MB
                             ->columnSpanFull()
-                            ->helperText(__('fields.gallery.multiple_upload_helper'))
-                            ->reorderable()
-                            ->appendFiles()
-                            ->downloadable()
-                            ->openable()
-                            ->previewable(true)
-                            ->imageEditor()
-                            ->imageResizeMode('cover')
-                            ->imageEditorAspectRatios([
-                                null,
-                                '1:1',
-                                '4:3',
-                                '16:9',
-                                '21:9',
-                                '3:4',
-                                '9:16',
-                                '9:21',
-                            ])
-                            ->imageResizeTargetWidth('2560')
-                            ->imageResizeTargetHeight('2560')
-                            ->panelLayout('grid'),
-                            
                     ])
+
                     ->action(function (array $data): void {
-                        $album = $this->getOwnerRecord();
-                        $maxSortOrder = $album->items()->max('sort_order') ?? 0;
+                        $record = $this->getOwnerRecord();
+                        $images = $data['images'] ?? [];
                         
-                        foreach ($data['images'] as $image) {
-                            if (is_string($image)) {
-                                // Handle case where $image is already a string (path)
-                                $filename = basename($image);
-                                $path = $image;
-                            } else {
-                                // Handle UploadedFile object
-                                $filename = $image->getClientOriginalName();
-                                $path = $image->store('gallery-items', 'public');
+                        if (empty($images) || !is_array($images)) {
+                            Notification::make()
+                                ->title(__('fields.gallery.no_images_selected'))
+                                ->warning()
+                                ->send();
+                            return;
+                        }
+                        
+                        // Get the next sort order
+                        $maxSort = GalleryItem::where('album_id', $record->id)->max('sort_order') ?? 0;
+                        
+                        // Process each image
+                        $count = 0;
+                        foreach ($images as $imageData) {
+                            // Skip invalid entries - handle both old and new format
+                            if (!is_array($imageData)) {
+                                // Handle simple string paths (fallback)
+                                if (is_string($imageData) && !empty($imageData)) {
+                                    GalleryItem::create([
+                                        'album_id' => $record->id,
+                                        'image_path' => $imageData,
+                                        // Store as translatable array
+                                        'caption' => ['it' => '', 'en' => ''],
+                                        'sort_order' => ++$maxSort,
+                                    ]);
+                                    $count++;
+                                }
+                                continue;
                             }
                             
-                            $maxSortOrder++;
-                            
-                            $caption = pathinfo($filename, PATHINFO_FILENAME);
-                            
-                            // Create the gallery item with translations
-                            $galleryItem = $album->items()->create([
-                                'image_path' => $path,
-                                'sort_order' => $maxSortOrder,
-                            ]);
-                            
-                            // Set translations for each supported locale
-                            $locales = config('filament-plugin-translatable-inline.locales', ['en' => 'English']);
-                            if (!is_array($locales)) {
-                                $locales = ['en' => 'English']; // Fallback to English if config is invalid
+                            // Extract data from the image object and handle uploads
+                            $imagePath = $imageData['path'] ?? $imageData['url'] ?? null;
+
+                            // If a file was provided (via Livewire temp upload), store it
+                            if (isset($imageData['file'])) {
+                                $fileVal = $imageData['file'];
+                                try {
+                                    if ($fileVal instanceof TemporaryUploadedFile || $fileVal instanceof UploadedFile) {
+                                        $storedPath = $fileVal->store('gallery-items', 'public');
+                                        $imagePath = $storedPath;
+                                    } elseif (is_string($fileVal)) {
+                                        // Livewire often serializes temp files as strings like "livewire-file:..."
+                                        $tmp = TemporaryUploadedFile::unserializeFromLivewire($fileVal);
+                                        if ($tmp instanceof TemporaryUploadedFile) {
+                                            $storedPath = $tmp->store('gallery-items', 'public');
+                                            $imagePath = $storedPath;
+                                        }
+                                    } elseif (is_array($fileVal) && isset($fileVal['temporaryUploadedFile'])) {
+                                        // Some shapes wrap the serialized value
+                                        $tmp = TemporaryUploadedFile::unserializeFromLivewire($fileVal['temporaryUploadedFile']);
+                                        if ($tmp instanceof TemporaryUploadedFile) {
+                                            $storedPath = $tmp->store('gallery-items', 'public');
+                                            $imagePath = $storedPath;
+                                        }
+                                    }
+                                } catch (\Throwable $e) {
+                                    // Skip this file if upload fails
+                                }
                             }
 
-                            foreach (array_keys($locales) as $locale) {
-                                $galleryItem->setTranslation('caption', $locale, $caption);
+                            // If we don't have a valid path and we only have a client preview data URL, decode and store it
+                            if ((empty($imagePath) || (is_string($imagePath) && str_starts_with($imagePath, 'blob:'))) && isset($imageData['preview']) && is_string($imageData['preview'])) {
+                                $preview = $imageData['preview'];
+                                if (str_starts_with($preview, 'data:image/')) {
+                                    try {
+                                        // Extract extension and base64 payload
+                                        [$meta, $data] = explode(',', $preview, 2);
+                                        if (preg_match('/data:image\/(\w+);base64/i', $meta, $m)) {
+                                            $ext = strtolower($m[1]);
+                                        } else {
+                                            $ext = 'png';
+                                        }
+                                        $binary = base64_decode($data, true);
+                                        if ($binary !== false) {
+                                            $uuid = method_exists(Str::class, 'uuid') ? (string) Str::uuid() : uniqid('img_', true);
+                                            $filename = 'gallery-items/' . $uuid . '.' . $ext;
+                                            Storage::disk('public')->put($filename, $binary);
+                                            $imagePath = $filename;
+                                        }
+                                    } catch (\Throwable $e) {
+                                        // fall through; we'll skip if still invalid
+                                    }
+                                }
+                            }
+
+                            // Accept common valid URL forms (absolute/relative). Skip only when empty or blob:
+                            if (empty($imagePath) || (is_string($imagePath) && str_starts_with($imagePath, 'blob:'))) {
+                                continue;
                             }
                             
-                            $galleryItem->save();
+                            $captions = $imageData['captions'] ?? [];
+                            
+                            // Create translations array
+                            $translations = [];
+                            foreach ($captions as $locale => $caption) {
+                                $translations[$locale] = trim($caption);
+                            }
+                            
+                            // Ensure we have at least empty captions for both locales
+                            if (empty($translations)) {
+                                $translations = ['it' => '', 'en' => ''];
+                            }
+                            
+                            // Create the gallery item
+                            GalleryItem::create([
+                                'album_id' => $record->id,
+                                'image_path' => $imagePath,
+                                'caption' => $translations, // Use array directly if model supports HasTranslations
+                                'sort_order' => ++$maxSort,
+                            ]);
+                            
+                            $count++;
                         }
+                        
+                        Notification::make()
+                            ->title(__('fields.gallery.images_uploaded', ['count' => $count]))
+                            ->success()
+                            ->send();
                     })
                     ->modalHeading(__('fields.gallery.upload_multiple_images'))
                     ->modalDescription(__('fields.gallery.multiple_upload_helper'))

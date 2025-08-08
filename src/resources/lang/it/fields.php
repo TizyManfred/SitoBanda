@@ -98,7 +98,30 @@ return [
         'cover_image' => 'Immagine di Copertina',
         'images' => 'Immagini',
         'images_helper' => 'Puoi selezionare più immagini da caricare contemporaneamente',
-        'multiple_upload_helper' => 'Seleziona più immagini da caricare contemporaneamente'
+        'multiple_upload_helper' => 'Seleziona più immagini da caricare contemporaneamente',
+        'captions' => 'Didascalie',
+        'add_another_image' => 'Aggiungi un\'altra immagine',
+        'add_caption' => 'Modifica didascalia',
+        'preview' => 'Anteprima',
+        'image_preview' => 'Anteprima immagine',
+        'no_preview_available' => 'Nessuna anteprima disponibile',
+        'drag_and_drop' => 'Trascina qui le immagini o',
+        'browse' => 'Sfoglia file',
+        'upload_error' => 'Si è verificato un errore durante il caricamento',
+        'file_too_big' => 'Il file è troppo grande (max :size MB)',
+        'invalid_file_type' => 'Tipo di file non supportato',
+        'too_many_files' => 'Troppi file (max :max)',
+        'remove' => 'Rimuovi',
+        'processing' => 'Elaborazione in corso...',
+        'max_files' => 'Massimo :max file',
+        'max_size' => 'Dimensione massima :size',
+        'no_images' => 'Nessuna immagine caricata',
+        'uploading' => 'Caricamento',
+        'no_images_selected' => 'Nessuna immagine selezionata',
+        'images_uploaded' => ':count immagini caricate con successo',
+        'upload_all_images' => 'Carica tutte le immagini',
+        'order' => 'Ordine',
+        'image' => 'Immagine'
     ],
     
     // Repertoire specific fields
@@ -188,6 +211,7 @@ return [
         'filter' => 'Filtro',
         'show' => 'Mostra',
         'hide' => 'Nascondi',
+        'reorder' => 'Riordina',
     ],
     
     // Contact specific fields

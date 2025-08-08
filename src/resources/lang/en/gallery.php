@@ -17,4 +17,20 @@ return [
     'follow_on' => 'Follow on',
     'back_to_home' => 'Back to Home',
     'view_album' => 'View Album',
+    
+    // Custom image uploader translations
+    'drag_and_drop' => 'Drag images here or',
+    'browse' => 'Browse files',
+    'upload_error' => 'An error occurred during upload',
+    'file_too_big' => 'File is too large (max :size MB)',
+    'invalid_file_type' => 'Unsupported file type',
+    'too_many_files' => 'Too many files (max :max)',
+    'remove' => 'Remove',
+    'processing' => 'Processing...',
+    'upload_multiple_images' => 'Upload Images',
+    'multiple_upload_helper' => 'Select multiple images to upload at once',
+    'upload_all_images' => 'Upload All Images',
+    'captions' => 'Captions',
+    'no_images_selected' => 'No images selected',
+    'images_uploaded' => '{count} images uploaded successfully',
 ];

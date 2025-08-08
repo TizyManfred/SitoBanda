@@ -37,6 +37,7 @@ class ArtisanCommands extends Page
                                 'route:clear' => 'Clear Route Cache',
                                 'cache:clear' => 'Clear Application Cache',
                                 'lang:publish' => 'Publish languages',
+                                'filament:assets' => 'Publish Filament assets',
                             ])
                             ->required()
                             ->searchable(),

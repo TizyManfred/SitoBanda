@@ -45,15 +45,3 @@ Route::group([
     })->name('generic-aside-demo');
 
 });
-
-Route::get('/test-translations', function() {
-    return [
-        'current_locale' => App::getLocale(),
-        'laravel_localization_locale' => LaravelLocalization::getCurrentLocale(),
-        'config_locale' => config('app.locale'),
-        'available_locales' => LaravelLocalization::getSupportedLocales(),
-        'translation_test' => __('header.repertorio'),
-        'translation_fallback' => __('header.repertorio', [], 'en'),
-        'file_exists' => file_exists(resource_path('lang/it/header.php')),
-    ];
-});
