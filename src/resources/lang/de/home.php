@@ -30,7 +30,9 @@ return [
         'members' => 'Besetzung',
         'members_text' => 'Erfahren Sie mehr über die Zusammensetzung unseres Ensembles',
         'conductor' => 'Dirigent',
-        'conductor_text' => 'Lernen Sie unseren Dirigenten und seine musikalische Laufbahn kennen'
+        'conductor_text' => 'Lernen Sie unseren Dirigenten und seine musikalische Laufbahn kennen',
+        'abito_tradizionale' => 'Tracht',
+        'abito_tradizionale_text' => 'Erfahren Sie mehr über die Geschichte des Trachts'
     ],
     'history' => [
         'years' => 'Jahre Geschichte',

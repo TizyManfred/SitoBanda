@@ -1,19 +1,19 @@
 @extends('layouts.app')
 
-@section('title', 'Abito Tradizionale - Banda Folk di Castello Tesino')
-@section('description', 'Scopri la storia e i dettagli del costume tradizionale Tesino, un simbolo dell\'identità culturale della valle e della nostra banda.')
-@section('og_title', 'Abito Tradizionale - Banda Folk di Castello Tesino')
-@section('og_description', 'Scopri la storia e i dettagli del costume tradizionale Tesino, un simbolo dell\'identità culturale della valle e della nostra banda.')
+@section('title', __('abito.meta.title'))
+@section('description', __('abito.meta.description'))
+@section('og_title', __('abito.meta.og_title'))
+@section('og_description', __('abito.meta.og_description'))
 
 @section('content')
     <!-- Breadcrumbs -->
     <section class="breadcrumbs-custom-inset">
         <div class="breadcrumbs-custom context-dark bg-overlay-60">
             <div class="container">
-                <h1 class="breadcrumbs-custom-title">{{ __('L\'Abito Tradizionale') }}</h1>
+                <h1 class="breadcrumbs-custom-title">{{ __('abito.title') }}</h1>
                 <ul class="breadcrumbs-custom-path">
-                    <li><a href="{{ route('home') }}">{{ __('Home') }}</a></li>
-                    <li class="active">{{ __('L\'Abito Tradizionale') }}</li>
+                    <li><a href="{{ route('home') }}">{{ __('abito.home') }}</a></li>
+                    <li class="active">{{ __('abito.title') }}</li>
                 </ul>
             </div>
             <div class="box-position" style="background-image: url({{ asset('images/FotoAbito1.jpg') }});"></div>
@@ -30,10 +30,10 @@
                     </div>
                 </div>
                 <div class="col-md-10 col-lg-7 col-xl-6">
-                    <h2 class="title-decoration-lines-left">{{ __('Il Costume Tradizionale Tesino') }}</h2>
-                    <p class="text-gray-800">{{ __('Disgiungere la storia del costume folkloristico tesino dall’epopea degli abitanti della valle, viaggiatori ambulanti in tutto il mondo a partire dall’inizio del 1600, sminuirebbe il significato di uno degli abiti più antichi ed interessanti dell’intero arco alpino.') }}</p>
-                    <p class="text-gray-800">{{ __('Negli ultimi quattro secoli il costume tesino femminile si è progressivamente arricchito di dettagli portati dai tesini di ritorno dai loro viaggi oltralpe: scialli colorati, collane di granati, velluto francese e prezioso panno lenci.') }}</p>
-                    <p class="text-gray-800">{{ __('Dal 1981 la Banda di Castello Tesino ha fatto proprio il costume tesino, sfoggiandolo con orgoglio e tramandando la testimonianza dell’antica cultura e storia della Valle del Tesino.') }}</p>
+                    <h2 class="title-decoration-lines-left">{{ __('abito.main.title') }}</h2>
+                    <p class="text-gray-800">{{ __('abito.main.intro') }}</p>
+                    <p class="text-gray-800">{{ __('abito.main.evolution') }}</p>
+                    <p class="text-gray-800">{{ __('abito.main.adoption') }}</p>
                 </div>
             </div>
         </div>
@@ -42,43 +42,85 @@
     <!-- Elementi dell'Abito -->
     <section class="section section-sm bg-default">
         <div class="container">
-            <h3 class="oh-desktop"><span class="d-inline-block wow slideInUp">{{ __('Elementi del Costume Femminile') }}</span></h3>
+            <h3 class="oh-desktop"><span class="d-inline-block wow slideInUp">{{ __('abito.elements.title') }}</span></h3>
+            
+            <!-- Accessori e Ornamenti -->
+            <div class="row row-30 mb-5">
+                <div class="col-12">
+                    <h4 class="text-center mb-4" style="color: #666; font-weight: 300;">{{ __('abito.elements.accessories') }}</h4>
+                </div>
+                <div class="col-sm-6 col-lg-4">
+                    <article class="box-icon-classic">
+                        <div class="unit-left"><div class="box-icon-classic-icon"><i class="fa fa-star"></i></div></div>
+                        <div class="unit-body">
+                            <h5 class="box-icon-classic-title">{{ __('abito.elements.apron.title') }}</h5>
+                            <p class="box-icon-classic-text">{{ __('abito.elements.apron.text') }}</p>
+                        </div>
+                    </article>
+                </div>
+                <div class="col-sm-6 col-lg-4">
+                    <article class="box-icon-classic">
+                        <div class="unit-left"><div class="box-icon-classic-icon"><i class="fa fa-diamond"></i></div></div>
+                        <div class="unit-body">
+                            <h5 class="box-icon-classic-title">{{ __('abito.elements.jewelry.title') }}</h5>
+                            <p class="box-icon-classic-text">{{ __('abito.elements.jewelry.text') }}</p>
+                        </div>
+                    </article>
+                </div>
+                <div class="col-sm-6 col-lg-4">
+                    <article class="box-icon-classic">
+                        <div class="unit-left"><div class="box-icon-classic-icon"><i class="fa fa-user"></i></div></div>
+                        <div class="unit-body">
+                            <h5 class="box-icon-classic-title">{{ __('abito.elements.hairstyle.title') }}</h5>
+                            <p class="box-icon-classic-text">{{ __('abito.elements.hairstyle.text') }}</p>
+                        </div>
+                    </article>
+                </div>
+            </div>
+
+            <!-- Struttura dell'Abito -->
             <div class="row row-30">
+                <div class="col-12">
+                    <h4 class="text-center mb-4" style="color: #666; font-weight: 300;">{{ __('abito.elements.structure') }}</h4>
+                </div>
                 <div class="col-sm-6 col-lg-4">
                     <article class="box-icon-classic">
-                        <div class="unit-left"><div class="box-icon-classic-icon bi-palette-fill"></div></div>
+                        <div class="unit-left"><div class="box-icon-classic-icon"><i class="fa fa-female"></i></div></div>
                         <div class="unit-body">
-                            <h5 class="box-icon-classic-title">{{ __('Grembiule e Scialle') }}</h5>
-                            <p class="box-icon-classic-text">{{ __('Grembiule e scialle a frange, caratterizzati da vivaci motivi floreali multicolore su un elegante fondo scuro, portati dai viaggiatori.') }}</p>
+                            <h5 class="box-icon-classic-title">{{ __('abito.elements.dress.title') }}</h5>
+                            <p class="box-icon-classic-text">{{ __('abito.elements.dress.text') }}</p>
                         </div>
                     </article>
                 </div>
                 <div class="col-sm-6 col-lg-4">
                     <article class="box-icon-classic">
-                        <div class="unit-left"><div class="box-icon-classic-icon bi-gem"></div></div>
+                        <div class="unit-left"><div class="box-icon-classic-icon"><i class="fa fa-heart"></i></div></div>
                         <div class="unit-body">
-                            <h5 class="box-icon-classic-title">{{ __('I Gioielli') }}</h5>
-                            <p class="box-icon-classic-text">{{ __('Fili dispari di granati, spille e orecchini in filigrana d’oro a cestello (“piroli”) completano l’abito, incorniciando il viso.') }}</p>
+                            <h5 class="box-icon-classic-title">{{ __('abito.elements.colors.title') }}</h5>
+                            <p class="box-icon-classic-text">{{ __('abito.elements.colors.text') }}</p>
                         </div>
                     </article>
                 </div>
                 <div class="col-sm-6 col-lg-4">
                     <article class="box-icon-classic">
-                        <div class="unit-left"><div class="box-icon-classic-icon bi-person-vcard"></div></div>
+                        <div class="unit-left"><div class="box-icon-classic-icon"><i class="fa fa-shield"></i></div></div>
                         <div class="unit-body">
-                            <h5 class="box-icon-classic-title">{{ __('L\'Acconciatura') }}</h5>
-                            <p class="box-icon-classic-text">{{ __('I capelli, divisi da una scriminatura centrale, sono intrecciati a corona e ornati da una crestina in pizzo e spilloni, o raccolti in un “cucco”.') }}</p>
+                            <h5 class="box-icon-classic-title">{{ __('abito.elements.protection.title') }}</h5>
+                            <p class="box-icon-classic-text">{{ __('abito.elements.protection.text') }}</p>
                         </div>
                     </article>
                 </div>
-                <div class="col-sm-6 col-lg-4">
-                    <article class="box-icon-classic">
-                        <div class="unit-left"><div class="box-icon-classic-icon bi-person-standing"></div></div>
-                        <div class="unit-body">
-                            <h5 class="box-icon-classic-title">{{ __('Il Costume Maschile') }}</h5>
-                            <p class="box-icon-classic-text">{{ __('La versione maschile del costume è più recente, risale al secolo scorso e si ispira agli abiti tradizionali tirolesi.') }}</p>
-                        </div>
-                    </article>
+            </div>
+        </div>
+    </section>
+
+    <!-- Costume Maschile -->
+    <section class="section section-sm bg-default text-md-left">
+        <div class="container">
+            <div class="row row-50 justify-content-center">
+                <div class="col-md-12 col-lg-12">
+                    <h3 class="oh-desktop"><span class="d-inline-block wow slideInUp">{{ __('abito.male.title') }}</span></h3>
+                    <p>{{ __('abito.male.description') }}</p>
                 </div>
             </div>
         </div>
@@ -89,16 +131,8 @@
         <div class="container">
             <div class="row row-50 justify-content-center">
                 <div class="col-md-12 col-lg-12">
-                    <h3 class="oh-desktop"><span class="d-inline-block wow slideInUp">{{ __('Storia e Adozione') }}</span></h3>
-                    <p>{{ __('La storia del costume è legata all\'epopea dei commercianti ambulanti tesini. Per secoli, il costume femminile si è evoluto, arricchendosi di elementi esotici portati a casa dai viaggiatori. La versione maschile è più recente e risale al secolo scorso. La Banda Folkloristica di Castello Tesino ha adottato ufficialmente questo abito nel 1981, diventando un\'ambasciatrice della cultura e della storia locale. Questo abito non è solo un\'uniforme, ma un simbolo vivente della resilienza, dei viaggi e delle tradizioni della Valle del Tesino.') }}</p>
-                    <!-- Museo -->
-                    <div class="mt-5">
-                        <div class="box-cta">
-                            <h5 class="box-cta-title">{{ __('Visita il Museo') }}</h5>
-                            <p>{{ __('Presso il Museo Etnografico di Castello Tesino è possibile ammirare una collezione di abiti storici.') }}</p>
-                            <a class="button button-lg button-primary button-winona" href="https://www.museotesino.it" target="_blank">{{ __('Scopri di Più') }}</a>
-                        </div>
-                    </div>
+                    <h3 class="oh-desktop"><span class="d-inline-block wow slideInUp">{{ __('abito.history.title') }}</span></h3>
+                    <p>{{ __('abito.history.text') }}</p>
                 </div>
             </div>
         </div>
@@ -107,27 +141,27 @@
     <!-- Cura e Conservazione -->
     <section class="section section-sm section-last bg-default">
         <div class="container">
-            <h3 class="oh-desktop"><span class="d-inline-block wow slideInUp">{{ __('Cura e Conservazione') }}</span></h3>
+            <h3 class="oh-desktop"><span class="d-inline-block wow slideInUp">{{ __('abito.care.title') }}</span></h3>
             <div class="row row-30 justify-content-center">
                 <div class="col-sm-6 col-lg-4">
                     <article class="box-minimal">
-                        <div class="box-minimal-icon bi-brush-fill"></div>
-                        <h5 class="box-minimal-title">{{ __('Manutenzione') }}</h5>
-                        <div class="box-minimal-text">{{ __('Gli abiti vengono regolarmente controllati e sottoposti a manutenzione da parte di sarte specializzate in abiti tradizionali per preservare l\'autenticità e la qualità dei materiali.') }}</div>
+                        <div class="box-minimal-icon"><i class="fa fa-wrench"></i></div>
+                        <h5 class="box-minimal-title">{{ __('abito.care.maintenance.title') }}</h5>
+                        <div class="box-minimal-text">{{ __('abito.care.maintenance.text') }}</div>
                     </article>
                 </div>
                 <div class="col-sm-6 col-lg-4">
                     <article class="box-minimal">
-                        <div class="box-minimal-icon bi-archive-fill"></div>
-                        <h5 class="box-minimal-title">{{ __('Conservazione') }}</h5>
-                        <div class="box-minimal-text">{{ __('Quando non utilizzati, gli abiti sono conservati in apposite custodie in un ambiente controllato per proteggerli da umidità, luce e insetti, preservando colori e materiali.') }}</div>
+                        <div class="box-minimal-icon"><i class="fa fa-archive"></i></div>
+                        <h5 class="box-minimal-title">{{ __('abito.care.storage.title') }}</h5>
+                        <div class="box-minimal-text">{{ __('abito.care.storage.text') }}</div>
                     </article>
                 </div>
                 <div class="col-sm-6 col-lg-4">
                     <article class="box-minimal">
-                        <div class="box-minimal-icon bi-people-fill"></div>
-                        <h5 class="box-minimal-title">{{ __('Tradizione') }}</h5>
-                        <div class="box-minimal-text">{{ __('La cura dell\'abito è parte integrante della formazione di ogni membro. Si trasmettono le tecniche di manutenzione e il rispetto per la tradizione e l\'identità culturale che l\'abito rappresenta.') }}</div>
+                        <div class="box-minimal-icon"><i class="fa fa-users"></i></div>
+                        <h5 class="box-minimal-title">{{ __('abito.care.tradition.title') }}</h5>
+                        <div class="box-minimal-text">{{ __('abito.care.tradition.text') }}</div>
                     </article>
                 </div>
             </div>

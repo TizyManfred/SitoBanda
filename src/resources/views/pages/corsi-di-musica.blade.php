@@ -28,73 +28,12 @@
                 <div class="col-lg-10 col-xl-8">
                     <div class="course-description-wrap">
                         <h2>{{ __('Impara a Suonare con Noi') }}</h2>
-                        <div class="course-main-image">
+                        <p class="lead">{{ __('La Banda Folk di Castello Tesino organizza corsi di musica per avvicinare giovani e adulti al mondo della musica bandistica.') }}</p>
+                        <div class="course-main-image mt-4">
                             <img src="{{ asset('images/FotoTrento1.jpg') }}" alt="{{ __('Corsi di Musica della Banda Folk di Castello Tesino') }}" class="img-fluid">
                         </div>
-                        
-                        <div class="course-text mt-4">
-                            <p class="lead">{{ __('La Banda Folk di Castello Tesino organizza corsi di musica per avvicinare giovani e adulti al mondo della musica bandistica.') }}</p>
-                            
-                            <p>{{ __('I nostri corsi sono aperti a tutti, a partire dagli 8 anni di età e senza limiti superiori. Non è mai troppo tardi per imparare a suonare uno strumento e unirsi alla nostra banda!') }}</p>
-                            
-                            <h4 class="mt-5">{{ __('Strumenti Insegnati') }}</h4>
-                            <div class="row row-30 mt-4">
-                                <div class="col-md-6">
-                                    <div class="instrument-category">
-                                        <h5>{{ __('Strumenti a Fiato - Legni') }}</h5>
-                                        <ul class="list-marked">
-                                            <li>{{ __('Clarinetto') }}</li>
-                                            <li>{{ __('Flauto Traverso') }}</li>
-                                            <li>{{ __('Sassofono') }}</li>
-                                        </ul>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="instrument-category">
-                                        <h5>{{ __('Strumenti a Fiato - Ottoni') }}</h5>
-                                        <ul class="list-marked">
-                                            <li>{{ __('Tromba') }}</li>
-                                            <li>{{ __('Trombone') }}</li>
-                                            <li>{{ __('Corno') }}</li>
-                                            <li>{{ __('Euphonium/Flicorno Baritono') }}</li>
-                                            <li>{{ __('Tuba') }}</li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row mt-4">
-                                <div class="col-md-6">
-                                    <div class="instrument-category">
-                                        <h5>{{ __('Percussioni') }}</h5>
-                                        <ul class="list-marked">
-                                            <li>{{ __('Tamburo') }}</li>
-                                            <li>{{ __('Timpani') }}</li>
-                                            <li>{{ __('Xilofono') }}</li>
-                                            <li>{{ __('Batteria') }}</li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <h4 class="mt-5">{{ __('Struttura dei Corsi') }}</h4>
-                            <p>{{ __('I corsi sono strutturati in lezioni individuali di strumento e lezioni collettive di teoria e solfeggio. Le lezioni si tengono generalmente nel periodo da ottobre a maggio, presso la sede della banda in Via Venezia 18 a Castello Tesino.') }}</p>
-                            
-                            <div class="course-schedule mt-4">
-                                <h5>{{ __('Organizzazione delle Lezioni') }}</h5>
-                                <ul class="list-marked">
-                                    <li><strong>{{ __('Lezioni di strumento:') }}</strong> {{ __('1 ora settimanale individuale') }}</li>
-                                    <li><strong>{{ __('Lezioni di teoria musicale:') }}</strong> {{ __('1 ora settimanale in gruppo') }}</li>
-                                    <li><strong>{{ __('Musica d\'insieme:') }}</strong> {{ __('1 ora settimanale (dal secondo anno)') }}</li>
-                                </ul>
-                            </div>
-                            
-                            <div class="quote-classic mt-5">
-                                <div class="quote-body">
-                                    <q>{{ __('La musica è un linguaggio universale che avvicina le persone e crea legami. Con i nostri corsi vogliamo offrire la possibilità a tutti, dai più giovani ai meno giovani, di avvicinarsi a questa meravigliosa forma d\'arte.') }}</q>
-                                    <cite>{{ __('Maestro Ivan Villanova') }}</cite>
-                                </div>
-                            </div>
-                        </div>
+                        <p>{{ __('I nostri corsi sono aperti a tutti, a partire dagli 8 anni di età e senza limiti superiori. Non è mai troppo tardi per imparare a suonare uno strumento e unirsi alla nostra banda!') }}</p>
+
                     </div>
                 </div>
                 

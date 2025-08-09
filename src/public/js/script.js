@@ -475,19 +475,19 @@
 			var regularConstraintsMessages = [
 				{
 					type: regula.Constraint.Required,
-					newMessage: "The text field is required."
+					newMessage: window.validationMessages ? window.validationMessages.required : "This field is required."
 				},
 				{
 					type: regula.Constraint.Email,
-					newMessage: "The email is not a valid email."
+					newMessage: window.validationMessages ? window.validationMessages.email : "Please enter a valid email address."
 				},
 				{
 					type: regula.Constraint.Numeric,
-					newMessage: "Only numbers are required"
+					newMessage: window.validationMessages ? window.validationMessages.numeric : "Only numbers are allowed."
 				},
 				{
 					type: regula.Constraint.Selected,
-					newMessage: "Please choose an option."
+					newMessage: window.validationMessages ? window.validationMessages.selected : "Please choose an option."
 				}
 			];
 

@@ -109,7 +109,7 @@
             <div class="row row-50">
                 <div class="col-md-6 col-lg-3">
                     <article class="box-icon-modern wow slideInUp">
-                        <div class="box-icon-modern-icon bi-music-note-beamed"></div>
+                        <div class="box-icon-modern-icon"><i class="fa fa-music"></i></div>
                         <h5 class="box-icon-modern-title">{{ __('chi-siamo.value_tradition_title') }}</h5>
                         <div class="box-icon-modern-decor"></div>
                         <p class="box-icon-modern-text">{{ __('chi-siamo.value_tradition_text') }}</p>
@@ -117,7 +117,7 @@
                 </div>
                 <div class="col-md-6 col-lg-3">
                     <article class="box-icon-modern wow slideInUp" data-wow-delay=".1s">
-                        <div class="box-icon-modern-icon bi-people-fill"></div>
+                        <div class="box-icon-modern-icon"><i class="fa fa-users"></i></div>
                         <h5 class="box-icon-modern-title">{{ __('chi-siamo.value_community_title') }}</h5>
                         <div class="box-icon-modern-decor"></div>
                         <p class="box-icon-modern-text">{{ __('chi-siamo.value_community_text') }}</p>
@@ -125,7 +125,7 @@
                 </div>
                 <div class="col-md-6 col-lg-3">
                     <article class="box-icon-modern wow slideInUp" data-wow-delay=".2s">
-                        <div class="box-icon-modern-icon bi-book"></div>
+                        <div class="box-icon-modern-icon"><i class="fa fa-book"></i></div>
                         <h5 class="box-icon-modern-title">{{ __('chi-siamo.value_training_title') }}</h5>
                         <div class="box-icon-modern-decor"></div>
                         <p class="box-icon-modern-text">{{ __('chi-siamo.value_training_text') }}</p>
@@ -133,7 +133,7 @@
                 </div>
                 <div class="col-md-6 col-lg-3">
                     <article class="box-icon-modern wow slideInUp" data-wow-delay=".3s">
-                        <div class="box-icon-modern-icon bi-globe"></div>
+                        <div class="box-icon-modern-icon"><i class="fa fa-globe"></i></div>
                         <h5 class="box-icon-modern-title">{{ __('chi-siamo.value_internationality_title') }}</h5>
                         <div class="box-icon-modern-decor"></div>
                         <p class="box-icon-modern-text">{{ __('chi-siamo.value_internationality_text') }}</p>

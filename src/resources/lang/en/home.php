@@ -30,7 +30,9 @@ return [
         'members' => 'Members',
         'members_text' => 'Discover more about the composition of our group',
         'conductor' => 'Conductor',
-        'conductor_text' => 'Get to know our conductor and his musical career'
+        'conductor_text' => 'Get to know our conductor and his musical career',
+        'abito_tradizionale' => 'Traditional Dress',
+        'abito_tradizionale_text' => 'Discover more about the history of the abito folklorico'
     ],
     'history' => [
         'years' => 'Years of history',

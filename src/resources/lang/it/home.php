@@ -30,7 +30,9 @@ return [
         'members' => 'Organico',
         'members_text' => 'Scopri di più sulla composizione del nostro organico',
         'conductor' => 'Maestro',
-        'conductor_text' => 'Conosci la storia del nostro maestro e la sua carriera musicale'
+        'conductor_text' => 'Conosci la storia del nostro maestro e la sua carriera musicale',
+        'abito_tradizionale' => 'Abito Tradizionale',
+        'abito_tradizionale_text' => 'Scopri di più sulla storia dell\'abito tradizionale'
     ],
     'history' => [
         'years' => 'Anni di storia',

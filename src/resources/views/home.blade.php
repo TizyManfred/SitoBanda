@@ -71,28 +71,27 @@
           <div class="col-lg-7 col-xl-6 d-flex align-items-center">
             <div class="row row-30">
 
-              <div class="col-sm-6 wow fadeInRight">
-                <article class="box-icon-modern box-icon-modern-custom">
-                  <div>
-                    <h3 class="box-icon-modern-big-title">{{ __('home.about.events') }}</h3>
-                    <div class="box-icon-modern-decor"></div><a
-                      class="button button-md button-default-outline-2 button-wapasha" href="{{ route('eventi') }}">{{ __('home.about.events_cta') }}</a>
-                  </div>
-                </article>
-              </div>
-
               <div class="col-sm-6 wow fadeInRight" data-wow-delay=".1s">
                 <article class="box-icon-modern box-icon-modern-2">
-                  <div class="box-icon-modern-icon bi-hourglass-split"></div>
+                  <div class="box-icon-modern-icon"><i class="fa fa-history"></i></div>
                   <h5 class="box-icon-modern-title"><a href="{{ route('storia') }}">{{ __('home.about.history') }}</a></h5>
                   <div class="box-icon-modern-decor"></div>
                   <p class="box-icon-modern-text">{{ __('home.about.history_text') }}</p>
                 </article>
               </div>
 
+              <div class="col-sm-6 wow fadeInRight" data-wow-delay=".1s">
+                <article class="box-icon-modern box-icon-modern-2">
+                  <div class="box-icon-modern-icon"><i class="fa fa-star"></i></div>
+                  <h5 class="box-icon-modern-title"><a href="{{ route('abito-tradizionale') }}">{{ __('home.about.abito_tradizionale') }}</a></h5>
+                  <div class="box-icon-modern-decor"></div>
+                  <p class="box-icon-modern-text">{{ __('home.about.abito_tradizionale_text') }}</p>
+                </article>
+              </div>
+
               <div class="col-sm-6 wow fadeInRight" data-wow-delay=".2s">
                 <article class="box-icon-modern box-icon-modern-2">
-                  <div class="box-icon-modern-icon bi-people-fill"></div>
+                  <div class="box-icon-modern-icon"><i class="fa fa-users"></i></div>
                   <h5 class="box-icon-modern-title"><a href="{{ route('organico') }}">{{ __('home.about.members') }}</a></h5>
                   <div class="box-icon-modern-decor"></div>
                   <p class="box-icon-modern-text">{{ __('home.about.members_text') }}</p>
@@ -101,7 +100,7 @@
 
               <div class="col-sm-6 wow fadeInRight" data-wow-delay=".3s">
                 <article class="box-icon-modern box-icon-modern-2">
-                  <div class="box-icon-modern-icon bi-magic"></div>
+                  <div class="box-icon-modern-icon"><i class="fa fa-music"></i></div>
                   <h5 class="box-icon-modern-title"><a href="{{ route('maestro') }}">{{ __('home.about.conductor') }}</a></h5>
                   <div class="box-icon-modern-decor"></div>
                   <p class="box-icon-modern-text">{{ __('home.about.conductor_text') }}</p>
@@ -126,7 +125,7 @@
 
           <div class="col-sm-8 col-md-6 col-lg-5 col-xl-4"></div>
 
-          <div class="col-sm-10 col-md-8 col-lg-6 col-xl-4 wow fadeInRight" data-wow-delay=".1s" style="padding-left: 150px;">
+          <div class="col-sm-10 col-md-8 col-lg-6 col-xl-4 wow fadeInRight" data-wow-delay=".1s" style="padding-left: 10px;">
             <div class="text-width-extra-small offset-top-lg-24 wow fadeInUp">
               <h3 class="title-decoration-lines-left">{{ __('home.history.years') }}</h3>
               <p class="text-gray-500">{{ __('home.history.text') }}</p>
@@ -150,23 +149,60 @@
         <div class="row row-30 justify-content-center">
           @if (!empty($upcomingEvents))
             @foreach ($upcomingEvents as $event)
-              <div class="col-md-6 col-lg-4">
-                <div class="card event-card">
-                  @if (!empty($event['image_path']))
-                    <img src="{{ $event['image_path'] }}" class="card-img-top" alt="{{ $event['title'] }}">
-                  @endif
-                  <div class="card-body">
-                    <h5 class="card-title">{{ $event['title'] }}</h5>
-                    <div class="event-meta">
-                      <span><i class="bi bi-calendar-event"></i> {{ __('home.events.date') }}: {{ \Carbon\Carbon::parse($event['start_datetime'])->format('d/m/Y H:i') }}</span>
+              @php
+                  $start = !empty($event['start_datetime']) ? \Carbon\Carbon::parse($event['start_datetime']) : null;
+              @endphp
+              <div class="col-sm-6 col-lg-4 mb-4 wow fadeInUp" data-wow-delay="0.{{ $loop->iteration }}s">
+                <div class="card h-100 border-0 shadow-sm overflow-hidden rounded-0 card-hover">
+                  <div class="position-relative img-hover-zoom">
+                    <a href="{{ route('eventi.show', $event['slug']) }}">
+                      @if (!empty($event['image_path']))
+                        @php
+                            $src = \Illuminate\Support\Str::startsWith($event['image_path'], ['http://', 'https://', '/', 'data:'])
+                                ? $event['image_path']
+                                : \Illuminate\Support\Facades\Storage::url($event['image_path']);
+                        @endphp
+                        <img src="{{ $src }}" alt="{{ $event['title'] }}" width="570" height="370" loading="lazy" class="img-fluid" style="height: 280px; width: 100%; object-fit: cover;">
+                      @else
+                        <img src="{{ asset('images/event-default.jpg') }}" alt="{{ $event['title'] }}" width="570" height="370" loading="lazy" class="img-fluid" style="height: 280px; width: 100%; object-fit: cover;">
+                      @endif
+                    </a>
+                    @if($start)
+                      <div class="position-absolute top-0 left-0 bg-secondary text-white p-3 rounded-bottom bg-black-opacity-70">
+                        <div class="text-center">
+                          <div class="mb-0 big font-weight-bold">{{ $start->format('d') }}</div>
+                          <div class="text-uppercase">{{ $start->translatedFormat('M') }}</div>
+                          <div class="text-uppercase">{{ $start->translatedFormat('Y') }}</div>
+                        </div>
+                      </div>
+                    @endif
+                  </div>
+                  <div class="card-body p-4">
+                    <h5 class="card-title mb-3">
+                      <a href="{{ route('eventi.show', $event['slug']) }}" class="text-dark text-decoration-none">{{ $event['title'] }}</a>
+                    </h5>
+                    <div class="d-flex mb-3 gap-4">
+                      @if($start && $start->format('H:i') !== '00:00')
+                        <div>
+                          <i class="fa fa-clock-o me-1"></i>
+                          <span class="text-muted">{{ $start->format('H:i') }}</span>
+                        </div>
+                      @endif
                       @if (!empty($event['location']))
-                        <span><i class="bi bi-geo-alt"></i> {{ __('home.events.location') }}: {{ $event['location'] }}</span>
+                        <div>
+                          <i class="fa fa-map-marker me-1"></i>
+                          <span class="text-muted">{{ $event['location'] }}</span>
+                        </div>
                       @endif
                     </div>
                     @if (!empty($event['short_description']))
-                      <p class="card-text">{{ $event['short_description'] }}</p>
+                      <p class="card-text mb-4">{{ $event['short_description'] }}</p>
                     @endif
-                    <a href="{{ route('eventi.show', $event['slug']) }}" class="btn btn-primary">{{ __('home.events.details') }}</a>
+                    <div class="text-end">
+                      <a class="btn btn-outline-primary btn-sm" href="{{ route('eventi.show', $event['slug']) }}">
+                        {{ __('home.events.details') }} <i class="fa fa-arrow-right ms-1"></i>
+                      </a>
+                    </div>
                   </div>
                 </div>
               </div>

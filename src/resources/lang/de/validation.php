@@ -12,23 +12,23 @@ return [
     |
     */
 
-    'required' => 'Il campo :attribute è obbligatorio.',
-    'string' => 'Il campo :attribute deve essere una stringa.',
+    'required' => 'Das Feld :attribute ist erforderlich.',
+    'string' => 'Das Feld :attribute muss eine Zeichenkette sein.',
     'max' => [
-        'string' => 'Il campo :attribute non può superare :max caratteri.',
+        'string' => 'Das Feld :attribute darf nicht mehr als :max Zeichen haben.',
     ],
-    'numeric' => 'Il campo :attribute deve essere un numero.',
-    'date' => 'Il campo :attribute deve essere una data valida.',
-    'email' => 'Il campo :attribute deve essere un indirizzo email valido.',
-    'image' => 'Il file :attribute deve essere un\'immagine.',
-    'mimes' => 'Il file :attribute deve essere di tipo: :values.',
+    'numeric' => 'Das Feld :attribute muss eine Zahl sein.',
+    'date' => 'Das Feld :attribute muss ein gültiges Datum sein.',
+    'email' => 'Das Feld :attribute muss eine gültige E-Mail-Adresse sein.',
+    'image' => 'Die Datei :attribute muss ein Bild sein.',
+    'mimes' => 'Die Datei :attribute muss vom Typ: :values sein.',
     
     // JavaScript form validation messages
     'js' => [
-        'required' => 'Questo campo è obbligatorio.',
-        'email' => 'Inserisci un indirizzo email valido.',
-        'numeric' => 'Solo numeri sono consentiti.',
-        'selected' => 'Seleziona un\'opzione.',
+        'required' => 'Dieses Feld ist erforderlich.',
+        'email' => 'Bitte geben Sie eine gültige E-Mail-Adresse ein.',
+        'numeric' => 'Nur Zahlen sind erlaubt.',
+        'selected' => 'Bitte wählen Sie eine Option.',
     ],
     
     /*

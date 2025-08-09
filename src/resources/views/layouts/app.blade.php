@@ -51,6 +51,15 @@
     </div>
 
     <!-- JavaScript -->
+    <script>
+        // Make validation translations available to JavaScript
+        window.validationMessages = {
+            required: "{{ __('validation.js.required') }}",
+            email: "{{ __('validation.js.email') }}",
+            numeric: "{{ __('validation.js.numeric') }}",
+            selected: "{{ __('validation.js.selected') }}"
+        };
+    </script>
     <script src="{{ asset('js/core.min.js') }}"></script>
     <script src="{{ asset('js/script.js') }}"></script>
     {{-- <script src="{{ asset('js/fslightbox.js') }}"></script> --}}

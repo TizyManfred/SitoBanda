@@ -60,12 +60,12 @@
                                                             </h5>
                                                         </div>
                                                         @if($piece->composer || $piece->arranger)
-                                                            <div class="mt-1">
+                                                            <div class="mt-1 d-flex align-items-baseline gap-2">
                                                                 @if($piece->composer)
                                                                     <span class="text-muted">{{ $piece->composer }}</span>
                                                                 @endif
                                                                 @if($piece->arranger)
-                                                                    <small class="text-muted ml-2">({{ __('repertorio.table_arranger') }} {{ $piece->arranger }})</small>
+                                                                    <small class="text-muted">({{ __('repertorio.table_arranger') }} {{ $piece->arranger }})</small>
                                                                 @endif
                                                             </div>
                                                         @endif
