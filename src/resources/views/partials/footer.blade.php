@@ -17,7 +17,7 @@
                   <h6 class="contact-classic-title">{{ __('footer.phone') }}</h6>
                 </div>
                 <div class="unit-body contact-classic-link">
-                  <a href="tel:+393401234567">+39 340 123 4567</a>
+                  <a href="tel:{{ \App\Helpers\SettingsHelper::phone() }}">{{ \App\Helpers\SettingsHelper::phone() }}</a>
                 </div>
               </div>
             </div>
@@ -27,16 +27,16 @@
                   <h6 class="contact-classic-title">{{ __('footer.email') }}</h6>
                 </div>
                 <div class="unit-body contact-classic-link">
-                  <a href="mailto:info@bandafolkcastellotesino.it">info@bandafolkcastellotesino.it</a>
+                  <a href="mailto:{{ \App\Helpers\SettingsHelper::email() }}">{{ \App\Helpers\SettingsHelper::email() }}</a>
                 </div>
               </div>
             </div>
           </div>
           <p class="mt-3">{{ __('footer.follow_us') }}</p>
           <ul class="list-inline list-inline-sm footer-social-list">
-            <li><a class="icon fa fa-facebook" href="https://www.facebook.com/bandafolkcastellotesino" title="{{ __('footer.facebook') }}" aria-label="{{ __('footer.facebook') }}"></a></li>
-            <li><a class="icon fa fa-instagram" href="https://www.instagram.com/bandafolkcastellotesino" title="{{ __('footer.instagram') }}" aria-label="{{ __('footer.instagram') }}"></a></li>
-            <li><a class="icon fa fa-youtube-play" href="https://www.youtube.com/bandafolkcastellotesino" title="{{ __('footer.youtube') }}" aria-label="{{ __('footer.youtube') }}"></a></li>
+            <li><a class="icon fa fa-facebook" href="{{ \App\Helpers\SettingsHelper::facebookUrl() }}" title="{{ __('footer.facebook') }}" aria-label="{{ __('footer.facebook') }}"></a></li>
+            <li><a class="icon fa fa-instagram" href="{{ \App\Helpers\SettingsHelper::instagramUrl() }}" title="{{ __('footer.instagram') }}" aria-label="{{ __('footer.instagram') }}"></a></li>
+            <li><a class="icon fa fa-youtube-play" href="{{ \App\Helpers\SettingsHelper::youtubeUrl() }}" title="{{ __('footer.youtube') }}" aria-label="{{ __('footer.youtube') }}"></a></li>
           </ul>
         </div>
       </div>

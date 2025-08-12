@@ -24,7 +24,9 @@
     <section class="section section-sm section-first bg-default text-md-left">
         <div class="container">
             <div class="row row-50 justify-content-center">
-                <div class="col-md-12 col-lg-12">
+                <div class="col-xl-9 pr-xl-5">
+                    <h2 class="title-decoration-lines-left">{{ __('maestro.name') }}</h2>
+                    <h5 class="text-primary">{{ __('maestro.title') }}</h5>
                     <div class="row row-50 justify-content-center align-items-xl-center">
                         <div class="col-md-12 col-lg-6">
                             <div class="wow fadeInRight">
@@ -32,8 +34,6 @@
                             </div>
                         </div>
                         <div class="col-md-10 col-lg-6">
-                            <h2 class="title-decoration-lines-left">{{ __('maestro.name') }}</h2>
-                            <h5 class="text-primary">{{ __('maestro.title') }}</h5>
                             <p class="text-gray-800">{{ __('maestro.bio_1') }}</p>
                             <p class="text-gray-800">{{ __('maestro.bio_2') }}</p>
                             <p class="text-gray-800">{{ __('maestro.bio_3') }}</p>
@@ -41,6 +41,9 @@
                             <p class="text-gray-800">{{ __('maestro.bio_5') }}</p>
                         </div>
                     </div>
+                </div>
+                <div class="col-xl-3">
+                    @include('partials.aside')
                 </div>
             </div>
         </div>

@@ -28,16 +28,23 @@
         </div>
     </section>
 
-    <!-- Event Details -->
-    <section class="section section-sm section-first bg-default text-md-left">
-        <div class="container">
-            <div class="row row-50">
-                <div class="col-lg-8">
+
+    <div class="container py-5">
+        <div class="row">
+            <!-- Main Content -->
+            <div class="col-xl-9 pr-xl-5">
+                <!-- Event Details -->
+                <section class="section section-sm section-first bg-default text-md-left">
                     <div class="single-event-detail wow fadeInUp" data-wow-delay=".2s">
+                        
+                        <h2 class="title-decoration-lines-left">{{ $event->title }}</h2>
+
                         <!-- Event Image -->
                         @if($event->image_path)
-                            <div class="post-featured-image position-relative mb-4 rounded-0 overflow-hidden shadow-sm">
-                                <img src="{{ Storage::url($event->image_path) }}" alt="{{ $event->title }}" class="img-fluid w-100" loading="lazy" style="object-fit: cover;">
+                            <div class="post-featured-image position-relative mb-4 rounded-0 overflow-hidden shadow-sm wow fadeInUp mt-4" data-wow-delay=".2s">
+                                <a href="{{ Storage::url($event->image_path) }}" data-lightgallery="item">
+                                    <img src="{{ Storage::url($event->image_path) }}" alt="{{ $event->title }}" class="img-fluid w-100" loading="lazy" style="object-fit: cover; max-height: 500px;">
+                                </a>
                             </div>
                         @endif
                         
@@ -175,77 +182,15 @@
                             </div>
                         @endif
                     </div>
-                </div>
-                
-                <div class="col-lg-4">
-                    <div class="aside-events">
-                        <div class="row row-50">
-                            <div class="col-md-6 col-lg-12">
-                                <div class="aside-events-item">
-                                    <h5 class="aside-events-title">{{ __('events.upcoming_events') }}</h5>
-                                    @if($upcomingEvents->count() > 0)
-                                        <ul class="list-events">
-                                            @foreach($upcomingEvents as $upcomingEvent)
-                                                <li class="list-events-item">
-                                                    <div class="list-events-date">
-                                                        <div class="list-events-month">{{ $upcomingEvent->start_datetime->translatedFormat('M') }}</div>
-                                                        <div class="list-events-day">{{ $upcomingEvent->start_datetime->format('d') }}</div>
-                                                    </div>
-                                                    <div class="list-events-info">
-                                                        <h6 class="list-events-title"><a href="{{ route('eventi.show', $upcomingEvent->slug) }}">{{ $upcomingEvent->title }}</a></h6>
-                                                        <div class="list-events-location">{{ $upcomingEvent->location }}</div>
-                                                    </div>
-                                                </li>
-                                            @endforeach
-                                        </ul>
-                                        <a class="button button-sm button-default-outline-2 button-wapasha" href="{{ route('eventi') }}">{{ __('events.all_events') }}</a>
-                                    @else
-                                        <p>{{ __('events.no_upcoming_events_sidebar') }}</p>
-                                    @endif
-                                </div>
-                            </div>
-                            
-                            <div class="col-md-6 col-lg-12">
-                                <div class="aside-events-item">
-                                    <h5 class="aside-events-title">{{ __('events.event_categories') }}</h5>
-                                    <ul class="list-marked list-marked-secondary">
-                                        <li><a href="#">{{ __('events.concerts') }}</a></li>
-                                        <li><a href="#">{{ __('events.processions') }}</a></li>
-                                        <li><a href="#">{{ __('events.festivals') }}</a></li>
-                                        <li><a href="#">{{ __('events.commemorations') }}</a></li>
-                                        <li><a href="#">{{ __('events.trips') }}</a></li>
-                                    </ul>
-                                </div>
-                            </div>
-                            
-                            <div class="col-md-6 col-lg-12">
-                                <div class="aside-events-item">
-                                    <h5 class="aside-events-title">{{ __('events.follow_us') }}</h5>
-                                    <ul class="list-inline social-list">
-                                        <li class="list-inline-item">
-                                            <a href="https://www.facebook.com/bandafolk" target="_blank" aria-label="Facebook">
-                                                <i class="bi bi-facebook"></i>
-                                            </a>
-                                        </li>
-                                        <li class="list-inline-item">
-                                            <a href="https://www.instagram.com/bandafolk" target="_blank" aria-label="Instagram">
-                                                <i class="bi bi-instagram"></i>
-                                            </a>
-                                        </li>
-                                        <li class="list-inline-item">
-                                            <a href="https://www.youtube.com/bandafolk" target="_blank" aria-label="YouTube">
-                                                <i class="bi bi-youtube"></i>
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                </section>
+            </div>
+
+            <div class="col-xl-3">
+                @include('partials.aside')
             </div>
         </div>
-    </section>
+    </div>
+
 @endsection
 
 @section('scripts')

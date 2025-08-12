@@ -24,7 +24,7 @@
     <section class="section section-sm section-first bg-default text-md-left">
         <div class="container">
             <div class="row row-50">
-                <div class="col-lg-8">
+                <div class="col-lg-9">
                     <h3 class="oh-desktop"><span class="d-inline-block wow slideInUp">{{ __('events.upcoming_events') }}</span></h3>
                     
                     @if($upcomingEvents->count() > 0)
@@ -149,57 +149,8 @@
                     @endif
                 </div>
                 
-                <div class="col-lg-4">
-                    <div class="aside-events">
-                        <div class="row row-50">
-                            <div class="col-md-6 col-lg-12">
-                                <div class="aside-events-item">
-                                    <h5 class="aside-events-title">{{ __('events.event_categories') }}</h5>
-                                    <ul class="list-marked list-marked-secondary">
-                                        <li><a href="#">{{ __('events.concerts') }}</a></li>
-                                        <li><a href="#">{{ __('events.processions') }}</a></li>
-                                        <li><a href="#">{{ __('events.festivals') }}</a></li>
-                                        <li><a href="#">{{ __('events.commemorations') }}</a></li>
-                                        <li><a href="#">{{ __('events.trips') }}</a></li>
-                                    </ul>
-                                </div>
-                            </div>
-                            
-                            <div class="col-md-6 col-lg-12">
-                                <div class="aside-events-item">
-                                    <h5 class="aside-events-title">{{ __('events.event_archive') }}</h5>
-                                    <ul class="list-marked list-marked-secondary">
-                                        @foreach(range(date('Y'), date('Y') - 4) as $year)
-                                            <li><a href="#">{{ $year }}</a></li>
-                                        @endforeach
-                                    </ul>
-                                </div>
-                            </div>
-                            
-                            <div class="col-md-6 col-lg-12">
-                                <div class="aside-events-item">
-                                    <h5 class="aside-events-title">{{ __('events.follow_us') }}</h5>
-                                    <ul class="list-inline social-list">
-                                        <li class="list-inline-item">
-                                            <a href="https://www.facebook.com/bandafolk" target="_blank" aria-label="Facebook">
-                                                <i class="bi bi-facebook"></i>
-                                            </a>
-                                        </li>
-                                        <li class="list-inline-item">
-                                            <a href="https://www.instagram.com/bandafolk" target="_blank" aria-label="Instagram">
-                                                <i class="bi bi-instagram"></i>
-                                            </a>
-                                        </li>
-                                        <li class="list-inline-item">
-                                            <a href="https://www.youtube.com/bandafolk" target="_blank" aria-label="YouTube">
-                                                <i class="bi bi-youtube"></i>
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                <div class="col-lg-3">
+                    @include('partials.aside', ['hideAsideEvents' => true])
                 </div>
             </div>
         </div>

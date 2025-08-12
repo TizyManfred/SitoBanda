@@ -23,19 +23,19 @@
     <!-- Chi Siamo Content -->
     <section class="section section-sm section-first bg-default text-md-left">
         <div class="container">
+            <h2 class="title-decoration-lines-left">{{ __('chi-siamo.section_title') }}</h2>
             <div class="row row-50 justify-content-center">
                 <div class="col-md-12 col-lg-12">
                     <div class="row row-50 justify-content-center align-items-xl-center">
-                        <div class="col-lg-12">
-                            <h2 class="title-decoration-lines-left">{{ __('chi-siamo.section_title') }}</h2>
-                            <p class="text-gray-800">{{ __('chi-siamo.intro_p1') }}</p>
-                            <p class="text-gray-800">{{ __('chi-siamo.intro_p2') }}</p>
-                            <p class="text-gray-800">{{ __('chi-siamo.intro_p3') }}</p>
-                        </div>
-                        <div class="col-lg-12 mt-4">
+                        <div class="col-lg-6 mt-4">
                             <div class="wow fadeInRight">
                                 <img src="{{ asset('images/FotoBiagio1.jpg') }}" alt="Banda Folk di Castello Tesino" class="img-fluid rounded shadow-sm" loading="lazy">
                             </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <p class="text-gray-800">{{ __('chi-siamo.intro_p1') }}</p>
+                            <p class="text-gray-800">{{ __('chi-siamo.intro_p2') }}</p>
+                            <p class="text-gray-800">{{ __('chi-siamo.intro_p3') }}</p>
                         </div>
                     </div>
                 </div>
@@ -44,7 +44,7 @@
     </section>
 
     <!-- Discover More -->
-    <section class="section section-sm bg-gray-100 text-center">
+    <section class="section section-sm bg-gray-100 text-center text-md-left">
         <div class="container">
             <h2 class="title-decoration-lines-left">{{ __('chi-siamo.discover_more_title') }}</h2>
             <div class="row row-50">
@@ -103,7 +103,7 @@
     </section>
 
     <!-- Our Values -->
-    <section class="section section-md bg-gray-100 text-center">
+    <section class="section section-md bg-gray-100 text-md-left">
         <div class="container">
             <h2 class="title-decoration-lines-left">{{ __('chi-siamo.values_title') }}</h2>
             <div class="row row-50">

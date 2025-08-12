@@ -13,28 +13,73 @@ class EventController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(\Illuminate\Http\Request $request)
     {
         try {
-            // Get upcoming events using the scope
-            $upcomingEvents = Event::public()
-                ->upcoming()
+            // Read filters from query
+            $filters = [
+                'year' => $request->integer('year'),
+                'location' => $request->string('location')->toString(),
+                'has_photos' => $request->boolean('has_photos'),
+                'featured' => $request->boolean('featured'),
+            ];
+
+            // Base query with optional filters
+            $applyFilters = function ($query) use ($filters) {
+                if (!empty($filters['year'])) {
+                    $query->whereYear('start_datetime', $filters['year']);
+                }
+                if (!empty($filters['location'])) {
+                    $query->where('location', $filters['location']);
+                }
+                if (!empty($filters['has_photos'])) {
+                    $query->whereNotNull('gallery_id');
+                }
+                if (!empty($filters['featured'])) {
+                    $query->where('is_featured', true);
+                }
+                return $query;
+            };
+
+            // Upcoming events with filters
+            $upcomingQuery = Event::public()->upcoming();
+            $upcomingQuery = $applyFilters($upcomingQuery);
+            $upcomingEvents = $upcomingQuery
                 ->orderBy('start_datetime', 'asc')
                 ->get();
-                
-            // Get past events using the scope
-            $pastEvents = Event::public()
-                ->past()
+            
+            // Past events with filters
+            $pastQuery = Event::public()->past();
+            $pastQuery = $applyFilters($pastQuery);
+            $pastEvents = $pastQuery
                 ->orderBy('start_datetime', 'desc')
-                ->paginate(9);
+                ->paginate(9)
+                ->appends($request->query());
+
+            // Distinct years and locations for sidebar
+            $years = Event::public()
+                ->selectRaw('YEAR(start_datetime) as year')
+                ->distinct()
+                ->orderBy('year', 'desc')
+                ->pluck('year');
+
+            $locations = Event::public()
+                ->select('location')
+                ->whereNotNull('location')
+                ->distinct()
+                ->orderBy('location')
+                ->pluck('location');
                 
         } catch (\Exception $e) {
             \Log::error("Error fetching events: " . $e->getMessage());
             $upcomingEvents = collect([]);
             $pastEvents = collect([]);
+            $years = collect([]);
+            $locations = collect([]);
+            $filters = [];
         }
         
-        return view('events.index', compact('upcomingEvents', 'pastEvents'));
+        return view('events.index', compact('upcomingEvents', 'pastEvents', 'years', 'locations', 'filters'));
     }
 
     /**

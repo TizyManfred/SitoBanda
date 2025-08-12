@@ -13,7 +13,7 @@ return [
     
     // Main Content
     'main_title' => 'Unser Repertoire',
-    'main_intro' => 'Das Repertoire der Banda Folk di Castello Tesino ist vielfältig und umfangreich, von traditionellen Märschen bis zu zeitgenössischen Kompositionen. Unsere Mission ist es, das musikalische Erbe von Trentino zu bewahren und mit neuen Klängen und modernen Arrangements zu bereichern.',
+    'main_intro' => 'Die Banda Folk di Castello Tesino pflegt eine tiefe Verbindung zur Tradition der Tiroler Musikkapellen, ein Erbe der österreichischen Herrschaft im Tesino-Tal. Unser Repertoire reicht von mitteleuropäischer Böhmischer Blasmusik bis zu hochwertigen Konzertkomposition, wobei wir stets die Suche nach dem idealen Klang und der Verschmelzung der Instrumente priorisieren. Wir jagen nicht den momentanen Trends nach: Wir glauben an die Gemeinschaft durch Musik und an die Bewahrung eines kulturellen Erbes, das Tradition mit künstlerischer Innovation vereint.',
     
     'no_repertoire_message' => 'Derzeit kein Repertoire verfügbar.',
     'no_pieces_message' => 'Für dieses Programm sind keine Stücke verfügbar.',

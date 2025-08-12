@@ -9,7 +9,7 @@ return [
     'breadcrumb_home' => 'Home',
     
     'main_title' => 'Il Nostro Repertorio',
-    'main_intro' => 'Il repertorio della Banda Folk di Castello Tesino è vasto e variegato, spaziando dalle tradizionali marce alle composizioni contemporanee. La nostra missione è quella di preservare il patrimonio musicale trentino, arricchendolo con nuove sonorità e arrangiamenti moderni.',
+    'main_intro' => 'La Banda Folk di Castello Tesino mantiene un profondo legame con la tradizione delle Musikkapellen tirolesi, eredità della dominazione austriaca nella Valle del Tesino. Il nostro repertorio spazia dalla Böhmische Blasmusik mitteleuropea alle composizioni concertistiche di qualità, privilegiando sempre la ricerca del suono ideale e dell\'amalgama tra gli strumenti. Non inseguiamo le mode del momento: crediamo nella socialità attraverso la musica e nella preservazione di un patrimonio culturale che unisce tradizione e innovazione artistica.',
     
     'no_repertoire_message' => 'Nessun repertorio disponibile al momento.',
     'no_programs_message' => 'Nessun programma di repertorio disponibile al momento. Visita questa pagina in futuro per scoprire il nostro repertorio.',

@@ -21,19 +21,22 @@
     </section>
 
     <!-- Corsi di Musica Content -->
-    <section class="section section-lg bg-default">
+    <section class="section section-sm section-first bg-default text-md-left">
         <div class="container">
-            <div class="row row-50 justify-content-center">
+            <div class="row row-50">
                 <!-- Main Text -->
                 <div class="col-lg-10 col-xl-8">
-                    <div class="course-description-wrap">
-                        <h2>{{ __('Impara a Suonare con Noi') }}</h2>
-                        <p class="lead">{{ __('La Banda Folk di Castello Tesino organizza corsi di musica per avvicinare giovani e adulti al mondo della musica bandistica.') }}</p>
-                        <div class="course-main-image mt-4">
-                            <img src="{{ asset('images/FotoTrento1.jpg') }}" alt="{{ __('Corsi di Musica della Banda Folk di Castello Tesino') }}" class="img-fluid">
+                    <div class="container">
+                        <h2 class="title-decoration-lines-left">{{ __('Impara a Suonare con Noi') }}</h2>
+                        <div class="row row-50">
+                            <div class="col-lg-6 col-xl-6">
+                                <img src="{{ asset('images/FotoTrento1.jpg') }}" alt="{{ __('Corsi di Musica della Banda Folk di Castello Tesino') }}" class="img-fluid">
+                            </div>
+                            <div class="col-lg-6 col-xl-6">
+                                <p>{{ __('La Banda Folk di Castello Tesino organizza corsi di musica per avvicinare giovani e adulti al mondo della musica bandistica.') }}</p>
+                                <p>{{ __('I corsi sono aperti a tutti, a partire dagli 8 anni di età e senza limiti superiori. Non è mai troppo tardi per imparare a suonare uno strumento e unirsi alla nostra banda!') }}</p>
+                            </div>
                         </div>
-                        <p>{{ __('I nostri corsi sono aperti a tutti, a partire dagli 8 anni di età e senza limiti superiori. Non è mai troppo tardi per imparare a suonare uno strumento e unirsi alla nostra banda!') }}</p>
-
                     </div>
                 </div>
                 
@@ -46,28 +49,20 @@
                             </div>
                             <div class="card-body">
                                 <p><strong>{{ __('Scadenza iscrizioni:') }}</strong><br>
-                                {{ __('Venerdì 27 Giugno 2025') }}</p>
+                                {{ \Carbon\Carbon::parse(\App\Helpers\SettingsHelper::coursesInfo()['expiration_date'])->translatedFormat('d F Y') }}</p>
                                 
                                 <p><strong>{{ __('Periodo dei corsi:') }}</strong><br>
-                                {{ __('Da Settembre a Giugno') }}</p>
+                                da {{ \Carbon\Carbon::parse(\App\Helpers\SettingsHelper::coursesInfo()['start_date'])->translatedFormat('F') }} a {{ \Carbon\Carbon::parse(\App\Helpers\SettingsHelper::coursesInfo()['end_date'])->translatedFormat('F') }}</p>
                                 
                                 <p><strong>{{ __('Quote di partecipazione:') }}</strong><br>
-                                {{ __('€220 annuali, comprensivi di assicurazione') }}<br>
-                                <small>{{ __('(Sconto di €50 dal secondo fratello)') }}</small></p>
-                                
-                                <p>{{ __('La quota comprende:') }}</p>
-                                <ul class="list-marked">
-                                    <li>{{ __('Lezioni individuali e di gruppo') }}</li>
-                                    <li>{{ __('Materiale didattico') }}</li>
-                                    <li>{{ __('Utilizzo gratuito dello strumento per tutta la durata dei corsi') }}</li>
-                                </ul>
+                                {!! nl2br(\App\Helpers\SettingsHelper::coursesInfo()['price']) !!}
                                 
                                 <p><strong>{{ __('Per informazioni:') }}</strong><br>
-                                <a href="mailto:info@bandacastellotesino.it">info@bandacastellotesino.it</a><br>
-                                {{ __('Cell:') }} 328 8111676</p>
+                                <a href="mailto:{{ \App\Helpers\SettingsHelper::coursesInfo()['contact_email'] }}">{{ \App\Helpers\SettingsHelper::coursesInfo()['contact_email'] }}</a><br>
+                                {{ __('Cell:') }} {{ \App\Helpers\SettingsHelper::coursesInfo()['phone'] }}</p>
                                 
                                 <div class="mt-4">
-                                    <a href="https://forms.gle/jwNTtArZxtXogfgz7" class="button button-lg button-primary button-block">{{ __('Compila Iscrizione') }}</a>
+                                    <a href="{{ \App\Helpers\SettingsHelper::coursesInfo()['forms_link'] }}" class="button button-primary button-ujarak w-100">{{ __('Compila Iscrizione') }}</a>
                                 </div>
                             </div>
                         </div>
@@ -75,19 +70,16 @@
                         <!-- Testimonials -->
                         <div class="card mt-4">
                             <div class="card-header">
-                                <h4>{{ __('Cosa Dicono i Nostri Allievi') }}</h4>
+                                <h4 class="mb-0">{{ __('Cosa Dicono i Nostri Allievi') }}</h4>
                             </div>
-                            <div class="card-body">
-                                <div class="testimonial">
-                                    <p>"{{ __('Ho iniziato a studiare clarinetto a 10 anni e ora, dopo 5 anni, sono parte della banda. Un\'esperienza fantastica che mi ha insegnato non solo la musica ma anche il valore della collaborazione.') }}"</p>
-                                    <p class="testimonial-author">- {{ __('Marco, 15 anni') }}</p>
-                                </div>
-                                <hr>
-                                <div class="testimonial">
-                                    <p>"{{ __('Da adulta pensavo fosse troppo tardi per imparare, invece dopo 2 anni suono il flauto in banda. Gli insegnanti sono pazienti e competenti.') }}"</p>
-                                    <p class="testimonial-author">- {{ __('Laura, 42 anni') }}</p>
-                                </div>
-                            </div>
+                            <ul class="list-group list-group-flush">
+                                @foreach (\App\Helpers\SettingsHelper::coursesInfo()['testimonials'] as $testimonial)
+                                    <li class="list-group-item">
+                                        <blockquote class="mb-1">{!! nl2br($testimonial['text']) !!}</blockquote>
+                                        <small class="text-muted d-block">— {{ $testimonial['name'] }}</small>
+                                    </li>
+                                @endforeach
+                            </ul>
                         </div>
                     </div>
                 </div>

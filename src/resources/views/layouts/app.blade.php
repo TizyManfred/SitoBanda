@@ -6,7 +6,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta charset="utf-8">
-    <link rel="icon" href="{{ asset('favicon.ico') }}" type="image/x-icon">
+
+    <link rel="icon" href="{{ asset('images/favicon.ico') }}" type="image/x-icon">
+    <link rel="icon" type="image/png" href="{{ asset('images/favicon-96x96.png') }}" sizes="96x96" />
+    <link rel="icon" type="image/svg+xml" href="{{ asset('images/favicon.svg') }}" />
+    <link rel="shortcut icon" href="{{ asset('images/favicon.ico') }}" />
+    <link rel="apple-touch-icon" sizes="180x180" href="{{ asset('images/apple-touch-icon.png') }}" />
+    <meta name="apple-mobile-web-app-title" content="Banda Folk di Castello Tesino" />
+    <link rel="manifest" href="{{ asset('images/site.webmanifest') }}" />
     
     <!-- Meta Tags -->
     <meta name="description" content="@yield('description', 'La Banda Folk di Castello Tesino, attiva dal 1901, porta avanti la tradizione musicale del Trentino con concerti, eventi e corsi di musica.')">

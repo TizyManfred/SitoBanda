@@ -23,37 +23,57 @@
     <div class="container py-5">
         <div class="row">
             <!-- Main Content -->
-            <div class="col-lg-12">
+            <div class="col-xl-9 pr-xl-5">
                 <!-- Storia Content -->
-                <section class="section section-sm section-first bg-default text-md-left">
+                <section class="section section-sm section-first bg-default text-left">
+                    <h2 class="title-decoration-lines-left">{{ __('storia.section_title') }}</h2>
                     <div class="row row-50 justify-content-center align-items-xl-center">
                         <div class="col-md-10 col-lg-7 col-xl-6">
-                            <h2 class="title-decoration-lines-left">{{ __('storia.section_title') }}</h2>
                             <p class="text-gray-800">{{ __('storia.intro_p1') }}</p>
                             <p class="text-gray-800">{{ __('storia.intro_p2') }}</p>
                         </div>
                         <div class="col-md-10 col-lg-5 col-xl-6">
-                            <div class="wow fadeInRight">
-                                <img src="{{ asset('images/FotoStoria2.jpg') }}" alt="Banda Folk di Castello Tesino - Foto storica" width="519" height="564" loading="lazy">
-                            </div>
+                            <a href="{{ asset('images/FotoStoria2.jpg') }}" data-lightgallery="item">
+                                <div class="wow fadeInRight">
+                                    <img src="{{ asset('images/FotoStoria2.jpg') }}" alt="Banda Folk di Castello Tesino - Foto storica" class="aspect-ratio-16-9 object-fit-cover" width="100%" loading="lazy">
+                                </div>
+                            </a>
                         </div>
                     </div>
                 </section>
 
                 <!-- Milestones -->
                 <section class="section section-sm bg-gray-100">
+                    <h3 class="title-decoration-lines-left text-left">{{ __('storia.milestones_title') }}</h3>
                     <div class="row row-50 justify-content-center align-items-xl-center">
                         <div class="col-md-10 col-lg-5 col-xl-6">
-                            <div class="wow fadeInRight">
-                                <img src="{{ asset('images/FotoStoria3.jpg') }}" alt="Banda Folk di Castello Tesino - Tappe storiche" width="519" height="564" loading="lazy">
+                            <div id="milestones-carousel" class="carousel slide wow fadeInLeft" data-ride="carousel" data-interval="{{ random_int(6000, 12000) }}">
+                                <div class="carousel-inner" style="height: 350px;" data-lightgallery="group">
+                                    <div class="carousel-item active">
+                                        <a href="{{ asset('images/FotoStoria3.jpg') }}" data-lightgallery="item">
+                                            <img src="{{ asset('images/FotoStoria3.jpg') }}" 
+                                                 class="d-block w-100 img-fluid"
+                                                 alt="Banda Folk di Castello Tesino - Tappe storiche" 
+                                                 loading="lazy"
+                                                 style="height: 350px; width: 100%; object-fit: cover; cursor: pointer;">
+                                        </a>
+                                    </div>
+                                    <div class="carousel-item">
+                                        <a href="{{ asset('images/FotoStoria4.jpg') }}" data-lightgallery="item">
+                                            <img src="{{ asset('images/FotoStoria4.jpg') }}" 
+                                                 class="d-block w-100 img-fluid"
+                                                 alt="Banda Folk di Castello Tesino - Tappe storiche" 
+                                                 loading="lazy"
+                                                 style="height: 350px; width: 100%; object-fit: cover; cursor: pointer;">
+                                        </a>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                         <div class="col-md-10 col-lg-7 col-xl-6">
                             <div class="text-md-left">
-                                <h3 class="title-decoration-lines-left">{{ __('storia.milestones_title') }}</h3>
                                 <p>{{ __('storia.milestones_p1') }}</p>
                                 <p>{{ __('storia.milestones_p2') }}</p>
-                                <p>{{ __('storia.milestones_p3') }}</p>
                             </div>
                         </div>
                     </div>
@@ -61,16 +81,35 @@
 
                 <!-- Shanghai Success -->
                 <section class="section section-sm bg-default">
+                    <h3 class="title-decoration-lines-left text-left">{{ __('storia.shanghai_title') }}</h3>
                     <div class="row row-50 justify-content-center align-items-xl-center">
                         <div class="col-md-10 col-lg-7 col-xl-6">
                             <div class="box-cta-solano text-left">
-                                <h3 class="wow-outer"><span class="wow slideInUp">{{ __('storia.shanghai_title') }}</span></h3>
-                                <p class="wow-outer"><span class="wow slideInDown" data-wow-delay=".05s">{{ __('storia.shanghai_p1') }}</span></p>
+                                <p>{{ __('storia.shanghai_p1') }}</p>
                             </div>
                         </div>
                         <div class="col-md-10 col-lg-5 col-xl-6">
-                            <div class="wow fadeInLeft">
-                                <img src="{{ asset('images/FotoStoria4.jpeg') }}" alt="Banda Folk di Castello Tesino a Shanghai" width="519" height="564" loading="lazy">
+                            <div id="shanghai-carousel" class="carousel slide wow fadeInLeft" data-ride="carousel" data-interval="{{ random_int(6000, 12000) }}">
+                                <div class="carousel-inner" style="height: 350px;" data-lightgallery="group">
+                                    <div class="carousel-item active">
+                                        <a href="{{ asset('images/FotoStoria5.jpeg') }}" data-lightgallery="item">
+                                            <img src="{{ asset('images/FotoStoria5.jpeg') }}" 
+                                                 class="d-block w-100 img-fluid"
+                                                 alt="Banda Folk di Castello Tesino a Shanghai" 
+                                                 loading="lazy"
+                                                 style="height: 350px; width: 100%; object-fit: cover; cursor: pointer;">
+                                        </a>
+                                    </div>
+                                    <div class="carousel-item">
+                                        <a href="{{ asset('images/FotoStoria6.jpg') }}" data-lightgallery="item">
+                                            <img src="{{ asset('images/FotoStoria6.jpg') }}" 
+                                                 class="d-block w-100 img-fluid"
+                                                 alt="Banda Folk di Castello Tesino a Shanghai" 
+                                                 loading="lazy"
+                                                 style="height: 350px; width: 100%; object-fit: cover; cursor: pointer;">
+                                        </a>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -85,6 +124,10 @@
                         </div>
                     </div>
                 </section>
+            </div>
+
+            <div class="col-xl-3">
+                @include('partials.aside')
             </div>
         </div>
     </div>

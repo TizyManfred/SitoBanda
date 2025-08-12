@@ -13,9 +13,9 @@ return [
 
     'main' => [
         'title' => 'The Traditional Tesino Costume',
-        'intro' => 'Separating the history of the Tesino folk costume from the epic of the valley\'s inhabitants, traveling merchants throughout the world starting from the early 1600s, would diminish the significance of one of the oldest and most interesting costumes of the entire Alpine arc.',
-        'evolution' => 'Over the last four centuries, the female Tesino costume has progressively enriched itself with details closely linked to the experiences of Tesino people abroad who, returning home, brought to their women as souvenirs from their travels beyond the Alps: colorful Tyrolean shawls, garnet necklaces from Carinthia, French velvet and precious lenci cloth.',
-        'adoption' => 'Since 1981, the Band of Castello Tesino has made the Tesino costume its own, becoming a folk band and since then has worn it with pride, continuing to pass down through time what is not just a costume but the testimony of the ancient culture and history of the Tesino Valley.',
+        'intro' => 'The traditional Tesino dress is the direct reflection of centuries of travels, exchanges and cultural contaminations that few other folkloric costumes can boast. Born from the transformation of the Tesino people from mountain shepherds to traveling merchants ("crömeri"), this costume tells the story of a people who knew how to reinvent themselves when, starting from the mid-16th century, the pastoral economic model went into crisis.',
+        'evolution' => 'Every fabric and accessory was brought as a gift by the "perteganti" to their wives, fiancées or courtship interests: colorful shawls from Eastern Europe, garnet necklaces from Carinthia, French velvet and precious namoletot. It was the result of a meticulous search for uniqueness and refinement in what had almost become a social competition, making the female Tesino dress unique in the world for its variety of cultural influences.',
+        'adoption' => 'Since 1981, the Banda Folk di Castello Tesino has proudly worn this extraordinary cultural heritage, passed down from mother to daughter for four centuries. Thanks to some modern conveniences like velcro, dressing has become more practical, but the meaning remains unchanged: it is not just a costume, but the living testimony of a commercial tradition that took our ancestors to the four corners of Europe.',
     ],
 
     'male' => [
@@ -33,7 +33,7 @@ return [
         ],
         'jewelry' => [
             'title' => 'The Jewelry',
-            'text' => 'An odd number of "garnet" strands stands out on the "finta" together with the brooch, while gold filigree basket earrings (the "piroli") rigorously handmade frame the face.',
+            'text' => 'Garnet necklaces from Carinthia and Bohemia, whose number depended on the family\'s economic possibilities. The "piroli" in gold filigree are handmade by the local goldsmith, while the colorful "fiocchi" ribbons once indicated the number of suitors.',
         ],
         'hairstyle' => [
             'title' => 'The Hairstyle',
@@ -45,18 +45,18 @@ return [
         ],
         'colors' => [
             'title' => 'The Dapè Colors',
-            'text' => 'The "dapè" in cloth about twenty centimeters high can be red or yellow: red anciently indicated a woman looking for a husband, yellow a widow or married woman.',
+            'text' => 'The "dapè" in felt cloth, 20 centimeters high, concludes the 10-12 meter black cloth dress. Red for unmarried and young brides, yellow for widows or married women – a social code passed down through centuries.',
         ],
         'protection' => [
             'title' => 'The Salvacore',
-            'text' => 'The chest is protected by a rigid bib (the "salvacore"), usually made of black velvet and finely hand-decorated with silk threads, beads and sequins.',
+            'text' => 'Rigid bib made of cardboard covered with black velvet, decorated with silver, silk and gold threads depicting flowers and arabesques. It protects the chest while leaving space for the "finta", a white chemise with "orie" embroideries and starched collar.',
         ],
 
     ],
 
     'history' => [
         'title' => 'History and Adoption',
-        'text' => 'The history of the costume is linked to the epic of Tesino traveling merchants. For centuries, the female costume evolved, enriching itself with exotic elements brought home by travelers. The male version is more recent and dates back to the last century. The Folk Band of Castello Tesino officially adopted this costume in 1981, becoming an ambassador of local culture and history. This costume is not just a uniform, but a living symbol of resilience, travel and traditions of the Tesino Valley.',
+        'text' => 'The costume\'s history is linked to the epic of the "crömeri" merchants. Curiosity: during World War I, many women preferred to wear their traditional dress rather than risk losing it – it was their pride and personal wealth. Since 1981, the Folk Band has worn it with pride, a living testimony of centuries of tradition.',
     ],
 
     'care' => [

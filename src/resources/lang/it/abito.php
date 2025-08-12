@@ -13,9 +13,9 @@ return [
 
     'main' => [
         'title' => 'Il Costume Tradizionale Tesino',
-        'intro' => 'Disgiungere la storia del costume folkloristico tesino dall\'epopea degli abitanti della valle, viaggiatori ambulanti in tutto il mondo a partire dall\'inizio del 1600, sminuirebbe il significato di uno degli abiti più antichi ed interessanti dell\'intero arco alpino.',
-        'evolution' => 'Negli ultimi quattro secoli il costume tesino femminile si è progressivamente arricchito di dettagli strettamente legati alle vicende dei tesini all\'estero che, di ritorno a casa, portavano alle proprie donne come souvenir dai loro viaggi oltralpe scialli colorati tirolesi, collane di granati della Carinzia, velluto francese e prezioso panno lenci.',
-        'adoption' => 'Dal 1981 la Banda di Castello Tesino ha fatto proprio il costume tesino diventando banda folkloristica e da allora sfoggia con orgoglio, continuando a tramandare nel tempo, quello che non è solo un abito ma la testimonianza dell\'antica cultura e storia della Valle del Tesino.',
+        'intro' => 'L\'abito tradizionale tesino è il riflesso diretto di secoli di viaggi, scambi e contaminazioni culturali che pochi altri costumi folkloristici possono vantare. Nato dalla trasformazione dei Tesini da pastori montani a commercianti ambulanti ("crömeri"), questo costume racconta la storia di un popolo che ha saputo reinventarsi quando, a partire dalla metà del XVI secolo, il modello economico pastorale entrò in crisi.',
+        'evolution' => 'Ogni tessuto e accessorio veniva portato in dono dai "perteganti" alle proprie mogli, fidanzate o corteggiate: colorati scialli dall\'Europa orientale, collane di granati dalla Carinzia, velluto francese e prezioso namoletot. Era il frutto di una meticolosa ricerca di unicità e raffinatezza in quella che era quasi diventata una competizione sociale, rendendo l\'abito femminile tesino unico al mondo per la sua varietà di influenze culturali.',
+        'adoption' => 'Dal 1981 la Banda Folk di Castello Tesino indossa con orgoglio questo straordinario patrimonio culturale, tramandato di madre in figlia per quattro secoli. Grazie ad alcuni accorgimenti moderni come il velcro, la vestizione è diventata più pratica, ma il significato rimane immutato: non è solo un costume, ma la testimonianza vivente di una tradizione commerciale che portò i nostri antenati ai quattro angoli d\'Europa.',
     ],
 
     'male' => [
@@ -33,7 +33,7 @@ return [
         ],
         'jewelry' => [
             'title' => 'I Gioielli',
-            'text' => 'Un numero dispari di fili di "granate" spicca sulla "finta" insieme alla spilla, mentre gli orecchini in filigrana d\'oro a cestelli (i "piroli") rigorosamente fatti a mano incorniciano il viso.',
+            'text' => 'Collane di granati dalla Carinzia e Boemia, il cui numero dipendeva dalle possibilità economiche familiari. I "piroli" in filigrana d\'oro sono realizzati a mano dall\'orafo locale, mentre i "fiocchi" colorati un tempo indicavano il numero di pretendenti.',
         ],
         'hairstyle' => [
             'title' => 'L\'Acconciatura',
@@ -45,18 +45,18 @@ return [
         ],
         'colors' => [
             'title' => 'I Colori del Dapè',
-            'text' => 'Il "dapè" in panno alto circa venti centimetri può essere rosso o giallo: il colore rosso indicava anticamente una donna in cerca di marito, il giallo una vedova o maritata.',
+            'text' => 'Il "dapè" in pannolenci alto venti centimetri conclude la vesta di 10-12 metri di panno nero. Rosso per nubili e giovani spose, giallo per vedove o maritate – un codice sociale tramandato nei secoli.',
         ],
         'protection' => [
             'title' => 'Il Salvacore',
-            'text' => 'Il petto è protetto da una pettorina rigida (il "salvacore"), realizzata solitamente in velluto nero e finemente decorata a mano con fili di seta, perline e pagliette.',
+            'text' => 'Pettorina rigida in cartone rivestito di velluto nero, decorata con fili d\'argento, seta e oro raffiguranti fiori e arabeschi. Protegge il petto lasciando spazio alla "finta", camiciola bianca con ricami "orie" e colletto inamidato.',
         ],
 
     ],
 
     'history' => [
         'title' => 'Storia e Adozione',
-        'text' => 'La storia del costume è legata all\'epopea dei commercianti ambulanti tesini. Per secoli, il costume femminile si è evoluto, arricchendosi di elementi esotici portati a casa dai viaggiatori. La versione maschile è più recente e risale al secolo scorso. La Banda Folkloristica di Castello Tesino ha adottato ufficialmente questo abito nel 1981, diventando un\'ambasciatrice della cultura e della storia locale. Questo abito non è solo un\'uniforme, ma un simbolo vivente della resilienza, dei viaggi e delle tradizioni della Valle del Tesino.',
+        'text' => 'La storia del costume è legata all\'epopea dei "crömeri" tesini. Curiosità: durante la Prima Guerra Mondiale, molte donne preferirono indossare l\'abito tradizionale piuttosto che rischiare di perderlo – era il loro orgoglio e ricchezza personale. Dal 1981 la Banda Folk lo indossa con orgoglio, testimonianza vivente di secoli di tradizione.',
     ],
 
     'care' => [

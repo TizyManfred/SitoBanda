@@ -15329,3 +15329,35 @@ Aggiunte CSS
     gap: 3rem;
 }
 
+/* Container widths */
+
+@media (min-width: 1440px) {
+	.container {
+		max-width: 1280px;
+	}
+}
+
+@media (min-width: 1600px) {
+	.container {
+		max-width: 1440px;
+	}
+}
+
+@media (min-width: 1920px) {
+	.container {
+		max-width: 1600px;
+	}
+}
+
+/* Aspect ratio utilities */
+.aspect-ratio-16-9 {
+    aspect-ratio: 16 / 9;
+}
+
+.aspect-ratio-4-3 {
+    aspect-ratio: 4 / 3;
+}
+
+.aspect-ratio-1-1 {
+    aspect-ratio: 1 / 1;
+}

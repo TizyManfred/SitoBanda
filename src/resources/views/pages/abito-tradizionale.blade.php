@@ -20,153 +20,167 @@
         </div>
     </section>
 
-    <!-- Abito Tradizionale Content -->
-    <section class="section section-sm section-first bg-default text-md-left">
-        <div class="container">
-            <div class="row row-50 justify-content-center align-items-xl-center">
-                <div class="col-md-10 col-lg-5 col-xl-6">
-                    <div class="wow fadeInRight">
-                        <img src="{{ asset('images/FotoAbito2.jpg') }}" alt="Abito Tradizionale della Banda Folk di Castello Tesino" width="519" height="564" loading="lazy">
+
+
+    <div class="container py-5">
+        <div class="row">
+            <!-- Main Content -->
+            <div class="col-xl-9 pr-xl-5">
+                <!-- Abito Tradizionale Content -->
+                <section class="section section-sm section-first bg-default text-md-left">
+                    <div class="container">
+                        <h2 class="title-decoration-lines-left">{{ __('abito.main.title') }}</h2>
+                        <div class="row row-50 justify-content-center align-items-xl-center">
+                            <div class="col-md-10 col-lg-5 col-xl-6">
+                                <div class="wow fadeInRight">
+                                    <img src="{{ asset('images/FotoAbito2.jpg') }}" alt="Abito Tradizionale della Banda Folk di Castello Tesino" width="519" height="564" loading="lazy">
+                                </div>
+                            </div>
+                            <div class="col-md-10 col-lg-7 col-xl-6">
+                                <p class="text-gray-800">{{ __('abito.main.intro') }}</p>
+                                <p class="text-gray-800">{{ __('abito.main.evolution') }}</p>
+                                <p class="text-gray-800">{{ __('abito.main.adoption') }}</p>
+                            </div>
+                        </div>
                     </div>
-                </div>
-                <div class="col-md-10 col-lg-7 col-xl-6">
-                    <h2 class="title-decoration-lines-left">{{ __('abito.main.title') }}</h2>
-                    <p class="text-gray-800">{{ __('abito.main.intro') }}</p>
-                    <p class="text-gray-800">{{ __('abito.main.evolution') }}</p>
-                    <p class="text-gray-800">{{ __('abito.main.adoption') }}</p>
-                </div>
+                </section>
+
+                <!-- Elementi dell'Abito -->
+                <section class="section section-sm bg-default">
+                    <div class="container">
+                        <h3 class="oh-desktop"><span class="d-inline-block wow slideInUp">{{ __('abito.elements.title') }}</span></h3>
+                        
+                        <!-- Accessori e Ornamenti -->
+                        <div class="row row-30 mb-5">
+                            <div class="col-12">
+                                <h4 class="text-center mb-4" style="color: #666; font-weight: 300;">{{ __('abito.elements.accessories') }}</h4>
+                            </div>
+                            <div class="col-sm-6 col-lg-4">
+                                <article class="box-icon-classic">
+                                    <div class="unit-left"><div class="box-icon-classic-icon"><i class="fa fa-star"></i></div></div>
+                                    <div class="unit-body">
+                                        <h5 class="box-icon-classic-title">{{ __('abito.elements.apron.title') }}</h5>
+                                        <p class="box-icon-classic-text">{{ __('abito.elements.apron.text') }}</p>
+                                    </div>
+                                </article>
+                            </div>
+                            <div class="col-sm-6 col-lg-4">
+                                <article class="box-icon-classic">
+                                    <div class="unit-left"><div class="box-icon-classic-icon"><i class="fa fa-diamond"></i></div></div>
+                                    <div class="unit-body">
+                                        <h5 class="box-icon-classic-title">{{ __('abito.elements.jewelry.title') }}</h5>
+                                        <p class="box-icon-classic-text">{{ __('abito.elements.jewelry.text') }}</p>
+                                    </div>
+                                </article>
+                            </div>
+                            <div class="col-sm-6 col-lg-4">
+                                <article class="box-icon-classic">
+                                    <div class="unit-left"><div class="box-icon-classic-icon"><i class="fa fa-user"></i></div></div>
+                                    <div class="unit-body">
+                                        <h5 class="box-icon-classic-title">{{ __('abito.elements.hairstyle.title') }}</h5>
+                                        <p class="box-icon-classic-text">{{ __('abito.elements.hairstyle.text') }}</p>
+                                    </div>
+                                </article>
+                            </div>
+                        </div>
+
+                        <!-- Struttura dell'Abito -->
+                        <div class="row row-30">
+                            <div class="col-12">
+                                <h4 class="text-center mb-4" style="color: #666; font-weight: 300;">{{ __('abito.elements.structure') }}</h4>
+                            </div>
+                            <div class="col-sm-6 col-lg-4">
+                                <article class="box-icon-classic">
+                                    <div class="unit-left"><div class="box-icon-classic-icon"><i class="fa fa-female"></i></div></div>
+                                    <div class="unit-body">
+                                        <h5 class="box-icon-classic-title">{{ __('abito.elements.dress.title') }}</h5>
+                                        <p class="box-icon-classic-text">{{ __('abito.elements.dress.text') }}</p>
+                                    </div>
+                                </article>
+                            </div>
+                            <div class="col-sm-6 col-lg-4">
+                                <article class="box-icon-classic">
+                                    <div class="unit-left"><div class="box-icon-classic-icon"><i class="fa fa-heart"></i></div></div>
+                                    <div class="unit-body">
+                                        <h5 class="box-icon-classic-title">{{ __('abito.elements.colors.title') }}</h5>
+                                        <p class="box-icon-classic-text">{{ __('abito.elements.colors.text') }}</p>
+                                    </div>
+                                </article>
+                            </div>
+                            <div class="col-sm-6 col-lg-4">
+                                <article class="box-icon-classic">
+                                    <div class="unit-left"><div class="box-icon-classic-icon"><i class="fa fa-shield"></i></div></div>
+                                    <div class="unit-body">
+                                        <h5 class="box-icon-classic-title">{{ __('abito.elements.protection.title') }}</h5>
+                                        <p class="box-icon-classic-text">{{ __('abito.elements.protection.text') }}</p>
+                                    </div>
+                                </article>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Costume Maschile -->
+                <section class="section section-sm bg-default text-md-left">
+                    <div class="container">
+                        <div class="row row-50 justify-content-center">
+                            <div class="col-md-12 col-lg-12">
+                                <h3 class="oh-desktop"><span class="d-inline-block wow slideInUp">{{ __('abito.male.title') }}</span></h3>
+                                <p>{{ __('abito.male.description') }}</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Storia dell'Abito -->
+                <section class="section section-sm bg-default text-md-left">
+                    <div class="container">
+                        <div class="row row-50 justify-content-center">
+                            <div class="col-md-12 col-lg-12">
+                                <h3 class="oh-desktop"><span class="d-inline-block wow slideInUp">{{ __('abito.history.title') }}</span></h3>
+                                <p>{{ __('abito.history.text') }}</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Cura e Conservazione -->
+                <section class="section section-sm section-last bg-default">
+                    <div class="container">
+                        <h3 class="oh-desktop"><span class="d-inline-block wow slideInUp">{{ __('abito.care.title') }}</span></h3>
+                        <div class="row row-30 justify-content-center">
+                            <div class="col-sm-6 col-lg-4">
+                                <article class="box-minimal">
+                                    <div class="box-minimal-icon"><i class="fa fa-wrench"></i></div>
+                                    <h5 class="box-minimal-title">{{ __('abito.care.maintenance.title') }}</h5>
+                                    <div class="box-minimal-text">{{ __('abito.care.maintenance.text') }}</div>
+                                </article>
+                            </div>
+                            <div class="col-sm-6 col-lg-4">
+                                <article class="box-minimal">
+                                    <div class="box-minimal-icon"><i class="fa fa-archive"></i></div>
+                                    <h5 class="box-minimal-title">{{ __('abito.care.storage.title') }}</h5>
+                                    <div class="box-minimal-text">{{ __('abito.care.storage.text') }}</div>
+                                </article>
+                            </div>
+                            <div class="col-sm-6 col-lg-4">
+                                <article class="box-minimal">
+                                    <div class="box-minimal-icon"><i class="fa fa-users"></i></div>
+                                    <h5 class="box-minimal-title">{{ __('abito.care.tradition.title') }}</h5>
+                                    <div class="box-minimal-text">{{ __('abito.care.tradition.text') }}</div>
+                                </article>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+            <!-- Right Sidebar -->
+            <div class="col-xl-3">
+                @include('partials.aside')
             </div>
         </div>
-    </section>
-
-    <!-- Elementi dell'Abito -->
-    <section class="section section-sm bg-default">
-        <div class="container">
-            <h3 class="oh-desktop"><span class="d-inline-block wow slideInUp">{{ __('abito.elements.title') }}</span></h3>
-            
-            <!-- Accessori e Ornamenti -->
-            <div class="row row-30 mb-5">
-                <div class="col-12">
-                    <h4 class="text-center mb-4" style="color: #666; font-weight: 300;">{{ __('abito.elements.accessories') }}</h4>
-                </div>
-                <div class="col-sm-6 col-lg-4">
-                    <article class="box-icon-classic">
-                        <div class="unit-left"><div class="box-icon-classic-icon"><i class="fa fa-star"></i></div></div>
-                        <div class="unit-body">
-                            <h5 class="box-icon-classic-title">{{ __('abito.elements.apron.title') }}</h5>
-                            <p class="box-icon-classic-text">{{ __('abito.elements.apron.text') }}</p>
-                        </div>
-                    </article>
-                </div>
-                <div class="col-sm-6 col-lg-4">
-                    <article class="box-icon-classic">
-                        <div class="unit-left"><div class="box-icon-classic-icon"><i class="fa fa-diamond"></i></div></div>
-                        <div class="unit-body">
-                            <h5 class="box-icon-classic-title">{{ __('abito.elements.jewelry.title') }}</h5>
-                            <p class="box-icon-classic-text">{{ __('abito.elements.jewelry.text') }}</p>
-                        </div>
-                    </article>
-                </div>
-                <div class="col-sm-6 col-lg-4">
-                    <article class="box-icon-classic">
-                        <div class="unit-left"><div class="box-icon-classic-icon"><i class="fa fa-user"></i></div></div>
-                        <div class="unit-body">
-                            <h5 class="box-icon-classic-title">{{ __('abito.elements.hairstyle.title') }}</h5>
-                            <p class="box-icon-classic-text">{{ __('abito.elements.hairstyle.text') }}</p>
-                        </div>
-                    </article>
-                </div>
-            </div>
-
-            <!-- Struttura dell'Abito -->
-            <div class="row row-30">
-                <div class="col-12">
-                    <h4 class="text-center mb-4" style="color: #666; font-weight: 300;">{{ __('abito.elements.structure') }}</h4>
-                </div>
-                <div class="col-sm-6 col-lg-4">
-                    <article class="box-icon-classic">
-                        <div class="unit-left"><div class="box-icon-classic-icon"><i class="fa fa-female"></i></div></div>
-                        <div class="unit-body">
-                            <h5 class="box-icon-classic-title">{{ __('abito.elements.dress.title') }}</h5>
-                            <p class="box-icon-classic-text">{{ __('abito.elements.dress.text') }}</p>
-                        </div>
-                    </article>
-                </div>
-                <div class="col-sm-6 col-lg-4">
-                    <article class="box-icon-classic">
-                        <div class="unit-left"><div class="box-icon-classic-icon"><i class="fa fa-heart"></i></div></div>
-                        <div class="unit-body">
-                            <h5 class="box-icon-classic-title">{{ __('abito.elements.colors.title') }}</h5>
-                            <p class="box-icon-classic-text">{{ __('abito.elements.colors.text') }}</p>
-                        </div>
-                    </article>
-                </div>
-                <div class="col-sm-6 col-lg-4">
-                    <article class="box-icon-classic">
-                        <div class="unit-left"><div class="box-icon-classic-icon"><i class="fa fa-shield"></i></div></div>
-                        <div class="unit-body">
-                            <h5 class="box-icon-classic-title">{{ __('abito.elements.protection.title') }}</h5>
-                            <p class="box-icon-classic-text">{{ __('abito.elements.protection.text') }}</p>
-                        </div>
-                    </article>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Costume Maschile -->
-    <section class="section section-sm bg-default text-md-left">
-        <div class="container">
-            <div class="row row-50 justify-content-center">
-                <div class="col-md-12 col-lg-12">
-                    <h3 class="oh-desktop"><span class="d-inline-block wow slideInUp">{{ __('abito.male.title') }}</span></h3>
-                    <p>{{ __('abito.male.description') }}</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Storia dell'Abito -->
-    <section class="section section-sm bg-default text-md-left">
-        <div class="container">
-            <div class="row row-50 justify-content-center">
-                <div class="col-md-12 col-lg-12">
-                    <h3 class="oh-desktop"><span class="d-inline-block wow slideInUp">{{ __('abito.history.title') }}</span></h3>
-                    <p>{{ __('abito.history.text') }}</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Cura e Conservazione -->
-    <section class="section section-sm section-last bg-default">
-        <div class="container">
-            <h3 class="oh-desktop"><span class="d-inline-block wow slideInUp">{{ __('abito.care.title') }}</span></h3>
-            <div class="row row-30 justify-content-center">
-                <div class="col-sm-6 col-lg-4">
-                    <article class="box-minimal">
-                        <div class="box-minimal-icon"><i class="fa fa-wrench"></i></div>
-                        <h5 class="box-minimal-title">{{ __('abito.care.maintenance.title') }}</h5>
-                        <div class="box-minimal-text">{{ __('abito.care.maintenance.text') }}</div>
-                    </article>
-                </div>
-                <div class="col-sm-6 col-lg-4">
-                    <article class="box-minimal">
-                        <div class="box-minimal-icon"><i class="fa fa-archive"></i></div>
-                        <h5 class="box-minimal-title">{{ __('abito.care.storage.title') }}</h5>
-                        <div class="box-minimal-text">{{ __('abito.care.storage.text') }}</div>
-                    </article>
-                </div>
-                <div class="col-sm-6 col-lg-4">
-                    <article class="box-minimal">
-                        <div class="box-minimal-icon"><i class="fa fa-users"></i></div>
-                        <h5 class="box-minimal-title">{{ __('abito.care.tradition.title') }}</h5>
-                        <div class="box-minimal-text">{{ __('abito.care.tradition.text') }}</div>
-                    </article>
-                </div>
-            </div>
-        </div>
-    </section>
+    </div>
 @endsection
 
 @section('scripts')
