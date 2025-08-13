@@ -116,7 +116,7 @@
     <!-- La Nostra Storia -->
     <section class="section section-sm bg-default" id="storia">
       <div class="container">
-        <div class="row row-50 row-xl-24 justify-content-center align-items-center align-items-lg-start text-left">
+        <div class="row row-xl-24 justify-content-center align-items-center align-items-lg-start text-left">
           <div class="col-md-6 col-lg-5 col-xl-4 text-center">
             <a class="text-img" href="{{ route('storia') }}">
               <span class="counter">120</span>

@@ -34,7 +34,7 @@
             <!-- Main Content -->
             <div class="col-xl-9 pr-xl-5">
                 <!-- Event Details -->
-                <section class="section section-sm section-first bg-default text-md-left">
+                <section class="section section-sm section-first bg-default text-left">
                     <div class="single-event-detail wow fadeInUp" data-wow-delay=".2s">
                         
                         <h2 class="title-decoration-lines-left">{{ $event->title }}</h2>

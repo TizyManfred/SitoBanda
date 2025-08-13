@@ -30,7 +30,7 @@
             <!-- Main Content -->
             <div class="col-xl-9 pr-xl-5">
                 <!-- Repertorio Content -->
-                <section class="section section-sm section-first bg-default text-md-left">
+                <section class="section section-sm section-first bg-default text-left">
                     <div class="container">
                         <div class="row row-50 justify-content-center">
                             <div class="col-md-12 col-lg-12">

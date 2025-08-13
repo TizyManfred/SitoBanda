@@ -5881,7 +5881,7 @@ html.boxed body {
 .text-img {
 	display: inline-block;
 	overflow: hidden;
-	font-size: 400px;
+	font-size: 320px;
 	line-height: 85%;
 	font-weight: 500;
 	height: 280px;
@@ -5922,12 +5922,16 @@ html.boxed body {
 		pointer-events: none;
 	}
 	.text-img:hover {
-		font-size: 530px;
+		font-size: 330px;
 		color: red;
 	}
 	@media (min-width: 576px) {
 		.text-img {
 			background-position-y: 22%;
+		}
+		.text-img:hover {
+			font-size: 530px;
+			color: red;
 		}
 	}
 }
@@ -7452,21 +7456,20 @@ html.tablet .ui-to-top {
 }
 
 .rd-navbar {
-	display: none;
-	background: #ffffff;
+    display: none;
+    background: #ffffff;
 }
 
 .rd-navbar-toggle {
-	display: inline-block;
-	position: relative;
-	width: 48px;
-	height: 48px;
-	line-height: 48px;
-	cursor: pointer;
-	color: #151515;
-	background-color: transparent;
-	border: none;
-	display: none;
+    display: none; /* hidden by default, shown on mobile */
+    position: relative;
+    width: 48px;
+    height: 48px;
+    line-height: 48px;
+    cursor: pointer;
+    color: #151515;
+    background-color: transparent;
+    border: none;
 }
 
 .rd-navbar-toggle span {
@@ -7489,15 +7492,22 @@ html.tablet .ui-to-top {
 }
 
 .rd-navbar-toggle span:after, .rd-navbar-toggle span:before, .rd-navbar-toggle span {
-	width: 24px;
-	height: 3px;
-	background-color: #151515;
-	backface-visibility: hidden;
-	border-radius: 0;
+    width: 24px;
+    height: 3px;
+    background-color: #151515;
+    backface-visibility: hidden;
+    border-radius: 0;
 }
 
 .rd-navbar-toggle span {
-	transform: rotate(180deg);
+    transform: none;
+}
+
+/* Ensure toggle is visible on mobile/tablet */
+@media (max-width: 991.98px) {
+  .rd-navbar-toggle {
+    display: inline-block;
+  }
 }
 
 .rd-navbar-toggle span:before, .rd-navbar-toggle span:after, .rd-navbar-toggle span {
@@ -7506,22 +7516,22 @@ html.tablet .ui-to-top {
 }
 
 .rd-navbar-toggle.active span {
-	transform: rotate(360deg);
+    background-color: transparent; /* hide middle bar */
 }
 
 .rd-navbar-toggle.active span:before, .rd-navbar-toggle.active span:after {
-	top: 0;
-	width: 15px;
+    top: 0;
+    width: 24px;
 }
 
 .rd-navbar-toggle.active span:before {
-	-webkit-transform: rotate3d(0, 0, 1, -40deg);
-	transform: rotate3d(0, 0, 1, -40deg);
+    -webkit-transform: rotate(45deg);
+    transform: rotate(45deg);
 }
 
 .rd-navbar-toggle.active span:after {
-	-webkit-transform: rotate3d(0, 0, 1, 40deg);
-	transform: rotate3d(0, 0, 1, 40deg);
+    -webkit-transform: rotate(-45deg);
+    transform: rotate(-45deg);
 }
 
 .rd-navbar-collapse-toggle {
@@ -8561,7 +8571,7 @@ html.tablet .ui-to-top {
 
 .rd-navbar-fixed .rd-navbar-nav-wrap {
 	position: fixed;
-	left: 0;
+	right: 0;
 	top: -56px;
 	bottom: -56px;
 	z-index: 1029;
@@ -8572,7 +8582,7 @@ html.tablet .ui-to-top {
 	-webkit-overflow-scrolling: touch;
 	font-size: 14px;
 	line-height: 34px;
-	transform: translateX(-110%);
+	transform: translateX(110%);
 }
 
 .rd-navbar-fixed .rd-navbar-nav-wrap::-webkit-scrollbar {
@@ -8808,11 +8818,16 @@ html.tablet .ui-to-top {
 
 .rd-navbar-fixed .rd-navbar-share {
 	display: flex;
-	justify-content: space-between;
+	justify-content: center;
 	align-items: center;
 	width: calc(100% - 30px);
 	margin-left: auto;
 	margin-right: auto;
+	font-size: 32px;
+}
+
+.rd-navbar-fixed .rd-navbar-share .rd-navbar-share-list {
+	gap: 10px;
 }
 
 .rd-navbar-fixed .rd-navbar-share::before {

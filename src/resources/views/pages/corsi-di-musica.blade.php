@@ -21,7 +21,7 @@
     </section>
 
     <!-- Corsi di Musica Content -->
-    <section class="section section-sm section-first bg-default text-md-left">
+    <section class="section section-sm section-first bg-default text-left">
         <div class="container">
             <div class="row row-50">
                 <!-- Main Text -->
@@ -67,6 +67,7 @@
                             </div>
                         </div>
                         
+                        @if(isset(\App\Helpers\SettingsHelper::coursesInfo()['testimonials']) && count(\App\Helpers\SettingsHelper::coursesInfo()['testimonials']) > 0)
                         <!-- Testimonials -->
                         <div class="card mt-4">
                             <div class="card-header">
@@ -81,6 +82,7 @@
                                 @endforeach
                             </ul>
                         </div>
+                        @endif
                     </div>
                 </div>
             </div>
@@ -94,7 +96,7 @@
                         <div class="row justify-content-center mt-4">
                             <div class="col-md-8">
                                 <div class="embed-responsive embed-responsive-16by9">
-                                    <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/VIDEO_ID" title="{{ __('Video del saggio degli allievi') }}" allowfullscreen loading="lazy"></iframe>
+                                    <iframe class="embed-responsive-item" src="{{ \App\Helpers\SettingsHelper::coursesInfo()['video_url'] }}" title="{{ __('Video del saggio degli allievi') }}" allowfullscreen loading="lazy"></iframe>
                                 </div>
                             </div>
                         </div>

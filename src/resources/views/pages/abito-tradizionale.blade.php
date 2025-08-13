@@ -27,7 +27,7 @@
             <!-- Main Content -->
             <div class="col-xl-9 pr-xl-5">
                 <!-- Abito Tradizionale Content -->
-                <section class="section section-sm section-first bg-default text-md-left">
+                <section class="section section-sm section-first bg-default text-left">
                     <div class="container">
                         <h2 class="title-decoration-lines-left">{{ __('abito.main.title') }}</h2>
                         <div class="row row-50 justify-content-center align-items-xl-center">

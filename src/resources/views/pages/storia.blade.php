@@ -71,7 +71,7 @@
                             </div>
                         </div>
                         <div class="col-md-10 col-lg-7 col-xl-6">
-                            <div class="text-md-left">
+                            <div class="text-left">
                                 <p>{{ __('storia.milestones_p1') }}</p>
                                 <p>{{ __('storia.milestones_p2') }}</p>
                             </div>

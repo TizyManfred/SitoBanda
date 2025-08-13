@@ -37,7 +37,7 @@ use Illuminate\Support\Str;
                     <!-- Album Info -->
                     <div class="post">
                         <div class="box-inset-1">
-                            <h3 class="heading-3 font-weight-bold mb-4">{{ $album->title }}</h3>
+                            {{-- <h2 class="mb-4 title-decoration-lines-left">{{ $album->title }}</h2> --}}
                             
                             <div class="row box-event-modern-meta">
                                 @if($album->start_date)
@@ -55,7 +55,7 @@ use Illuminate\Support\Str;
                             
                             @if($album->description)
                                 <div class="mt-3">
-                                    <p class="lead font-weight-normal">{{ $album->description }}</p>
+                                    <p class="font-weight-normal">{{ $album->description }}</p>
                                 </div>
                             @endif
                         

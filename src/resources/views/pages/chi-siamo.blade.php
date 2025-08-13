@@ -21,7 +21,7 @@
     </section>
 
     <!-- Chi Siamo Content -->
-    <section class="section section-sm section-first bg-default text-md-left">
+    <section class="section section-sm section-first bg-default text-left">
         <div class="container">
             <h2 class="title-decoration-lines-left">{{ __('chi-siamo.section_title') }}</h2>
             <div class="row row-50 justify-content-center">
@@ -44,7 +44,7 @@
     </section>
 
     <!-- Discover More -->
-    <section class="section section-sm bg-gray-100 text-center text-md-left">
+    <section class="section section-sm bg-gray-100 text-left">
         <div class="container">
             <h2 class="title-decoration-lines-left">{{ __('chi-siamo.discover_more_title') }}</h2>
             <div class="row row-50">
