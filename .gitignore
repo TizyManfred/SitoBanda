@@ -1,9 +1,5 @@
 .windsurf
 
-src/uploads/album/*
-src/uploads/events/*
-src/uploads/section_icons/*
-
 # Environment variables
 .env
 mysql_data

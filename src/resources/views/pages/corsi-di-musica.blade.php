@@ -33,8 +33,9 @@
                                 <img src="{{ asset('images/FotoTrento1.webp') }}" alt="{{ __('Corsi di Musica della Banda Folk di Castello Tesino') }}" class="img-fluid">
                             </div>
                             <div class="col-lg-6 col-xl-6">
-                                <p>{{ __('La Banda Folk di Castello Tesino organizza corsi di musica per avvicinare giovani e adulti al mondo della musica bandistica.') }}</p>
-                                <p>{{ __('I corsi sono aperti a tutti, a partire dagli 8 anni di età e senza limiti superiori. Non è mai troppo tardi per imparare a suonare uno strumento e unirsi alla nostra banda!') }}</p>
+                                <p>La Banda Folk di Castello Tesino organizza corsi di musica per strumenti a fiato e percussioni, in convenzione con la Federazione delle Bande Trentine e la Scuola Musicale SIM di Borgo Valsugana.</p>
+                                <p>Il corso è aperto a tutti, a partire dagli 8 anni, senza limiti di età. Le lezioni individuali e collettive, che si svolgono da settembre a giugno, hanno un costo annuo agevolato di €220, comprensivi di assicurazione. È previsto un ulteriore sconto di €50 dal secondo fratello.</p>
+                                <p>La Banda garantisce inoltre l’utilizzo gratuito dello strumento per tutta la durata dei corsi e il successivo inserimento in organico.</p>
                             </div>
                         </div>
                     </div>

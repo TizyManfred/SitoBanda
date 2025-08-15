@@ -27,7 +27,24 @@ class SectionImagesRelationManager extends RelationManager
                     ->label(__('fields.common.image'))
                     ->image()
                     ->directory('section-images')
-                    ->required(),
+                    ->required()->downloadable()
+                    ->openable()
+                    ->previewable(true)
+                    ->imageEditor()
+                    ->imageResizeMode('cover')
+                    ->imageEditorAspectRatios([
+                        null,
+                        '1:1',
+                        '4:3',
+                        '16:9',
+                        '21:9',
+                        '3:4',
+                        '9:16',
+                        '9:21',
+                    ])
+                    ->imageResizeTargetWidth('2560')
+                    ->imageResizeTargetHeight('2560')
+                    ->optimize('webp'),
                 Forms\Components\TextInput::make('caption')
                     ->label(__('fields.gallery.caption'))
                     ->maxLength(255),

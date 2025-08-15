@@ -288,11 +288,10 @@ class EventResource extends Resource
                                     ->image()
                                     ->disk('public')
                                     ->directory('event-images')
-                                    ->preserveFilenames()
                                     ->imageEditor()
                                     ->imageResizeMode('cover')
-                                    ->maxSize(5120) // 5MB
-                                    ->helperText(__('fields.common.max_filesize', ['size' => '5MB']))
+                                    ->maxSize(5120*2) // 10MB
+                                    ->helperText(__('fields.common.max_filesize', ['size' => '10MB']))
                                     ->imageEditorAspectRatios([
                                         null,
                                         '1:1',
@@ -308,7 +307,8 @@ class EventResource extends Resource
                                     ->visibility('public')
                                     ->openable()
                                     ->downloadable()
-                                    ->previewable(true),
+                                    ->previewable(true)
+                                    ->optimize('webp'),
                                 Forms\Components\Select::make('gallery_id')
                                     ->label(__('fields.event.photo_gallery'))
                                     ->relationship('galleryAlbum', 'title')

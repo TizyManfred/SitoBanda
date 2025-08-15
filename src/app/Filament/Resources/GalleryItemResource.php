@@ -65,7 +65,8 @@ class GalleryItemResource extends Resource
                             ->openable()
                             ->previewable(true)
                             ->imageEditorViewportWidth('1920')
-                            ->imageEditorViewportHeight('1080'),
+                            ->imageEditorViewportHeight('1080')
+                            ->optimize('webp'),
 
                         Forms\Components\TextInput::make('title')
                             ->label(__('fields.gallery.title'))

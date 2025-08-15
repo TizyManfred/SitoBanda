@@ -64,7 +64,7 @@ class ItemsRelationManager extends RelationManager
                     ->imageResizeTargetHeight('2560')
                     ->visible(fn (): bool => !str_contains(Request::url(), '/edit') || !$this->getRecord()?->image_path)
                     ->dehydrated(true)
-                    ->preserveFilenames(),
+                    ->optimize('webp'),
                 
                 TranslatableContainer::make(
                     Forms\Components\TextInput::make('caption')
