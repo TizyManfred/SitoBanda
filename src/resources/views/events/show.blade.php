@@ -10,6 +10,37 @@
 
 @section('styles')
 <!-- Using existing classes from style.css and bootstrap.css -->
+<style>
+    /* Rotating gallery preview */
+    .rotating-gallery { height: 360px; }
+    .rotating-gallery .rotating-track {
+        display: flex;
+        width: 100%;
+        height: 100%;
+        will-change: transform;
+        transition: transform 600ms ease-in-out;
+    }
+    .rotating-gallery .rotating-slide {
+        position: relative;
+        min-width: 100%;
+        height: 100%;
+        overflow: hidden;
+    }
+    .rotating-gallery .rotating-slide img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+    }
+    .rotating-gallery .rotating-caption {
+        position: absolute;
+        left: 0; right: 0; bottom: 12px;
+        text-align: center;
+    }
+    @media (max-width: 576px) {
+        .rotating-gallery { height: 240px; }
+    }
+</style>
 @endsection
 
 @section('content')
@@ -98,23 +129,21 @@
                         @if(isset($gallery) && $gallery && $gallery->items->count() > 0)
                             <div class="mb-5">
                                 <h3 class="oh-desktop mb-4"><span class="d-inline-block">{{ __('events.photo_gallery') }}</span></h3>
-                                <div class="row g-3">
-                                    @foreach($gallery->items->take(6) as $item)
-                                        <div class="col-sm-6 col-lg-4">
-                                            <a href="{{ Storage::url($item->image_path) }}" data-lightbox="event-gallery" data-title="{{ $item->title ?? '' }}" class="img-hover-zoom d-block overflow-hidden shadow-sm rounded-1">
-                                                <img src="{{ Storage::url($item->image_path) }}" alt="{{ $item->title ?? $event->title }}" class="img-fluid w-100" loading="lazy" style="height: 180px; object-fit: cover;">
-                                            </a>
+                                @php $__limit = min($gallery->items->count(), 4); @endphp
+                                <div class="row">
+                                    @foreach($gallery->items->take($__limit) as $item)
+                                        <div class="col-6 col-md-3 mb-3">
+                                            <div class="overflow-hidden">
+                                                <img class="aspect-ratio-16-9 object-fit-cover w-100" src="{{ Storage::url($item->image_path) }}" alt="{{ $item->title ?? $event->title }}" loading="lazy">
+                                            </div>
                                         </div>
                                     @endforeach
                                 </div>
-                                
-                                @if($gallery->items->count() > 6)
-                                    <div class="text-center mt-4">
-                                        <a href="{{ route('galleria.album', $gallery->slug) }}" class="btn btn-outline-primary">
-                                            {{ __('events.view_all_photos') }} <i class="fas fa-images ms-2"></i>
-                                        </a>
-                                    </div>
-                                @endif
+                                <div class="text-center mt-4">
+                                    <a href="{{ route('galleria.album', $gallery->slug) }}" class="button button-secondary button-pipaluk">
+                                        {{ __('events.view_all_photos') }} <i class="fas fa-images ms-2"></i>
+                                    </a>
+                                </div>
                             </div>
                         @endif
                         
@@ -211,6 +240,44 @@
     });
 </script>
 @endif
+
+<script>
+    // Simple left-to-right rotating gallery (non-carousel)
+    document.addEventListener('DOMContentLoaded', function() {
+        const track = document.getElementById('eventGalleryTrack');
+        if (!track) return;
+
+        const slides = track.querySelectorAll('.rotating-slide');
+        // If there's 0 or 1 real slide, no rotation needed
+        if (slides.length <= 1) return;
+
+        // We appended a cloned first slide for seamless looping; the last index is the clone
+        const lastIndex = slides.length - 1;
+        let index = 0;
+        const durationMs = 600;
+        const delay = Math.floor(5000 + Math.random() * 5000); // 5-10s
+
+        const step = () => {
+            index += 1;
+            track.style.transition = `transform ${durationMs}ms ease-in-out`;
+            track.style.transform = `translateX(-${index * 100}%)`;
+        };
+
+        track.addEventListener('transitionend', () => {
+            if (index === lastIndex) {
+                // Jump back to start without animation
+                track.style.transition = 'none';
+                track.style.transform = 'translateX(0)';
+                index = 0;
+                // Force reflow then restore transition for next cycles
+                void track.offsetWidth;
+                track.style.transition = `transform ${durationMs}ms ease-in-out`;
+            }
+        });
+
+        setInterval(step, delay);
+    });
+    </script>
 
 <script>
     // Initialize lightbox

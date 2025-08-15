@@ -123,15 +123,9 @@
                                             </div>
                                             <p class="card-text mb-4">{{ $event->short_description }}</p>
                                             <div class="text-end">
-                                                @if($event->galleryAlbum)
-                                                    <a class="btn btn-outline-secondary btn-sm" href="{{ route('galleria.show', $event->galleryAlbum->slug) }}">
-                                                        {{ __('events.view_photos') }} <i class="fas fa-images ms-1"></i>
-                                                    </a>
-                                                @else
-                                                    <a class="btn btn-outline-secondary btn-sm" href="{{ route('eventi.show', $event->slug) }}">
-                                                        {{ __('events.details') }} <i class="fas fa-arrow-right ms-1"></i>
-                                                    </a>
-                                                @endif
+                                                <a class="btn btn-outline-secondary btn-sm" href="{{ route('eventi.show', $event->slug) }}">
+                                                    {{ __('events.details') }} <i class="fas fa-arrow-right ms-1"></i>
+                                                </a>
                                             </div>
                                         </div>
                                     </div>
