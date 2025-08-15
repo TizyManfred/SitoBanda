@@ -45,3 +45,9 @@ Route::group([
     })->name('generic-aside-demo');
 
 });
+
+// Sitemap (not localized, but contains localized URLs)
+Route::get('sitemap.xml', function () {
+    return response()->view('sitemap')
+        ->header('Content-Type', 'application/xml');
+})->name('sitemap');

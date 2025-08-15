@@ -9,15 +9,22 @@
 @section('content')
     <!-- Hero Slider -->
     <section class="section swiper-container swiper-slider swiper-slider-classic" data-loop="true" data-autoplay="5000"
-      data-simulate-touch="true" data-direction="vertical" data-nav="false" aria-label="Slideshow principale">
+      data-simulate-touch="true" data-direction="vertical" data-nav="false" aria-label="{{ __('home.hero.aria.slideshow') }}">
       <div class="swiper-wrapper text-center">
-        <div class="swiper-slide context-dark" data-slide-bg="{{ asset('images/FotoSanIppolito1.jpg') }}" aria-label="Primo slide - Banda a San Ippolito">
+        <div class="swiper-slide context-dark" data-slide-bg="{{ asset('images/FotoSanIppolito1.jpg') }}" aria-label="{{ __('home.hero.aria.slide1') }}">
           <div class="swiper-slide-caption section-md">
             <div class="container">
               <div class="row">
                 <div class="col-md-10 col-lg-8 offset-md-1 offset-lg-2">
-                  <h1><span class="d-block" data-caption-animate="fadeInUp" data-caption-delay="100">{{ __('home.hero.title') }}</span><span class="d-block text-light" data-caption-animate="fadeInUp"
-                      data-caption-delay="200">{{ __('home.hero.subtitle') }}</span></h1>
+                  <h1>
+                    <span class="d-block" data-caption-animate="fadeInUp" data-caption-delay="100">
+                      {{ __('home.hero.title') }} 
+                    </span>
+                    <span class="d-block text-light" data-caption-animate="fadeInUp"
+                      data-caption-delay="200">
+                      {{ __('home.hero.subtitle') }} 
+                    </span>
+                  </h1>
                   <p class="lead" data-caption-animate="fadeInUp" data-caption-delay="350">{!! __('home.hero.description') !!}</p>
                 </div>
               </div>
@@ -25,23 +32,23 @@
           </div>
         </div>
 
-        <div class="swiper-slide context-dark" data-slide-bg="{{ asset('images/FotoShanghai1.jpeg') }}" aria-label="Secondo slide - Banda a Shanghai">
+        <div class="swiper-slide context-dark" data-slide-bg="{{ asset('images/FotoShanghai1.jpeg') }}" aria-label="{{ __('home.hero.aria.slide2') }}">
           <div class="swiper-slide-caption section-md">
             <div class="container">
-              <h1 data-caption-animate="fadeInLeft" data-caption-delay="0">{!! __('home.hero.slide2.title') !!}</h1>
+              <h2 data-caption-animate="fadeInLeft" data-caption-delay="0">{!! __('home.hero.slide2.title') !!}</h2>
               <p class="text-width-large" data-caption-animate="fadeInRight" data-caption-delay="100">{{ __('home.hero.slide2.text') }}</p>
-              <a class="button button-primary button-ujarak" href="{{ route('italia-gira-banda') }}"
+              <a class="button button-primary button-ujarak" href="{{ route('italia-gira-banda') }}" title="{{ __('home.hero.slide2.cta') }}"
                 data-caption-animate="fadeInUp" data-caption-delay="200">{{ __('home.hero.slide2.cta') }}</a>
             </div>
           </div>
         </div>
 
-        <div class="swiper-slide context-dark" data-slide-bg="{{ asset('images/FotoRoma1.jpeg') }}" aria-label="Terzo slide - Banda a Roma">
+        <div class="swiper-slide context-dark" data-slide-bg="{{ asset('images/FotoRoma1.jpeg') }}" aria-label="{{ __('home.hero.aria.slide3') }}">
           <div class="swiper-slide-caption section-md">
             <div class="container">
-              <h1 data-caption-animate="fadeInLeft" data-caption-delay="0">{!! __('home.hero.slide3.title') !!}</h1>
+              <h2 data-caption-animate="fadeInLeft" data-caption-delay="0">{!! __('home.hero.slide3.title') !!}</h2>
               <p class="text-width-large" data-caption-animate="fadeInRight" data-caption-delay="100">{{ __('home.hero.slide3.text') }}</p>
-              <a class="button button-primary button-ujarak" href="{{ route('chi-siamo') }}" data-caption-animate="fadeInUp"
+              <a class="button button-primary button-ujarak" href="{{ route('chi-siamo') }}" title="{{ __('home.hero.slide3.cta') }}" data-caption-animate="fadeInUp"
                 data-caption-delay="200">{{ __('home.hero.slide3.cta') }}</a>
             </div>
           </div>
@@ -64,7 +71,7 @@
         <div class="row row-30 justify-content-center">
           <div class="col-md-7 col-lg-5 col-xl-6 text-lg-left wow fadeInUp">
             <div class="figure-classic figure-classic-left">
-              <img src="{{ asset('images/FotoBiagio1.jpg') }}" alt="{{ __('Banda Folk di Castello Tesino in concerto') }}" width="513" height="561" loading="lazy" />
+              <img src="{{ asset('images/FotoBiagio1.jpg') }}" alt="{{ __('home.about.image_alt') }}" width="100%" height="auto" loading="lazy" />
             </div>
           </div>
 
@@ -74,7 +81,7 @@
               <div class="col-sm-6 wow fadeInRight" data-wow-delay=".1s">
                 <article class="box-icon-modern box-icon-modern-2">
                   <div class="box-icon-modern-icon"><i class="fa fa-history"></i></div>
-                  <h5 class="box-icon-modern-title"><a href="{{ route('storia') }}">{{ __('home.about.history') }}</a></h5>
+                  <h5 class="box-icon-modern-title"><a href="{{ route('storia') }}" title="{{ __('home.about.history') }}">{{ __('home.about.history') }}</a></h5>
                   <div class="box-icon-modern-decor"></div>
                   <p class="box-icon-modern-text">{{ __('home.about.history_text') }}</p>
                 </article>
@@ -83,7 +90,7 @@
               <div class="col-sm-6 wow fadeInRight" data-wow-delay=".1s">
                 <article class="box-icon-modern box-icon-modern-2">
                   <div class="box-icon-modern-icon"><i class="fa fa-star"></i></div>
-                  <h5 class="box-icon-modern-title"><a href="{{ route('abito-tradizionale') }}">{{ __('home.about.abito_tradizionale') }}</a></h5>
+                  <h5 class="box-icon-modern-title"><a href="{{ route('abito-tradizionale') }}" title="{{ __('home.about.abito_tradizionale') }}">{{ __('home.about.abito_tradizionale') }}</a></h5>
                   <div class="box-icon-modern-decor"></div>
                   <p class="box-icon-modern-text">{{ __('home.about.abito_tradizionale_text') }}</p>
                 </article>
@@ -92,7 +99,7 @@
               <div class="col-sm-6 wow fadeInRight" data-wow-delay=".2s">
                 <article class="box-icon-modern box-icon-modern-2">
                   <div class="box-icon-modern-icon"><i class="fa fa-users"></i></div>
-                  <h5 class="box-icon-modern-title"><a href="{{ route('organico') }}">{{ __('home.about.members') }}</a></h5>
+                  <h5 class="box-icon-modern-title"><a href="{{ route('organico') }}" title="{{ __('home.about.members') }}">{{ __('home.about.members') }}</a></h5>
                   <div class="box-icon-modern-decor"></div>
                   <p class="box-icon-modern-text">{{ __('home.about.members_text') }}</p>
                 </article>
@@ -101,7 +108,7 @@
               <div class="col-sm-6 wow fadeInRight" data-wow-delay=".3s">
                 <article class="box-icon-modern box-icon-modern-2">
                   <div class="box-icon-modern-icon"><i class="fa fa-music"></i></div>
-                  <h5 class="box-icon-modern-title"><a href="{{ route('maestro') }}">{{ __('home.about.conductor') }}</a></h5>
+                  <h5 class="box-icon-modern-title"><a href="{{ route('maestro') }}" title="{{ __('home.about.conductor') }}">{{ __('home.about.conductor') }}</a></h5>
                   <div class="box-icon-modern-decor"></div>
                   <p class="box-icon-modern-text">{{ __('home.about.conductor_text') }}</p>
                 </article>
@@ -117,19 +124,16 @@
     <section class="section section-sm bg-default" id="storia">
       <div class="container">
         <div class="row row-xl-24 justify-content-center align-items-center align-items-lg-start text-left">
-          <div class="col-md-6 col-lg-5 col-xl-4 text-center">
-            <a class="text-img" href="{{ route('storia') }}">
+          <div class="col-md-6 text-right">
+            <a class="text-img" href="{{ route('storia') }}" title="{{ __('home.about.history') }}">
               <span class="counter">120</span>
             </a>
           </div>
-
-          <div class="col-sm-8 col-md-6 col-lg-5 col-xl-4"></div>
-
-          <div class="col-sm-10 col-md-8 col-lg-6 col-xl-4 wow fadeInRight" data-wow-delay=".1s" style="padding-left: 10px;">
-            <div class="text-width-extra-small offset-top-lg-24 wow fadeInUp">
+          <div class="col-md-6 wow fadeInRight" data-wow-delay=".1s" style="padding-left: 10px;">
+            <div class="offset-top-lg-24 wow fadeInUp">
               <h3 class="title-decoration-lines-left">{{ __('home.history.years') }}</h3>
               <p class="text-gray-500">{{ __('home.history.text') }}</p>
-              <a class="button button-secondary button-pipaluk" href="{{ route('storia') }}">{{ __('home.history.cta') }}</a>
+              <a class="button button-secondary button-pipaluk" href="{{ route('storia') }}" title="{{ __('home.history.cta') }}">{{ __('home.history.cta') }}</a>
             </div>
           </div>
         </div>
@@ -155,7 +159,7 @@
               <div class="col-sm-6 col-lg-4 mb-4 wow fadeInUp" data-wow-delay="0.{{ $loop->iteration }}s">
                 <div class="card h-100 border-0 shadow-sm overflow-hidden rounded-0 card-hover">
                   <div class="position-relative img-hover-zoom">
-                    <a href="{{ route('eventi.show', $event['slug']) }}">
+                    <a href="{{ route('eventi.show', $event['slug']) }}" title="{{ $event['title'] }}">
                       @if (!empty($event['image_path']))
                         @php
                             $src = \Illuminate\Support\Str::startsWith($event['image_path'], ['http://', 'https://', '/', 'data:'])
@@ -179,7 +183,7 @@
                   </div>
                   <div class="card-body p-4">
                     <h5 class="card-title mb-3">
-                      <a href="{{ route('eventi.show', $event['slug']) }}" class="text-dark text-decoration-none">{{ $event['title'] }}</a>
+                      <a href="{{ route('eventi.show', $event['slug']) }}" class="text-dark text-decoration-none" title="{{ $event['title'] }}">{{ $event['title'] }}</a>
                     </h5>
                     <div class="d-flex mb-3 gap-4">
                       @if($start && $start->format('H:i') !== '00:00')
@@ -199,7 +203,7 @@
                       <p class="card-text mb-4">{{ $event['short_description'] }}</p>
                     @endif
                     <div class="text-end">
-                      <a class="btn btn-outline-primary btn-sm" href="{{ route('eventi.show', $event['slug']) }}">
+                      <a class="btn btn-outline-primary btn-sm" href="{{ route('eventi.show', $event['slug']) }}" title="{{ __('home.events.details') }}: {{ $event['title'] }}">
                         {{ __('home.events.details') }} <i class="fa fa-arrow-right ms-1"></i>
                       </a>
                     </div>
@@ -216,7 +220,7 @@
         
         <div class="row mt-4">
           <div class="col-12 text-center">
-            <a href="{{ route('eventi') }}" class="button button-primary button-ujarak">{{ __('home.events.all_events') }}</a>
+            <a href="{{ route('eventi') }}" class="button button-primary button-ujarak" title="{{ __('home.events.all_events') }}">{{ __('home.events.all_events') }}</a>
           </div>
         </div>
       </div>
@@ -230,7 +234,7 @@
         '@context' => 'https://schema.org',
         '@type' => 'MusicGroup',
         'name' => 'Banda Folk di Castello Tesino',
-        'description' => 'La Banda Folk di Castello Tesino, attiva dal 1901, porta avanti la tradizione musicale del Trentino con concerti, eventi e corsi di musica.',
+        'description' => __('home.structured.description'),
         'image' => asset('images/FotoSanIppolito1.jpg'),
         'url' => url('/'),
         'genre' => ['Folk', 'Traditional', 'Marching Band'],
@@ -265,13 +269,11 @@
                     ]
                 ],
                 'image' => $event['image_path'] ?? asset('images/event-placeholder.jpg'),
-                'description' => $event['short_description'] ?? 'Evento della Banda Folk di Castello Tesino'
+                'description' => $event['short_description'] ?? __('home.structured.event_default_description')
             ];
         }
         $structuredData['event'] = $events;
     }
 @endphp
-<script type="application/ld+json">
-    {!! json_encode($structuredData, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES) !!}
-</script>
+{!! json_encode($structuredData, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES) !!}
 @endsection

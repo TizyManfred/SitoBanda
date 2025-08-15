@@ -87,22 +87,6 @@
                 </div>
             </div>
             
-            <!-- Annual Concert Section -->
-            <div class="row mt-5">
-                <div class="col-12">
-                    <div class="box-cta">
-                        <h3>{{ __('Saggio Finale degli Allievi') }}</h3>
-                        <p>{{ __('Ogni anno, nel mese di maggio, si tiene il saggio finale degli allievi dei corsi. Un\'occasione per mostrare i progressi raggiunti durante l\'anno e per esibirsi davanti a familiari e amici.') }}</p>
-                        <div class="row justify-content-center mt-4">
-                            <div class="col-md-8">
-                                <div class="embed-responsive embed-responsive-16by9">
-                                    <iframe class="embed-responsive-item" src="{{ \App\Helpers\SettingsHelper::coursesInfo()['video_url'] }}" title="{{ __('Video del saggio degli allievi') }}" allowfullscreen loading="lazy"></iframe>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
         </div>
     </section>
 

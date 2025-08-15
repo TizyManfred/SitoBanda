@@ -10,7 +10,13 @@ return [
     'hero' => [
         'title' => 'Banda Folk',
         'subtitle' => 'of Castello Tesino',
-        'description' => 'Banda Sociale Folkloristica di Castello Tesino<br>Tradizione, Musica & Cultura<br>dal 1901',
+        'description' => 'Social Folk Band of Castello Tesino<br>Tradition, Music & Culture<br>since 1901',
+        'aria' => [
+            'slideshow' => 'Main slideshow',
+            'slide1' => 'First slide - Band in San Ippolito',
+            'slide2' => 'Second slide - Band in Shanghai',
+            'slide3' => 'Third slide - Band in Rome',
+        ],
         'slide2' => [
             'title' => 'Italia Gira <br> Banda',
             'text' => 'During our more than 100-year history, we have visited many countries, bringing what characterizes us all over the world.',
@@ -23,6 +29,7 @@ return [
         ]
     ],
     'about' => [
+        'image_alt' => 'Banda Folk di Castello Tesino in concert',
         'events' => 'Upcoming Events',
         'events_cta' => 'Discover the dates',
         'history' => 'Our History',
@@ -32,11 +39,11 @@ return [
         'conductor' => 'Conductor',
         'conductor_text' => 'Get to know our conductor and his musical career',
         'abito_tradizionale' => 'Traditional Dress',
-        'abito_tradizionale_text' => 'Discover more about the history of the abito folklorico'
+        'abito_tradizionale_text' => 'Discover more about the history of the traditional dress'
     ],
     'history' => [
         'years' => 'Years of history',
-        'text' => 'A now centuries-old history that has united generations all sharing the same passion for music. This tradition has been passed down from father to son over the years',
+        'text' => 'Since 1901, the Social Folk Band of Castello Tesino has been the community’s soundtrack: from its early outings and the podium at the 1903 Trento contest, through post-war rebirth and the adoption of the Tesino traditional dress in 1981. In recent decades, it has taken Tesino around the world with tours and international acclaim, including the Best Popularity Award at the 2018 Shanghai Tourism Festival.',
         'cta' => 'Discover more'
     ],
     'events' => [
@@ -47,5 +54,9 @@ return [
         'details' => 'Details',
         'no_events' => 'No upcoming events at the moment. Check back soon for updates!',
         'all_events' => 'All events'
+    ],
+    'structured' => [
+        'description' => 'The Banda Folk of Castello Tesino, active since 1901, carries forward the musical tradition of Trentino with concerts, events and music courses.',
+        'event_default_description' => 'Event by the Banda Folk di Castello Tesino',
     ]
 ];

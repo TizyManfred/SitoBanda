@@ -3,7 +3,7 @@
 return [
     'meta' => [
         'title' => 'Banda Folk di Castello Tesino - Musica Tradizionale dal 1901',
-        'description' => 'La Banda Folk di Castello Tesino, attiva dal 1901, porta avanti la tradizione musicale del Trentino con concerti, eventi e corsi di musica.',
+        'description' => 'La Banda Folk di Castello Tesino, attiva dal 1901, porta avanti la tradizione musicale del Trentino con concerti, eventi e corsi di musica. Partecipa agli eventi, scopri il repertorio e la nostra storia secolare nel cuore del Trentino.',
         'og_title' => 'Banda Folk di Castello Tesino - Tradizione dal 1901',
         'og_description' => 'Scopri la Banda Folk di Castello Tesino, custode della tradizione musicale trentina dal 1901.',
     ],
@@ -11,6 +11,12 @@ return [
         'title' => 'Banda Folk',
         'subtitle' => 'di Castello Tesino',
         'description' => 'Banda Sociale Folkloristica di Castello Tesino<br>Tradizione, Musica & Cultura<br>dal 1901',
+        'aria' => [
+            'slideshow' => 'Slideshow principale',
+            'slide1' => 'Primo slide - Banda a San Ippolito',
+            'slide2' => 'Secondo slide - Banda a Shanghai',
+            'slide3' => 'Terzo slide - Banda a Roma',
+        ],
         'slide2' => [
             'title' => 'Italia Gira <br> Banda',
             'text' => 'Durante la nostra storia che è lunga più di 100 anni abbiamo visitato molti stati portando ciò che ci caratterizza in tutto il mondo.',
@@ -23,6 +29,7 @@ return [
         ]
     ],
     'about' => [
+        'image_alt' => 'Banda Folk di Castello Tesino in concerto',
         'events' => 'Eventi futuri',
         'events_cta' => 'Scopri le date',
         'history' => 'La nostra storia',
@@ -36,7 +43,7 @@ return [
     ],
     'history' => [
         'years' => 'Anni di storia',
-        'text' => 'Storia ormai secolare che ha unito generazioni tutte accomunate per la stessa passione per la musica. Di padre in figlio questa tradizione è stata tramandata negli anni',
+        'text' => 'Dal 1901 la Banda Sociale Folkloristica di Castello Tesino accompagna la comunità con la sua musica: dalle prime uscite e il podio al concorso di Trento del 1903, alla rinascita dopo le guerre e all’adozione dell’abito tradizionale tesino nel 1981. Negli ultimi decenni ha portato il Tesino nel mondo con tournée e riconoscimenti internazionali, come il Best Popularity Award allo Shanghai Tourism Festival 2018.',
         'cta' => 'Scopri di più'
     ],
     'events' => [
@@ -47,5 +54,9 @@ return [
         'details' => 'Dettagli',
         'no_events' => 'Nessun evento in programma al momento. Torna presto per aggiornamenti!',
         'all_events' => 'Tutti gli eventi'
+    ],
+    'structured' => [
+        'description' => 'La Banda Folk di Castello Tesino, attiva dal 1901, porta avanti la tradizione musicale del Trentino con concerti, eventi e corsi di musica.',
+        'event_default_description' => 'Evento della Banda Folk di Castello Tesino',
     ]
 ];
