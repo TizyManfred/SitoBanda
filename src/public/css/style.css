@@ -5911,7 +5911,7 @@ html.boxed body {
 		-webkit-text-fill-color: transparent;
 		background: -webkit-linear-gradient(transparent, transparent);
 		background: -o-linear-gradient(transparent, transparent);
-		background: url(../images/FotoRoma3.jpg) repeat;
+		background: url(../images/FotoRoma3.webp) repeat;
 		-webkit-background-clip: text;
 		background-clip: text;
 		background-position-y: 40%;

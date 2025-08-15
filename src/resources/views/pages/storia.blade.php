@@ -16,7 +16,7 @@
                     <li class="active">{{ __('storia.breadcrumb_storia') }}</li>
                 </ul>
             </div>
-            <div class="box-position" style="background-image: url({{ asset('images/FotoStoria1.jpg') }});"></div>
+            <div class="box-position" style="background-image: url({{ asset('images/FotoStoria1.webp') }});"></div>
         </div>
     </section>
 
@@ -33,9 +33,9 @@
                             <p class="text-gray-800">{{ __('storia.intro_p2') }}</p>
                         </div>
                         <div class="col-md-10 col-lg-5 col-xl-6">
-                            <a href="{{ asset('images/FotoStoria2.jpg') }}" data-lightgallery="item">
+                            <a href="{{ asset('images/FotoStoria2.webp') }}" data-lightgallery="item">
                                 <div class="wow fadeInRight">
-                                    <img src="{{ asset('images/FotoStoria2.jpg') }}" alt="Banda Folk di Castello Tesino - Foto storica" class="aspect-ratio-16-9 object-fit-cover" width="100%" loading="lazy">
+                                    <img src="{{ asset('images/FotoStoria2.webp') }}" alt="Banda Folk di Castello Tesino - Foto storica" class="aspect-ratio-16-9 object-fit-cover" width="100%" loading="lazy">
                                 </div>
                             </a>
                         </div>
@@ -50,8 +50,8 @@
                             <div id="milestones-carousel" class="carousel slide wow fadeInLeft" data-ride="carousel" data-interval="{{ random_int(6000, 12000) }}">
                                 <div class="carousel-inner" style="height: 350px;" data-lightgallery="group">
                                     <div class="carousel-item active">
-                                        <a href="{{ asset('images/FotoStoria3.jpg') }}" data-lightgallery="item">
-                                            <img src="{{ asset('images/FotoStoria3.jpg') }}" 
+                                        <a href="{{ asset('images/FotoStoria3.webp') }}" data-lightgallery="item">
+                                            <img src="{{ asset('images/FotoStoria3.webp') }}" 
                                                  class="d-block w-100 img-fluid"
                                                  alt="Banda Folk di Castello Tesino - Tappe storiche" 
                                                  loading="lazy"
@@ -59,8 +59,8 @@
                                         </a>
                                     </div>
                                     <div class="carousel-item">
-                                        <a href="{{ asset('images/FotoStoria4.jpg') }}" data-lightgallery="item">
-                                            <img src="{{ asset('images/FotoStoria4.jpg') }}" 
+                                        <a href="{{ asset('images/FotoStoria4.webp') }}" data-lightgallery="item">
+                                            <img src="{{ asset('images/FotoStoria4.webp') }}" 
                                                  class="d-block w-100 img-fluid"
                                                  alt="Banda Folk di Castello Tesino - Tappe storiche" 
                                                  loading="lazy"
@@ -92,8 +92,8 @@
                             <div id="shanghai-carousel" class="carousel slide wow fadeInLeft" data-ride="carousel" data-interval="{{ random_int(6000, 12000) }}">
                                 <div class="carousel-inner" style="height: 350px;" data-lightgallery="group">
                                     <div class="carousel-item active">
-                                        <a href="{{ asset('images/FotoStoria5.jpeg') }}" data-lightgallery="item">
-                                            <img src="{{ asset('images/FotoStoria5.jpeg') }}" 
+                                        <a href="{{ asset('images/FotoStoria5.webp') }}" data-lightgallery="item">
+                                            <img src="{{ asset('images/FotoStoria5.webp') }}" 
                                                  class="d-block w-100 img-fluid"
                                                  alt="Banda Folk di Castello Tesino a Shanghai" 
                                                  loading="lazy"
@@ -101,8 +101,8 @@
                                         </a>
                                     </div>
                                     <div class="carousel-item">
-                                        <a href="{{ asset('images/FotoStoria6.jpg') }}" data-lightgallery="item">
-                                            <img src="{{ asset('images/FotoStoria6.jpg') }}" 
+                                        <a href="{{ asset('images/FotoStoria6.webp') }}" data-lightgallery="item">
+                                            <img src="{{ asset('images/FotoStoria6.webp') }}" 
                                                  class="d-block w-100 img-fluid"
                                                  alt="Banda Folk di Castello Tesino a Shanghai" 
                                                  loading="lazy"

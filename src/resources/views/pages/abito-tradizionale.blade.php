@@ -16,7 +16,7 @@
                     <li class="active">{{ __('abito.title') }}</li>
                 </ul>
             </div>
-            <div class="box-position" style="background-image: url({{ asset('images/FotoAbito1.jpg') }});"></div>
+            <div class="box-position" style="background-image: url({{ asset('images/FotoAbito1.webp') }});"></div>
         </div>
     </section>
 
@@ -33,7 +33,7 @@
                         <div class="row row-50 justify-content-center align-items-xl-center">
                             <div class="col-md-10 col-lg-5 col-xl-6">
                                 <div class="wow fadeInRight">
-                                    <img src="{{ asset('images/FotoAbito2.jpg') }}" alt="Abito Tradizionale della Banda Folk di Castello Tesino" width="519" height="564" loading="lazy">
+                                    <img src="{{ asset('images/FotoAbito2.webp') }}" alt="Abito Tradizionale della Banda Folk di Castello Tesino" width="519" height="564" loading="lazy">
                                 </div>
                             </div>
                             <div class="col-md-10 col-lg-7 col-xl-6">

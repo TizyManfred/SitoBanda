@@ -4,14 +4,14 @@
 @section('description', __('home.meta.description'))
 @section('og_title', __('home.meta.og_title'))
 @section('og_description', __('home.meta.og_description'))
-@section('og_image', asset('images/FotoSanIppolito1.jpg'))
+@section('og_image', asset('images/FotoSanIppolito1.webp'))
 
 @section('content')
     <!-- Hero Slider -->
     <section class="section swiper-container swiper-slider swiper-slider-classic" data-loop="true" data-autoplay="5000"
       data-simulate-touch="true" data-direction="vertical" data-nav="false" aria-label="{{ __('home.hero.aria.slideshow') }}">
       <div class="swiper-wrapper text-center">
-        <div class="swiper-slide context-dark" data-slide-bg="{{ asset('images/FotoSanIppolito1.jpg') }}" aria-label="{{ __('home.hero.aria.slide1') }}">
+        <div class="swiper-slide context-dark" data-slide-bg="{{ asset('images/FotoSanIppolito1.webp') }}" aria-label="{{ __('home.hero.aria.slide1') }}">
           <div class="swiper-slide-caption section-md">
             <div class="container">
               <div class="row">
@@ -32,7 +32,7 @@
           </div>
         </div>
 
-        <div class="swiper-slide context-dark" data-slide-bg="{{ asset('images/FotoShanghai1.jpeg') }}" aria-label="{{ __('home.hero.aria.slide2') }}">
+        <div class="swiper-slide context-dark" data-slide-bg="{{ asset('images/FotoShanghai1.webp') }}" aria-label="{{ __('home.hero.aria.slide2') }}">
           <div class="swiper-slide-caption section-md">
             <div class="container">
               <h2 data-caption-animate="fadeInLeft" data-caption-delay="0">{!! __('home.hero.slide2.title') !!}</h2>
@@ -43,7 +43,7 @@
           </div>
         </div>
 
-        <div class="swiper-slide context-dark" data-slide-bg="{{ asset('images/FotoRoma1.jpeg') }}" aria-label="{{ __('home.hero.aria.slide3') }}">
+        <div class="swiper-slide context-dark" data-slide-bg="{{ asset('images/FotoRoma1.webp') }}" aria-label="{{ __('home.hero.aria.slide3') }}">
           <div class="swiper-slide-caption section-md">
             <div class="container">
               <h2 data-caption-animate="fadeInLeft" data-caption-delay="0">{!! __('home.hero.slide3.title') !!}</h2>
@@ -71,7 +71,7 @@
         <div class="row row-30 justify-content-center">
           <div class="col-md-7 col-lg-5 col-xl-6 text-lg-left wow fadeInUp">
             <div class="figure-classic figure-classic-left">
-              <img src="{{ asset('images/FotoBiagio1.jpg') }}" alt="{{ __('home.about.image_alt') }}" width="100%" height="auto" loading="lazy" />
+              <img src="{{ asset('images/FotoBiagio1.webp') }}" alt="{{ __('home.about.image_alt') }}" width="100%" height="auto" loading="lazy" />
             </div>
           </div>
 
@@ -235,7 +235,7 @@
         '@type' => 'MusicGroup',
         'name' => 'Banda Folk di Castello Tesino',
         'description' => __('home.structured.description'),
-        'image' => asset('images/FotoSanIppolito1.jpg'),
+        'image' => asset('images/FotoSanIppolito1.webp'),
         'url' => url('/'),
         'genre' => ['Folk', 'Traditional', 'Marching Band'],
         'foundingDate' => '1901',

@@ -16,7 +16,7 @@
                     <li class="active">{{ __('maestro.page_title') }}</li>
                 </ul>
             </div>
-            <div class="box-position" style="background-image: url({{ asset('images/FotoSanIppolito1.jpg') }});"></div>
+            <div class="box-position" style="background-image: url({{ asset('images/FotoSanIppolito1.webp') }});"></div>
         </div>
     </section>
 
@@ -31,7 +31,7 @@
                     <div class="row row-50 justify-content-center align-items-xl-center">
                         <div class="col-md-12 col-lg-6">
                             <div class="wow fadeInRight">
-                                <img src="{{ asset('images/FotoMaestro1.jpg') }}" alt="{{ __('maestro.name') }} - {{ __('maestro.title') }}" width="519" height="564" loading="lazy">
+                                <img src="{{ asset('images/FotoMaestro1.webp') }}" alt="{{ __('maestro.name') }} - {{ __('maestro.title') }}" width="519" height="564" loading="lazy">
                             </div>
                         </div>
                         <div class="col-md-10 col-lg-6">

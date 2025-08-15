@@ -16,7 +16,7 @@
                     <li class="active">{{ __('chi-siamo.breadcrumb_title') }}</li>
                 </ul>
             </div>
-            <div class="box-position" style="background-image: url({{ asset('images/FotoSanIppolito1.jpg') }});"></div>
+            <div class="box-position" style="background-image: url({{ asset('images/FotoSanIppolito1.webp') }});"></div>
         </div>
     </section>
 
@@ -29,7 +29,7 @@
                     <div class="row row-50 justify-content-center align-items-xl-center">
                         <div class="col-lg-6 mt-4">
                             <div class="wow fadeInRight">
-                                <img src="{{ asset('images/FotoBiagio1.jpg') }}" alt="Banda Folk di Castello Tesino" class="img-fluid rounded shadow-sm" loading="lazy">
+                                <img src="{{ asset('images/FotoBiagio1.webp') }}" alt="Banda Folk di Castello Tesino" class="img-fluid rounded shadow-sm" loading="lazy">
                             </div>
                         </div>
                         <div class="col-lg-6">

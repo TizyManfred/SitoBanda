@@ -20,7 +20,7 @@
                     <li class="active">{{ __('repertorio.breadcrumb_title') }}</li>
                 </ul>
             </div>
-            <div class="box-position" style="background-image: url({{ asset('images/FotoRepertorio1.jpeg') }});"></div>
+            <div class="box-position" style="background-image: url({{ asset('images/FotoRepertorio1.webp') }});"></div>
         </div>
     </section>
 

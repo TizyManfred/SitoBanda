@@ -16,7 +16,7 @@
                     <li class="active">{{ __('Corsi di Musica') }}</li>
                 </ul>
             </div>
-            <div class="box-position" style="background-image: url({{ asset('images/FotoShanghai1.jpeg') }});"></div>
+            <div class="box-position" style="background-image: url({{ asset('images/FotoShanghai1.webp') }});"></div>
         </div>
     </section>
 
@@ -30,7 +30,7 @@
                         <h2 class="title-decoration-lines-left">{{ __('Impara a Suonare con Noi') }}</h2>
                         <div class="row row-50">
                             <div class="col-lg-6 col-xl-6">
-                                <img src="{{ asset('images/FotoTrento1.jpg') }}" alt="{{ __('Corsi di Musica della Banda Folk di Castello Tesino') }}" class="img-fluid">
+                                <img src="{{ asset('images/FotoTrento1.webp') }}" alt="{{ __('Corsi di Musica della Banda Folk di Castello Tesino') }}" class="img-fluid">
                             </div>
                             <div class="col-lg-6 col-xl-6">
                                 <p>{{ __('La Banda Folk di Castello Tesino organizza corsi di musica per avvicinare giovani e adulti al mondo della musica bandistica.') }}</p>

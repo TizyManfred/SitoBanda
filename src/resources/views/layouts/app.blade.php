@@ -19,13 +19,13 @@
     <meta name="description" content="@yield('description', 'La Banda Folk di Castello Tesino, attiva dal 1901, porta avanti la tradizione musicale del Trentino con concerti, eventi e corsi di musica.')">
     <meta property="og:title" content="@yield('og_title', 'Banda Folk di Castello Tesino - Tradizione dal 1901')">
     <meta property="og:description" content="@yield('og_description', 'Scopri la Banda Folk di Castello Tesino, custode della tradizione musicale trentina dal 1901.')">
-    <meta property="og:image" content="@yield('og_image', asset('images/FotoSanIppolito1.jpg'))">
+    <meta property="og:image" content="@yield('og_image', asset('images/FotoSanIppolito1.webp'))">
     <meta property="og:url" content="{{ url()->current() }}">
     <meta property="og:type" content="website">
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="@yield('og_title', 'Banda Folk di Castello Tesino - Tradizione dal 1901')">
     <meta name="twitter:description" content="@yield('og_description', 'Scopri la Banda Folk di Castello Tesino, custode della tradizione musicale trentina dal 1901.')">
-    <meta name="twitter:image" content="@yield('og_image', asset('images/FotoSanIppolito1.jpg'))">
+    <meta name="twitter:image" content="@yield('og_image', asset('images/FotoSanIppolito1.webp'))">
     
     <!-- Stylesheets-->
     <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Poppins:400,500%7CTeko:300,400,500%7CMaven+Pro:500">

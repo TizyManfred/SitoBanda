@@ -44,7 +44,7 @@
                     <li class="active">Organico</li>
                 </ul>
             </div>
-            <div class="box-position" style="background-image: url('/images/FotoOrganico1.jpg');"></div>
+            <div class="box-position" style="background-image: url('/images/FotoOrganico1.webp');"></div>
         </div>
     </section>
 

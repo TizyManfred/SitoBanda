@@ -16,7 +16,7 @@
                     <li class="active">{{ __('events.events') }}</li>
                 </ul>
             </div>
-            <div class="box-position" style="background-image: url({{ asset('images/FotoSanIppolito1.jpg') }});"></div>
+            <div class="box-position" style="background-image: url({{ asset('images/FotoSanIppolito1.webp') }});"></div>
         </div>
     </section>
 
