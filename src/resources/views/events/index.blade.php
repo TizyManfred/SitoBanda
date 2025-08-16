@@ -55,19 +55,19 @@
                                             <div class="d-flex mb-3 gap-4">
                                                 @if($event->start_datetime->format('H:i') != '00:00')
                                                 <div>
-                                                    <i class="far fa-clock me-1"></i>
+                                                    <i class="fa fa-clock-o me-1"></i>
                                                     <span class="text-muted">{{ $event->start_datetime->format('H:i') }}</span>
                                                 </div>
                                                 @endif
                                                 <div>
-                                                    <i class="fas fa-map-marker-alt me-1"></i>
+                                                    <i class="fa fa-map-marker me-1"></i>
                                                     <span class="text-muted">{{ $event->location }}</span>
                                                 </div>
                                             </div>
                                             <p class="card-text mb-4">{{ $event->short_description }}</p>
-                                            <div class="text-end">
-                                                <a class="btn btn-outline-primary btn-sm" href="{{ route('eventi.show', $event->slug) }}">
-                                                    {{ __('events.details') }} <i class="fas fa-arrow-right ms-1"></i>
+                                            <div class="text-center text-md-right">
+                                                <a class="text-primary text-decoration-none small" href="{{ route('eventi.show', $event->slug) }}">
+                                                    {{ __('events.details') }} <i class="fa fa-arrow-right ms-1"></i>
                                                 </a>
                                             </div>
                                         </div>
@@ -77,7 +77,7 @@
                         </div>
                     @else
                         <div class="alert alert-info shadow-sm p-4">
-                            <i class="far fa-calendar-times me-2 fa-lg"></i>
+                            <i class="fa fa-calendar-times me-2 fa-lg"></i>
                             {{ __('events.no_upcoming_events') }}
                         </div>
                     @endif
@@ -112,19 +112,19 @@
                                             <div class="d-flex mb-3 gap-4">
                                                 @if($event->start_datetime->format('H:i') != '00:00')
                                                 <div>
-                                                    <i class="far fa-clock me-1"></i>
+                                                    <i class="fa fa-clock-o me-1"></i>
                                                     <span class="text-muted">{{ $event->start_datetime->format('H:i') }}</span>
                                                 </div>
                                                 @endif
                                                 <div>
-                                                    <i class="fas fa-map-marker-alt me-1"></i>
+                                                    <i class="fa fa-map-marker me-1"></i>
                                                     <span class="text-muted">{{ $event->location }}</span>
                                                 </div>
                                             </div>
                                             <p class="card-text mb-4">{{ $event->short_description }}</p>
-                                            <div class="text-end">
-                                                <a class="btn btn-outline-secondary btn-sm" href="{{ route('eventi.show', $event->slug) }}">
-                                                    {{ __('events.details') }} <i class="fas fa-arrow-right ms-1"></i>
+                                            <div class="text-center text-md-right">
+                                                <a class="text-primary text-decoration-none small" href="{{ route('eventi.show', $event->slug) }}">
+                                                    {{ __('events.details') }} <i class="fa fa-arrow-right ms-1"></i>
                                                 </a>
                                             </div>
                                         </div>

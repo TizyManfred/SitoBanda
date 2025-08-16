@@ -5,9 +5,7 @@
       <div class="col-md-10 col-lg-12 col-xl-4 wow fadeInRight">
         <div class="box-footer box-footer-small">
           <div class="footer-brand">
-            <a href="{{ route('home') }}">
-              <h3>{{ __('footer.band_name') }}</h3>
-            </a>
+            <h4 class="font-weight-normal">{{ __('footer.band_name') }}</h4>
           </div>
           <p class="text-width-medium">{{ __('footer.description') }}</p>
           <div class="contact-classic">
@@ -43,21 +41,37 @@
 
       <div class="col-md-10 col-lg-6 col-xl-4 wow fadeInRight" data-wow-delay=".1s">
         <div class="box-footer">
-          <h3 class="font-weight-normal">{{ __('footer.contact_us') }}</h3>
-          <form class="rd-form rd-mailform" data-form-output="form-output-global" data-form-type="contact" method="post" >
+          <h4 class="font-weight-normal">{{ __('footer.contact_us') }}</h4>
+          <form class="rd-form rd-mailform" data-form-output="form-output-global" data-form-type="contact" method="post" action="{{ route('contatti.store') }}">
             @csrf
+            <input type="hidden" name="from_footer" value="1">
+            @if(session('footer_success'))
+              <div class="alert alert-success" role="alert">{{ session('footer_success') }}</div>
+            @endif
             <div class="form-wrap">
-              <input class="form-input" id="contact-name-6" type="text" name="name" data-constraints="@@Required" required />
+              <input class="form-input" id="contact-name-6" type="text" name="name" value="{{ old('name') }}" data-constraints="@@Required" required />
               <label class="form-label" for="contact-name-6">{{ __('footer.name') }}</label>
+              @error('name','footer')
+                <div class="text-danger small">{{ $message }}</div>
+              @enderror
             </div>
             <div class="form-wrap">
-              <input class="form-input" id="contact-email-6" type="email" name="email" data-constraints="@@Email @@Required" required />
+              <input class="form-input" id="contact-email-6" type="email" name="email" value="{{ old('email') }}" data-constraints="@@Email @@Required" required />
               <label class="form-label" for="contact-email-6">{{ __('footer.email') }}</label>
+              @error('email','footer')
+                <div class="text-danger small">{{ $message }}</div>
+              @enderror
             </div>
             <div class="form-wrap">
               <label class="form-label" for="contact-message-6">{{ __('footer.message') }}</label>
-              <textarea class="form-input" id="contact-message-6" name="message" data-constraints="@@Required" required></textarea>
+              <textarea class="form-input" id="contact-message-6" name="message" data-constraints="@@Required" required>{{ old('message') }}</textarea>
+              @error('message','footer')
+                <div class="text-danger small">{{ $message }}</div>
+              @enderror
             </div>
+            @if(session('footer_error'))
+              <div class="alert alert-danger" role="alert">{{ session('footer_error') }}</div>
+            @endif
             <button class="button button-block button-ujarak button-secondary" type="submit">{{ __('footer.send_message') }}</button>
           </form>
         </div>
@@ -65,7 +79,7 @@
 
       <div class="col-md-10 col-lg-6 col-xl-4 wow fadeInRight" data-wow-delay=".2s">
         <div class="box-footer">
-          <h3 class="font-weight-normal">{{ __('footer.quick_links') }}</h3>
+          <h4 class="font-weight-normal">{{ __('footer.quick_links') }}</h4>
           <ul class="footer-list-category">
             <li class="heading-5"><a href="{{ route('chi-siamo') }}">{{ __('footer.about_us') }}<span></span></a></li>
             <li class="heading-5"><a href="{{ route('corsi-di-musica') }}">{{ __('footer.music_courses') }}<span></span></a></li>

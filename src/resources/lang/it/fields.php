@@ -1,6 +1,14 @@
 <?php
 
 return [
+    // Generic
+    'any' => 'Qualsiasi',
+
+    // Sections
+    'sections' => [
+        'message_information' => 'Informazioni Messaggio',
+        'metadata' => 'Metadati',
+    ],
     // Common fields across multiple resources
     'common' => [
         'date_time' => 'Data e Ora',
@@ -217,11 +225,20 @@ return [
     // Contact specific fields
     'contact' => [
         'name' => 'Nome',
+        'email' => 'Email',
+        'phone' => 'Telefono',
         'subject' => 'Oggetto',
+        'message' => 'Messaggio',
+        'status' => 'Stato',
+        'ip_address' => 'Indirizzo IP',
+        'user_agent' => 'User Agent',
         'read' => 'Letto',
         'read_status' => 'Stato Lettura',
         'read_messages' => 'Messaggi Letti',
         'unread_messages' => 'Messaggi Non Letti',
+        'read_at' => 'Letto il',
+        'mark_as_read' => 'Segna come letto',
+        'mark_as_unread' => 'Segna come non letto',
         'view' => 'Visualizza',
     ],
 ];

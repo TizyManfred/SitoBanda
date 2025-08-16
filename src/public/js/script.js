@@ -1051,15 +1051,40 @@
 		// RD Mailform
 		if (plugins.rdMailForm.length) {
 			var i, j, k,
-				msg = {
-					'MF000': 'Successfully sent!',
-					'MF001': 'Recipients are not set!',
-					'MF002': 'Form will not work locally!',
-					'MF003': 'Please, define email field in your form!',
-					'MF004': 'Please, define type of your form!',
-					'MF254': 'Something went wrong with PHPMailer!',
-					'MF255': 'Aw, snap! Something went wrong.'
-				};
+				// Localized messages based on <html lang>
+				msg = (function(){
+					var lang = (document.documentElement.getAttribute('lang') || 'it').slice(0,2);
+					var dict = {
+						it: {
+							'MF000': 'Inviato con successo!',
+							'MF001': 'Destinatari non impostati!',
+							'MF002': 'Il form non funziona in locale!',
+							'MF003': 'Definisci il campo email nel form!',
+							'MF004': 'Definisci il tipo di form!',
+							'MF254': 'Qualcosa è andato storto con PHPMailer!',
+							'MF255': 'Ops! Qualcosa è andato storto.'
+						},
+						en: {
+							'MF000': 'Successfully sent!',
+							'MF001': 'Recipients are not set!',
+							'MF002': 'Form will not work locally!',
+							'MF003': 'Please, define email field in your form!',
+							'MF004': 'Please, define type of your form!',
+							'MF254': 'Something went wrong with PHPMailer!',
+							'MF255': 'Aw, snap! Something went wrong.'
+						},
+						de: {
+							'MF000': 'Erfolgreich gesendet!',
+							'MF001': 'Empfänger sind nicht festgelegt!',
+							'MF002': 'Formular funktioniert lokal nicht!',
+							'MF003': 'Bitte definiere das E-Mail-Feld im Formular!',
+							'MF004': 'Bitte definiere den Formular-Typ!',
+							'MF254': 'Mit PHPMailer ist etwas schiefgelaufen!',
+							'MF255': 'Ups! Etwas ist schiefgelaufen.'
+						}
+					};
+					return dict[lang] || dict.it;
+				})();
 
 			for (i = 0; i < plugins.rdMailForm.length; i++) {
 				var $form = $(plugins.rdMailForm[i]),

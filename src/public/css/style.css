@@ -1,4 +1,36 @@
 @charset "UTF-8";
+/* =============================
+   Server-side validation helpers
+   Make invalid feedback visible for custom .form-input fields
+   and style invalid states similar to Bootstrap
+   ============================= */
+/* Base style if Bootstrap isn't present */
+.invalid-feedback {
+  display: none;
+  width: 100%;
+  margin-top: 0.25rem;
+  font-size: 0.875rem;
+  color: #dc3545; /* red */
+}
+
+/* Show feedback when the previous input/textarea has .is-invalid */
+.form-input.is-invalid + .invalid-feedback,
+.form-input.is-invalid ~ .invalid-feedback,
+.is-invalid + .invalid-feedback,
+.is-invalid ~ .invalid-feedback,
+.invalid-feedback.d-block {
+  display: block !important;
+}
+
+/* Invalid border and focus for custom inputs */
+.form-input.is-invalid {
+  border-color: #dc3545 !important;
+}
+.form-input.is-invalid:focus {
+  border-color: #dc3545 !important;
+  box-shadow: 0 0 0 0.2rem rgba(220, 53, 69, 0.25);
+}
+
 /*
 *
 * Image Containers
@@ -5893,6 +5925,13 @@ html.boxed body {
 	color: #9b9b9b;
 }
 
+@media (min-width: 480px) {
+	.text-img {
+		font-size: 400px;
+		height: 355px;
+	}
+}
+
 @media (min-width: 576px) {
 	.text-img {
 		font-size: 500px;
@@ -5902,6 +5941,7 @@ html.boxed body {
 
 @media (min-width: 992px) {
 	.text-img {
+		font-size: 440px;
 		letter-spacing: .05em;
 	}
 }
@@ -5925,6 +5965,7 @@ html.boxed body {
 		font-size: 330px;
 		color: red;
 	}
+
 	@media (min-width: 576px) {
 		.text-img {
 			background-position-y: 22%;
@@ -5932,6 +5973,12 @@ html.boxed body {
 		.text-img:hover {
 			font-size: 530px;
 			color: red;
+		}
+	}
+	
+	@media (min-width: 992px) {
+		.text-img:hover {
+			font-size: 460px;
 		}
 	}
 }
@@ -9430,19 +9477,19 @@ html.rd-navbar-fixed-linked .page {
 
 .rd-navbar-classic.rd-navbar-static .rd-navbar-main {
 	display: flex;
-	align-items: flex-end;
+	align-items: center;
 	justify-content: space-between;
 	max-width: 1770px;
 	margin-left: auto;
 	margin-right: auto;
-	padding: 16px 55px 14px 0;
+	padding: 16px 0 14px 0;
 	transition: padding .35s ease-in-out;
 }
 
 @media (min-width: 1200px) {
 	.rd-navbar-classic.rd-navbar-static .rd-navbar-main {
 		padding-top: 24px;
-		padding-right: 68px;
+		padding-right: 0;
 		padding-bottom: 20px;
 	}
 	.rd-navbar-classic.rd-navbar-static .rd-navbar-main.active {
@@ -9616,7 +9663,7 @@ html.rd-navbar-fixed-linked .page {
 
 @media (min-width: 1200px) {
 	.rd-navbar-classic.rd-navbar-static .rd-nav-item + .rd-nav-item {
-		margin-left: 35px;
+		margin-left: 24px;
 	}
 }
 
@@ -14933,11 +14980,10 @@ Aggiunte CSS
 .language-switcher {
 	position: relative;
 	display: inline-block;
-	margin-right: 15px;
 	vertical-align: middle;
 	cursor: pointer;
 	color: #151515;
-	padding: 10px;
+	/* padding: 15px 10px; */
 	border-radius: 4px;
 	font-size: 14px;
 	letter-spacing: .05em;
@@ -14960,7 +15006,7 @@ Aggiunte CSS
 	display: none;
 	position: absolute;
 	top: 100%;
-	left: 0;
+	right: 0;
 	min-width: 120px;
 	background: #ffffff;
 	border-radius: 4px;

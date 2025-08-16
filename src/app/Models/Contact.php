@@ -25,11 +25,13 @@ class Contact extends Model
     protected $fillable = [
         'name',
         'email',
+        'phone',
         'subject',
         'message',
+        'status',
         'ip_address',
-        'is_read',
-        'privacy_policy_accepted',
+        'user_agent',
+        'read_at',
     ];
 
     /**
@@ -38,8 +40,7 @@ class Contact extends Model
      * @var array<string, string>
      */
     protected $casts = [
-        'is_read' => 'boolean',
-        'privacy_policy_accepted' => 'boolean',
+        'read_at' => 'datetime',
     ];
 }
 

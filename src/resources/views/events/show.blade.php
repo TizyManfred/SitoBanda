@@ -8,40 +8,6 @@
     @section('og_image', asset($event->image_path))
 @endif
 
-@section('styles')
-<!-- Using existing classes from style.css and bootstrap.css -->
-<style>
-    /* Rotating gallery preview */
-    .rotating-gallery { height: 360px; }
-    .rotating-gallery .rotating-track {
-        display: flex;
-        width: 100%;
-        height: 100%;
-        will-change: transform;
-        transition: transform 600ms ease-in-out;
-    }
-    .rotating-gallery .rotating-slide {
-        position: relative;
-        min-width: 100%;
-        height: 100%;
-        overflow: hidden;
-    }
-    .rotating-gallery .rotating-slide img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        display: block;
-    }
-    .rotating-gallery .rotating-caption {
-        position: absolute;
-        left: 0; right: 0; bottom: 12px;
-        text-align: center;
-    }
-    @media (max-width: 576px) {
-        .rotating-gallery { height: 240px; }
-    }
-</style>
-@endsection
 
 @section('content')
     <!-- Breadcrumbs -->
@@ -83,7 +49,7 @@
                         <div class="event-details mb-4 p-4 bg-light shadow-sm border-start border-primary border-3">
                             <div class="d-flex mb-3 gap-4">
                                 <div>
-                                    <i class="far fa-calendar-alt text-primary me-2"></i>
+                                    <i class="fa fa-calendar text-primary me-2"></i>
                                     <strong>{{ __('events.date') }}:</strong> 
                                     {{ $event->start_datetime->format('d/m/Y') }}
                                     @if($event->end_datetime && $event->end_datetime->format('d/m/Y') != $event->start_datetime->format('d/m/Y'))
@@ -95,7 +61,7 @@
                             @if($event->start_datetime->format('H:i') != '00:00')
                                 <div class="d-flex mb-3 gap-4">
                                     <div>
-                                        <i class="far fa-clock text-primary me-2"></i>
+                                        <i class="fa fa-clock-o text-primary me-2"></i>
                                         <strong>{{ __('events.time') }}:</strong> 
                                         {{ $event->start_datetime->format('H:i') }}
                                         @if($event->end_datetime)
@@ -107,7 +73,7 @@
                             
                             <div class="d-flex mb-0 gap-4">
                                 <div>
-                                    <i class="fas fa-map-marker-alt text-primary me-2"></i>
+                                    <i class="fa fa-map-marker text-primary me-2"></i>
                                     <strong>{{ __('events.location') }}:</strong> 
                                     {{ $event->location }}
                                     @if($event->address)
@@ -141,7 +107,7 @@
                                 </div>
                                 <div class="text-center mt-4">
                                     <a href="{{ route('galleria.album', $gallery->slug) }}" class="button button-secondary button-pipaluk">
-                                        {{ __('events.view_all_photos') }} <i class="fas fa-images ms-2"></i>
+                                        {{ __('events.view_all_photos') }} <i class="fa fa-images ms-2"></i>
                                     </a>
                                 </div>
                             </div>
@@ -177,15 +143,16 @@
                                                 <div class="position-relative img-hover-zoom">
                                                     <a href="{{ route('eventi.show', $relatedEvent->slug) }}">
                                                         @if($relatedEvent->image_path)
-                                                            <img src="{{ Storage::url($relatedEvent->image_path) }}" alt="{{ $relatedEvent->title }}" width="570" height="370" loading="lazy" class="img-fluid" style="height: 240px; width: 100%; object-fit: cover;">
+                                                            <img src="{{ Storage::url($relatedEvent->image_path) }}" alt="{{ $relatedEvent->title }}" width="570" height="370" loading="lazy" class="img-fluid" style="height: 280px; width: 100%; object-fit: cover;">
                                                         @else
-                                                            <img src="{{ asset('images/event-default.jpg') }}" alt="{{ $relatedEvent->title }}" width="570" height="370" loading="lazy" class="img-fluid" style="height: 240px; width: 100%; object-fit: cover;">
+                                                            <img src="{{ asset('images/event-default.jpg') }}" alt="{{ $relatedEvent->title }}" width="570" height="370" loading="lazy" class="img-fluid" style="height: 280px; width: 100%; object-fit: cover;">
                                                         @endif
                                                     </a>
-                                                    <div class="position-absolute top-0 left-0 bg-primary text-white p-3 rounded-bottom bg-black-opacity-70" style="border-radius: 0 0 10px 0;">
+                                                    <div class="position-absolute top-0 left-0 bg-secondary text-white p-3 rounded-bottom bg-black-opacity-70">
                                                         <div class="text-center">
-                                                            <div class="h4 mb-0 font-weight-bold">{{ $relatedEvent->start_datetime->format('d') }}</div>
-                                                            <div class="small text-uppercase">{{ $relatedEvent->start_datetime->translatedFormat('M') }}</div>
+                                                            <div class="mb-0 big font-weight-bold">{{ $relatedEvent->start_datetime->format('d') }}</div>
+                                                            <div class="text-uppercase">{{ $relatedEvent->start_datetime->translatedFormat('M') }}</div>
+                                                            <div class="text-uppercase">{{ $relatedEvent->start_datetime->translatedFormat('Y') }}</div>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -195,11 +162,11 @@
                                                     </h5>
                                                     <div class="d-flex mb-3 gap-4">
                                                         <div>
-                                                            <i class="far fa-clock me-1"></i>
+                                                            <i class="fa fa-clock-o me-1"></i>
                                                             <span class="text-muted">{{ $relatedEvent->start_datetime->format('H:i') }}</span>
                                                         </div>
                                                         <div>
-                                                            <i class="fas fa-map-marker-alt me-1"></i>
+                                                            <i class="fa fa-map-marker me-1"></i>
                                                             <span class="text-muted">{{ $relatedEvent->location }}</span>
                                                         </div>
                                                     </div>

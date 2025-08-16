@@ -59,6 +59,8 @@
         
         @include('partials.footer')
     </div>
+    <!-- RD Mailform global output -->
+    <div class="snackbars" id="form-output-global"></div>
 
     <!-- JavaScript -->
     <script>

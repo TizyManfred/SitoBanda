@@ -12,7 +12,7 @@ return [
     'quick_links' => 'Quick Links',
     'about_us' => 'About Us',
     'music_courses' => 'Music Courses',
-    'concerts' => 'Concerts',
+    'concerts' => 'Events',
     'photo_gallery' => 'Photo Gallery',
     'all_rights_reserved' => 'All rights reserved',
     'follow_us' => 'Follow us on',

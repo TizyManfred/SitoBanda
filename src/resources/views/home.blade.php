@@ -124,15 +124,17 @@
     <section class="section section-sm bg-default" id="storia">
       <div class="container">
         <div class="row row-xl-24 justify-content-center align-items-center align-items-lg-start text-left">
-          <div class="col-md-6 text-right">
+          <div class="col-md-6 text-center text-md-right">
             <a class="text-img" href="{{ route('storia') }}" title="{{ __('home.about.history') }}">
-              <span class="counter">120</span>
+              <span class="counter">{{ abs(\Carbon\Carbon::now()->diffInYears(\Carbon\Carbon::parse('1901-01-01'))) }}</span>
             </a>
           </div>
           <div class="col-md-6 wow fadeInRight" data-wow-delay=".1s" style="padding-left: 10px;">
             <div class="offset-top-lg-24 wow fadeInUp">
               <h3 class="title-decoration-lines-left">{{ __('home.history.years') }}</h3>
               <p class="text-gray-500">{{ __('home.history.text') }}</p>
+            </div>
+            <div class="offset-top-lg-24 wow fadeInUp text-center text-md-left mt-3">
               <a class="button button-secondary button-pipaluk" href="{{ route('storia') }}" title="{{ __('home.history.cta') }}">{{ __('home.history.cta') }}</a>
             </div>
           </div>
@@ -150,7 +152,7 @@
           </div>
         </div>
         
-        <div class="row row-30 justify-content-center">
+        <div class="row row-30 justify-content-center text-left">
           @if (!empty($upcomingEvents))
             @foreach ($upcomingEvents as $event)
               @php
@@ -173,7 +175,7 @@
                     </a>
                     @if($start)
                       <div class="position-absolute top-0 left-0 bg-secondary text-white p-3 rounded-bottom bg-black-opacity-70">
-                        <div class="text-center">
+                        <div class="text-left">
                           <div class="mb-0 big font-weight-bold">{{ $start->format('d') }}</div>
                           <div class="text-uppercase">{{ $start->translatedFormat('M') }}</div>
                           <div class="text-uppercase">{{ $start->translatedFormat('Y') }}</div>
@@ -202,8 +204,8 @@
                     @if (!empty($event['short_description']))
                       <p class="card-text mb-4">{{ $event['short_description'] }}</p>
                     @endif
-                    <div class="text-end">
-                      <a class="btn btn-outline-primary btn-sm" href="{{ route('eventi.show', $event['slug']) }}" title="{{ __('home.events.details') }}: {{ $event['title'] }}">
+                    <div class="text-center text-md-right">
+                      <a class="text-primary text-decoration-none small" href="{{ route('eventi.show', $event['slug']) }}" title="{{ __('home.events.details') }}: {{ $event['title'] }}">
                         {{ __('home.events.details') }} <i class="fa fa-arrow-right ms-1"></i>
                       </a>
                     </div>

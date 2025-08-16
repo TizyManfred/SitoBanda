@@ -12,7 +12,7 @@ return [
     'quick_links' => 'Collegamenti Rapidi',
     'about_us' => 'Chi Siamo',
     'music_courses' => 'Corsi di Musica',
-    'concerts' => 'Concerti',
+    'concerts' => 'Eventi',
     'photo_gallery' => 'Galleria Fotografica',
     'all_rights_reserved' => 'Tutti i diritti riservati',
     'follow_us' => 'Seguici su',
