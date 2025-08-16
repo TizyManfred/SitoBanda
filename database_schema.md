@@ -211,3 +211,23 @@ Stores information about the repertoire programs of the band.
 +---------------------+------------+----------+--------------+-------------+-----------+-------------+----------+--------+------+------------+---------+---------------+---------+------------+
 | repertoire_programs |          0 | PRIMARY  |            1 | id          | A         |           0 |     NULL |   NULL |      | BTREE      |         |               | YES     | NULL       |
 +---------------------+------------+----------+--------------+-------------+-----------+-------------+----------+--------+------+------------+---------+---------------+---------+------------+
+
+## contact_submissions
+
++------------+-----------------+------+-----+---------+----------------+
+| Field      | Type            | Null | Key | Default | Extra          |
++------------+-----------------+------+-----+---------+----------------+
+| id         | bigint unsigned | NO   | PRI | NULL    | auto_increment |
+| name       | varchar(255)    | NO   |     | NULL    |                |
+| email      | varchar(255)    | NO   |     | NULL    |                |
+| phone      | varchar(255)    | YES  |     | NULL    |                |
+| subject    | varchar(255)    | NO   |     | NULL    |                |
+| message    | text            | NO   |     | NULL    |                |
+| status     | varchar(255)    | NO   |     | new     |                |
+| ip_address | varchar(45)     | YES  |     | NULL    |                |
+| user_agent | varchar(255)    | YES  |     | NULL    |                |
+| read_at    | timestamp       | YES  |     | NULL    |                |
+| created_at | timestamp       | YES  |     | NULL    |                |
+| updated_at | timestamp       | YES  |     | NULL    |                |
+| deleted_at | timestamp       | YES  |     | NULL    |                |
++------------+-----------------+------+-----+---------+----------------+
