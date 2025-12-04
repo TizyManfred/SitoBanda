@@ -105,7 +105,7 @@
                     <div class="text-center text-muted mb-3">
                         <i class="far fa-calendar-alt mb-2" style="font-size: 24px;"></i>
                         <p class="mb-0" style="font-size: 14px;">
-                            {{ $emptyText ?? __('eventi.nessun_evento_programmato') }}
+                            {{ $emptyText ?? __('events.no_upcoming_events_sidebar') }}
                         </p>
                     </div>
                 @endif

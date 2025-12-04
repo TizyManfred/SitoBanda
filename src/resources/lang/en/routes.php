@@ -13,7 +13,7 @@ return [
     "contatti"  =>  "contact",
     "eventi"  =>  "events",
     "eventi/{slug}"  =>  "event/{slug}",
-    "gallery"  =>  "gallery",
-    "gallery/{slug}"  =>  "gallery/{slug}",
+    "galleria"  =>  "gallery",
+    "galleria/{slug}"  =>  "gallery/{slug}",
     "generic-aside-demo"  =>  "generic-aside-demo",
 ];

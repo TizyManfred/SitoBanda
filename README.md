@@ -18,10 +18,27 @@ This project contains the official website for the Banda Folk di Castello Tesino
 2.  **Configure Environment**
     The main configuration is handled in `src/includes/config.php`. This file is already set up for the Docker environment, but you may need to adjust settings for production, such as the `SITE_URL`.
 
-3.  **Build and Run with Docker**
+3.  **Populate environment file**
+    Copy and fill the sample env file:
+    ```bash
+    cp src/.env.example src/.env
+    # edit src/.env to set APP_KEY, DB credentials, etc.
+    ```
+
+4.  **Install PHP Dependencies (first time only, before starting containers)**
+    ```bash
+    docker compose run app composer install
+    ```
+
+5.  **Run database migrations (first time only)**
+    ```bash
+    docker compose run app php artisan migrate
+    ```
+
+6.  **Build and Run with Docker**
     From the root directory of the project, run:
     ```bash
-    docker-compose up -d
+    docker compose up -d --remove-orphans
     ```
     This command will build the required Docker images and start the web server and database containers in the background.
 
