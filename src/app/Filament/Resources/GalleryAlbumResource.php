@@ -5,8 +5,10 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\GalleryAlbumResource\Pages;
 use App\Filament\Resources\GalleryAlbumResource\RelationManagers;
 use App\Models\GalleryAlbum;
+use App\Services\TranslationService;
 use Filament\Forms;
 use Filament\Forms\Form;
+use Filament\Notifications\Notification;
 use Filament\Resources\Resource;
 use Filament\Resources\Concerns\Translatable;
 use Filament\Tables;
@@ -33,19 +35,70 @@ class GalleryAlbumResource extends Resource
             ->schema([
                 Forms\Components\Section::make()
                     ->schema([
-                        TranslatableContainer::make(
-                            Forms\Components\TextInput::make('title')
-                                ->label(__('fields.gallery.title'))
-                                ->required()
-                                ->maxLength(255)
-                                ->live(onBlur: true)
-                                ->columnSpanFull(),
-                        ),
-                        TranslatableContainer::make(
-                            Forms\Components\Textarea::make('description')
-                                ->label(__('fields.gallery.description'))
-                                ->columnSpanFull()
-                        ),
+                        Forms\Components\Grid::make()
+                            ->schema([
+                                TranslatableContainer::make(
+                                    Forms\Components\TextInput::make('title')
+                                        ->label(__('fields.gallery.title'))
+                                        ->required()
+                                        ->maxLength(255)
+                                        ->live(onBlur: true)
+                                )->columnSpan(5),
+                                Forms\Components\Actions::make([
+                                    Forms\Components\Actions\Action::make('translateTitle')
+                                        ->icon('heroicon-o-language')
+                                        ->tooltip('Translate from IT')
+                                        ->size('sm')
+                                        ->color('gray')
+                                        ->action(function ($get, $set) {
+                                            $sourceText = $get('title.it') ?? '';
+                                            if (empty(trim($sourceText))) {
+                                                Notification::make()->warning()->title('No source text')->body('Please add an Italian title first')->send();
+                                                return;
+                                            }
+                                            $translationService = app(TranslationService::class);
+                                            $failed = [];
+                                            foreach (['en', 'de'] as $target) {
+                                                $translated = $translationService->translate($sourceText, 'it', $target);
+                                                $translated ? $set('title.' . $target, $translated) : $failed[] = $target;
+                                            }
+                                            empty($failed)
+                                                ? Notification::make()->success()->title('Title translated')->send()
+                                                : Notification::make()->danger()->title('Failed for: ' . implode(', ', $failed))->send();
+                                        })
+                                ])->columnSpan(1),
+                            ])->columns(6),
+
+                        Forms\Components\Grid::make()
+                            ->schema([
+                                TranslatableContainer::make(
+                                    Forms\Components\Textarea::make('description')
+                                        ->label(__('fields.gallery.description'))
+                                )->columnSpan(5),
+                                Forms\Components\Actions::make([
+                                    Forms\Components\Actions\Action::make('translateDescription')
+                                        ->icon('heroicon-o-language')
+                                        ->tooltip('Translate from IT')
+                                        ->size('sm')
+                                        ->color('gray')
+                                        ->action(function ($get, $set) {
+                                            $sourceText = $get('description.it') ?? '';
+                                            if (empty(trim($sourceText))) {
+                                                Notification::make()->warning()->title('No source text')->body('Please add an Italian description first')->send();
+                                                return;
+                                            }
+                                            $translationService = app(TranslationService::class);
+                                            $failed = [];
+                                            foreach (['en', 'de'] as $target) {
+                                                $translated = $translationService->translate($sourceText, 'it', $target);
+                                                $translated ? $set('description.' . $target, $translated) : $failed[] = $target;
+                                            }
+                                            empty($failed)
+                                                ? Notification::make()->success()->title('Description translated')->send()
+                                                : Notification::make()->danger()->title('Failed for: ' . implode(', ', $failed))->send();
+                                        })
+                                ])->columnSpan(1),
+                            ])->columns(6),
                     ])
                     ->columnSpan(['lg' => 2]),
 

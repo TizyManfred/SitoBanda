@@ -82,47 +82,33 @@ class EventResource extends Resource
                                                 ->tooltip('AI Translate')
                                                 ->size('sm')
                                                 ->color('gray')
-                                                ->action(function ($livewire) {
-                                                    // Get current locale and determine source locale
-                                                    $currentLocale = $livewire->activeLocale;
-                                                    $sourceLocale = $currentLocale === 'it' ? 'en' : 'it';
-                                                    
-                                                    // Get source text from other locale
-                                                    $sourceText = data_get($livewire->data, "title.{$sourceLocale}") ?? '';
+                                                ->action(function ($get, $set) {
+                                                    $sourceText = $get('title.it') ?? '';
                                                     
                                                     if (empty(trim($sourceText))) {
-                                                        // Show notification if there's no source text to translate
                                                         Notification::make()
                                                             ->warning()
                                                             ->title('No source text')
-                                                            ->body('Please add content in ' . strtoupper($sourceLocale) . ' first')
+                                                            ->body('Please add an Italian title first')
                                                             ->send();
                                                         return;
                                                     }
                                                     
-                                                    // Get translation service from container
                                                     $translationService = app(TranslationService::class);
+                                                    $failed = [];
                                                     
-                                                    // Call translation service to translate text
-                                                    $translated = $translationService->translate($sourceText, $sourceLocale, $currentLocale);
-                                                    
-                                                    if ($translated) {
-                                                        // Update form data with translated text
-                                                        data_set($livewire->data, "title.{$currentLocale}", $translated);
-                                                        
-                                                        // Show success notification
-                                                        Notification::make()
-                                                            ->success()
-                                                            ->title('Translation completed')
-                                                            ->send();
-                                                    } else {
-                                                        // Show error notification
-                                                        Notification::make()
-                                                            ->danger()
-                                                            ->title('Translation failed')
-                                                            ->body('Could not translate text. Please try again later.')
-                                                            ->send();
+                                                    foreach (['en', 'de'] as $target) {
+                                                        $translated = $translationService->translate($sourceText, 'it', $target);
+                                                        if ($translated) {
+                                                            $set('title.' . $target, $translated);
+                                                        } else {
+                                                            $failed[] = $target;
+                                                        }
                                                     }
+                                                    
+                                                    empty($failed)
+                                                        ? Notification::make()->success()->title('Title translated')->send()
+                                                        : Notification::make()->danger()->title('Failed for: ' . implode(', ', $failed))->send();
                                                 })
                                         ])->columnSpan(1),
                                     ])
@@ -142,47 +128,33 @@ class EventResource extends Resource
                                                 ->tooltip('AI Translate')
                                                 ->size('sm')
                                                 ->color('gray')
-                                                ->action(function ($livewire) {
-                                                    // Get current locale and determine source locale
-                                                    $currentLocale = $livewire->activeLocale;
-                                                    $sourceLocale = $currentLocale === 'it' ? 'en' : 'it';
-                                                    
-                                                    // Get source text from other locale
-                                                    $sourceText = data_get($livewire->data, "short_description.{$sourceLocale}") ?? '';
+                                                ->action(function ($get, $set) {
+                                                    $sourceText = $get('short_description.it') ?? '';
                                                     
                                                     if (empty(trim($sourceText))) {
-                                                        // Show notification if there's no source text to translate
                                                         Notification::make()
                                                             ->warning()
                                                             ->title('No source text')
-                                                            ->body('Please add content in ' . strtoupper($sourceLocale) . ' first')
+                                                            ->body('Please add an Italian short description first')
                                                             ->send();
                                                         return;
                                                     }
                                                     
-                                                    // Get translation service from container
                                                     $translationService = app(TranslationService::class);
+                                                    $failed = [];
                                                     
-                                                    // Call translation service to translate text
-                                                    $translated = $translationService->translate($sourceText, $sourceLocale, $currentLocale);
-                                                    
-                                                    if ($translated) {
-                                                        // Update form data with translated text
-                                                        data_set($livewire->data, "short_description.{$currentLocale}", $translated);
-                                                        
-                                                        // Show success notification
-                                                        Notification::make()
-                                                            ->success()
-                                                            ->title('Translation completed')
-                                                            ->send();
-                                                    } else {
-                                                        // Show error notification
-                                                        Notification::make()
-                                                            ->danger()
-                                                            ->title('Translation failed')
-                                                            ->body('Could not translate text. Please try again later.')
-                                                            ->send();
+                                                    foreach (['en', 'de'] as $target) {
+                                                        $translated = $translationService->translate($sourceText, 'it', $target);
+                                                        if ($translated) {
+                                                            $set('short_description.' . $target, $translated);
+                                                        } else {
+                                                            $failed[] = $target;
+                                                        }
                                                     }
+                                                    
+                                                    empty($failed)
+                                                        ? Notification::make()->success()->title('Short description translated')->send()
+                                                        : Notification::make()->danger()->title('Failed for: ' . implode(', ', $failed))->send();
                                                 })
                                         ])->columnSpan(1),
                                     ])
@@ -201,47 +173,33 @@ class EventResource extends Resource
                                                 ->tooltip('AI Translate')
                                                 ->size('sm')
                                                 ->color('gray')
-                                                ->action(function ($livewire) {
-                                                    // Get current locale and determine source locale
-                                                    $currentLocale = $livewire->activeLocale;
-                                                    $sourceLocale = $currentLocale === 'it' ? 'en' : 'it';
-                                                    
-                                                    // Get source text from other locale
-                                                    $sourceText = data_get($livewire->data, "description.{$sourceLocale}") ?? '';
+                                                ->action(function ($get, $set) {
+                                                    $sourceText = $get('description.it') ?? '';
                                                     
                                                     if (empty(trim($sourceText))) {
-                                                        // Show notification if there's no source text to translate
                                                         Notification::make()
                                                             ->warning()
                                                             ->title('No source text')
-                                                            ->body('Please add content in ' . strtoupper($sourceLocale) . ' first')
+                                                            ->body('Please add an Italian description first')
                                                             ->send();
                                                         return;
                                                     }
                                                     
-                                                    // Get translation service from container
                                                     $translationService = app(TranslationService::class);
+                                                    $failed = [];
                                                     
-                                                    // Call translation service to translate text
-                                                    $translated = $translationService->translate($sourceText, $sourceLocale, $currentLocale);
-                                                    
-                                                    if ($translated) {
-                                                        // Update form data with translated text
-                                                        data_set($livewire->data, "description.{$currentLocale}", $translated);
-                                                        
-                                                        // Show success notification
-                                                        Notification::make()
-                                                            ->success()
-                                                            ->title('Translation completed')
-                                                            ->send();
-                                                    } else {
-                                                        // Show error notification
-                                                        Notification::make()
-                                                            ->danger()
-                                                            ->title('Translation failed')
-                                                            ->body('Could not translate text. Please try again later.')
-                                                            ->send();
+                                                    foreach (['en', 'de'] as $target) {
+                                                        $translated = $translationService->translate($sourceText, 'it', $target);
+                                                        if ($translated) {
+                                                            $set('description.' . $target, $translated);
+                                                        } else {
+                                                            $failed[] = $target;
+                                                        }
                                                     }
+                                                    
+                                                    empty($failed)
+                                                        ? Notification::make()->success()->title('Description translated')->send()
+                                                        : Notification::make()->danger()->title('Failed for: ' . implode(', ', $failed))->send();
                                                 })
                                         ])->columnSpan(1),
                                     ])

@@ -5,14 +5,18 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\SectionResource\Pages;
 use App\Filament\Resources\SectionResource\RelationManagers;
 use App\Models\Section;
+use App\Services\TranslationService;
 use Filament\Forms;
 use Filament\Forms\Form;
+use Filament\Notifications\Notification;
 use Filament\Resources\Resource;
+use Filament\Resources\Concerns\Translatable;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Filament\Tables\Filters\TrashedFilter;
+use Mvenghaus\FilamentPluginTranslatableInline\Forms\Components\TranslatableContainer;
 
 class SectionResource extends Resource
 {
@@ -41,10 +45,38 @@ class SectionResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('name')
-                    ->label(__('fields.section.name'))
-                    ->required()
-                    ->maxLength(255),
+                Forms\Components\Grid::make()
+                    ->schema([
+                        TranslatableContainer::make(
+                            Forms\Components\TextInput::make('name')
+                                ->label(__('fields.section.name'))
+                                ->required()
+                                ->maxLength(255)
+                        )->columnSpan(5),
+                        Forms\Components\Actions::make([
+                            Forms\Components\Actions\Action::make('translateName')
+                                ->icon('heroicon-o-language')
+                                ->tooltip('Translate from IT')
+                                ->size('sm')
+                                ->color('gray')
+                                ->action(function ($get, $set) {
+                                    $sourceText = $get('name.it') ?? '';
+                                    if (empty(trim($sourceText))) {
+                                        Notification::make()->warning()->title('No source text')->body('Please add an Italian name first')->send();
+                                        return;
+                                    }
+                                    $translationService = app(TranslationService::class);
+                                    $failed = [];
+                                    foreach (['en', 'de'] as $target) {
+                                        $translated = $translationService->translate($sourceText, 'it', $target);
+                                        $translated ? $set('name.' . $target, $translated) : $failed[] = $target;
+                                    }
+                                    empty($failed)
+                                        ? Notification::make()->success()->title('Name translated')->send()
+                                        : Notification::make()->danger()->title('Failed for: ' . implode(', ', $failed))->send();
+                                })
+                        ])->columnSpan(1),
+                    ])->columns(6),
                 Forms\Components\TextInput::make('icon_class')
                     ->label(__('fields.section.icon_class'))
                     ->maxLength(255)

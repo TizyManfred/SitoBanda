@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Request;
 use Filament\Notifications\Notification;
 use App\Models\GalleryItem;
+use App\Services\TranslationService;
 use Mvenghaus\FilamentPluginTranslatableInline\Forms\Components\TranslatableContainer;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
@@ -66,10 +67,36 @@ class ItemsRelationManager extends RelationManager
                     ->dehydrated(true)
                     ->optimize('webp'),
                 
-                TranslatableContainer::make(
-                    Forms\Components\TextInput::make('caption')
-                        ->reactive()
-                )->columnSpanFull(),
+                Forms\Components\Grid::make()
+                    ->schema([
+                        TranslatableContainer::make(
+                            Forms\Components\TextInput::make('caption')
+                                ->reactive()
+                        )->columnSpan(5),
+                        Forms\Components\Actions::make([
+                            Forms\Components\Actions\Action::make('translateCaption')
+                                ->icon('heroicon-o-language')
+                                ->tooltip('Translate from IT')
+                                ->size('sm')
+                                ->color('gray')
+                                ->action(function ($get, $set) {
+                                    $sourceText = $get('caption.it') ?? '';
+                                    if (empty(trim($sourceText))) {
+                                        Notification::make()->warning()->title('No source text')->body('Please add an Italian caption first')->send();
+                                        return;
+                                    }
+                                    $translationService = app(TranslationService::class);
+                                    $failed = [];
+                                    foreach (['en', 'de'] as $target) {
+                                        $translated = $translationService->translate($sourceText, 'it', $target);
+                                        $translated ? $set('caption.' . $target, $translated) : $failed[] = $target;
+                                    }
+                                    empty($failed)
+                                        ? Notification::make()->success()->title('Caption translated')->send()
+                                        : Notification::make()->danger()->title('Failed for: ' . implode(', ', $failed))->send();
+                                })
+                        ])->columnSpan(1),
+                    ])->columns(6)->columnSpanFull(),
             ]);
     }
 

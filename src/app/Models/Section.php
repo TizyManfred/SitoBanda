@@ -6,10 +6,13 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Spatie\Translatable\HasTranslations;
 
 class Section extends Model
 {
-    use HasFactory, SoftDeletes;
+    use HasFactory, SoftDeletes, HasTranslations;
+
+    public $translatable = ['name'];
     
     /**
      * The table associated with the model.
@@ -29,14 +32,16 @@ class Section extends Model
         'display_order',
     ];
 
+    protected $casts = [
+        'name' => 'array',
+        'display_order' => 'integer',
+    ];
+
     /**
      * The attributes that should be cast.
      *
      * @var array<string, string>
      */
-    protected $casts = [
-        'display_order' => 'integer',
-    ];
 
     /**
      * Get the members for the section.

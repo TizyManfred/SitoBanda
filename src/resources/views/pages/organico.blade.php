@@ -1,9 +1,9 @@
 @extends('layouts.app')
 
-@section('title', 'Organico - Banda Folk di Castello Tesino')
-@section('description', 'Scopri i musicisti e le sezioni strumentali che compongono la Banda Folk di Castello Tesino.')
-@section('og_title', 'Organico - Banda Folk di Castello Tesino')
-@section('og_description', 'Scopri i musicisti e le sezioni strumentali che compongono la Banda Folk di Castello Tesino.')
+@section('title', __('organico.meta_title'))
+@section('description', __('organico.meta_description'))
+@section('og_title', __('organico.meta_title'))
+@section('og_description', __('organico.meta_description'))
 
 @section('styles')
 <style>
@@ -38,10 +38,10 @@
     <section class="breadcrumbs-custom-inset">
         <div class="breadcrumbs-custom context-dark bg-overlay-60">
             <div class="container">
-                <h2 class="breadcrumbs-custom-title">Organico</h2>
+                <h2 class="breadcrumbs-custom-title">{{ __('organico.breadcrumb_title') }}</h2>
                 <ul class="breadcrumbs-custom-path">
-                    <li><a href="/">Home</a></li>
-                    <li class="active">Organico</li>
+                    <li><a href="{{ route('home') }}">{{ __('organico.breadcrumb_home') }}</a></li>
+                    <li class="active">{{ __('organico.breadcrumb_title') }}</li>
                 </ul>
             </div>
             <div class="box-position" style="background-image: url('/images/FotoOrganico1.webp');"></div>
@@ -60,8 +60,8 @@
                             <div class="col-lg-12">
                                 <div class="row">
                                     <div class="col-lg-12 text-left">
-                                        <h2 class="title-decoration-lines-left">{{ __('I Nostri Musicisti') }}</h2>
-                                        <p class="text-gray-800">{{ __('La Banda Folk di Castello Tesino è composta da musicisti di diverse età e background, uniti dalla passione per la musica. Ogni sezione strumentale contribuisce con il proprio timbro e colore alla creazione del suono caratteristico della nostra banda.') }}</p>
+                                        <h2 class="title-decoration-lines-left">{{ __('organico.section_title') }}</h2>
+                                        <p class="text-gray-800">{{ __('organico.intro') }}</p>
                                     </div>
                                 </div>
                             </div>
@@ -98,17 +98,17 @@
                                                     @if($section->images->count() > 1)
                                                         <a class="carousel-control-prev" href="#gallery-{{ $section->id }}" role="button" data-slide="prev">
                                                             <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                                                            <span class="sr-only">Precedente</span>
+                                                            <span class="sr-only">{{ __('organico.prev') }}</span>
                                                         </a>
                                                         <a class="carousel-control-next" href="#gallery-{{ $section->id }}" role="button" data-slide="next">
                                                             <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                                                            <span class="sr-only">Successiva</span>
+                                                            <span class="sr-only">{{ __('organico.next') }}</span>
                                                         </a>
                                                     @endif
                                                 </div>
                                             @else
                                                 <div style="height: 350px; display: flex; align-items: center; justify-content: center; background-color: #f8f9fa; border-radius: 8px;">
-                                                    <span class="text-muted">Nessuna immagine disponibile</span>
+                                                    <span class="text-muted">{{ __('organico.no_image') }}</span>
                                                 </div>
                                             @endif
                                         </div>
@@ -120,9 +120,9 @@
                                                     @if(isset($section->icon_class) && $section->icon_class)
                                                         <i class="{{ $section->icon_class }} me-2"></i>
                                                     @endif
-                                                    {{ $section->name ?? 'Sezione senza nome' }}
+                                                    {{ $section->name ?? __('organico.section_unnamed') }}
                                                 </h4>
-                                                <span class="badge bg-white text-primary">{{ is_countable($section->members) ? count($section->members) : 0 }} Musicisti</span>
+                                                <span class="badge bg-white text-primary">{{ is_countable($section->members) ? count($section->members) : 0 }} {{ __('organico.musicians_count') }}</span>
                                             </div>
                                             <div class="card-body p-0">
                                                 @if(isset($section->members) && count($section->members) > 0)
@@ -153,7 +153,7 @@
                                                     </div>
                                                 @else
                                                     <div class="p-4 text-center text-muted">
-                                                        <i class="fas fa-info-circle me-2"></i>Nessun musicista in questa sezione.
+                                                        <i class="fas fa-info-circle me-2"></i>{{ __('organico.no_members') }}
                                                     </div>
                                                 @endif
                                             </div>
@@ -168,7 +168,7 @@
                         <div class="container">
                             <div class="alert alert-info">
                                 <i class="fas fa-info-circle me-2"></i>
-                                Le sezioni e i musicisti non sono ancora stati caricati. Torna a trovarci presto!
+                                {{ __('organico.no_sections') }}
                             </div>
                         </div>
                     </section>
@@ -180,9 +180,9 @@
                         <div class="row justify-content-center">
                             <div class="col-md-10 col-lg-8 text-center">
                                 <div class="box-cta">
-                                    <h3 class="box-cta-title">Vuoi far parte della nostra banda?</h3>
-                                    <p class="box-cta-text">Cerchiamo sempre nuovi talenti! Contattaci per informazioni su come unirti a noi.</p>
-                                    <a class="button button-primary button-pipaluk" href="{{ route('contatti') }}">Contattaci</a>
+                                    <h3 class="box-cta-title">{{ __('organico.cta_title') }}</h3>
+                                    <p class="box-cta-text">{{ __('organico.cta_text') }}</p>
+                                    <a class="button button-primary button-pipaluk" href="{{ route('contatti') }}">{{ __('organico.cta_button') }}</a>
                                 </div>
                             </div>
                         </div>

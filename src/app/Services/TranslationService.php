@@ -3,43 +3,20 @@
 namespace App\Services;
 
 use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Config;
-
-// Import helper functions for IDE support
-use function Illuminate\Support\config;
-use function Illuminate\Support\now;
+use Stichoza\GoogleTranslate\GoogleTranslate;
 
 class TranslationService
 {
-    /**
-     * The base URL for the DeepL API
-     */
-    protected string $baseUrl;
+    protected GoogleTranslate $translator;
     
-    /**
-     * API key for the DeepL service (required)
-     */
-    protected string $apiKey;
+    protected int $cacheDuration = 1440;
     
-    /**
-     * Cache duration for translations in minutes
-     */
-    protected int $cacheDuration = 1440; // 24 hours
-    
-    /**
-     * Available languages for translation
-     */
-    protected array $availableLanguages = ['en', 'it'];
+    protected array $availableLanguages = ['en', 'it', 'de'];
 
-    /**
-     * Create a new translation service instance
-     */
     public function __construct()
     {
-        $this->baseUrl = config('services.translation.url', 'https://api-free.deepl.com/v2/translate');
-        $this->apiKey = config('services.translation.api_key');
+        $this->translator = new GoogleTranslate();
     }
 
     /**
@@ -52,13 +29,10 @@ class TranslationService
      */
     public function translate(string $text, string $source, string $target): ?string
     {
-        // Don't translate if source and target are the same
         if ($source === $target || empty(trim($text))) {
             return $text;
         }
 
-        // Check if languages are supported
-        // DeepL uses different language codes (en-US, en-GB, etc.) but we're keeping our simple codes
         if (!in_array($source, $this->availableLanguages) || !in_array($target, $this->availableLanguages)) {
             Log::warning('Unsupported language for translation', [
                 'source' => $source,
@@ -67,51 +41,28 @@ class TranslationService
             return null;
         }
 
-        // Generate a cache key for this translation
         $cacheKey = "translation:{$source}:{$target}:" . md5($text);
         
-        // Check if we have a cached translation
         if (Cache::has($cacheKey)) {
             return Cache::get($cacheKey);
         }
 
         try {
-            // DeepL API expects 'text' instead of 'q', 'source_lang' instead of 'source',
-            // and 'target_lang' instead of 'target'
-            $payload = [
-                'text' => [$text], // DeepL expects an array of strings
-                'source_lang' => strtoupper($source), // DeepL uses uppercase language codes
-                'target_lang' => strtoupper($target),
-                'preserve_formatting' => 1,
-            ];
+            $this->translator->setSource($source);
+            $this->translator->setTarget($target);
             
-            // DeepL requires auth key in header
-            $response = Http::withHeaders([
-                'Authorization' => 'DeepL-Auth-Key ' . $this->apiKey,
-            ])->post($this->baseUrl, $payload);
+            $translatedText = $this->translator->translate($text);
             
-            if ($response->successful()) {
-                // DeepL returns translations in a different format
-                $translatedText = $response->json()['translations'][0]['text'] ?? null;
-                
-                // Cache the result if successful
-                if ($translatedText) {
-                    Cache::put($cacheKey, $translatedText, now()->addMinutes($this->cacheDuration));
-                }
-                
-                return $translatedText;
+            if ($translatedText) {
+                Cache::put($cacheKey, $translatedText, now()->addMinutes($this->cacheDuration));
             }
             
-            Log::error('Translation API error', [
-                'status' => $response->status(),
-                'body' => $response->body(),
-            ]);
-            
-            return null;
+            return $translatedText;
         } catch (\Exception $e) {
             Log::error('Translation service exception', [
                 'message' => $e->getMessage(),
-                'trace' => $e->getTraceAsString(),
+                'source' => $source,
+                'target' => $target,
             ]);
             
             return null;
@@ -119,36 +70,55 @@ class TranslationService
     }
 
     /**
-     * Get available languages from the translation service
+     * Translate an array of strings
      *
-     * @return array An array of available language codes
+     * @param array $texts Array of texts to translate
+     * @param string $source Source language code
+     * @param string $target Target language code
+     * @return array Translated texts
      */
+    public function translateBatch(array $texts, string $source, string $target): array
+    {
+        $results = [];
+        
+        foreach ($texts as $key => $text) {
+            $results[$key] = $this->translate($text, $source, $target);
+        }
+        
+        return $results;
+    }
+
+    /**
+     * Translate JSON translatable fields
+     *
+     * @param array $data JSON data with locale keys
+     * @param string $sourceLocale Source locale
+     * @param string $targetLocale Target locale
+     * @return array Updated data with translation
+     */
+    public function translateJsonField(array $data, string $sourceLocale, string $targetLocale): array
+    {
+        if (!isset($data[$sourceLocale]) || isset($data[$targetLocale])) {
+            return $data;
+        }
+
+        $translated = $this->translate($data[$sourceLocale], $sourceLocale, $targetLocale);
+        
+        if ($translated) {
+            $data[$targetLocale] = $translated;
+        }
+        
+        return $data;
+    }
+
     public function getAvailableLanguages(): array
     {
         return $this->availableLanguages;
     }
 
-    /**
-     * Set the API key for the translation service
-     *
-     * @param string $apiKey
-     * @return $this
-     */
-    public function setApiKey(string $apiKey): self
+    public function setCacheDuration(int $minutes): self
     {
-        $this->apiKey = $apiKey;
-        return $this;
-    }
-
-    /**
-     * Set the base URL for the translation service
-     *
-     * @param string $url
-     * @return $this
-     */
-    public function setBaseUrl(string $url): self
-    {
-        $this->baseUrl = $url;
+        $this->cacheDuration = $minutes;
         return $this;
     }
 }
