@@ -15115,10 +15115,7 @@ Aggiunte CSS
 /* Responsive adjustments */
 @media (max-width: 767px) {
 	.language-switcher {
-		margin: 0;
-		position: absolute;
-		top: 15px;
-		right: 60px;
+		margin: 15px 0 0;
 	}
 }
 

@@ -28,7 +28,9 @@
 
           <div class="rd-navbar-main-element">
             <div class="rd-navbar-nav-wrap">
-              @include('partials.language-switcher')
+              <div class="d-none d-lg-block">
+                @include('partials.language-switcher')
+              </div>
 
               <!-- RD Navbar Search-->
               {{-- <div class="rd-navbar-search">
@@ -46,7 +48,7 @@
               </div> --}}
 
               <!-- RD Navbar Share -->
-              <div class="rd-navbar-share fl-bigmug-line-share27" data-rd-navbar-toggle=".rd-navbar-share-list">
+              <div class="rd-navbar-share fl-bigmug-line-share27 d-none d-lg-block" data-rd-navbar-toggle=".rd-navbar-share-list">
                 <ul class="list-inline rd-navbar-share-list">
                   <!-- Facebook -->
                   <li class="rd-navbar-share-list-item">
@@ -81,7 +83,7 @@
               </div>
 
               <!-- RD Navbar Nav-->
-              <ul class="rd-navbar-nav">
+              <ul class="rd-navbar-nav d-flex flex-column flex-lg-row">
                 <li class="rd-nav-item {{ request()->routeIs('home') ? 'active' : '' }}">
                   <a class="rd-nav-link" href="{{ route('home') }}">{{ __('header.home') }}</a>
                 </li>
@@ -105,9 +107,11 @@
                     </li>
                   </ul>
                 </li>
-                <li class="rd-nav-item {{ request()->routeIs('corsi-di-musica') ? 'active' : '' }}">
-                  <a class="rd-nav-link" href="{{ route('corsi-di-musica') }}">{{ __('header.corsi-di-musica') }}</a>
-                </li>
+                @if(app()->getLocale() === 'it')
+                  <li class="rd-nav-item {{ request()->routeIs('corsi-di-musica') ? 'active' : '' }}">
+                    <a class="rd-nav-link" href="{{ route('corsi-di-musica') }}">{{ __('header.corsi-di-musica') }}</a>
+                  </li>
+                @endif
                 <li class="rd-nav-item {{ request()->routeIs(['eventi', 'italia-gira-banda']) ? 'active' : '' }} rd-nav-item--has-dropdown rd-navbar-submenu">
                   <a class="rd-nav-link" href="{{ route('eventi') }}">{{ __('header.eventi') }}</a>
                   <ul class="rd-menu rd-navbar-dropdown">
@@ -126,6 +130,44 @@
                   <a class="rd-nav-link" href="{{ route('contatti') }}">{{ __('header.contatti') }}</a>
                 </li>
               </ul>
+
+              <div class="d-lg-none mt-3">
+                @include('partials.language-switcher')
+              </div>
+
+              <div class="rd-navbar-share fl-bigmug-line-share27 d-lg-none mt-2" data-rd-navbar-toggle=".rd-navbar-share-list">
+                <ul class="list-inline rd-navbar-share-list">
+                  <!-- Facebook -->
+                  <li class="rd-navbar-share-list-item">
+                    <a class="icon fa fa-facebook"
+                      href="{{ \App\Helpers\SettingsHelper::facebookUrl() }}"
+                      target="_blank" rel="noopener noreferrer" 
+                      title="{{ __('Follow us on Facebook') }}" 
+                      aria-label="{{ __('Facebook') }}">
+                    </a>
+                  </li>
+
+                  <!-- Instagram -->
+                  <li class="rd-navbar-share-list-item">
+                    <a class="icon fa fa-instagram"
+                      href="{{ \App\Helpers\SettingsHelper::instagramUrl() }}"
+                      target="_blank" rel="noopener noreferrer"
+                      title="{{ __('Follow us on Instagram') }}"
+                      aria-label="{{ __('Instagram') }}">
+                    </a>
+                  </li>
+
+                  <!-- YouTube -->
+                  <li class="rd-navbar-share-list-item">
+                    <a class="icon fa fa-youtube-play"
+                      href="{{ \App\Helpers\SettingsHelper::youtubeUrl() }}"
+                      target="_blank" rel="noopener noreferrer"
+                      title="{{ __('Watch our videos on YouTube') }}"
+                      aria-label="{{ __('YouTube') }}">
+                    </a>
+                  </li>
+                </ul>
+              </div>
             </div>
           </div>
         </div>

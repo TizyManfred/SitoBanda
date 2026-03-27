@@ -24,7 +24,9 @@ Route::group([
     Route::get(LaravelLocalization::transRoute('routes.repertorio'), [RepertoireController::class, 'index'])->name('repertorio');
     Route::get(LaravelLocalization::transRoute('routes.abito-tradizionale'), [PageController::class, 'abitoTradizionale'])->name('abito-tradizionale');
     Route::get(LaravelLocalization::transRoute('routes.italia-gira-banda'), [PageController::class, 'italiaGiraBanda'])->name('italia-gira-banda');
-    Route::get(LaravelLocalization::transRoute('routes.corsi-di-musica'), [PageController::class, 'corsiDiMusica'])->name('corsi-di-musica');
+    Route::get(LaravelLocalization::transRoute('routes.corsi-di-musica'), [PageController::class, 'corsiDiMusica'])
+        ->where(['locale' => 'it'])
+        ->name('corsi-di-musica');
     Route::get(LaravelLocalization::transRoute('routes.privacy-policy'), [PageController::class, 'privacyPolicy'])->name('privacy-policy');
 
     // Events
