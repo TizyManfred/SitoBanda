@@ -38,7 +38,7 @@
     <section class="breadcrumbs-custom-inset">
         <div class="breadcrumbs-custom context-dark bg-overlay-60">
             <div class="container">
-                <h2 class="breadcrumbs-custom-title">Organico</h2>
+                <h1 class="breadcrumbs-custom-title">Organico</h1>
                 <ul class="breadcrumbs-custom-path">
                     <li><a href="/">Home</a></li>
                     <li class="active">Organico</li>
