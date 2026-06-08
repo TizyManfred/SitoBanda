@@ -26,7 +26,19 @@
     <meta name="twitter:title" content="@yield('og_title', 'Banda Folk di Castello Tesino - Tradizione dal 1901')">
     <meta name="twitter:description" content="@yield('og_description', 'Scopri la Banda Folk di Castello Tesino, custode della tradizione musicale trentina dal 1901.')">
     <meta name="twitter:image" content="@yield('og_image', asset('images/FotoSanIppolito1.webp'))">
-    
+
+    <!-- Canonical URL -->
+    <link rel="canonical" href="{{ url()->current() }}">
+
+    <!-- Hreflang tags -->
+    @foreach(LaravelLocalization::getSupportedLocales() as $localeCode => $properties)
+        <link rel="alternate" hreflang="{{ $localeCode }}" href="{{ LaravelLocalization::getLocalizedURL($localeCode, null, [], true) }}" />
+    @endforeach
+    <link rel="alternate" hreflang="x-default" href="{{ LaravelLocalization::getLocalizedURL(LaravelLocalization::getDefaultLocale(), null, [], true) }}" />
+
+    <!-- Robots meta -->
+    <meta name="robots" content="@yield('robots', 'index, follow')">
+
     <!-- Stylesheets-->
     <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Poppins:400,500%7CTeko:300,400,500%7CMaven+Pro:500">
     <link rel="stylesheet" href="{{ asset('css/bootstrap.css') }}">
