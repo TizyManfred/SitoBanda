@@ -93,6 +93,30 @@
         <script type="application/ld+json">
             @yield('structured_data')
         </script>
+    @else
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+            {
+                "@type": "ListItem",
+                "position": 1,
+                "name": "{{ __('Home') }}",
+                "item": "{{ url('/') }}"
+            }@if(isset($breadcrumbs) && count($breadcrumbs))
+                @foreach($breadcrumbs as $index => $crumb)
+                ,{
+                    "@type": "ListItem",
+                    "position": {{ $index + 2 }},
+                    "name": "{{ $crumb['name'] }}",
+                    "item": "{{ $crumb['url'] }}"
+                }
+                @endforeach
+            @endif
+        ]
+    }
+    </script>
     @endif
 </body>
 </html>
