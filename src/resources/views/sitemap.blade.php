@@ -16,6 +16,9 @@
       'galleria'   => 0.9,
       'contatti'   => 0.7,
     ];
+
+    $events = \App\Models\Event::public()->get();
+    $galleries = \App\Models\GalleryAlbum::where('is_published', 1)->get();
   @endphp
 
   @foreach(LaravelLocalization::getSupportedLocales() as $localeCode => $properties)
@@ -29,15 +32,10 @@
       @endif
     @endforeach
 
-    @php
-      $events = \App\Models\Event::public()->get();
-      $galleries = \App\Models\GalleryAlbum::where('is_published', 1)->get();
-    @endphp
-
     @foreach($events as $event)
       @continue(!Route::has('eventi.show'))
       <url>
-        <loc>{{ LaravelLocalization::localizeURL(route('eventi.show', $event->slug), $localeCode) }}</loc>
+        <loc>{{ LaravelLocalization::localizeURL(route('eventi.show', $event->getTranslation('slug', $localeCode)), $localeCode) }}</loc>
         <lastmod>{{ $event->updated_at->toW3cString() }}</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.6</priority>
@@ -47,7 +45,7 @@
     @foreach($galleries as $album)
       @continue(!Route::has('galleria.album'))
       <url>
-        <loc>{{ LaravelLocalization::localizeURL(route('galleria.album', $album->slug), $localeCode) }}</loc>
+        <loc>{{ LaravelLocalization::localizeURL(route('galleria.album', $album->getTranslation('slug', $localeCode)), $localeCode) }}</loc>
         <lastmod>{{ $album->updated_at->toW3cString() }}</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.6</priority>
