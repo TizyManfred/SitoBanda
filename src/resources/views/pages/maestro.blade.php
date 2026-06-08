@@ -12,7 +12,7 @@
             <div class="container">
                 <h1 class="breadcrumbs-custom-title">{{ __('maestro.page_title') }}</h1>
                 <ul class="breadcrumbs-custom-path">
-                    <li><a href="{{ route('home') }}">{{ __('Home') }}</a></li>
+                    <li><a href="{{ route('home') }}">{{ __('header.home') }}</a></li>
                     <li class="active">{{ __('maestro.page_title') }}</li>
                 </ul>
             </div>

@@ -20,7 +20,7 @@ use Illuminate\Support\Str;
             <div class="container">
                 <h1 class="breadcrumbs-custom-title">{{ $album->title }}</h1>
                 <ul class="breadcrumbs-custom-path">
-                    <li><a href="{{ route('home') }}">{{ __('Home') }}</a></li>
+                    <li><a href="{{ route('home') }}">{{ __('header.home') }}</a></li>
                     <li><a href="{{ route('galleria') }}">{{ __('Galleria') }}</a></li>
                     <li class="active">{{ $album->title }}</li>
                 </ul>

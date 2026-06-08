@@ -98,18 +98,18 @@
     @else
     <script type="application/ld+json">
     {
-        "@context": "https://schema.org",
-        "@type": "BreadcrumbList",
+        "@@context": "https://schema.org",
+        "@@type": "BreadcrumbList",
         "itemListElement": [
             {
-                "@type": "ListItem",
+                "@@type": "ListItem",
                 "position": 1,
-                "name": "{{ __('Home') }}",
+                "name": "{{ __('header.home') }}",
                 "item": "{{ url('/') }}"
-            }@if(isset($breadcrumbs) && count($breadcrumbs))
+            }@if(!empty($breadcrumbs))
                 @foreach($breadcrumbs as $index => $crumb)
                 ,{
-                    "@type": "ListItem",
+                    "@@type": "ListItem",
                     "position": {{ $index + 2 }},
                     "name": "{{ $crumb['name'] }}",
                     "item": "{{ $crumb['url'] }}"
