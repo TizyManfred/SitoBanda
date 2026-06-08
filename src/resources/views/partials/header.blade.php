@@ -15,7 +15,7 @@
             <!-- RD Navbar Brand-->
             <div class="rd-navbar-brand d-flex align-items-center justify-content-between w-100">
               <a class="brand d-flex align-items-center" href="{{ route('home') }}">
-                <img src="{{ asset('images/logo-default.png') }}" class="mr-2" alt="" width="43" height="43" style="width: 43px; height: 43px;" />
+                <img src="{{ asset('images/logo-default.png') }}" class="mr-2" alt="Banda Folk di Castello Tesino" width="43" height="43" style="width: 43px; height: 43px;" />
                 <h4 class="d-md-block d-none">{{ __('Banda Folk di Castello Tesino') }}</h4>
                 <span class="h5 text-uppercase mb-0 d-md-none d-block">{{ __('Banda Folk di Castello Tesino') }}</span>
               </a>
