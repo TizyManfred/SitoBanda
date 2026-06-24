@@ -1,0 +1,175 @@
+services:
+  release-builder:
+    image: composer:2
+    working_dir: /workspace
+    volumes:
+      - ./:/workspace
+    environment:
+      PUBLIC_SUBDIR: ${PUBLIC_SUBDIR-new}
+      RELEASE_DIR: ${RELEASE_DIR:-release}
+      ZIP_NAME: ${ZIP_NAME:-deploy_package_php_hosting.zip}
+      COMPOSER_ALLOW_SUPERUSER: 1
+    command:
+      - sh
+      - -lc
+      - |
+        set -eu
+
+        apk add --no-cache zip >/dev/null
+
+        ROOT_DIR=/workspace
+        SRC_DIR=$$ROOT_DIR/src
+        RELEASE_DIR=$$ROOT_DIR/$${RELEASE_DIR:-release}
+        ZIP_NAME=$${ZIP_NAME:-deploy_package_php_hosting.zip}
+        PACKAGE_DIR=$$RELEASE_DIR/deploy_package_php_hosting
+        LARAVEL_DIR=$$PACKAGE_DIR/laravel_app
+        PUBLIC_ROOT=$$PACKAGE_DIR/public_html
+        PUBLIC_SUBDIR=$${PUBLIC_SUBDIR-new}
+
+        if [ ! -f "$$SRC_DIR/artisan" ]; then
+          echo "Could not find $$SRC_DIR/artisan" >&2
+          exit 1
+        fi
+
+        rm -rf "$$PACKAGE_DIR" "$$RELEASE_DIR/$$ZIP_NAME"
+        mkdir -p "$$LARAVEL_DIR" "$$PUBLIC_ROOT"
+
+        echo "==> Copying Laravel app"
+        cp -a "$$SRC_DIR/." "$$LARAVEL_DIR/"
+        rm -rf \
+          "$$LARAVEL_DIR/.env" \
+          "$$LARAVEL_DIR/.phpunit.result.cache" \
+          "$$LARAVEL_DIR/vendor" \
+          "$$LARAVEL_DIR/public" \
+          "$$LARAVEL_DIR/storage/framework/cache/data"/* \
+          "$$LARAVEL_DIR/storage/framework/sessions"/* \
+          "$$LARAVEL_DIR/storage/framework/testing"/* \
+          "$$LARAVEL_DIR/storage/framework/views"/* \
+          "$$LARAVEL_DIR/storage/logs"/*.log 2>/dev/null || true
+
+        echo "==> Installing production Composer dependencies"
+        cd "$$LARAVEL_DIR"
+        composer install --no-dev --optimize-autoloader --no-interaction
+
+        echo "==> Preparing public files"
+        if [ -n "$$PUBLIC_SUBDIR" ]; then
+          PUBLIC_DIR=$$PUBLIC_ROOT/$$PUBLIC_SUBDIR
+        else
+          PUBLIC_DIR=$$PUBLIC_ROOT
+        fi
+
+        mkdir -p "$$PUBLIC_DIR"
+        cp -a "$$SRC_DIR/public/." "$$PUBLIC_DIR/"
+        rm -rf "$$PUBLIC_DIR/index.php" "$$PUBLIC_DIR/storage"
+
+        if [ -d "$$SRC_DIR/storage/app/public" ]; then
+          mkdir -p "$$PUBLIC_DIR/storage"
+          cp -a "$$SRC_DIR/storage/app/public/." "$$PUBLIC_DIR/storage/"
+        fi
+
+        echo "==> Writing public index.php"
+        if [ -n "$$PUBLIC_SUBDIR" ]; then
+          up_levels=../
+          old_ifs=$$IFS
+          IFS=/
+          for part in $$PUBLIC_SUBDIR; do
+            [ -n "$$part" ] && up_levels=../$$up_levels
+          done
+          IFS=$$old_ifs
+        else
+          up_levels=../
+        fi
+        laravel_relative=$${up_levels}laravel_app
+
+        cat > "$$PUBLIC_DIR/index.php" <<PHP
+        <?php
+
+        use Illuminate\Foundation\Application;
+        use Illuminate\Http\Request;
+
+        define('LARAVEL_START', microtime(true));
+
+        if (file_exists(\$$maintenance = __DIR__.'/$${laravel_relative}/storage/framework/maintenance.php')) {
+            require \$$maintenance;
+        }
+
+        require __DIR__.'/$${laravel_relative}/vendor/autoload.php';
+
+        /** @var Application \$$app */
+        \$$app = require_once __DIR__.'/$${laravel_relative}/bootstrap/app.php';
+
+        \$$app->handleRequest(Request::capture());
+        PHP
+
+        echo "==> Writing hosting environment template"
+        if [ -n "$$PUBLIC_SUBDIR" ]; then
+          public_path_env=/$$PUBLIC_SUBDIR
+        else
+          public_path_env=
+        fi
+        app_url_env=https://bandacastellotesino.it$${public_path_env}
+        session_path_env=$${public_path_env:-/}
+
+        cat > "$$LARAVEL_DIR/.env.hosting.example" <<ENV
+        APP_NAME="Banda Folk Castello Tesino"
+        APP_ENV=production
+        APP_KEY=
+        APP_DEBUG=false
+        APP_URL=$${app_url_env}
+        ASSET_URL=$${app_url_env}
+
+        APP_LOCALE=it
+        APP_FALLBACK_LOCALE=it
+        APP_FAKER_LOCALE=it_IT
+
+        LOG_CHANNEL=stack
+        LOG_STACK=single
+        LOG_LEVEL=error
+
+        DB_CONNECTION=mysql
+        DB_HOST=127.0.0.1
+        DB_PORT=3306
+        DB_DATABASE=
+        DB_USERNAME=
+        DB_PASSWORD=
+
+        SESSION_DRIVER=database
+        SESSION_LIFETIME=120
+        SESSION_ENCRYPT=false
+        SESSION_PATH=$${session_path_env}
+        SESSION_DOMAIN=null
+
+        CACHE_STORE=database
+        QUEUE_CONNECTION=database
+
+        MAIL_MAILER=log
+        MAIL_FROM_ADDRESS="info@bandacastellotesino.it"
+        MAIL_FROM_NAME="Banda Folk Castello Tesino"
+
+        DEEPL_API_KEY=
+        DEEPL_API_URL=https://api-free.deepl.com/v2/translate
+        ENV
+
+        cat > "$$PACKAGE_DIR/DEPLOY_README.txt" <<EOF
+        SitoBanda hosting package
+
+        Folder layout:
+        - laravel_app/ contains the private Laravel application and vendor dependencies.
+        - public_html/ contains the web-visible files.
+
+        Current public subfolder:
+        public_html/$${PUBLIC_SUBDIR}
+
+        Upload:
+        - Upload public_html/$${PUBLIC_SUBDIR}/ contents to public_html/$${PUBLIC_SUBDIR}/ on hosting.
+        - Upload laravel_app/ next to public_html/.
+        - In laravel_app/, copy .env.hosting.example to .env and fill APP_KEY and DB values.
+
+        Do not leave temporary runner files online after use.
+        EOF
+
+        echo "==> Creating zip"
+        cd "$$RELEASE_DIR"
+        zip -qr "$$ZIP_NAME" deploy_package_php_hosting
+
+        echo "==> Done: $$RELEASE_DIR/$$ZIP_NAME"

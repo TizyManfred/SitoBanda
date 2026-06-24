@@ -24,3 +24,7 @@ Homestead.json
 auth.json
 .spdx-laravel.spdx
 .spdx-laravel.json
+
+# Release artifacts
+release/
+deploy_package_php_hosting.zip

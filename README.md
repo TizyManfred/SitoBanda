@@ -55,3 +55,39 @@ This project contains the official website for the Banda Folk di Castello Tesino
 
 The site is built with standard PHP, HTML, CSS, and JavaScript. There are no complex frameworks, so you can edit the files directly in the `src/` directory. Changes will be reflected immediately thanks to the Docker volume mount.
 
+## Build Deployment Package
+
+Create a zipped hosting package for the `/new` staging subfolder:
+
+```bash
+docker compose -f compose.release.yaml run --rm release-builder
+```
+
+The generated zip is:
+
+```text
+release/deploy_package_php_hosting.zip
+```
+
+It contains:
+
+```text
+deploy_package_php_hosting/
+├── laravel_app/
+└── public_html/
+    └── new/
+```
+
+Build for a different public subfolder:
+
+```bash
+PUBLIC_SUBDIR=staging docker compose -f compose.release.yaml run --rm release-builder
+```
+
+Build for the domain root instead of a subfolder:
+
+```bash
+PUBLIC_SUBDIR= docker compose -f compose.release.yaml run --rm release-builder
+```
+
+The builder runs entirely in Docker using `compose.release.yaml`; no host PHP or Composer installation is required.

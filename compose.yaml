@@ -12,13 +12,13 @@ services:
         condition: service_healthy
 
   database:
-    image: mysql:latest
+    image: mariadb:10.6.20
     env_file:
       - ./src/.env
     volumes:
       - mysql_data:/var/lib/mysql
     healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
       interval: 10s
       timeout: 5s
       retries: 5

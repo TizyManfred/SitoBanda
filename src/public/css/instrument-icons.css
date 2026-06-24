@@ -1,0 +1,190 @@
+.ii {
+	display: inline-block;
+	width: 16px;
+	height: 16px;
+	background-image: var(--ii-icon-16);
+	background-position: center;
+	background-repeat: no-repeat;
+	background-size: contain;
+	vertical-align: -0.125em;
+	flex: 0 0 auto;
+}
+
+.ii-fw {
+	width: 1.25em;
+	text-align: center;
+}
+
+.ii-lg {
+	width: 24px;
+	height: 24px;
+	background-image: var(--ii-icon-24);
+}
+
+.ii-2x {
+	width: 32px;
+	height: 32px;
+	background-image: var(--ii-icon-32);
+}
+
+.ii-3x {
+	width: 48px;
+	height: 48px;
+	background-image: var(--ii-icon-48);
+}
+
+.ii-4x {
+	width: 64px;
+	height: 64px;
+	background-image: var(--ii-icon-64);
+}
+
+.ii-5x {
+	width: 96px;
+	height: 96px;
+	background-image: var(--ii-icon-96);
+}
+
+.ii-16 {
+	width: 16px;
+	height: 16px;
+	background-image: var(--ii-icon-16);
+}
+
+.ii-24 {
+	width: 24px;
+	height: 24px;
+	background-image: var(--ii-icon-24);
+}
+
+.ii-32 {
+	width: 32px;
+	height: 32px;
+	background-image: var(--ii-icon-32);
+}
+
+.ii-48 {
+	width: 48px;
+	height: 48px;
+	background-image: var(--ii-icon-48);
+}
+
+.ii-64 {
+	width: 64px;
+	height: 64px;
+	background-image: var(--ii-icon-64);
+}
+
+.ii-96 {
+	width: 96px;
+	height: 96px;
+	background-image: var(--ii-icon-96);
+}
+
+.ii-clarinet {
+	--ii-icon-16: url("../images/instruments-icons/16/clarinet.png");
+	--ii-icon-24: url("../images/instruments-icons/24/clarinet.png");
+	--ii-icon-32: url("../images/instruments-icons/32/clarinet.png");
+	--ii-icon-48: url("../images/instruments-icons/48/clarinet.png");
+	--ii-icon-64: url("../images/instruments-icons/64/clarinet.png");
+	--ii-icon-96: url("../images/instruments-icons/96/clarinet.png");
+}
+
+.ii-drum-kit {
+	--ii-icon-16: url("../images/instruments-icons/16/drum-kit.png");
+	--ii-icon-24: url("../images/instruments-icons/24/drum-kit.png");
+	--ii-icon-32: url("../images/instruments-icons/32/drum-kit.png");
+	--ii-icon-48: url("../images/instruments-icons/48/drum-kit.png");
+	--ii-icon-64: url("../images/instruments-icons/64/drum-kit.png");
+	--ii-icon-96: url("../images/instruments-icons/96/drum-kit.png");
+}
+
+.ii-euphonium {
+	--ii-icon-16: url("../images/instruments-icons/16/euphonium.png");
+	--ii-icon-24: url("../images/instruments-icons/24/euphonium.png");
+	--ii-icon-32: url("../images/instruments-icons/32/euphonium.png");
+	--ii-icon-48: url("../images/instruments-icons/48/euphonium.png");
+	--ii-icon-64: url("../images/instruments-icons/64/euphonium.png");
+	--ii-icon-96: url("../images/instruments-icons/96/euphonium.png");
+}
+
+.ii-flugelhorn {
+	--ii-icon-16: url("../images/instruments-icons/16/flugelhorn.png");
+	--ii-icon-24: url("../images/instruments-icons/24/flugelhorn.png");
+	--ii-icon-32: url("../images/instruments-icons/32/flugelhorn.png");
+	--ii-icon-48: url("../images/instruments-icons/48/flugelhorn.png");
+	--ii-icon-64: url("../images/instruments-icons/64/flugelhorn.png");
+	--ii-icon-96: url("../images/instruments-icons/96/flugelhorn.png");
+}
+
+.ii-flute {
+	--ii-icon-16: url("../images/instruments-icons/16/flute.png");
+	--ii-icon-24: url("../images/instruments-icons/24/flute.png");
+	--ii-icon-32: url("../images/instruments-icons/32/flute.png");
+	--ii-icon-48: url("../images/instruments-icons/48/flute.png");
+	--ii-icon-64: url("../images/instruments-icons/64/flute.png");
+	--ii-icon-96: url("../images/instruments-icons/96/flute.png");
+}
+
+.ii-french-horn {
+	--ii-icon-16: url("../images/instruments-icons/16/french-horn.png");
+	--ii-icon-24: url("../images/instruments-icons/24/french-horn.png");
+	--ii-icon-32: url("../images/instruments-icons/32/french-horn.png");
+	--ii-icon-48: url("../images/instruments-icons/48/french-horn.png");
+	--ii-icon-64: url("../images/instruments-icons/64/french-horn.png");
+	--ii-icon-96: url("../images/instruments-icons/96/french-horn.png");
+}
+
+.ii-alto-saxophone {
+	--ii-icon-16: url("../images/instruments-icons/16/alto-saxophone.png");
+	--ii-icon-24: url("../images/instruments-icons/24/alto-saxophone.png");
+	--ii-icon-32: url("../images/instruments-icons/32/alto-saxophone.png");
+	--ii-icon-48: url("../images/instruments-icons/48/alto-saxophone.png");
+	--ii-icon-64: url("../images/instruments-icons/64/alto-saxophone.png");
+	--ii-icon-96: url("../images/instruments-icons/96/alto-saxophone.png");
+}
+
+.ii-baritone-saxophone {
+	--ii-icon-16: url("../images/instruments-icons/16/baritone-saxophone.png");
+	--ii-icon-24: url("../images/instruments-icons/24/baritone-saxophone.png");
+	--ii-icon-32: url("../images/instruments-icons/32/baritone-saxophone.png");
+	--ii-icon-48: url("../images/instruments-icons/48/baritone-saxophone.png");
+	--ii-icon-64: url("../images/instruments-icons/64/baritone-saxophone.png");
+	--ii-icon-96: url("../images/instruments-icons/96/baritone-saxophone.png");
+}
+
+.ii-timpani {
+	--ii-icon-16: url("../images/instruments-icons/16/timpani.png");
+	--ii-icon-24: url("../images/instruments-icons/24/timpani.png");
+	--ii-icon-32: url("../images/instruments-icons/32/timpani.png");
+	--ii-icon-48: url("../images/instruments-icons/48/timpani.png");
+	--ii-icon-64: url("../images/instruments-icons/64/timpani.png");
+	--ii-icon-96: url("../images/instruments-icons/96/timpani.png");
+}
+
+.ii-trombone {
+	--ii-icon-16: url("../images/instruments-icons/16/trombone.png");
+	--ii-icon-24: url("../images/instruments-icons/24/trombone.png");
+	--ii-icon-32: url("../images/instruments-icons/32/trombone.png");
+	--ii-icon-48: url("../images/instruments-icons/48/trombone.png");
+	--ii-icon-64: url("../images/instruments-icons/64/trombone.png");
+	--ii-icon-96: url("../images/instruments-icons/96/trombone.png");
+}
+
+.ii-trumpet {
+	--ii-icon-16: url("../images/instruments-icons/16/trumpet.png");
+	--ii-icon-24: url("../images/instruments-icons/24/trumpet.png");
+	--ii-icon-32: url("../images/instruments-icons/32/trumpet.png");
+	--ii-icon-48: url("../images/instruments-icons/48/trumpet.png");
+	--ii-icon-64: url("../images/instruments-icons/64/trumpet.png");
+	--ii-icon-96: url("../images/instruments-icons/96/trumpet.png");
+}
+
+.ii-tuba {
+	--ii-icon-16: url("../images/instruments-icons/16/tuba.png");
+	--ii-icon-24: url("../images/instruments-icons/24/tuba.png");
+	--ii-icon-32: url("../images/instruments-icons/32/tuba.png");
+	--ii-icon-48: url("../images/instruments-icons/48/tuba.png");
+	--ii-icon-64: url("../images/instruments-icons/64/tuba.png");
+	--ii-icon-96: url("../images/instruments-icons/96/tuba.png");
+}
