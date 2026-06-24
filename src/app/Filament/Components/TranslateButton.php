@@ -27,7 +27,7 @@ class TranslateButton extends Component
     public static function make(): static
     {
         return (new static())
-            ->label('AI Translate')
+            ->label('Traduci')
             ->icon('heroicon-o-language')
             ->color('gray')
             ->size('sm')
@@ -49,11 +49,10 @@ class TranslateButton extends Component
         $sourceText = data_get($livewire->data, "{$fieldName}.{$sourceLocale}") ?? '';
         
         if (empty(trim($sourceText))) {
-            // Show notification if there's no source text to translate
             Notification::make()
                 ->warning()
-                ->title('No source text')
-                ->body('Please add content in ' . strtoupper($sourceLocale) . ' first')
+                ->title('Testo sorgente mancante')
+                ->body('Inserisci prima il contenuto in un\'altra lingua.')
                 ->send();
             return;
         }
@@ -62,31 +61,26 @@ class TranslateButton extends Component
             // Get translation service from container
             $translationService = app(TranslationService::class);
             
-            // Call translation service to translate text
             $translated = $translationService->translate($sourceText, $sourceLocale, $currentLocale);
             
             if ($translated) {
-                // Update form data with translated text
                 data_set($livewire->data, "{$fieldName}.{$currentLocale}", $translated);
                 
-                // Show success notification
                 Notification::make()
                     ->success()
-                    ->title('Translation completed')
+                    ->title('Traduzione completata')
                     ->send();
             } else {
-                // Show error notification
                 Notification::make()
                     ->danger()
-                    ->title('Translation failed')
-                    ->body('Could not translate text. Please try again later.')
+                    ->title('Traduzione non riuscita')
+                    ->body('Impossibile tradurre il testo. Riprova più tardi.')
                     ->send();
             }
         } catch (\Exception $e) {
-            // Handle any exceptions
             Notification::make()
                 ->danger()
-                ->title('Translation error')
+                ->title('Errore di traduzione')
                 ->body($e->getMessage())
                 ->send();
         }

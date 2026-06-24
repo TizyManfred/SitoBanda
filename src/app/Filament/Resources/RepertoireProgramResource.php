@@ -3,17 +3,21 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\RepertoireProgramResource\Pages;
+use App\Filament\Traits\WithAiTranslation;
 use App\Models\RepertoireProgram;
 use Filament\Forms;
 use Filament\Forms\Form;
+use Filament\Resources\Concerns\Translatable;
 use Filament\Resources\Resource;
-use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Filament\Tables\Grouping;
+use Mvenghaus\FilamentPluginTranslatableInline\Forms\Components\TranslatableContainer;
 
 class RepertoireProgramResource extends Resource
 {
+    use Translatable;
+    use WithAiTranslation;
+
     protected static ?string $model = RepertoireProgram::class;
     
     protected static ?string $navigationIcon = 'heroicon-o-musical-note';
@@ -34,10 +38,19 @@ class RepertoireProgramResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('name')
-                    ->label(__('fields.repertoire_program.name'))
-                    ->required()
-                    ->maxLength(255),
+                Forms\Components\Grid::make(6)
+                    ->schema([
+                        TranslatableContainer::make(
+                            Forms\Components\TextInput::make('name')
+                                ->label(__('fields.repertoire_program.name'))
+                                ->required()
+                                ->maxLength(255)
+                                ->placeholder('Estate, Natale, Blasmusik...')
+                        )->columnSpan(5),
+                        Forms\Components\Actions::make([
+                            static::getTranslateAction('name'),
+                        ])->columnSpan(1),
+                    ]),
                     
                 Forms\Components\TextInput::make('year')
                     ->label(__('fields.repertoire_program.year'))
@@ -116,5 +129,10 @@ class RepertoireProgramResource extends Resource
             'create' => Pages\CreateRepertoireProgram::route('/create'),
             'edit' => Pages\EditRepertoireProgram::route('/{record}/edit'),
         ];
+    }
+
+    public static function getTranslatableAttributes(): array
+    {
+        return ['name'];
     }
 }

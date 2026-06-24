@@ -10,6 +10,13 @@ class EditSetting extends EditRecord
 {
     protected static string $resource = SettingResource::class;
 
+    protected function mutateFormDataBeforeSave(array $data): array
+    {
+        $data['value'] = SettingResource::normalizeValueForGroup($data['group'] ?? null, $data['value'] ?? []);
+
+        return $data;
+    }
+
     protected function getHeaderActions(): array
     {
         return [

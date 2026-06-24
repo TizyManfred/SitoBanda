@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\GalleryAlbumResource\RelationManagers;
 
+use App\Filament\Traits\WithAiTranslation;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\RelationManagers\RelationManager;
@@ -20,9 +21,12 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
 use Illuminate\Http\UploadedFile;
+use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 
 class ItemsRelationManager extends RelationManager
 {
+    use WithAiTranslation;
+
     protected static string $relationship = 'items';
 
     public function form(Form $form): Form
@@ -66,10 +70,18 @@ class ItemsRelationManager extends RelationManager
                     ->dehydrated(true)
                     ->optimize('webp'),
                 
-                TranslatableContainer::make(
-                    Forms\Components\TextInput::make('caption')
-                        ->reactive()
-                )->columnSpanFull(),
+                Forms\Components\Grid::make(6)
+                    ->schema([
+                        TranslatableContainer::make(
+                            Forms\Components\TextInput::make('caption')
+                                ->label(__('fields.gallery.caption'))
+                                ->reactive()
+                        )->columnSpan(5),
+                        Forms\Components\Actions::make([
+                            static::getTranslateAction('caption'),
+                        ])->columnSpan(1),
+                    ])
+                    ->columnSpanFull(),
             ]);
     }
 
@@ -89,7 +101,7 @@ class ItemsRelationManager extends RelationManager
                 Tables\Columns\TextColumn::make('caption')
                     ->label(__('fields.gallery.caption'))
                     ->formatStateUsing(function ($record) {
-                        $translations = $record->getTranslations('caption');
+                            $translations = $record->getTranslations('caption');
                         $output = [];
                         
                         foreach ($translations as $locale => $translation) {
@@ -100,7 +112,7 @@ class ItemsRelationManager extends RelationManager
                     })
                     ->searchable(query: function (Builder $query, string $search): Builder {
                         return $query->where(function($q) use ($search) {
-                            $locales = array_keys(config('filament-plugin-translatable-inline.locales', ['en' => 'English']));
+                            $locales = array_keys(LaravelLocalization::getSupportedLocales());
                             foreach ($locales as $locale) {
                                 $q->orWhere("caption->{$locale}", 'like', "%{$search}%");
                             }
@@ -185,8 +197,11 @@ class ItemsRelationManager extends RelationManager
                                     GalleryItem::create([
                                         'album_id' => $record->id,
                                         'image_path' => $imageData,
-                                        // Store as translatable array
-                                        'caption' => ['it' => '', 'en' => ''],
+                                        'caption' => [
+                                            'it' => '',
+                                            'en' => '',
+                                            'de' => '',
+                                        ],
                                         'sort_order' => ++$maxSort,
                                     ]);
                                     $count++;
@@ -264,7 +279,11 @@ class ItemsRelationManager extends RelationManager
                             
                             // Ensure we have at least empty captions for both locales
                             if (empty($translations)) {
-                                $translations = ['it' => '', 'en' => ''];
+                                $translations = [
+                                    'it' => '',
+                                    'en' => '',
+                                    'de' => '',
+                                ];
                             }
                             
                             // Create the gallery item

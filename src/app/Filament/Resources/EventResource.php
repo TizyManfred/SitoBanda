@@ -77,53 +77,7 @@ class EventResource extends Resource
                                         )->columnSpan(5),
                                         
                                         Forms\Components\Actions::make([
-                                            Forms\Components\Actions\Action::make('translateTitle')
-                                                ->icon('heroicon-o-language')
-                                                ->tooltip('AI Translate')
-                                                ->size('sm')
-                                                ->color('gray')
-                                                ->action(function ($livewire) {
-                                                    // Get current locale and determine source locale
-                                                    $currentLocale = $livewire->activeLocale;
-                                                    $sourceLocale = $currentLocale === 'it' ? 'en' : 'it';
-                                                    
-                                                    // Get source text from other locale
-                                                    $sourceText = data_get($livewire->data, "title.{$sourceLocale}") ?? '';
-                                                    
-                                                    if (empty(trim($sourceText))) {
-                                                        // Show notification if there's no source text to translate
-                                                        Notification::make()
-                                                            ->warning()
-                                                            ->title('No source text')
-                                                            ->body('Please add content in ' . strtoupper($sourceLocale) . ' first')
-                                                            ->send();
-                                                        return;
-                                                    }
-                                                    
-                                                    // Get translation service from container
-                                                    $translationService = app(TranslationService::class);
-                                                    
-                                                    // Call translation service to translate text
-                                                    $translated = $translationService->translate($sourceText, $sourceLocale, $currentLocale);
-                                                    
-                                                    if ($translated) {
-                                                        // Update form data with translated text
-                                                        data_set($livewire->data, "title.{$currentLocale}", $translated);
-                                                        
-                                                        // Show success notification
-                                                        Notification::make()
-                                                            ->success()
-                                                            ->title('Translation completed')
-                                                            ->send();
-                                                    } else {
-                                                        // Show error notification
-                                                        Notification::make()
-                                                            ->danger()
-                                                            ->title('Translation failed')
-                                                            ->body('Could not translate text. Please try again later.')
-                                                            ->send();
-                                                    }
-                                                })
+                                            static::getTranslateAction('title')
                                         ])->columnSpan(1),
                                     ])
                                     ->columns(6),
@@ -137,53 +91,7 @@ class EventResource extends Resource
                                         )->columnSpan(5),
                                         
                                         Forms\Components\Actions::make([
-                                            Forms\Components\Actions\Action::make('translateShortDescription')
-                                                ->icon('heroicon-o-language')
-                                                ->tooltip('AI Translate')
-                                                ->size('sm')
-                                                ->color('gray')
-                                                ->action(function ($livewire) {
-                                                    // Get current locale and determine source locale
-                                                    $currentLocale = $livewire->activeLocale;
-                                                    $sourceLocale = $currentLocale === 'it' ? 'en' : 'it';
-                                                    
-                                                    // Get source text from other locale
-                                                    $sourceText = data_get($livewire->data, "short_description.{$sourceLocale}") ?? '';
-                                                    
-                                                    if (empty(trim($sourceText))) {
-                                                        // Show notification if there's no source text to translate
-                                                        Notification::make()
-                                                            ->warning()
-                                                            ->title('No source text')
-                                                            ->body('Please add content in ' . strtoupper($sourceLocale) . ' first')
-                                                            ->send();
-                                                        return;
-                                                    }
-                                                    
-                                                    // Get translation service from container
-                                                    $translationService = app(TranslationService::class);
-                                                    
-                                                    // Call translation service to translate text
-                                                    $translated = $translationService->translate($sourceText, $sourceLocale, $currentLocale);
-                                                    
-                                                    if ($translated) {
-                                                        // Update form data with translated text
-                                                        data_set($livewire->data, "short_description.{$currentLocale}", $translated);
-                                                        
-                                                        // Show success notification
-                                                        Notification::make()
-                                                            ->success()
-                                                            ->title('Translation completed')
-                                                            ->send();
-                                                    } else {
-                                                        // Show error notification
-                                                        Notification::make()
-                                                            ->danger()
-                                                            ->title('Translation failed')
-                                                            ->body('Could not translate text. Please try again later.')
-                                                            ->send();
-                                                    }
-                                                })
+                                            static::getTranslateAction('short_description')
                                         ])->columnSpan(1),
                                     ])
                                     ->columns(6),
@@ -196,53 +104,7 @@ class EventResource extends Resource
                                         )->columnSpan(5),
                                         
                                         Forms\Components\Actions::make([
-                                            Forms\Components\Actions\Action::make('translateDescription')
-                                                ->icon('heroicon-o-language')
-                                                ->tooltip('AI Translate')
-                                                ->size('sm')
-                                                ->color('gray')
-                                                ->action(function ($livewire) {
-                                                    // Get current locale and determine source locale
-                                                    $currentLocale = $livewire->activeLocale;
-                                                    $sourceLocale = $currentLocale === 'it' ? 'en' : 'it';
-                                                    
-                                                    // Get source text from other locale
-                                                    $sourceText = data_get($livewire->data, "description.{$sourceLocale}") ?? '';
-                                                    
-                                                    if (empty(trim($sourceText))) {
-                                                        // Show notification if there's no source text to translate
-                                                        Notification::make()
-                                                            ->warning()
-                                                            ->title('No source text')
-                                                            ->body('Please add content in ' . strtoupper($sourceLocale) . ' first')
-                                                            ->send();
-                                                        return;
-                                                    }
-                                                    
-                                                    // Get translation service from container
-                                                    $translationService = app(TranslationService::class);
-                                                    
-                                                    // Call translation service to translate text
-                                                    $translated = $translationService->translate($sourceText, $sourceLocale, $currentLocale);
-                                                    
-                                                    if ($translated) {
-                                                        // Update form data with translated text
-                                                        data_set($livewire->data, "description.{$currentLocale}", $translated);
-                                                        
-                                                        // Show success notification
-                                                        Notification::make()
-                                                            ->success()
-                                                            ->title('Translation completed')
-                                                            ->send();
-                                                    } else {
-                                                        // Show error notification
-                                                        Notification::make()
-                                                            ->danger()
-                                                            ->title('Translation failed')
-                                                            ->body('Could not translate text. Please try again later.')
-                                                            ->send();
-                                                    }
-                                                })
+                                            static::getTranslateAction('description')
                                         ])->columnSpan(1),
                                     ])
                                     ->columns(6),
@@ -273,6 +135,9 @@ class EventResource extends Resource
                                         ->placeholder(__('fields.event.long_placeholder'))
                                         ->helperText(__('fields.event.decimal_format')),
                                 ]),
+                                Forms\Components\ViewField::make('location_map')
+                                    ->view('filament.forms.components.event-location-map')
+                                    ->columnSpanFull(),
                             ])
                             ->collapsible(),
                     ])

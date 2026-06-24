@@ -4,6 +4,7 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\GalleryAlbumResource\Pages;
 use App\Filament\Resources\GalleryAlbumResource\RelationManagers;
+use App\Filament\Traits\WithAiTranslation;
 use App\Models\GalleryAlbum;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -21,6 +22,9 @@ use Mvenghaus\FilamentPluginTranslatableInline\Forms\Components\TranslatableCont
 
 class GalleryAlbumResource extends Resource
 {
+    use Translatable;
+    use WithAiTranslation;
+
     protected static ?string $model = GalleryAlbum::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-photo';
@@ -33,19 +37,31 @@ class GalleryAlbumResource extends Resource
             ->schema([
                 Forms\Components\Section::make()
                     ->schema([
-                        TranslatableContainer::make(
-                            Forms\Components\TextInput::make('title')
-                                ->label(__('fields.gallery.title'))
-                                ->required()
-                                ->maxLength(255)
-                                ->live(onBlur: true)
-                                ->columnSpanFull(),
-                        ),
-                        TranslatableContainer::make(
-                            Forms\Components\Textarea::make('description')
-                                ->label(__('fields.gallery.description'))
-                                ->columnSpanFull()
-                        ),
+                        Forms\Components\Grid::make(6)
+                            ->schema([
+                                TranslatableContainer::make(
+                                    Forms\Components\TextInput::make('title')
+                                        ->label(__('fields.gallery.title'))
+                                        ->required()
+                                        ->maxLength(255)
+                                        ->live(onBlur: true)
+                                        ->columnSpanFull(),
+                                )->columnSpan(5),
+                                Forms\Components\Actions::make([
+                                    static::getTranslateAction('title'),
+                                ])->columnSpan(1),
+                            ]),
+                        Forms\Components\Grid::make(6)
+                            ->schema([
+                                TranslatableContainer::make(
+                                    Forms\Components\Textarea::make('description')
+                                        ->label(__('fields.gallery.description'))
+                                        ->columnSpanFull()
+                                )->columnSpan(5),
+                                Forms\Components\Actions::make([
+                                    static::getTranslateAction('description'),
+                                ])->columnSpan(1),
+                            ]),
                     ])
                     ->columnSpan(['lg' => 2]),
 
@@ -105,10 +121,6 @@ class GalleryAlbumResource extends Resource
                 Tables\Columns\TextColumn::make('end_date')
                     ->label(__('fields.gallery.end_date'))
                     ->date('d/m/Y')
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('year')
-                    ->label(__('fields.gallery.year'))
-                    ->numeric()
                     ->sortable(),
                 Tables\Columns\IconColumn::make('is_published')
                     ->label(__('fields.gallery.is_published'))

@@ -8,8 +8,10 @@ use Filament\Resources\Pages\EditRecord;
 
 class EditSection extends EditRecord
 {
+    use \Filament\Resources\Pages\EditRecord\Concerns\Translatable;
+
     protected static string $resource = SectionResource::class;
-    
+
     protected function getHeaderActions(): array
     {
         return [

@@ -4,30 +4,34 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\SectionResource\Pages;
 use App\Filament\Resources\SectionResource\RelationManagers;
+use App\Filament\Traits\WithAiTranslation;
 use App\Models\Section;
 use Filament\Forms;
 use Filament\Forms\Form;
+use Filament\Resources\Concerns\Translatable;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Filament\Tables\Filters\TrashedFilter;
+use Mvenghaus\FilamentPluginTranslatableInline\Forms\Components\TranslatableContainer;
 
 class SectionResource extends Resource
 {
+    use Translatable;
+    use WithAiTranslation;
+
     protected static ?string $model = Section::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-user-group';
     
     public static function getModelLabel(): string
     {
-        return __('filament.resources.section');
+        return 'Organico';
     }
     
     public static function getPluralModelLabel(): string
     {
-        return __('filament.resources.section_plural');
+        return 'Organico';
     }
     
     public static function getNavigationGroup(): ?string
@@ -41,19 +45,25 @@ class SectionResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('name')
-                    ->label(__('fields.section.name'))
-                    ->required()
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('icon_class')
+                Forms\Components\Grid::make(6)
+                    ->schema([
+                        TranslatableContainer::make(
+                            Forms\Components\TextInput::make('name')
+                                ->label(__('fields.section.name'))
+                                ->required()
+                                ->maxLength(255)
+                        )->columnSpan(5),
+                        Forms\Components\Actions::make([
+                            static::getTranslateAction('name'),
+                        ])->columnSpan(1),
+                    ]),
+                Forms\Components\Select::make('icon_class')
                     ->label(__('fields.section.icon_class'))
-                    ->maxLength(255)
+                    ->options(static::instrumentIconOptions())
+                    ->allowHtml()
+                    ->native(false)
+                    ->nullable()
                     ->helperText(__('fields.section.icon_helper')),
-                Forms\Components\TextInput::make('display_order')
-                    ->label(__('fields.section.display_order'))
-                    ->required()
-                    ->numeric()
-                    ->default(0),
             ]);
     }
 
@@ -66,6 +76,14 @@ class SectionResource extends Resource
                     ->searchable(),
                 Tables\Columns\TextColumn::make('icon_class')
                     ->label(__('fields.section.icon'))
+                    ->formatStateUsing(function ($state) {
+                        if (! $state) {
+                            return '';
+                        }
+
+                        return '<i class="' . e($state) . '"></i> ' . e($state);
+                    })
+                    ->html()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('display_order')
                     ->label(__('fields.section.display_order'))
@@ -83,6 +101,43 @@ class SectionResource extends Resource
                 ]),
             ])
             ->reorderable('display_order');
+    }
+
+    public static function getNavigationLabel(): string
+    {
+        return 'Organico';
+    }
+
+    public static function getTranslatableAttributes(): array
+    {
+        return ['name'];
+    }
+
+    protected static function instrumentIconOptions(): array
+    {
+        $instruments = [
+            'clarinet',
+            'drum-kit',
+            'euphonium',
+            'flugelhorn',
+            'flute',
+            'french-horn',
+            'alto-saxophone',
+            'baritone-saxophone',
+            'timpani',
+            'trombone',
+            'trumpet',
+            'tuba',
+        ];
+
+        $options = [];
+
+        foreach ($instruments as $instrument) {
+            $class = 'ii ii-' . $instrument;
+            $options[$class] = '<i class="' . $class . '"></i> ' . __('fields.section.icons.' . $instrument);
+        }
+
+        return $options;
     }
 
     public static function getRelations(): array
