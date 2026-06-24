@@ -46,6 +46,7 @@
     <link rel="stylesheet" href="{{ asset('css/bootstrap.css') }}">
     <link rel="stylesheet" href="{{ asset('css/fonts.css') }}">
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/instrument-icons.css') }}">
     <link rel="stylesheet" href="{{ asset('css/sections.css') }}">
     
     @yield('styles')
