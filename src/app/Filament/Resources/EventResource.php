@@ -41,17 +41,17 @@ class EventResource extends Resource
     protected static ?string $model = Event::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-calendar-days';
-    
+
     public static function getModelLabel(): string
     {
         return __('filament.resources.event');
     }
-    
+
     public static function getPluralModelLabel(): string
     {
         return __('filament.resources.event_plural');
     }
-    
+
     public static function getNavigationGroup(): ?string
     {
         return __('filament.navigation_groups.content_management');
@@ -75,13 +75,13 @@ class EventResource extends Resource
                                                 ->maxLength(255)
                                                 ->live(onBlur: true)
                                         )->columnSpan(5),
-                                        
+
                                         Forms\Components\Actions::make([
                                             static::getTranslateAction('title')
                                         ])->columnSpan(1),
                                     ])
                                     ->columns(6),
-                                
+
                                 Forms\Components\Grid::make()
                                     ->schema([
                                         TranslatableContainer::make(
@@ -89,20 +89,20 @@ class EventResource extends Resource
                                                 ->label(__('fields.event.short_description'))
                                                 ->maxLength(255)
                                         )->columnSpan(5),
-                                        
+
                                         Forms\Components\Actions::make([
                                             static::getTranslateAction('short_description')
                                         ])->columnSpan(1),
                                     ])
                                     ->columns(6),
-                                
+
                                 Forms\Components\Grid::make()
                                     ->schema([
                                         TranslatableContainer::make(
                                             Forms\Components\RichEditor::make('description')
                                                 ->label(__('fields.event.description'))
                                         )->columnSpan(5),
-                                        
+
                                         Forms\Components\Actions::make([
                                             static::getTranslateAction('description')
                                         ])->columnSpan(1),
@@ -110,7 +110,7 @@ class EventResource extends Resource
                                     ->columns(6),
                             ])
                             ->collapsible(),
-                            
+
                         Section::make(__('fields.event.location_details'))
                             ->schema([
                                 Forms\Components\TextInput::make('location')
@@ -142,7 +142,7 @@ class EventResource extends Resource
                             ->collapsible(),
                     ])
                     ->columnSpan(['lg' => 2]),
-                    
+
                 // Right sidebar
                 Group::make()
                     ->schema([
@@ -180,7 +180,7 @@ class EventResource extends Resource
                                     ->searchable()
                                     ->preload(),
                             ]),
-                        
+
                         Section::make(__('fields.common.date_time'))
                             ->schema([
                                 Forms\Components\DateTimePicker::make('start_datetime')
@@ -194,7 +194,7 @@ class EventResource extends Resource
                                     ->displayFormat('D, d M Y H:i')
                                     ->after('start_datetime'),
                             ]),
-                        
+
                         Section::make(__('fields.event.publication'))
                             ->schema([
                                 Forms\Components\Toggle::make('is_featured')
@@ -290,7 +290,7 @@ class EventResource extends Resource
             'edit' => Pages\EditEvent::route('/{record}/edit'),
         ];
     }
-    
+
     public static function getTranslatableAttributes(): array
     {
         return ['title', 'description', 'short_description', 'slug'];

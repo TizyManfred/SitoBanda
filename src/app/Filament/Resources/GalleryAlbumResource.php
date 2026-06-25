@@ -6,8 +6,10 @@ use App\Filament\Resources\GalleryAlbumResource\Pages;
 use App\Filament\Resources\GalleryAlbumResource\RelationManagers;
 use App\Filament\Traits\WithAiTranslation;
 use App\Models\GalleryAlbum;
+use App\Services\TranslationService;
 use Filament\Forms;
 use Filament\Forms\Form;
+use Filament\Notifications\Notification;
 use Filament\Resources\Resource;
 use Filament\Resources\Concerns\Translatable;
 use Filament\Tables;
@@ -176,7 +178,7 @@ class GalleryAlbumResource extends Resource
     {
         return __('filament.resources.gallery_album');
     }
-    
+
     public static function getPluralModelLabel(): string
     {
         return __('filament.resources.gallery_album_plural');

@@ -6,6 +6,7 @@ use App\Filament\Resources\SectionResource\Pages;
 use App\Filament\Resources\SectionResource\RelationManagers;
 use App\Filament\Traits\WithAiTranslation;
 use App\Models\Section;
+use App\Services\TranslationService;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Concerns\Translatable;
@@ -24,17 +25,17 @@ class SectionResource extends Resource
     protected static ?string $model = Section::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-user-group';
-    
+
     public static function getModelLabel(): string
     {
         return 'Organico';
     }
-    
+
     public static function getPluralModelLabel(): string
     {
         return 'Organico';
     }
-    
+
     public static function getNavigationGroup(): ?string
     {
         return __('filament.navigation_groups.content_management');

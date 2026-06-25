@@ -16,7 +16,7 @@ class Section extends Model
     public array $translatable = [
         'name',
     ];
-    
+
     /**
      * The table associated with the model.
      *
@@ -35,14 +35,16 @@ class Section extends Model
         'display_order',
     ];
 
+    protected $casts = [
+        'name' => 'array',
+        'display_order' => 'integer',
+    ];
+
     /**
      * The attributes that should be cast.
      *
      * @var array<string, string>
      */
-    protected $casts = [
-        'display_order' => 'integer',
-    ];
 
     protected static function booted(): void
     {
@@ -132,7 +134,7 @@ class Section extends Model
     {
         return $this->hasMany(Member::class);
     }
-    
+
     /**
      * Get all images for the section.
      */

@@ -16,7 +16,7 @@ trait WithAiTranslation
 {
     /**
      * Get the translation action for a field
-     * 
+     *
      * @param string $field The field name to translate
      * @return \Filament\Forms\Components\Actions\Action The translation action
      */
@@ -34,7 +34,7 @@ trait WithAiTranslation
                 $existingTranslations = data_get($livewire->data, $fieldPath, []);
 
                 [$sourceLocale, $sourceText] = static::resolveSourceTranslation($livewire->data, $fieldPath);
-                
+
                 if (empty(trim($sourceText))) {
                     Notification::make()
                         ->warning()
@@ -43,7 +43,7 @@ trait WithAiTranslation
                         ->send();
                     return;
                 }
-                
+
                 try {
                     $translationService = app(TranslationService::class);
                     $targetLocales = collect($locales)
