@@ -13,5 +13,6 @@ return [
     "corsi-di-musica" => "Corsi di Musica",
     "contatti" => "Contatti",
     "privacy-policy" => "Privacy Policy",
-    "galleria" => "Galleria"
+    "galleria" => "Galleria",
+    "select_language" => "Seleziona lingua"
 ];

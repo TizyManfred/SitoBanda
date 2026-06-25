@@ -1288,6 +1288,46 @@
 			}
 		}
 
+		// Language Switcher
+		var $languageSwitcher = $( '.language-switcher' );
+		if ( $languageSwitcher.length ) {
+			$languageSwitcher.each( function () {
+				var $switcher = $( this );
+				var $current = $switcher.find( '.current-language' );
+
+				function updateAriaExpanded () {
+					$current.attr( 'aria-expanded', $switcher.hasClass( 'open' ) );
+				}
+
+				$current.on( 'click', function ( event ) {
+					event.preventDefault();
+					event.stopPropagation();
+					$switcher.toggleClass( 'open' );
+					updateAriaExpanded();
+				} );
+
+				$current.on( 'keydown', function ( event ) {
+					if ( event.which === 13 || event.which === 32 ) {
+						event.preventDefault();
+						$switcher.toggleClass( 'open' );
+						updateAriaExpanded();
+					}
+				} );
+
+				$switcher.find( '.language-option' ).on( 'click', function () {
+					$switcher.removeClass( 'open' );
+					updateAriaExpanded();
+				} );
+			} );
+
+			$document.on( 'click.languageSwitcher', function ( event ) {
+				if ( $( event.target ).closest( '.language-switcher' ).length === 0 ) {
+					$languageSwitcher.removeClass( 'open' );
+					$languageSwitcher.find( '.current-language' ).attr( 'aria-expanded', false );
+				}
+			} );
+		}
+
 		// Circle Progress
 		if ( plugins.circleProgress.length ) {
 			for ( var i = 0; i < plugins.circleProgress.length; i++ ) {

@@ -7,9 +7,6 @@ use Filament\Forms\Components\Actions\Action;
 use Filament\Notifications\Notification;
 use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 
-// Import helpers for IDE support
-use function Illuminate\Support\data_get;
-use function Illuminate\Support\data_set;
 use function app;
 
 /**
@@ -32,10 +29,11 @@ trait WithAiTranslation
             ->size('sm')
             ->color('gray')
             ->action(function ($livewire, $component) use ($field) {
-                $currentLocale = $livewire->activeLocale;
                 $fieldPath = $field;
+                $locales = static::getTranslationLocales();
+                $existingTranslations = data_get($livewire->data, $fieldPath, []);
 
-                [$sourceLocale, $sourceText] = static::resolveSourceTranslation($livewire->data, $fieldPath, $currentLocale);
+                [$sourceLocale, $sourceText] = static::resolveSourceTranslation($livewire->data, $fieldPath);
                 
                 if (empty(trim($sourceText))) {
                     Notification::make()
@@ -48,22 +46,47 @@ trait WithAiTranslation
                 
                 try {
                     $translationService = app(TranslationService::class);
-                    $translated = $translationService->translate($sourceText, $sourceLocale, $currentLocale);
-                    
-                    if ($translated) {
-                        data_set($livewire->data, "{$fieldPath}.{$currentLocale}", $translated);
-                        
+                    $targetLocales = collect($locales)
+                        ->reject(fn (string $locale) => $locale === $sourceLocale)
+                        ->filter(fn (string $locale) => blank(trim((string) data_get($existingTranslations, $locale, ''))))
+                        ->values();
+
+                    if ($targetLocales->isEmpty()) {
                         Notification::make()
-                            ->success()
-                            ->title('Traduzione completata')
+                            ->warning()
+                            ->title('Nessuna traduzione da completare')
+                            ->body('Tutte le lingue disponibili per questo campo hanno gia un valore.')
                             ->send();
-                    } else {
+
+                        return;
+                    }
+
+                    $translatedLocales = [];
+
+                    foreach ($targetLocales as $targetLocale) {
+                        $translated = $translationService->translate($sourceText, $sourceLocale, $targetLocale);
+
+                        if (filled($translated)) {
+                            data_set($livewire->data, "{$fieldPath}.{$targetLocale}", $translated);
+                            $translatedLocales[] = $targetLocale;
+                        }
+                    }
+
+                    if ($translatedLocales === []) {
                         Notification::make()
                             ->danger()
                             ->title('Traduzione non riuscita')
                             ->body('Impossibile tradurre il testo. Riprova più tardi.')
                             ->send();
+
+                        return;
                     }
+
+                    Notification::make()
+                        ->success()
+                        ->title('Traduzione completata')
+                        ->body('Lingue aggiornate: ' . implode(', ', $translatedLocales))
+                        ->send();
                 } catch (\Exception $e) {
                     Notification::make()
                         ->danger()
@@ -74,11 +97,11 @@ trait WithAiTranslation
             });
     }
 
-    protected static function resolveSourceTranslation(array $data, string $field, string $currentLocale): array
+    protected static function resolveSourceTranslation(array $data, string $field): array
     {
-        $locales = array_keys(LaravelLocalization::getSupportedLocales());
+        $locales = static::getTranslationLocales();
 
-        if (in_array('it', $locales, true) && $currentLocale !== 'it') {
+        if (in_array('it', $locales, true)) {
             $preferredText = trim((string) (data_get($data, "{$field}.it") ?? ''));
 
             if ($preferredText !== '') {
@@ -87,10 +110,6 @@ trait WithAiTranslation
         }
 
         foreach ($locales as $locale) {
-            if ($locale === $currentLocale) {
-                continue;
-            }
-
             $text = trim((string) (data_get($data, "{$field}.{$locale}") ?? ''));
 
             if ($text !== '') {
@@ -98,6 +117,11 @@ trait WithAiTranslation
             }
         }
 
-        return [$currentLocale, ''];
+        return [config('app.fallback_locale', 'it'), ''];
+    }
+
+    protected static function getTranslationLocales(): array
+    {
+        return array_keys(LaravelLocalization::getSupportedLocales());
     }
 }

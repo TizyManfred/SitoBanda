@@ -14,12 +14,15 @@ use Filament\Widgets;
 use Filament\SpatieLaravelTranslatablePlugin;
 use Filament\Support\Assets\Js;
 use Filament\Support\Facades\FilamentAsset;
+use Filament\Support\Facades\FilamentView;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
 use Illuminate\Cookie\Middleware\EncryptCookies;
 use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
+use Illuminate\Support\Facades\Route;
 use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
+use Livewire\Livewire;
 
 class AdminPanelProvider extends PanelProvider
 {
@@ -71,8 +74,25 @@ class AdminPanelProvider extends PanelProvider
 
     public function boot(): void
     {
+        $appPath = trim((string) parse_url((string) config('app.url'), PHP_URL_PATH), '/');
+
+        if ($appPath !== '') {
+            config(['livewire.asset_url' => "/{$appPath}/livewire/livewire.js"]);
+
+            Livewire::setUpdateRoute(function ($handle) use ($appPath) {
+                return Route::post("/{$appPath}/livewire/update", $handle)
+                    ->middleware('web')
+                    ->name('subfolder.livewire.update');
+            });
+        }
+
         FilamentAsset::register([
             Js::make('multi-image-uploader', __DIR__ . '/../../../resources/js/filament/components/multi-image-uploader.js'),
         ]);
+
+        FilamentView::registerRenderHook(
+            'panels::head.start',
+            fn (): string => '<link rel="stylesheet" href="' . asset('css/instrument-icons.css') . '">'
+        );
     }
 }

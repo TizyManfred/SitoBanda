@@ -19,6 +19,7 @@ use Filament\Forms\Set;
 use Filament\Tables\Filters\TrashedFilter;
 use Filament\SpatieLaravelTranslatablePlugin;
 use Mvenghaus\FilamentPluginTranslatableInline\Forms\Components\TranslatableContainer;
+use Illuminate\Database\Eloquent\Model;
 
 class GalleryAlbumResource extends Resource
 {
@@ -30,6 +31,21 @@ class GalleryAlbumResource extends Resource
     protected static ?string $navigationIcon = 'heroicon-o-photo';
 
     protected static ?string $recordTitleAttribute = 'title';
+
+    public static function getRecordTitle(?Model $record): ?string
+    {
+        if (! $record instanceof GalleryAlbum) {
+            return null;
+        }
+
+        $locale = app()->getLocale();
+        $fallbackLocale = config('app.fallback_locale');
+
+        return $record->getTranslation('title', $locale, false)
+            ?: $record->getTranslation('title', $fallbackLocale, false)
+            ?: collect($record->getTranslations('title'))->filter()->first()
+            ?: null;
+    }
 
     public static function form(Form $form): Form
     {

@@ -7,7 +7,5 @@ use Filament\Resources\Pages\CreateRecord;
 
 class CreateSection extends CreateRecord
 {
-    use \Filament\Resources\Pages\CreateRecord\Concerns\Translatable;
-
     protected static string $resource = SectionResource::class;
 }

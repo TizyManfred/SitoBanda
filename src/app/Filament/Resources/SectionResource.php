@@ -13,6 +13,7 @@ use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Filament\Tables\Filters\TrashedFilter;
+use Illuminate\Database\Eloquent\Model;
 use Mvenghaus\FilamentPluginTranslatableInline\Forms\Components\TranslatableContainer;
 
 class SectionResource extends Resource
@@ -40,6 +41,15 @@ class SectionResource extends Resource
     }
 
     protected static ?string $recordTitleAttribute = 'name';
+
+    public static function getRecordTitle(?Model $record): string|null
+    {
+        if (! $record instanceof Section) {
+            return null;
+        }
+
+        return $record->getDisplayName();
+    }
 
     public static function form(Form $form): Form
     {
@@ -109,6 +119,16 @@ class SectionResource extends Resource
     }
 
     public static function getTranslatableAttributes(): array
+    {
+        return ['name'];
+    }
+
+    public static function getTranslatableAttributesForTable(): array
+    {
+        return ['name'];
+    }
+
+    public static function getTranslatableAttributesForForm(): array
     {
         return ['name'];
     }

@@ -36,8 +36,8 @@ return [
     ],
 
     'translation' => [
-        'url' => env('TRANSLATION_API_URL', 'https://api-free.deepl.com/v2/translate'),
-        'api_key' => env('TRANSLATION_API_KEY'), // DeepL API key is required
+        'url' => env('TRANSLATION_URL'),
+        'timeout' => env('TRANSLATION_TIMEOUT', 10),
     ],
 
 ];

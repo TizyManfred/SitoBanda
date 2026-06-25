@@ -21,4 +21,5 @@ return [
     'reset' => 'Ripristina',
     'export' => 'Esporta',
     'import' => 'Importa',
+    'translate' => 'Traduci',
 ];

@@ -7,6 +7,9 @@ use Illuminate\Support\Facades\App;
 use Illuminate\Support\Arr;
 use Filament\Notifications\Notification;
 use App\Services\TranslationService;
+use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
+
+use function app;
 
 class TranslateButton extends Component
 {
@@ -41,12 +44,10 @@ class TranslateButton extends Component
      */
     protected static function handleTranslation($livewire, string $fieldName): void
     {
-        // Get current locale and determine source locale
-        $currentLocale = $livewire->activeLocale;
-        $sourceLocale = $currentLocale === 'it' ? 'en' : 'it';
-        
-        // Get source text from other locale
-        $sourceText = data_get($livewire->data, "{$fieldName}.{$sourceLocale}") ?? '';
+        $locales = array_keys(LaravelLocalization::getSupportedLocales());
+        $translations = data_get($livewire->data, $fieldName, []);
+
+        [$sourceLocale, $sourceText] = static::resolveSourceTranslation($translations, $locales);
         
         if (empty(trim($sourceText))) {
             Notification::make()
@@ -58,25 +59,48 @@ class TranslateButton extends Component
         }
         
         try {
-            // Get translation service from container
             $translationService = app(TranslationService::class);
-            
-            $translated = $translationService->translate($sourceText, $sourceLocale, $currentLocale);
-            
-            if ($translated) {
-                data_set($livewire->data, "{$fieldName}.{$currentLocale}", $translated);
-                
+            $targetLocales = collect($locales)
+                ->reject(fn (string $locale) => $locale === $sourceLocale)
+                ->filter(fn (string $locale) => blank(trim((string) data_get($translations, $locale, ''))))
+                ->values();
+
+            if ($targetLocales->isEmpty()) {
                 Notification::make()
-                    ->success()
-                    ->title('Traduzione completata')
+                    ->warning()
+                    ->title('Nessuna traduzione da completare')
+                    ->body('Tutte le lingue disponibili per questo campo hanno gia un valore.')
                     ->send();
-            } else {
+
+                return;
+            }
+
+            $translatedLocales = [];
+
+            foreach ($targetLocales as $targetLocale) {
+                $translated = $translationService->translate($sourceText, $sourceLocale, $targetLocale);
+
+                if (filled($translated)) {
+                    data_set($livewire->data, "{$fieldName}.{$targetLocale}", $translated);
+                    $translatedLocales[] = $targetLocale;
+                }
+            }
+
+            if ($translatedLocales === []) {
                 Notification::make()
                     ->danger()
                     ->title('Traduzione non riuscita')
                     ->body('Impossibile tradurre il testo. Riprova più tardi.')
                     ->send();
+
+                return;
             }
+
+            Notification::make()
+                ->success()
+                ->title('Traduzione completata')
+                ->body('Lingue aggiornate: ' . implode(', ', $translatedLocales))
+                ->send();
         } catch (\Exception $e) {
             Notification::make()
                 ->danger()
@@ -84,5 +108,26 @@ class TranslateButton extends Component
                 ->body($e->getMessage())
                 ->send();
         }
+    }
+
+    protected static function resolveSourceTranslation(array $translations, array $locales): array
+    {
+        if (in_array('it', $locales, true)) {
+            $preferredText = trim((string) data_get($translations, 'it', ''));
+
+            if ($preferredText !== '') {
+                return ['it', $preferredText];
+            }
+        }
+
+        foreach ($locales as $locale) {
+            $text = trim((string) data_get($translations, $locale, ''));
+
+            if ($text !== '') {
+                return [$locale, $text];
+            }
+        }
+
+        return [config('app.fallback_locale', 'it'), ''];
     }
 }

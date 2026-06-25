@@ -88,7 +88,7 @@ class ItemsRelationManager extends RelationManager
     public function table(Table $table): Table
     {
         return $table
-            ->recordTitleAttribute('title')
+            ->recordTitleAttribute('image_path')
             ->reorderable('sort_order')
             ->defaultSort('sort_order')
             ->columns([

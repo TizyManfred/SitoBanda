@@ -1,5 +1,5 @@
 <div class="language-switcher">
-    <div class="current-language">
+    <div class="current-language" role="button" tabindex="0" aria-haspopup="true" aria-expanded="false" aria-label="{{ __('header.select_language') }}">
         <span class="language-flag-{{ LaravelLocalization::getCurrentLocale() }}"></span>
         <span class="language-code">{{ strtoupper(LaravelLocalization::getCurrentLocale()) }}</span>
         <i class="bi bi-caret-down-fill"></i>

@@ -13,5 +13,6 @@ return [
     "corsi-di-musica" => "Musikkurse",
     "contatti" => "Kontakt",
     "privacy-policy" => "Datenschutzerklärung",
-    "galleria" => "Galerie"
+    "galleria" => "Galerie",
+    "select_language" => "Sprache auswählen"
 ];

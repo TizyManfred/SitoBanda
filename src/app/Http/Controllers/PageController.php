@@ -54,6 +54,10 @@ class PageController extends Controller
             ])
             ->orderBy('display_order', 'asc')
             ->get();
+
+            $sections->each(function (Section $section) {
+                $section->setLocale(app()->getLocale());
+            });
             
             // Calculate total number of members
             $totalMembers = $sections->sum(function($section) {
