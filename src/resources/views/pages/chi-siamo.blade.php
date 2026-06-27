@@ -16,7 +16,7 @@
                     <li class="active">{{ __('chi-siamo.breadcrumb_title') }}</li>
                 </ul>
             </div>
-            <div class="box-position" style="background-image: url({{ asset('images/FotoSanIppolito1.webp') }});"></div>
+            <div class="box-position" style="background-image: url({{ \App\Models\StaticPage::headerImageUrl('chi_siamo', 'images/FotoSanIppolito1.webp') }});"></div>
         </div>
     </section>
 

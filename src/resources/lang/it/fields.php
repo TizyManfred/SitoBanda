@@ -215,6 +215,20 @@ return [
         ],
         'members' => 'Membri',
     ],
+
+    // StaticPage specific fields
+    'static_page' => [
+        'page_details' => 'Dettagli Pagina',
+        'header_image' => 'Immagine Header',
+        'page' => 'Pagina',
+        'label' => 'Etichetta',
+        'admin_notes' => 'Note interne',
+        'fallback_header_image_path' => 'Immagine header predefinita',
+        'fallback_header_image_path_helper' => 'Percorso usato se non viene caricata nessuna immagine personalizzata.',
+        'header_image_path' => 'Immagine header personalizzata',
+        'header_image_path_helper' => 'Carica un\'immagine larga, idealmente 2560x1440 o proporzione simile.',
+        'is_active' => 'Attiva',
+    ],
     
 
     

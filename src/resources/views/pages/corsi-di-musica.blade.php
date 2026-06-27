@@ -16,7 +16,7 @@
                     <li class="active">{{ __('Corsi di Musica') }}</li>
                 </ul>
             </div>
-            <div class="box-position" style="background-image: url({{ asset('images/FotoShanghai1.webp') }});"></div>
+            <div class="box-position" style="background-image: url({{ \App\Models\StaticPage::headerImageUrl('corsi_di_musica', 'images/FotoShanghai1.webp') }});"></div>
         </div>
     </section>
 

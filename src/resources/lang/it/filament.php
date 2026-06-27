@@ -31,6 +31,8 @@ return [
         'repertoire_program_plural' => 'Programmi Repertorio',
         'repertoire_year' => 'Anno Repertorio',
         'repertoire_year_plural' => 'Anni Repertorio',
+        'static_page' => 'Pagina Statica',
+        'static_page_plural' => 'Pagine Statiche',
     ],
 
     // Global navigation items

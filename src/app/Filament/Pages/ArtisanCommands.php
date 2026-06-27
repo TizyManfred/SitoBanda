@@ -30,6 +30,7 @@ class ArtisanCommands extends Page
                             ->options([
                                 'storage:link' => 'Create Storage Link',
                                 'migrate' => 'Run Migrations',
+                                'migrate --force' => 'Run Migrations (Production)',
                                 'migrate:fresh --seed' => 'Fresh Migrate + Seed',
                                 'optimize:clear' => 'Clear Cache',
                                 'view:clear' => 'Clear View Cache',

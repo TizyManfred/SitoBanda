@@ -17,7 +17,7 @@
                     <li class="active">{{ __('contact.breadcrumbs.title') }}</li>
                 </ul>
             </div>
-            <div class="box-position" style="background-image: url({{ asset('images/FotoSanIppolito1.webp') }});"></div>
+            <div class="box-position" style="background-image: url({{ \App\Models\StaticPage::headerImageUrl('contact', 'images/FotoSanIppolito1.webp') }});"></div>
         </div>
     </section>
 

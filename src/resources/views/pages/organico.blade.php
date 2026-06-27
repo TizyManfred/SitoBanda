@@ -28,9 +28,17 @@
         object-fit: cover;
     }
 
-    .card-body {
-        max-height: 380px;
-        overflow-y: auto;
+    .organico-members-card .card-body {
+        overflow: visible;
+    }
+
+    .organico-members-card .list-group-item {
+        padding-top: 0.55rem !important;
+        padding-bottom: 0.55rem !important;
+    }
+
+    .organico-members-card .fa-music {
+        font-size: 0.85rem;
     }
 
     .organico-section-title {
@@ -57,7 +65,7 @@
                     <li class="active">{{ __('organico.breadcrumb_current') }}</li>
                 </ul>
             </div>
-            <div class="box-position" style="background-image: url('{{ asset('images/FotoOrganico1.webp') }}');"></div>
+            <div class="box-position" style="background-image: url('{{ \App\Models\StaticPage::headerImageUrl('organico', 'images/FotoOrganico1.webp') }}');"></div>
         </div>
     </section>
 
@@ -127,7 +135,7 @@
                                         </div>
                                     </div>
                                     <div class="col-md-10 col-lg-6 col-xl-6">
-                                        <div class="card border-0 shadow-sm h-100">
+                                        <div class="card border-0 shadow-sm h-100 organico-members-card">
                                             <div class="card-header bg-primary text-white">
                                                 <h4 class="mb-0 organico-section-title">
                                                     @if(filled($section->icon_class))
@@ -138,12 +146,9 @@
                                             </div>
                                             <div class="card-body p-0">
                                                 @if(isset($section->members) && count($section->members) > 0)
-                                                    @php
-                                                        $members = $section->members->sortBy('last_name')->sortBy('first_name');
-                                                    @endphp
                                                     <div class="list-group list-group-flush">
-                                                        @foreach($members as $member)
-                                                            <div class="list-group-item border-0 py-3 px-4">
+                                                        @foreach($section->members as $member)
+                                                            <div class="list-group-item border-0 px-4">
                                                                 <div class="d-flex align-items-center">
                                                                     <div class="mr-3 text-muted">
                                                                         <i class="fas fa-music"></i>

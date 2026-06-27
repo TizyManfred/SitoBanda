@@ -1,6 +1,8 @@
 services:
   release-builder:
-    image: composer:2
+    build:
+      context: .
+      dockerfile: docker/release-builder/Dockerfile
     working_dir: /workspace
     volumes:
       - ./:/workspace
@@ -9,13 +11,12 @@ services:
       RELEASE_DIR: ${RELEASE_DIR:-release}
       ZIP_NAME: ${ZIP_NAME:-deploy_package_php_hosting.zip}
       COMPOSER_ALLOW_SUPERUSER: 1
+      COMPOSER_CURL_HTTP_VERSION: 1.1
     command:
       - sh
       - -lc
       - |
         set -eu
-
-        apk add --no-cache zip >/dev/null
 
         ROOT_DIR=/workspace
         SRC_DIR=$$ROOT_DIR/src
@@ -35,7 +36,19 @@ services:
         mkdir -p "$$LARAVEL_DIR" "$$PUBLIC_ROOT"
 
         echo "==> Copying Laravel app"
-        cp -a "$$SRC_DIR/." "$$LARAVEL_DIR/"
+        tar \
+          --exclude='./.env' \
+          --exclude='./.phpunit.result.cache' \
+          --exclude='./home' \
+          --exclude='./vendor' \
+          --exclude='./public' \
+          --exclude='./storage/framework/cache/data/*' \
+          --exclude='./storage/framework/sessions/*' \
+          --exclude='./storage/framework/testing/*' \
+          --exclude='./storage/framework/views/*' \
+          --exclude='./storage/logs/*.log' \
+          -C "$$SRC_DIR" \
+          -cf - . | tar -C "$$LARAVEL_DIR" -xf -
         rm -rf \
           "$$LARAVEL_DIR/.env" \
           "$$LARAVEL_DIR/.phpunit.result.cache" \
@@ -49,7 +62,17 @@ services:
 
         echo "==> Installing production Composer dependencies"
         cd "$$LARAVEL_DIR"
-        composer install --no-dev --optimize-autoloader --no-interaction
+        if ! composer install --no-dev --optimize-autoloader --no-interaction; then
+          if [ ! -d "$$SRC_DIR/vendor" ]; then
+            echo "Composer install failed and $$SRC_DIR/vendor is not available as a fallback" >&2
+            exit 1
+          fi
+
+          echo "==> Composer install failed; using existing src/vendor fallback"
+          rm -rf "$$LARAVEL_DIR/vendor"
+          cp -a "$$SRC_DIR/vendor" "$$LARAVEL_DIR/vendor"
+          composer dump-autoload --no-dev --optimize --no-interaction
+        fi
 
         echo "==> Preparing public files"
         if [ -n "$$PUBLIC_SUBDIR" ]; then
@@ -170,6 +193,8 @@ services:
 
         echo "==> Creating zip"
         cd "$$RELEASE_DIR"
-        zip -qr "$$ZIP_NAME" deploy_package_php_hosting
+        rm -f "/tmp/$$ZIP_NAME"
+        zip -qr "/tmp/$$ZIP_NAME" deploy_package_php_hosting
+        cp "/tmp/$$ZIP_NAME" "$$ZIP_NAME"
 
         echo "==> Done: $$RELEASE_DIR/$$ZIP_NAME"

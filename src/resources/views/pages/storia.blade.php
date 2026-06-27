@@ -16,7 +16,7 @@
                     <li class="active">{{ __('storia.breadcrumb_storia') }}</li>
                 </ul>
             </div>
-            <div class="box-position" style="background-image: url({{ asset('images/FotoStoria1.webp') }});"></div>
+            <div class="box-position" style="background-image: url({{ \App\Models\StaticPage::headerImageUrl('storia', 'images/FotoStoria1.webp') }});"></div>
         </div>
     </section>
 

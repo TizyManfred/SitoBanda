@@ -16,7 +16,7 @@
                     <li class="active">{{ __('events.events') }}</li>
                 </ul>
             </div>
-            <div class="box-position" style="background-image: url({{ asset('images/FotoSanIppolito1.webp') }});"></div>
+            <div class="box-position" style="background-image: url({{ \App\Models\StaticPage::headerImageUrl('events_index', 'images/FotoSanIppolito1.webp') }});"></div>
         </div>
     </section>
 

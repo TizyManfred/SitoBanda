@@ -28,7 +28,10 @@ return new class extends Migration
         }
 
         Schema::table('sections', function (Blueprint $table) {
-            $table->dropUnique(['name']);
+            if ($this->indexExists('sections', 'sections_name_unique')) {
+                $table->dropUnique('sections_name_unique');
+            }
+
             $table->dropColumn('name');
         });
 
@@ -63,5 +66,14 @@ return new class extends Migration
             $table->renameColumn('name_string', 'name');
             $table->unique('name');
         });
+    }
+
+    private function indexExists(string $table, string $index): bool
+    {
+        return (bool) DB::table('information_schema.statistics')
+            ->where('table_schema', DB::raw('database()'))
+            ->where('table_name', $table)
+            ->where('index_name', $index)
+            ->exists();
     }
 };

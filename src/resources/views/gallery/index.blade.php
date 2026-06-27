@@ -21,7 +21,7 @@ use Illuminate\Support\Str;
                     <li class="active">{{ __('gallery.breadcrumb') }}</li>
                 </ul>
             </div>
-            <div class="box-position" style="background-image: url({{ asset('images/FotoGalleria1.webp') }});"></div>
+            <div class="box-position" style="background-image: url({{ \App\Models\StaticPage::headerImageUrl('gallery_index', 'images/FotoGalleria1.webp') }});"></div>
         </div>
     </section>
 

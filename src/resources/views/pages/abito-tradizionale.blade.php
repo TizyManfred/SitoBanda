@@ -16,7 +16,7 @@
                     <li class="active">{{ __('abito.title') }}</li>
                 </ul>
             </div>
-            <div class="box-position" style="background-image: url({{ asset('images/FotoAbito1.webp') }});"></div>
+            <div class="box-position" style="background-image: url({{ \App\Models\StaticPage::headerImageUrl('abito_tradizionale', 'images/FotoAbito1.webp') }});"></div>
         </div>
     </section>
 
