@@ -14,6 +14,7 @@
 @section('og_title', __('errors.404.title'))
 @section('og_description', __('errors.404.description'))
 @section('og_image', asset('images/FotoSanIppolito1.webp'))
+@section('robots', 'noindex, nofollow')
 
 @section('content')
   <section class="section section-sm section-first bg-default">

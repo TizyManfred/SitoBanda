@@ -1,9 +1,9 @@
 @extends('layouts.app')
 
-@section('title', 'Corsi di Musica 2024-2025 - Banda Folk di Castello Tesino')
-@section('description', 'I corsi di musica della Banda Folk di Castello Tesino: impara a suonare uno strumento e unisciti alla nostra banda. Iscrizioni aperte per l\'anno 2024-2025.')
-@section('og_title', 'Corsi di Musica 2024-2025 - Banda Folk di Castello Tesino')
-@section('og_description', 'Scopri i corsi di musica offerti dalla Banda Folk di Castello Tesino per strumenti a fiato e percussioni. Iscrizioni aperte fino al 27 Giugno 2025.')
+@section('title', __('corsi-di-musica.meta.title'))
+@section('description', __('corsi-di-musica.meta.description'))
+@section('og_title', __('corsi-di-musica.meta.og_title'))
+@section('og_description', __('corsi-di-musica.meta.og_description'))
 
 @section('content')
     @php($dynamicBlocks = \App\Models\StaticPage::contentBlocks('corsi_di_musica'))
@@ -12,10 +12,10 @@
     <section class="breadcrumbs-custom-inset">
         <div class="breadcrumbs-custom context-dark">
             <div class="container">
-                <h1 class="breadcrumbs-custom-title">{{ __('Corsi di Musica') }}</h1>
+                <h1 class="breadcrumbs-custom-title">{{ __('corsi-di-musica.title') }}</h1>
                 <ul class="breadcrumbs-custom-path">
                     <li><a href="{{ route('home') }}">{{ __('header.home') }}</a></li>
-                    <li class="active">{{ __('Corsi di Musica') }}</li>
+                    <li class="active">{{ __('corsi-di-musica.title') }}</li>
                 </ul>
             </div>
             <div class="box-position" style="background-image: url({{ \App\Models\StaticPage::headerImageUrl('corsi_di_musica', 'images/FotoShanghai1.webp') }});"></div>
@@ -34,17 +34,17 @@
                 <!-- Main Text -->
                 <div class="col-lg-10 col-xl-8">
                     <div class="container">
-                        <h2 class="title-decoration-lines-left">{{ __('Impara a Suonare con Noi') }}</h2>
+                        <h2 class="title-decoration-lines-left">{{ __('corsi-di-musica.content.heading') }}</h2>
                         <div class="row row-50">
                             <div class="col-lg-6 col-xl-6">
                                 <div class="figure-classic figure-classic-left">
-                                    <img src="{{ \App\Models\StaticPage::contentImageUrl('corsi_di_musica', 'images/FotoTrento1.webp', 0) }}" alt="{{ __('Corsi di Musica della Banda Folk di Castello Tesino') }}" class="img-fluid">
+                                    <img src="{{ \App\Models\StaticPage::contentImageUrl('corsi_di_musica', 'images/FotoTrento1.webp', 0) }}" alt="{{ __('corsi-di-musica.content.image_alt') }}" class="img-fluid">
                                 </div>
                             </div>
                             <div class="col-lg-6 col-xl-6">
-                                <p>La Banda Folk di Castello Tesino organizza corsi di musica per strumenti a fiato e percussioni, in convenzione con la Federazione delle Bande Trentine e la Scuola Musicale SIM di Borgo Valsugana.</p>
-                                <p>Il corso è aperto a tutti, a partire dagli 8 anni, senza limiti di età. Le lezioni individuali e collettive, che si svolgono da settembre a giugno, hanno un costo annuo agevolato di €220, comprensivi di assicurazione. È previsto un ulteriore sconto di €50 dal secondo fratello.</p>
-                                <p>La Banda garantisce inoltre l’utilizzo gratuito dello strumento per tutta la durata dei corsi e il successivo inserimento in organico.</p>
+                                <p>{{ __('corsi-di-musica.content.paragraph_1') }}</p>
+                                <p>{{ __('corsi-di-musica.content.paragraph_2') }}</p>
+                                <p>{{ __('corsi-di-musica.content.paragraph_3') }}</p>
                             </div>
                         </div>
                     </div>
@@ -55,24 +55,24 @@
                     <div class="aside-component">
                         <div class="card">
                             <div class="card-header">
-                                <h4>{{ __('Iscrizioni A.A. 2024-2025') }}</h4>
+                                <h4>{{ __('corsi-di-musica.sidebar.enrollment_title') }}</h4>
                             </div>
                             <div class="card-body">
-                                <p><strong>{{ __('Scadenza iscrizioni:') }}</strong><br>
+                                <p><strong>{{ __('corsi-di-musica.sidebar.expiration_label') }}</strong><br>
                                 {{ \Carbon\Carbon::parse(\App\Helpers\SettingsHelper::coursesInfo()['expiration_date'])->translatedFormat('d F Y') }}</p>
                                 
-                                <p><strong>{{ __('Periodo dei corsi:') }}</strong><br>
+                                <p><strong>{{ __('corsi-di-musica.sidebar.period_label') }}</strong><br>
                                 da {{ \Carbon\Carbon::parse(\App\Helpers\SettingsHelper::coursesInfo()['start_date'])->translatedFormat('F') }} a {{ \Carbon\Carbon::parse(\App\Helpers\SettingsHelper::coursesInfo()['end_date'])->translatedFormat('F') }}</p>
                                 
-                                <p><strong>{{ __('Quote di partecipazione:') }}</strong><br>
+                                <p><strong>{{ __('corsi-di-musica.sidebar.fees_label') }}</strong><br>
                                 {!! nl2br(\App\Helpers\SettingsHelper::coursesInfo()['price']) !!}
                                 
-                                <p><strong>{{ __('Per informazioni:') }}</strong><br>
+                                <p><strong>{{ __('corsi-di-musica.sidebar.info_label') }}</strong><br>
                                 <a href="mailto:{{ \App\Helpers\SettingsHelper::coursesInfo()['contact_email'] }}">{{ \App\Helpers\SettingsHelper::coursesInfo()['contact_email'] }}</a><br>
-                                {{ __('Cell:') }} {{ \App\Helpers\SettingsHelper::coursesInfo()['phone'] }}</p>
+                                {{ __('corsi-di-musica.sidebar.phone_label') }} {{ \App\Helpers\SettingsHelper::coursesInfo()['phone'] }}</p>
                                 
                                 <div class="mt-4">
-                                    <a href="{{ \App\Helpers\SettingsHelper::coursesInfo()['forms_link'] }}" class="button button-primary button-ujarak w-100">{{ __('Compila Iscrizione') }}</a>
+                                    <a href="{{ \App\Helpers\SettingsHelper::coursesInfo()['forms_link'] }}" class="button button-primary button-ujarak w-100">{{ __('corsi-di-musica.sidebar.cta') }}</a>
                                 </div>
                             </div>
                         </div>
@@ -81,7 +81,7 @@
                         <!-- Testimonials -->
                         <div class="card mt-4">
                             <div class="card-header">
-                                <h4 class="mb-0">{{ __('Cosa Dicono i Nostri Allievi') }}</h4>
+                                <h4 class="mb-0">{{ __('corsi-di-musica.sidebar.testimonials_title') }}</h4>
                             </div>
                             <ul class="list-group list-group-flush">
                                 @foreach (\App\Helpers\SettingsHelper::coursesInfo()['testimonials'] as $testimonial)

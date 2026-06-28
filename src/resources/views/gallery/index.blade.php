@@ -1,9 +1,17 @@
 @extends('layouts.app')
 
+@php
+    $hasListingQuery = request()->query() !== [];
+@endphp
+
 @section('title', __('gallery.title') . ' - ' . config('app.name'))
 @section('description', __('gallery.description'))
 @section('og_title', __('gallery.title') . ' - ' . config('app.name'))
 @section('og_description', __('gallery.description'))
+@if($hasListingQuery)
+    @section('canonical', route('galleria'))
+    @section('robots', 'noindex, follow')
+@endif
 
 @php
 use Illuminate\Support\Facades\Storage;

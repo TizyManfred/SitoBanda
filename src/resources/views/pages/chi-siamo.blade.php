@@ -1,9 +1,9 @@
 @extends('layouts.app')
 
-@section('title', 'Chi Siamo - Banda Folk di Castello Tesino')
-@section('description', 'Scopri la storia e la missione della Banda Folk di Castello Tesino, un\'istituzione musicale attiva dal 1901 che porta avanti la tradizione musicale trentina.')
-@section('og_title', 'Chi Siamo - Banda Folk di Castello Tesino')
-@section('og_description', 'Scopri la storia e la missione della Banda Folk di Castello Tesino, un\'istituzione musicale attiva dal 1901.')
+@section('title', __('chi-siamo.meta.title'))
+@section('description', __('chi-siamo.meta.description'))
+@section('og_title', __('chi-siamo.meta.og_title'))
+@section('og_description', __('chi-siamo.meta.og_description'))
 
 @section('content')
     @php($dynamicBlocks = \App\Models\StaticPage::contentBlocks('chi_siamo'))

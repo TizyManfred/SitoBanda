@@ -1,9 +1,23 @@
 @extends('layouts.app')
 
+@php
+    $hasActiveFilters = collect($filters ?? [])->filter(function ($value) {
+        if (is_bool($value)) {
+            return $value === true;
+        }
+
+        return filled($value);
+    })->isNotEmpty();
+@endphp
+
 @section('title', __('events.page_title'))
 @section('description', __('events.page_description'))
 @section('og_title', __('events.og_title'))
 @section('og_description', __('events.og_description'))
+@if($hasActiveFilters)
+    @section('canonical', route('eventi'))
+    @section('robots', 'noindex, follow')
+@endif
 
 @section('content')
     <!-- Breadcrumbs -->

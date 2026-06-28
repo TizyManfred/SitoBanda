@@ -1,6 +1,12 @@
 <?php
 
 return [
+    'meta' => [
+        'title' => 'Über Uns - Banda Folk di Castello Tesino',
+        'description' => 'Entdecken Sie Geschichte, Werte und Auftrag der Banda Folk di Castello Tesino, die seit 1901 die traditionelle Musik des Tesino pflegt.',
+        'og_title' => 'Über Uns - Banda Folk di Castello Tesino',
+        'og_description' => 'Lernen Sie die Banda Folk di Castello Tesino kennen: mehr als ein Jahrhundert Musik, Tesino-Kultur und gelebte Tradition.',
+    ],
     'title' => 'Über Uns',
     'breadcrumb_title' => 'Über Uns',
     'breadcrumb_home' => 'Startseite',

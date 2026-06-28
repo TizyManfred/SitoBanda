@@ -1,12 +1,31 @@
 @extends('layouts.app')
 
+@php
+    $metaDescription = \Illuminate\Support\Str::limit(
+        trim($event->short_description ?: strip_tags($event->description ?: '')),
+        160
+    );
+
+    if ($metaDescription === '') {
+        $metaDescription = \Illuminate\Support\Str::limit(
+            collect([
+                $event->title,
+                $event->location,
+                optional($event->start_datetime)->translatedFormat('d F Y'),
+            ])->filter()->implode(' - '),
+            160
+        );
+    }
+
+    $eventImage = $event->image_path ? \Illuminate\Support\Facades\Storage::url($event->image_path) : asset('images/event-default.jpg');
+@endphp
+
 @section('title', $event->title . ' - Banda Folk di Castello Tesino')
-@section('description', $event->short_description)
+@section('description', $metaDescription)
 @section('og_title', $event->title . ' - Banda Folk di Castello Tesino')
-@section('og_description', $event->short_description)
-@if($event->image_path)
-    @section('og_image', asset($event->image_path))
-@endif
+@section('og_description', $metaDescription)
+@section('og_type', 'article')
+@section('og_image', $eventImage)
 
 
 @section('content')
@@ -187,6 +206,64 @@
         </div>
     </div>
 
+@endsection
+
+@section('structured_data')
+{
+    "@context": "https://schema.org",
+    "@graph": [
+        {
+            "@type": "BreadcrumbList",
+            "itemListElement": [
+                {
+                    "@type": "ListItem",
+                    "position": 1,
+                    "name": "{{ __('events.home') }}",
+                    "item": "{{ route('home') }}"
+                },
+                {
+                    "@type": "ListItem",
+                    "position": 2,
+                    "name": "{{ __('events.events') }}",
+                    "item": "{{ route('eventi') }}"
+                },
+                {
+                    "@type": "ListItem",
+                    "position": 3,
+                    "name": @json($event->title),
+                    "item": "{{ url()->current() }}"
+                }
+            ]
+        },
+        {
+            "@type": "Event",
+            "name": @json($event->title),
+            "description": @json($metaDescription),
+            "url": "{{ url()->current() }}",
+            "image": ["{{ url($eventImage) }}"],
+            "startDate": "{{ optional($event->start_datetime)->toIso8601String() }}",
+            @if($event->end_datetime)
+            "endDate": "{{ $event->end_datetime->toIso8601String() }}",
+            @endif
+            "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode",
+            "eventStatus": "https://schema.org/EventScheduled",
+            "location": {
+                "@type": "Place",
+                "name": @json($event->location),
+                @if($event->address)
+                "address": @json($event->address)
+                @else
+                "address": @json($event->location)
+                @endif
+            },
+            "organizer": {
+                "@type": "Organization",
+                "name": "Banda Folk di Castello Tesino",
+                "url": "{{ route('home') }}"
+            }
+        }
+    ]
+}
 @endsection
 
 @section('scripts')

@@ -2,15 +2,33 @@
 
 @php
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Str;
+
+$metaDescription = Str::limit(
+    trim($album->description ?: ''),
+    160
+);
+
+if ($metaDescription === '') {
+    $metaDescription = Str::limit(
+        collect([
+            $album->title,
+            $images->count() . ' ' . trans_choice('gallery.photos', $images->count()),
+            $album->start_date?->translatedFormat('F Y'),
+        ])->filter()->implode(' - '),
+        160
+    );
+}
+
+$coverImage = $images->count() > 0 ? Storage::url($images->first()->image_path) : asset('images/gallery-default.jpg');
 @endphp
 
 @section('title', $album->title . ' - Galleria - Banda Folk di Castello Tesino')
-@section('description', $album->description ? $album->description : 'Galleria fotografica ' . $album->title . ' della Banda Folk di Castello Tesino')
+@section('description', $metaDescription)
 @section('og_title', $album->title . ' - Galleria - Banda Folk di Castello Tesino')
-@section('og_description', $album->description ? $album->description : 'Galleria fotografica ' . $album->title . ' della Banda Folk di Castello Tesino')
-@section('og_image', $images->count() > 0 ? Storage::url($images->first()->image_path) : asset('images/gallery-default.jpg'))
+@section('og_description', $metaDescription)
+@section('og_type', 'article')
+@section('og_image', $coverImage)
 
 
 @section('content')
@@ -21,11 +39,11 @@ use Illuminate\Support\Str;
                 <h1 class="breadcrumbs-custom-title">{{ $album->title }}</h1>
                 <ul class="breadcrumbs-custom-path">
                     <li><a href="{{ route('home') }}">{{ __('header.home') }}</a></li>
-                    <li><a href="{{ route('galleria') }}">{{ __('Galleria') }}</a></li>
+                    <li><a href="{{ route('galleria') }}">{{ __('gallery.breadcrumb') }}</a></li>
                     <li class="active">{{ $album->title }}</li>
                 </ul>
             </div>
-            <div class="box-position" style="background-image: url({{ $images->count() > 0 ? Storage::url($images->first()->image_path) : asset('images/gallery-default.jpg') }}); background-position: center center;"></div>
+            <div class="box-position" style="background-image: url({{ $coverImage }}); background-position: center center;"></div>
         </div>
     </section>
 
@@ -264,4 +282,42 @@ use Illuminate\Support\Str;
             </div>
         </div>
     </section>
+@endsection
+
+@section('structured_data')
+{
+    "@context": "https://schema.org",
+    "@graph": [
+        {
+            "@type": "BreadcrumbList",
+            "itemListElement": [
+                {
+                    "@type": "ListItem",
+                    "position": 1,
+                    "name": "{{ __('header.home') }}",
+                    "item": "{{ route('home') }}"
+                },
+                {
+                    "@type": "ListItem",
+                    "position": 2,
+                    "name": "{{ __('gallery.breadcrumb') }}",
+                    "item": "{{ route('galleria') }}"
+                },
+                {
+                    "@type": "ListItem",
+                    "position": 3,
+                    "name": @json($album->title),
+                    "item": "{{ url()->current() }}"
+                }
+            ]
+        },
+        {
+            "@type": "ImageGallery",
+            "name": @json($album->title),
+            "description": @json($metaDescription),
+            "url": "{{ url()->current() }}",
+            "image": ["{{ url($coverImage) }}"]
+        }
+    ]
+}
 @endsection

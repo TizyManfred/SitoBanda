@@ -1,6 +1,12 @@
 <?php
 
 return [
+    'meta' => [
+        'title' => 'Chi Siamo - Banda Folk di Castello Tesino',
+        'description' => 'Scopri la storia, i valori e la missione della Banda Folk di Castello Tesino, attiva dal 1901 nella tradizione musicale trentina.',
+        'og_title' => 'Chi Siamo - Banda Folk di Castello Tesino',
+        'og_description' => 'Conosci la Banda Folk di Castello Tesino: oltre un secolo di musica, cultura tesina e impegno per la tradizione.',
+    ],
     'title' => 'Chi Siamo',
     'breadcrumb_title' => 'Chi Siamo',
     'breadcrumb_home' => 'Home',
