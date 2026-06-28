@@ -4,14 +4,14 @@
 @section('description', __('home.meta.description'))
 @section('og_title', __('home.meta.og_title'))
 @section('og_description', __('home.meta.og_description'))
-@section('og_image', \App\Models\StaticPage::headerImageUrl('home_hero_1', 'images/FotoSanIppolito1.webp'))
+@section('og_image', \App\Models\StaticPage::headerImageUrl('home', 'images/FotoSanIppolito1.webp', 0))
 
 @section('content')
     <!-- Hero Slider -->
     <section class="section swiper-container swiper-slider swiper-slider-classic" data-loop="true" data-autoplay="5000"
       data-simulate-touch="true" data-direction="vertical" data-nav="false" aria-label="{{ __('home.hero.aria.slideshow') }}">
       <div class="swiper-wrapper text-center">
-        <div class="swiper-slide context-dark" data-slide-bg="{{ \App\Models\StaticPage::headerImageUrl('home_hero_1', 'images/FotoSanIppolito1.webp') }}" aria-label="{{ __('home.hero.aria.slide1') }}">
+        <div class="swiper-slide context-dark" data-slide-bg="{{ \App\Models\StaticPage::headerImageUrl('home', 'images/FotoSanIppolito1.webp', 0) }}" aria-label="{{ __('home.hero.aria.slide1') }}">
           <div class="swiper-slide-caption section-md">
             <div class="container">
               <div class="row">
@@ -32,7 +32,7 @@
           </div>
         </div>
 
-        <div class="swiper-slide context-dark" data-slide-bg="{{ \App\Models\StaticPage::headerImageUrl('home_hero_2', 'images/FotoShanghai1.webp') }}" aria-label="{{ __('home.hero.aria.slide2') }}">
+        <div class="swiper-slide context-dark" data-slide-bg="{{ \App\Models\StaticPage::headerImageUrl('home', 'images/FotoShanghai1.webp', 1) }}" aria-label="{{ __('home.hero.aria.slide2') }}">
           <div class="swiper-slide-caption section-md">
             <div class="container">
               <h2 data-caption-animate="fadeInLeft" data-caption-delay="0">{!! __('home.hero.slide2.title') !!}</h2>
@@ -43,7 +43,7 @@
           </div>
         </div>
 
-        <div class="swiper-slide context-dark" data-slide-bg="{{ \App\Models\StaticPage::headerImageUrl('home_hero_3', 'images/FotoRoma1.webp') }}" aria-label="{{ __('home.hero.aria.slide3') }}">
+        <div class="swiper-slide context-dark" data-slide-bg="{{ \App\Models\StaticPage::headerImageUrl('home', 'images/FotoRoma1.webp', 2) }}" aria-label="{{ __('home.hero.aria.slide3') }}">
           <div class="swiper-slide-caption section-md">
             <div class="container">
               <h2 data-caption-animate="fadeInLeft" data-caption-delay="0">{!! __('home.hero.slide3.title') !!}</h2>
@@ -237,7 +237,7 @@
         '@type' => 'MusicGroup',
         'name' => 'Banda Folk di Castello Tesino',
         'description' => __('home.structured.description'),
-        'image' => \App\Models\StaticPage::headerImageUrl('home_hero_1', 'images/FotoSanIppolito1.webp'),
+        'image' => \App\Models\StaticPage::headerImageUrl('home', 'images/FotoSanIppolito1.webp', 0),
         'url' => url('/'),
         'genre' => ['Folk', 'Traditional', 'Marching Band'],
         'foundingDate' => '1901',

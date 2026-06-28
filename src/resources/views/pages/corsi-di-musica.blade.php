@@ -6,6 +6,8 @@
 @section('og_description', 'Scopri i corsi di musica offerti dalla Banda Folk di Castello Tesino per strumenti a fiato e percussioni. Iscrizioni aperte fino al 27 Giugno 2025.')
 
 @section('content')
+    @php($dynamicBlocks = \App\Models\StaticPage::contentBlocks('corsi_di_musica'))
+
     <!-- Breadcrumbs -->
     <section class="breadcrumbs-custom-inset">
         <div class="breadcrumbs-custom context-dark">
@@ -21,6 +23,11 @@
     </section>
 
     <!-- Corsi di Musica Content -->
+    @if ($dynamicBlocks !== [])
+        <div class="container py-5">
+            @include('partials.static-page-content', ['blocks' => $dynamicBlocks])
+        </div>
+    @else
     <section class="section section-sm section-first bg-default text-left">
         <div class="container">
             <div class="row row-50">
@@ -30,7 +37,9 @@
                         <h2 class="title-decoration-lines-left">{{ __('Impara a Suonare con Noi') }}</h2>
                         <div class="row row-50">
                             <div class="col-lg-6 col-xl-6">
-                                <img src="{{ asset('images/FotoTrento1.webp') }}" alt="{{ __('Corsi di Musica della Banda Folk di Castello Tesino') }}" class="img-fluid">
+                                <div class="figure-classic figure-classic-left">
+                                    <img src="{{ \App\Models\StaticPage::contentImageUrl('corsi_di_musica', 'images/FotoTrento1.webp', 0) }}" alt="{{ __('Corsi di Musica della Banda Folk di Castello Tesino') }}" class="img-fluid">
+                                </div>
                             </div>
                             <div class="col-lg-6 col-xl-6">
                                 <p>La Banda Folk di Castello Tesino organizza corsi di musica per strumenti a fiato e percussioni, in convenzione con la Federazione delle Bande Trentine e la Scuola Musicale SIM di Borgo Valsugana.</p>
@@ -90,6 +99,7 @@
             
         </div>
     </section>
+    @endif
 
     
 @endsection

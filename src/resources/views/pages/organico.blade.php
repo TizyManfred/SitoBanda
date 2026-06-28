@@ -56,6 +56,8 @@
 @endsection
 
 @section('content')
+    @php($dynamicBlocks = \App\Models\StaticPage::contentBlocks('organico'))
+
     <section class="breadcrumbs-custom-inset">
         <div class="breadcrumbs-custom context-dark bg-overlay-60">
             <div class="container">
@@ -78,8 +80,12 @@
                             <div class="col-lg-12">
                                 <div class="row">
                                     <div class="col-lg-12 text-left">
-                                        <h2 class="title-decoration-lines-left">{{ __('organico.intro_title') }}</h2>
-                                        <p class="text-gray-800">{{ __('organico.intro_text') }}</p>
+                                        @if ($dynamicBlocks !== [])
+                                            @include('partials.static-page-content', ['blocks' => $dynamicBlocks])
+                                        @else
+                                            <h2 class="title-decoration-lines-left">{{ __('organico.intro_title') }}</h2>
+                                            <p class="text-gray-800">{{ __('organico.intro_text') }}</p>
+                                        @endif
                                     </div>
                                 </div>
                             </div>
@@ -100,7 +106,7 @@
                                     <div class="col-md-10 col-lg-6 col-xl-6 {{ $loop->even ? 'order-lg-2' : '' }}">
                                         <div class="wow fadeInRight">
                                             @if(isset($section->images) && $section->images->count() > 0)
-                                                <div id="gallery-{{ $section->id }}" class="carousel slide" data-ride="carousel" data-interval="{{ random_int(2000, 4000) }}" data-lightgallery="group">
+                                                <div id="gallery-{{ $section->id }}" class="carousel slide w-100 figure-classic figure-classic-left" data-ride="carousel" data-interval="{{ random_int(2000, 4000) }}" data-lightgallery="group">
                                                     <div class="carousel-inner" style="overflow: hidden;">
                                                         @foreach($section->images as $image)
                                                             <div class="carousel-item {{ $loop->first ? 'active' : '' }}" style="height: 350px;">

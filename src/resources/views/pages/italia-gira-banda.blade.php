@@ -6,6 +6,8 @@
 @section('og_description', __('italia-gira-banda.meta.og_description'))
 
 @section('content')
+    @php($dynamicBlocks = \App\Models\StaticPage::contentBlocks('italia_gira_banda'))
+
     <!-- Breadcrumbs -->
     <section class="breadcrumbs-custom-inset">
         <div class="breadcrumbs-custom context-dark bg-overlay-60">
@@ -24,6 +26,9 @@
         <div class="row">
             <!-- Main Content -->
             <div class="col-xl-9 pr-xl-5">
+                @if ($dynamicBlocks !== [])
+                    @include('partials.static-page-content', ['blocks' => $dynamicBlocks])
+                @else
                 <!-- Italia Gira Banda Content -->
                 <section class="section section-sm section-first bg-default text-left">
                     <h2 class="title-decoration-lines-left">{{ __('italia-gira-banda.intro.title') }}</h2>
@@ -34,9 +39,9 @@
                             <p class="text-gray-800">{{ __('italia-gira-banda.intro.p3') }}</p>
                         </div>
                         <div class="col-md-10 col-lg-5 col-xl-6">
-                            <a href="{{ asset('images/FotoRoma2.webp') }}" data-lightgallery="item">
-                                <div class="wow fadeInRight">
-                                    <img src="{{ asset('images/FotoRoma2.webp') }}"
+                            <a href="{{ \App\Models\StaticPage::contentImageUrl('italia_gira_banda', 'images/FotoRoma2.webp', 0) }}" data-lightgallery="item">
+                                <div class="figure-classic figure-classic-left wow fadeInRight">
+                                    <img src="{{ \App\Models\StaticPage::contentImageUrl('italia_gira_banda', 'images/FotoRoma2.webp', 0) }}"
                                          alt="{{ __('italia-gira-banda.images.rome_alt') }}"
                                          class="aspect-ratio-16-9 object-fit-cover"
                                          width="100%"
@@ -52,9 +57,9 @@
                     <h3 class="title-decoration-lines-left text-left">{{ __('italia-gira-banda.rome.title') }}</h3>
                     <div class="row row-50 justify-content-center align-items-xl-center">
                         <div class="col-md-10 col-lg-5 col-xl-6">
-                            <a href="{{ asset('images/FotoRoma3.webp') }}" data-lightgallery="item">
-                                <div class="wow fadeInLeft">
-                                    <img src="{{ asset('images/FotoRoma3.webp') }}"
+                            <a href="{{ \App\Models\StaticPage::contentImageUrl('italia_gira_banda', 'images/FotoRoma3.webp', 1) }}" data-lightgallery="item">
+                                <div class="figure-classic figure-classic-left wow fadeInLeft">
+                                    <img src="{{ \App\Models\StaticPage::contentImageUrl('italia_gira_banda', 'images/FotoRoma3.webp', 1) }}"
                                          alt="{{ __('italia-gira-banda.images.group_alt') }}"
                                          class="aspect-ratio-16-9 object-fit-cover"
                                          width="100%"
@@ -70,6 +75,7 @@
                         </div>
                     </div>
                 </section>
+                @endif
 
                 <!-- Interactive Book -->
                 <section class="section section-sm bg-default">

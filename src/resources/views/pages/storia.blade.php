@@ -6,6 +6,8 @@
 @section('og_description', __('storia.meta_description'))
 
 @section('content')
+    @php($dynamicBlocks = \App\Models\StaticPage::contentBlocks('storia'))
+
     <!-- Breadcrumbs -->
     <section class="breadcrumbs-custom-inset">
         <div class="breadcrumbs-custom context-dark bg-overlay-60">
@@ -24,6 +26,9 @@
         <div class="row">
             <!-- Main Content -->
             <div class="col-xl-9 pr-xl-5">
+                @if ($dynamicBlocks !== [])
+                    @include('partials.static-page-content', ['blocks' => $dynamicBlocks])
+                @else
                 <!-- Storia Content -->
                 <section class="section section-sm section-first bg-default text-left">
                     <h2 class="title-decoration-lines-left">{{ __('storia.section_title') }}</h2>
@@ -33,9 +38,9 @@
                             <p class="text-gray-800">{{ __('storia.intro_p2') }}</p>
                         </div>
                         <div class="col-md-10 col-lg-5 col-xl-6">
-                            <a href="{{ asset('images/FotoStoria2.webp') }}" data-lightgallery="item">
-                                <div class="wow fadeInRight">
-                                    <img src="{{ asset('images/FotoStoria2.webp') }}" alt="Banda Folk di Castello Tesino - Foto storica" class="aspect-ratio-16-9 object-fit-cover" width="100%" loading="lazy">
+                            <a href="{{ \App\Models\StaticPage::contentImageUrl('storia', 'images/FotoStoria2.webp', 0) }}" data-lightgallery="item">
+                                <div class="figure-classic figure-classic-left wow fadeInRight">
+                                    <img src="{{ \App\Models\StaticPage::contentImageUrl('storia', 'images/FotoStoria2.webp', 0) }}" alt="Banda Folk di Castello Tesino - Foto storica" class="aspect-ratio-16-9 object-fit-cover" width="100%" loading="lazy">
                                 </div>
                             </a>
                         </div>
@@ -47,11 +52,11 @@
                     <h3 class="title-decoration-lines-left text-left">{{ __('storia.milestones_title') }}</h3>
                     <div class="row row-50 justify-content-center align-items-xl-center">
                         <div class="col-md-10 col-lg-5 col-xl-6">
-                            <div id="milestones-carousel" class="carousel slide wow fadeInLeft" data-ride="carousel" data-interval="{{ random_int(6000, 12000) }}">
+                            <div id="milestones-carousel" class="carousel slide w-100 figure-classic figure-classic-left wow fadeInLeft" data-ride="carousel" data-interval="{{ random_int(6000, 12000) }}">
                                 <div class="carousel-inner" style="height: 350px;" data-lightgallery="group">
                                     <div class="carousel-item active">
-                                        <a href="{{ asset('images/FotoStoria3.webp') }}" data-lightgallery="item">
-                                            <img src="{{ asset('images/FotoStoria3.webp') }}" 
+                                        <a href="{{ \App\Models\StaticPage::contentImageUrl('storia', 'images/FotoStoria3.webp', 1) }}" data-lightgallery="item">
+                                            <img src="{{ \App\Models\StaticPage::contentImageUrl('storia', 'images/FotoStoria3.webp', 1) }}"
                                                  class="d-block w-100 img-fluid"
                                                  alt="Banda Folk di Castello Tesino - Tappe storiche" 
                                                  loading="lazy"
@@ -59,8 +64,8 @@
                                         </a>
                                     </div>
                                     <div class="carousel-item">
-                                        <a href="{{ asset('images/FotoStoria4.webp') }}" data-lightgallery="item">
-                                            <img src="{{ asset('images/FotoStoria4.webp') }}" 
+                                        <a href="{{ \App\Models\StaticPage::contentImageUrl('storia', 'images/FotoStoria4.webp', 2) }}" data-lightgallery="item">
+                                            <img src="{{ \App\Models\StaticPage::contentImageUrl('storia', 'images/FotoStoria4.webp', 2) }}"
                                                  class="d-block w-100 img-fluid"
                                                  alt="Banda Folk di Castello Tesino - Tappe storiche" 
                                                  loading="lazy"
@@ -89,11 +94,11 @@
                             </div>
                         </div>
                         <div class="col-md-10 col-lg-5 col-xl-6">
-                            <div id="shanghai-carousel" class="carousel slide wow fadeInLeft" data-ride="carousel" data-interval="{{ random_int(6000, 12000) }}">
+                            <div id="shanghai-carousel" class="carousel slide w-100 figure-classic figure-classic-left wow fadeInLeft" data-ride="carousel" data-interval="{{ random_int(6000, 12000) }}">
                                 <div class="carousel-inner" style="height: 350px;" data-lightgallery="group">
                                     <div class="carousel-item active">
-                                        <a href="{{ asset('images/FotoStoria5.webp') }}" data-lightgallery="item">
-                                            <img src="{{ asset('images/FotoStoria5.webp') }}" 
+                                        <a href="{{ \App\Models\StaticPage::contentImageUrl('storia', 'images/FotoStoria5.webp', 3) }}" data-lightgallery="item">
+                                            <img src="{{ \App\Models\StaticPage::contentImageUrl('storia', 'images/FotoStoria5.webp', 3) }}"
                                                  class="d-block w-100 img-fluid"
                                                  alt="Banda Folk di Castello Tesino a Shanghai" 
                                                  loading="lazy"
@@ -101,8 +106,8 @@
                                         </a>
                                     </div>
                                     <div class="carousel-item">
-                                        <a href="{{ asset('images/FotoStoria6.webp') }}" data-lightgallery="item">
-                                            <img src="{{ asset('images/FotoStoria6.webp') }}" 
+                                        <a href="{{ \App\Models\StaticPage::contentImageUrl('storia', 'images/FotoStoria6.webp', 4) }}" data-lightgallery="item">
+                                            <img src="{{ \App\Models\StaticPage::contentImageUrl('storia', 'images/FotoStoria6.webp', 4) }}"
                                                  class="d-block w-100 img-fluid"
                                                  alt="Banda Folk di Castello Tesino a Shanghai" 
                                                  loading="lazy"
@@ -114,6 +119,7 @@
                         </div>
                     </div>
                 </section>
+                @endif
 
                 <!-- Continue Reading -->
                 <section class="section section-sm section-last bg-gray-100 text-center">

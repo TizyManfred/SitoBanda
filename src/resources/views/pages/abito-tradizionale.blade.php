@@ -6,6 +6,8 @@
 @section('og_description', __('abito.meta.og_description'))
 
 @section('content')
+    @php($dynamicBlocks = \App\Models\StaticPage::contentBlocks('abito_tradizionale'))
+
     <!-- Breadcrumbs -->
     <section class="breadcrumbs-custom-inset">
         <div class="breadcrumbs-custom context-dark bg-overlay-60">
@@ -26,14 +28,17 @@
         <div class="row">
             <!-- Main Content -->
             <div class="col-xl-9 pr-xl-5">
+                @if ($dynamicBlocks !== [])
+                    @include('partials.static-page-content', ['blocks' => $dynamicBlocks])
+                @else
                 <!-- Abito Tradizionale Content -->
                 <section class="section section-sm section-first bg-default text-left">
                     <div class="container">
                         <h2 class="title-decoration-lines-left">{{ __('abito.main.title') }}</h2>
                         <div class="row row-50 justify-content-center align-items-xl-center">
                             <div class="col-md-10 col-lg-5 col-xl-6">
-                                <div class="wow fadeInRight">
-                                    <img src="{{ asset('images/FotoAbito2.webp') }}" alt="Abito Tradizionale della Banda Folk di Castello Tesino" width="519" height="564" loading="lazy">
+                                <div class="figure-classic figure-classic-left wow fadeInRight">
+                                    <img src="{{ \App\Models\StaticPage::contentImageUrl('abito_tradizionale', 'images/FotoAbito2.webp', 0) }}" alt="Abito Tradizionale della Banda Folk di Castello Tesino" width="519" height="564" loading="lazy">
                                 </div>
                             </div>
                             <div class="col-md-10 col-lg-7 col-xl-6">
@@ -173,6 +178,7 @@
                         </div>
                     </div>
                 </section>
+                @endif
             </div>
 
             <!-- Right Sidebar -->

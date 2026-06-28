@@ -16,7 +16,12 @@ return new class extends Migration
             $table->string('route_name')->nullable();
             $table->string('view_name')->nullable();
             $table->text('admin_notes')->nullable();
+            $table->json('content_blocks')->nullable();
+            $table->json('content_html')->nullable();
+            $table->string('content_image_path')->nullable();
+            $table->json('content_images')->nullable();
             $table->string('header_image_path')->nullable();
+            $table->json('header_images')->nullable();
             $table->string('fallback_header_image_path');
             $table->boolean('is_active')->default(true);
             $table->timestamps();
@@ -25,9 +30,7 @@ return new class extends Migration
         });
 
         DB::table('static_pages')->insert([
-            ['page_key' => 'home_hero_1', 'label' => 'Homepage - slide 1', 'route_name' => 'home', 'view_name' => 'home', 'fallback_header_image_path' => 'images/FotoSanIppolito1.webp', 'created_at' => now(), 'updated_at' => now()],
-            ['page_key' => 'home_hero_2', 'label' => 'Homepage - slide 2', 'route_name' => 'home', 'view_name' => 'home', 'fallback_header_image_path' => 'images/FotoShanghai1.webp', 'created_at' => now(), 'updated_at' => now()],
-            ['page_key' => 'home_hero_3', 'label' => 'Homepage - slide 3', 'route_name' => 'home', 'view_name' => 'home', 'fallback_header_image_path' => 'images/FotoRoma1.webp', 'created_at' => now(), 'updated_at' => now()],
+            ['page_key' => 'home', 'label' => 'Homepage', 'route_name' => 'home', 'view_name' => 'home', 'fallback_header_image_path' => 'images/FotoSanIppolito1.webp', 'created_at' => now(), 'updated_at' => now()],
             ['page_key' => 'chi_siamo', 'label' => 'Chi siamo', 'route_name' => 'chi-siamo', 'view_name' => 'pages.chi-siamo', 'fallback_header_image_path' => 'images/FotoSanIppolito1.webp', 'created_at' => now(), 'updated_at' => now()],
             ['page_key' => 'storia', 'label' => 'Storia', 'route_name' => 'storia', 'view_name' => 'pages.storia', 'fallback_header_image_path' => 'images/FotoStoria1.webp', 'created_at' => now(), 'updated_at' => now()],
             ['page_key' => 'organico', 'label' => 'Organico', 'route_name' => 'organico', 'view_name' => 'pages.organico', 'fallback_header_image_path' => 'images/FotoOrganico1.webp', 'created_at' => now(), 'updated_at' => now()],

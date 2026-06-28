@@ -6,6 +6,8 @@
 @section('og_description', 'Scopri la storia e la missione della Banda Folk di Castello Tesino, un\'istituzione musicale attiva dal 1901.')
 
 @section('content')
+    @php($dynamicBlocks = \App\Models\StaticPage::contentBlocks('chi_siamo'))
+
     <!-- Breadcrumbs -->
     <section class="breadcrumbs-custom-inset">
         <div class="breadcrumbs-custom context-dark bg-overlay-60">
@@ -21,6 +23,11 @@
     </section>
 
     <!-- Chi Siamo Content -->
+    @if ($dynamicBlocks !== [])
+        <div class="container py-5">
+            @include('partials.static-page-content', ['blocks' => $dynamicBlocks])
+        </div>
+    @else
     <section class="section section-sm section-first bg-default text-left">
         <div class="container">
             <h2 class="title-decoration-lines-left">{{ __('chi-siamo.section_title') }}</h2>
@@ -28,8 +35,8 @@
                 <div class="col-md-12 col-lg-12">
                     <div class="row row-50 justify-content-center align-items-xl-center">
                         <div class="col-lg-6 mt-4">
-                            <div class="wow fadeInRight">
-                                <img src="{{ asset('images/FotoBiagio1.webp') }}" alt="Banda Folk di Castello Tesino" class="img-fluid rounded shadow-sm" loading="lazy">
+                            <div class="figure-classic figure-classic-left wow fadeInRight">
+                                <img src="{{ \App\Models\StaticPage::contentImageUrl('chi_siamo', 'images/FotoBiagio1.webp', 0) }}" alt="Banda Folk di Castello Tesino" class="img-fluid rounded shadow-sm" loading="lazy">
                             </div>
                         </div>
                         <div class="col-lg-6">
@@ -42,6 +49,7 @@
             </div>
         </div>
     </section>
+    @endif
 
     <!-- Discover More -->
     <section class="section section-sm bg-gray-100 text-left">

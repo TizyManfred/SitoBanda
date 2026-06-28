@@ -4,11 +4,15 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\StaticPageResource\Pages;
 use App\Models\StaticPage;
+use App\Services\TranslationService;
 use Filament\Forms;
+use Filament\Forms\Components\Actions\Action;
 use Filament\Forms\Form;
+use Filament\Notifications\Notification;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 
 class StaticPageResource extends Resource
 {
@@ -64,12 +68,132 @@ class StaticPageResource extends Resource
                                     ->columnSpanFull(),
                             ])
                             ->columns(2),
+                        Forms\Components\Section::make(__('fields.static_page.page_content'))
+                            ->schema([
+                                Forms\Components\Repeater::make('content_blocks')
+                                    ->label(__('fields.static_page.content_blocks'))
+                                    ->schema([
+                                        Forms\Components\TextInput::make('admin_label')
+                                            ->label(__('fields.static_page.content_block_admin_label'))
+                                            ->maxLength(120)
+                                            ->helperText(__('fields.static_page.content_block_admin_label_helper')),
+                                        Forms\Components\Select::make('layout')
+                                            ->label(__('fields.static_page.content_block_layout'))
+                                            ->options([
+                                                'text' => __('fields.static_page.content_block_layouts.text'),
+                                                'text_image_right' => __('fields.static_page.content_block_layouts.text_image_right'),
+                                                'image_left_text' => __('fields.static_page.content_block_layouts.image_left_text'),
+                                                'gallery' => __('fields.static_page.content_block_layouts.gallery'),
+                                            ])
+                                            ->default('text_image_right')
+                                            ->required(),
+                                        Forms\Components\Tabs::make('content_block_translations')
+                                            ->tabs([
+                                                Forms\Components\Tabs\Tab::make('Italiano')
+                                                    ->schema(static::contentBlockTranslationSchema('it')),
+                                                Forms\Components\Tabs\Tab::make('English')
+                                                    ->schema(static::contentBlockTranslationSchema('en')),
+                                                Forms\Components\Tabs\Tab::make('Deutsch')
+                                                    ->schema(static::contentBlockTranslationSchema('de')),
+                                            ])
+                                            ->columnSpanFull(),
+                                        Forms\Components\Actions::make([
+                                            static::translateContentBlockAction(),
+                                        ])
+                                            ->columnSpanFull(),
+                                        Forms\Components\Repeater::make('image_items')
+                                            ->label(__('fields.static_page.content_block_images'))
+                                            ->schema([
+                                                Forms\Components\FileUpload::make('image')
+                                                    ->label(__('fields.common.image'))
+                                                    ->image()
+                                                    ->disk('public')
+                                                    ->directory('static-pages/content-images')
+                                                    ->imageEditor()
+                                                    ->imageResizeMode('cover')
+                                                    ->imageEditorAspectRatios([
+                                                        null,
+                                                        '1:1',
+                                                        '4:3',
+                                                        '16:9',
+                                                        '3:4',
+                                                    ])
+                                                    ->imageResizeTargetWidth('2560')
+                                                    ->imageResizeTargetHeight('2560')
+                                                    ->maxSize(10240)
+                                                    ->visibility('public')
+                                                    ->openable()
+                                                    ->downloadable()
+                                                    ->previewable(true)
+                                                    ->optimize('webp')
+                                                    ->required()
+                                                    ->columnSpanFull(),
+                                                Forms\Components\Tabs::make('image_description_translations')
+                                                    ->tabs([
+                                                        Forms\Components\Tabs\Tab::make('Italiano')
+                                                            ->schema(static::imageDescriptionSchema('it')),
+                                                        Forms\Components\Tabs\Tab::make('English')
+                                                            ->schema(static::imageDescriptionSchema('en')),
+                                                        Forms\Components\Tabs\Tab::make('Deutsch')
+                                                            ->schema(static::imageDescriptionSchema('de')),
+                                                    ])
+                                                    ->columnSpanFull(),
+                                            ])
+                                            ->itemLabel(function (array $state): ?string {
+                                                $image = $state['image'] ?? null;
+
+                                                if (is_array($image)) {
+                                                    $image = collect($image)->first();
+                                                }
+
+                                                return $state['description']['it'] ?? $image;
+                                            })
+                                            ->addActionLabel(__('fields.static_page.add_content_block_image'))
+                                            ->reorderable()
+                                            ->collapsible()
+                                            ->cloneable()
+                                            ->helperText(__('fields.static_page.content_block_images_helper'))
+                                            ->columnSpanFull(),
+                                    ])
+                                    ->columns(2)
+                                    ->itemLabel(fn (array $state): ?string => $state['admin_label'] ?? $state['title']['it'] ?? null)
+                                    ->addActionLabel(__('fields.static_page.add_content_block'))
+                                    ->reorderable()
+                                    ->collapsible()
+                                    ->cloneable()
+                                    ->columnSpanFull(),
+                            ])
+                            ->collapsible(),
                     ])
                     ->columnSpan(['lg' => 2]),
                 Forms\Components\Group::make()
                     ->schema([
                         Forms\Components\Section::make(__('fields.static_page.header_image'))
                             ->schema([
+                                Forms\Components\FileUpload::make('header_images')
+                                    ->label(__('fields.static_page.home_header_images'))
+                                    ->image()
+                                    ->multiple()
+                                    ->reorderable()
+                                    ->disk('public')
+                                    ->directory('static-pages/header-images')
+                                    ->imageEditor()
+                                    ->imageResizeMode('cover')
+                                    ->imageEditorAspectRatios([
+                                        '16:9',
+                                        '21:9',
+                                        '3:1',
+                                    ])
+                                    ->imageResizeTargetWidth('2560')
+                                    ->imageResizeTargetHeight('1440')
+                                    ->maxSize(10240)
+                                    ->visibility('public')
+                                    ->openable()
+                                    ->downloadable()
+                                    ->previewable(true)
+                                    ->optimize('webp')
+                                    ->helperText(__('fields.static_page.home_header_images_helper'))
+                                    ->visible(fn (Forms\Get $get): bool => $get('page_key') === 'home'),
                                 Forms\Components\FileUpload::make('header_image_path')
                                     ->label(__('fields.static_page.header_image_path'))
                                     ->image()
@@ -90,7 +214,8 @@ class StaticPageResource extends Resource
                                     ->downloadable()
                                     ->previewable(true)
                                     ->optimize('webp')
-                                    ->helperText(__('fields.static_page.header_image_path_helper')),
+                                    ->helperText(__('fields.static_page.header_image_path_helper'))
+                                    ->visible(fn (Forms\Get $get): bool => $get('page_key') !== 'home'),
                                 Forms\Components\TextInput::make('fallback_header_image_path')
                                     ->label(__('fields.static_page.fallback_header_image_path'))
                                     ->required()
@@ -105,6 +230,135 @@ class StaticPageResource extends Resource
                     ->columnSpan(['lg' => 1]),
             ])
             ->columns(3);
+    }
+
+    protected static function contentBlockTranslationSchema(string $locale): array
+    {
+        return [
+            Forms\Components\TextInput::make("title.{$locale}")
+                ->label(__('fields.static_page.content_block_title'))
+                ->maxLength(255),
+            Forms\Components\RichEditor::make("body.{$locale}")
+                ->label(__('fields.static_page.content_block_body'))
+                ->toolbarButtons([
+                    'blockquote',
+                    'bold',
+                    'bulletList',
+                    'h2',
+                    'h3',
+                    'italic',
+                    'link',
+                    'orderedList',
+                    'redo',
+                    'strike',
+                    'underline',
+                    'undo',
+                ])
+                ->columnSpanFull(),
+        ];
+    }
+
+    protected static function imageDescriptionSchema(string $locale): array
+    {
+        return [
+            Forms\Components\Textarea::make("description.{$locale}")
+                ->label(__('fields.static_page.content_block_image_description'))
+                ->rows(2)
+                ->maxLength(500),
+        ];
+    }
+
+    protected static function translateContentBlockAction(): Action
+    {
+        return Action::make('translateContentBlock')
+            ->label(__('fields.static_page.translate_content_block'))
+            ->icon('heroicon-o-language')
+            ->tooltip(__('fields.static_page.translate_content_block'))
+            ->size('sm')
+            ->color('gray')
+            ->action(function (Forms\Get $get, Forms\Set $set): void {
+                $locales = array_keys(LaravelLocalization::getSupportedLocales());
+                $title = (array) ($get('title') ?? []);
+                $body = (array) ($get('body') ?? []);
+
+                $sourceLocale = static::resolveContentBlockSourceLocale($locales, $title, $body);
+
+                if (! $sourceLocale) {
+                    Notification::make()
+                        ->warning()
+                        ->title(__('fields.static_page.translation_source_missing'))
+                        ->body(__('fields.static_page.translation_source_missing_body'))
+                        ->send();
+
+                    return;
+                }
+
+                $sourceTitle = trim((string) ($title[$sourceLocale] ?? ''));
+                $sourceBody = trim((string) ($body[$sourceLocale] ?? ''));
+                $translationService = app(TranslationService::class);
+                $translatedLocales = [];
+
+                foreach ($locales as $targetLocale) {
+                    if ($targetLocale === $sourceLocale) {
+                        continue;
+                    }
+
+                    $updatedTarget = false;
+
+                    if ($sourceTitle !== '' && blank(trim((string) ($title[$targetLocale] ?? '')))) {
+                        $translatedTitle = $translationService->translate($sourceTitle, $sourceLocale, $targetLocale);
+
+                        if (filled($translatedTitle)) {
+                            $set("title.{$targetLocale}", $translatedTitle);
+                            $updatedTarget = true;
+                        }
+                    }
+
+                    if ($sourceBody !== '' && blank(trim((string) ($body[$targetLocale] ?? '')))) {
+                        $translatedBody = $translationService->translate($sourceBody, $sourceLocale, $targetLocale);
+
+                        if (filled($translatedBody)) {
+                            $set("body.{$targetLocale}", $translatedBody);
+                            $updatedTarget = true;
+                        }
+                    }
+
+                    if ($updatedTarget) {
+                        $translatedLocales[] = $targetLocale;
+                    }
+                }
+
+                if ($translatedLocales === []) {
+                    Notification::make()
+                        ->warning()
+                        ->title(__('fields.static_page.translation_nothing_to_update'))
+                        ->body(__('fields.static_page.translation_nothing_to_update_body'))
+                        ->send();
+
+                    return;
+                }
+
+                Notification::make()
+                    ->success()
+                    ->title(__('fields.static_page.translation_completed'))
+                    ->body(__('fields.static_page.translation_completed_body', ['locales' => implode(', ', $translatedLocales)]))
+                    ->send();
+            });
+    }
+
+    protected static function resolveContentBlockSourceLocale(array $locales, array $title, array $body): ?string
+    {
+        if (in_array('it', $locales, true) && (filled($title['it'] ?? null) || filled($body['it'] ?? null))) {
+            return 'it';
+        }
+
+        foreach ($locales as $locale) {
+            if (filled($title[$locale] ?? null) || filled($body[$locale] ?? null)) {
+                return $locale;
+            }
+        }
+
+        return null;
     }
 
     public static function table(Table $table): Table
@@ -142,4 +396,5 @@ class StaticPageResource extends Resource
             'edit' => Pages\EditStaticPage::route('/{record}/edit'),
         ];
     }
+
 }

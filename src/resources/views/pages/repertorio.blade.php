@@ -10,6 +10,8 @@
 @endsection
 
 @section('content')
+    @php($dynamicBlocks = \App\Models\StaticPage::contentBlocks('repertorio'))
+
     <!-- Breadcrumbs -->
     <section class="breadcrumbs-custom-inset">
         <div class="breadcrumbs-custom context-dark bg-overlay-60">
@@ -34,8 +36,12 @@
                     <div class="container">
                         <div class="row row-50 justify-content-center">
                             <div class="col-md-12 col-lg-12">
-                                <h2 class="title-decoration-lines-left">{{ __('repertorio.main_title') }}</h2>
-                                <p class="text-gray-800">{{ __('repertorio.main_intro') }}</p>
+                                @if ($dynamicBlocks !== [])
+                                    @include('partials.static-page-content', ['blocks' => $dynamicBlocks])
+                                @else
+                                    <h2 class="title-decoration-lines-left">{{ __('repertorio.main_title') }}</h2>
+                                    <p class="text-gray-800">{{ __('repertorio.main_intro') }}</p>
+                                @endif
                                 
                                 @if($programs->count() > 0)
                                     @php
