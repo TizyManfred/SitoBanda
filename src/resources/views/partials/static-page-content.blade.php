@@ -1,5 +1,6 @@
 @foreach ($blocks as $block)
     @php
+        $embedded = $embedded ?? false;
         $layout = $block['layout'] ?? 'text_image_right';
         $images = $block['images'] ?? [];
         $hasImages = count($images) > 0;
@@ -7,8 +8,12 @@
         $imageColumnClass = $layout === 'image_left_text' ? 'order-lg-first' : 'order-lg-last';
     @endphp
 
+    @if ($embedded)
+    <div class="static-page-block {{ ! $loop->last ? 'mb-5' : '' }}">
+    @else
     <section class="section section-sm {{ $loop->first ? 'section-first' : '' }} {{ $loop->odd ? 'bg-default' : 'bg-gray-100' }} text-left">
         <div class="container">
+    @endif
             @if ($layout === 'gallery' && $hasImages)
                 @if (filled($block['title']))
                     <h2 class="title-decoration-lines-left">{{ $block['title'] }}</h2>
@@ -71,6 +76,10 @@
                     @endif
                 </div>
             @endif
+    @if ($embedded)
+    </div>
+    @else
         </div>
     </section>
+    @endif
 @endforeach

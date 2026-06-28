@@ -7,6 +7,16 @@ use App\Http\Controllers\ContactController;
 use App\Http\Controllers\GalleryController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\RepertoireController;
+use Illuminate\Support\Facades\Storage;
+
+Route::get('storage/{path}', function (string $path) {
+    abort_if(str_contains($path, '..') || str_starts_with($path, '/'), 404);
+    abort_unless(Storage::disk('public')->exists($path), 404);
+
+    return response()->file(Storage::disk('public')->path($path), [
+        'Cache-Control' => 'public, max-age=31536000',
+    ]);
+})->where('path', '.*')->name('storage.public');
 
 Route::group([
     'prefix' => LaravelLocalization::setLocale(),

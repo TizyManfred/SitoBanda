@@ -33,12 +33,16 @@ class ArtisanCommands extends Page
                                 'migrate --force' => 'Run Migrations (Production)',
                                 'migrate:fresh --seed' => 'Fresh Migrate + Seed',
                                 'optimize:clear' => 'Clear Cache',
+                                'package:discover' => 'Refresh Package Discovery',
                                 'view:clear' => 'Clear View Cache',
                                 'config:clear' => 'Clear Config Cache',
                                 'route:clear' => 'Clear Route Cache',
                                 'cache:clear' => 'Clear Application Cache',
                                 'lang:publish' => 'Publish languages',
                                 'filament:assets' => 'Publish Filament assets',
+                                'filament:upgrade' => 'Run Filament Upgrade Tasks',
+                                'filament:optimize-clear' => 'Clear Filament Cache',
+                                'filament:optimize' => 'Cache Filament Components',
                             ])
                             ->required()
                             ->searchable(),
