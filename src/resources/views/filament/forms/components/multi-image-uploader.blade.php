@@ -27,6 +27,7 @@
     $captionsText = safeTranslate('fields.gallery.captions', [], 'Captions');
     $noImagesText = safeTranslate('fields.gallery.no_images', [], 'No images uploaded');
     $imageText = safeTranslate('fields.gallery.image', [], 'Image');
+    $translateText = safeTranslate('actions.translate', [], 'Traduci');
 @endphp
 
 
@@ -44,6 +45,7 @@
             acceptedFileTypes: @js($acceptedFileTypes),
             maxSize: @js($maxSize),
             locales: @js($locales),
+            processingMessage: @js($uploadingText . '...'),
             dragOver: false,
         })"
         class="multi-image-uploader"
@@ -93,15 +95,15 @@
         >
             <template x-for="(image, index) in images" :key="String(image && image.id)">
                 <div
-                    class="relative bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden"
+                    class="relative bg-white dark:bg-gray-900 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden"
                     :data-id="String(image && image.id)"
                 >
                     <!-- Card Header with Drag Handle -->
                     <div 
-                        class="flex items-center justify-between bg-gray-50 dark:bg-gray-700/50 px-3 py-2 border-b border-gray-200 dark:border-gray-600"
+                        class="flex items-center justify-between bg-gray-50 dark:bg-gray-800 px-3 py-2 border-b border-gray-200 dark:border-gray-700"
                     >
                         <div class="flex items-center space-x-2">
-                            <svg class="fi-icon-btn-icon h-5 w-5 cursor-move drag-handle" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" data-slot="icon">
+                            <svg class="fi-icon-btn-icon h-5 w-5 cursor-move drag-handle text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 transition-colors" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" data-slot="icon">
                                 <path fill-rule="evenodd" d="M2.24 6.8a.75.75 0 0 0 1.06-.04l1.95-2.1v8.59a.75.75 0 0 0 1.5 0V4.66l1.95 2.1a.75.75 0 1 0 1.1-1.02l-3.25-3.5a.75.75 0 0 0-1.1 0L2.2 5.74a.75.75 0 0 0 .04 1.06Zm8 6.4a.75.75 0 0 0-.04 1.06l3.25 3.5a.75.75 0 0 0 1.1 0l3.25-3.5a.75.75 0 1 0-1.1-1.02l-1.95 2.1V6.75a.75.75 0 0 0-1.5 0v8.59l-1.95-2.1a.75.75 0 0 0-1.06-.04Z" clip-rule="evenodd"></path>
                             </svg>
                         </div>
@@ -120,7 +122,7 @@
                     </div>
 
                     <!-- Image Preview -->
-                    <div class="aspect-square bg-gray-100 dark:bg-gray-700 relative">
+                    <div class="aspect-square bg-gray-100 dark:bg-gray-800 relative">
                         <img
                             :src="image && image.preview ? image.preview : (image && image.url ? image.url : '')"
                             :alt="image && image.captions && image.captions.it ? image.captions.it : (image && image.captions && image.captions.en ? image.captions.en : 'Image')"
@@ -131,17 +133,34 @@
 
                         <!-- Loading Overlay -->
                         <div
-                            x-show="image && image.uploading"
-                            class="absolute inset-0 bg-black/50 flex items-center justify-center"
+                            x-show="image && (image.uploading || image.processing)"
+                            class="absolute inset-0 bg-black/60 flex items-center justify-center"
                         >
                             <div class="text-white text-sm">{{ $uploadingText }}...</div>
                         </div>
 
                         <!-- Captions Section -->
-                        <div class="p-3 border-t border-gray-200 dark:border-gray-700">
-                            <h4 class="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                                {{ $captionsText }}
-                            </h4>
+                        <div class="p-3 border-t border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900">
+                            <div class="mb-2 flex items-center justify-between gap-2">
+                                <h4 class="text-sm font-medium text-gray-700 dark:text-gray-200">
+                                    {{ $captionsText }}
+                                </h4>
+                                <button
+                                    type="button"
+                                    @click.stop="translateCaption(index)"
+                                    :disabled="isDisabled || !canTranslateCaption(index) || isTranslatingCaption(index)"
+                                    class="inline-flex items-center gap-1 rounded-md px-2 py-1 text-xs font-medium text-primary-600 hover:bg-primary-50 disabled:pointer-events-none disabled:opacity-50 dark:text-primary-400 dark:hover:bg-primary-400/10"
+                                >
+                                    <svg x-show="!isTranslatingCaption(index)" class="h-3.5 w-3.5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="m10.5 21 5.25-11.25L21 21m-9-3h7.5M3 5.25h12M9 3v2.25m1.048 8.697A18.022 18.022 0 0 1 6.412 9m6.088-3.75C11.813 7.5 10.5 9.75 8.625 12" />
+                                    </svg>
+                                    <svg x-show="isTranslatingCaption(index)" class="h-3.5 w-3.5 animate-spin" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 0 1 8-8v4a4 4 0 0 0-4 4H4z"></path>
+                                    </svg>
+                                    <span>{{ $translateText }}</span>
+                                </button>
+                            </div>
                             
                             <!-- Multilingual Caption Inputs -->
                             <div class="space-y-2">
@@ -152,7 +171,7 @@
                                             type="text"
                                             x-model="image.captions[localeshort]"
                                             @input.debounce.400ms="updateState()"
-                                            class="block w-full rounded-md border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-sm shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:text-white"
+                                            class="block w-full rounded-md border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-sm text-gray-900 shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:text-white dark:placeholder-gray-500"
                                             :placeholder="`Didascalia ${localeshort}...`"
                                             :disabled="isDisabled"
                                         />

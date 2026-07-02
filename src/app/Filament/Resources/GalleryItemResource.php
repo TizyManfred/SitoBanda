@@ -3,17 +3,24 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\GalleryItemResource\Pages;
+use App\Filament\Support\OptimizedImageUpload;
+use App\Filament\Traits\WithAiTranslation;
+use App\Models\GalleryAlbum;
 use App\Models\GalleryItem;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Illuminate\Support\Facades\Storage;
-use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\App;
+use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
+use Mvenghaus\FilamentPluginTranslatableInline\Forms\Components\TranslatableContainer;
 
 class GalleryItemResource extends Resource
 {
+    use WithAiTranslation;
+
     protected static ?string $model = GalleryItem::class;
     protected static ?string $navigationIcon = null; // Hidden from navigation menu
     protected static ?int $navigationSort = 2;
@@ -44,11 +51,23 @@ class GalleryItemResource extends Resource
             ->schema([
                 Forms\Components\Section::make()
                     ->schema([
-                        Forms\Components\FileUpload::make('images')
-                            ->label(__('fields.gallery.images'))
-                            ->multiple()
+                        Forms\Components\Select::make('album_id')
+                            ->label(__('filament.resources.gallery_album'))
+                            ->options(fn (): array => GalleryAlbum::query()
+                                ->orderByDesc('start_date')
+                                ->get()
+                                ->mapWithKeys(fn (GalleryAlbum $album): array => [
+                                    $album->id => $album->getTranslation('title', App::getLocale(), false)
+                                        ?: collect($album->getTranslations('title'))->filter()->first()
+                                        ?: (string) $album->id,
+                                ])
+                                ->all())
+                            ->searchable()
+                            ->required(),
+
+                        Forms\Components\FileUpload::make('image_path')
+                            ->label(__('fields.gallery.image'))
                             ->directory('gallery-items')
-                            ->preserveFilenames()
                             ->image()
                             ->imageEditor()
                             ->imageResizeMode('cover')
@@ -58,35 +77,31 @@ class GalleryItemResource extends Resource
                             ->imagePreviewHeight('250')
                             ->required()
                             ->columnSpanFull()
-                            ->helperText(__('fields.gallery.images_helper'))
-                            ->reorderable()
-                            ->appendFiles()
+                            ->helperText(__('fields.gallery.upload_image_helper'))
                             ->downloadable()
                             ->openable()
                             ->previewable(true)
                             ->imageEditorViewportWidth('1920')
                             ->imageEditorViewportHeight('1080')
-                            ->optimize('webp'),
+                            ->saveUploadedFileUsing(OptimizedImageUpload::webp('gallery-items', quality: 65, maxWidth: 1920, maxHeight: 1080)),
 
-                        Forms\Components\TextInput::make('title')
-                            ->label(__('fields.gallery.title'))
-                            ->required()
-                            ->maxLength(255),
-
-                        Forms\Components\Textarea::make('description')
-                            ->label(__('fields.gallery.description'))
-                            ->helperText(__('fields.gallery.description_helper'))
-                            ->maxLength(65535)
+                        Forms\Components\Grid::make(6)
+                            ->schema([
+                                TranslatableContainer::make(
+                                    Forms\Components\TextInput::make('caption')
+                                        ->label(__('fields.gallery.caption'))
+                                        ->reactive()
+                                )->columnSpan(5),
+                                Forms\Components\Actions::make([
+                                    static::getTranslateAction('caption'),
+                                ])->columnSpan(1),
+                            ])
                             ->columnSpanFull(),
 
                         Forms\Components\DatePicker::make('taken_at')
                             ->label(__('fields.gallery.date_taken'))
                             ->native(false)
                             ->displayFormat('d/m/Y'),
-
-                        Forms\Components\Toggle::make('is_visible')
-                            ->label(__('fields.gallery.visible'))
-                            ->default(true),
 
                         Forms\Components\Toggle::make('is_featured')
                             ->label(__('fields.gallery.featured'))
@@ -114,14 +129,35 @@ class GalleryItemResource extends Resource
                     ->limitedRemainingText()
                     ->circular(),
 
-                Tables\Columns\TextColumn::make('title')
-                    ->searchable()
+                Tables\Columns\TextColumn::make('album.title')
+                    ->label(__('filament.resources.gallery_album'))
+                    ->formatStateUsing(fn (GalleryItem $record): string => $record->album?->getTranslation('title', App::getLocale(), false)
+                        ?: collect($record->album?->getTranslations('title') ?? [])->filter()->first()
+                        ?: '-')
                     ->sortable(),
 
-                Tables\Columns\IconColumn::make('is_visible')
-                    ->label(__('fields.gallery.visible'))
-                    ->boolean()
-                    ->sortable(),
+                Tables\Columns\TextColumn::make('caption')
+                    ->label(__('fields.gallery.caption'))
+                    ->formatStateUsing(function (GalleryItem $record): string {
+                        $translations = $record->getTranslations('caption');
+
+                        return collect($translations)
+                            ->filter(fn ($translation): bool => filled($translation))
+                            ->map(fn ($translation, string $locale): string => "<div><span class='font-medium'>{$locale}:</span> " . e($translation) . '</div>')
+                            ->implode('');
+                    })
+                    ->searchable(query: function (Builder $query, string $search): Builder {
+                        return $query->where(function (Builder $query) use ($search): void {
+                            foreach (array_keys(LaravelLocalization::getSupportedLocales()) as $locale) {
+                                $query->orWhere("caption->{$locale}", 'like', "%{$search}%");
+                            }
+                        });
+                    })
+                    ->sortable(query: function (Builder $query, string $direction): Builder {
+                        return $query->orderBy('caption->' . App::getLocale(), $direction);
+                    })
+                    ->wrap()
+                    ->html(),
 
                 Tables\Columns\IconColumn::make('is_featured')
                     ->label(__('fields.gallery.featured'))
@@ -134,10 +170,6 @@ class GalleryItemResource extends Resource
                     ->sortable(),
             ])
             ->filters([
-                Tables\Filters\Filter::make('is_visible')
-                    ->label(__('fields.gallery.only_visible'))
-                    ->query(fn ($query) => $query->where('is_visible', true)),
-                
                 Tables\Filters\Filter::make('is_featured')
                     ->label(__('fields.gallery.only_featured'))
                     ->query(fn ($query) => $query->where('is_featured', true)),

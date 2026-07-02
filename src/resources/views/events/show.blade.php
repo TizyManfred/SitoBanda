@@ -17,16 +17,46 @@
         );
     }
 
-    $eventImage = $event->image_path ? \Illuminate\Support\Facades\Storage::url($event->image_path) : asset('images/event-default.jpg');
+    $eventImage = $event->image_path ? \Illuminate\Support\Facades\Storage::url($event->image_path) : asset('images/FotoEventi1.webp');
+    $eventDate = $event->start_datetime;
+    $currentSlug = $event->getTranslation('slug', app()->getLocale(), false) ?: $event->slug;
+    $canonicalUrl = route('eventi.show', $currentSlug);
+    $alternateUrls = [];
+    $defaultLocale = LaravelLocalization::getDefaultLocale();
+
+    foreach (LaravelLocalization::getSupportedLocales() as $localeCode => $properties) {
+        $localizedSlug = $event->getTranslation('slug', $localeCode, false);
+
+        if (filled($localizedSlug)) {
+            $alternateUrls[$localeCode] = LaravelLocalization::getLocalizedURL(
+                $localeCode,
+                route('eventi.show', $localizedSlug),
+                [],
+                $localeCode !== $defaultLocale
+            );
+        }
+    }
+
+    $shareUrl = $canonicalUrl;
+    $shareText = $event->title . ' - ' . $metaDescription;
 @endphp
 
 @section('title', $event->title . ' - Banda Folk di Castello Tesino')
 @section('description', $metaDescription)
+@section('canonical', $canonicalUrl)
 @section('og_title', $event->title . ' - Banda Folk di Castello Tesino')
 @section('og_description', $metaDescription)
 @section('og_type', 'article')
 @section('og_image', $eventImage)
 
+@section('alternate_urls')
+@foreach($alternateUrls as $localeCode => $alternateUrl)
+    <link rel="alternate" hreflang="{{ $localeCode }}" href="{{ $alternateUrl }}" />
+@endforeach
+@if(isset($alternateUrls[$defaultLocale]))
+    <link rel="alternate" hreflang="x-default" href="{{ $alternateUrls[$defaultLocale] }}" />
+@endif
+@endsection
 
 @section('content')
     <!-- Breadcrumbs -->
@@ -40,7 +70,7 @@
                     <li class="active">{{ $event->title }}</li>
                 </ul>
             </div>
-            <div class="box-position" style="background-image: url({{ $event->image_path ? Storage::url($event->image_path) : asset('images/event-default.jpg') }});"></div>
+            <div class="box-position" style="background-image: url({{ $event->image_path ? Storage::url($event->image_path) : asset('images/FotoEventi1.webp') }});"></div>
         </div>
     </section>
 
@@ -70,19 +100,19 @@
                                 <div>
                                     <i class="fa fa-calendar text-primary me-2"></i>
                                     <strong>{{ __('events.date') }}:</strong> 
-                                    {{ $event->start_datetime->format('d/m/Y') }}
-                                    @if($event->end_datetime && $event->end_datetime->format('d/m/Y') != $event->start_datetime->format('d/m/Y'))
+                                    {{ $eventDate ? $eventDate->format('d/m/Y') : __('events.date_not_available') }}
+                                    @if($eventDate && $event->end_datetime && $event->end_datetime->format('d/m/Y') != $eventDate->format('d/m/Y'))
                                         - {{ $event->end_datetime->format('d/m/Y') }}
                                     @endif
                                 </div>
                             </div>
                             
-                            @if($event->start_datetime->format('H:i') != '00:00')
+                            @if($eventDate && $eventDate->format('H:i') != '00:00')
                                 <div class="d-flex mb-3 gap-4">
                                     <div>
                                         <i class="fa fa-clock-o text-primary me-2"></i>
                                         <strong>{{ __('events.time') }}:</strong> 
-                                        {{ $event->start_datetime->format('H:i') }}
+                                        {{ $eventDate->format('H:i') }}
                                         @if($event->end_datetime)
                                             - {{ $event->end_datetime->format('H:i') }}
                                         @endif
@@ -94,7 +124,7 @@
                                 <div>
                                     <i class="fa fa-map-marker text-primary me-2"></i>
                                     <strong>{{ __('events.location') }}:</strong> 
-                                    {{ $event->location }}
+                                    {{ $event->location ?: __('events.location_not_available') }}
                                     @if($event->address)
                                         <div class="small text-muted mt-1">{{ $event->address }}</div>
                                     @endif
@@ -105,9 +135,13 @@
                         <!-- Event Description -->
                         <div class="mb-5">
                             <h3 class="oh-desktop mb-4"><span class="d-inline-block">{{ __('events.event_description') }}</span></h3>
-                            <div class="post-content">
-                                {!! $event->description !!}
-                            </div>
+                            @if($event->description)
+                                <div class="post-content">
+                                    {!! $event->description !!}
+                                </div>
+                            @else
+                                <p class="text-muted">{{ __('events.description_not_available') }}</p>
+                            @endif
                         </div>
                         
                         <!-- Event Gallery -->
@@ -141,13 +175,16 @@
                         @endif
                         
                         <!-- Social Share -->
-                        <div class="mb-5 p-4 bg-light rounded-1 shadow-sm">
-                            <h5 class="mb-3"><i class="fas fa-share-alt text-primary me-2"></i>{{ __('events.share_event') }}</h5>
-                            <div class="social-icons">
-                                <a href="https://www.facebook.com/sharer/sharer.php?u={{ urlencode(route('eventi.show', $event->slug)) }}" class="social-icon icon icon-sm icon-circle icon-circle-md icon-bg-white fa-facebook" target="_blank" aria-label="Condividi su Facebook"></a>
-                                <a href="https://twitter.com/intent/tweet?text={{ urlencode($event->title) }}&url={{ urlencode(route('eventi.show', $event->slug)) }}" class="social-icon icon icon-sm icon-circle icon-circle-md icon-bg-white fa-twitter" target="_blank" aria-label="Condividi su Twitter"></a>
-                                <a href="https://wa.me/?text={{ urlencode($event->title . ' - ' . route('eventi.show', $event->slug)) }}" class="social-icon icon icon-sm icon-circle icon-circle-md icon-bg-white fa-whatsapp" target="_blank" aria-label="Condividi su WhatsApp"></a>
-                                <a href="mailto:?subject={{ urlencode($event->title) }}&body={{ urlencode($event->short_description . ' - ' . route('eventi.show', $event->slug)) }}" class="social-icon icon icon-sm icon-circle icon-circle-md icon-bg-white fa-envelope" aria-label="Condividi via Email"></a>
+                        <div class="event-share-panel mb-5">
+                            <div class="event-share-copy">
+                                <span class="gallery-panel-eyebrow"><i class="fa fa-share-alt mr-1"></i>{{ __('events.share_event') }}</span>
+                                <h4 class="heading-4">{{ __('events.share_title') }}</h4>
+                            </div>
+                            <div class="share-actions">
+                                <a href="https://www.facebook.com/sharer/sharer.php?u={{ urlencode($shareUrl) }}" class="share-action share-action-facebook" target="_blank" rel="noopener" aria-label="{{ __('events.share_facebook') }}"><i class="fa fa-facebook"></i><span>Facebook</span></a>
+                                <a href="https://twitter.com/intent/tweet?text={{ urlencode($event->title) }}&url={{ urlencode($shareUrl) }}" class="share-action share-action-twitter" target="_blank" rel="noopener" aria-label="{{ __('events.share_twitter') }}"><i class="fa fa-twitter"></i><span>Twitter</span></a>
+                                <a href="https://wa.me/?text={{ urlencode($shareText . ' - ' . $shareUrl) }}" class="share-action share-action-whatsapp" target="_blank" rel="noopener" aria-label="{{ __('events.share_whatsapp') }}"><i class="fa fa-whatsapp"></i><span>WhatsApp</span></a>
+                                <a href="mailto:?subject={{ urlencode($event->title) }}&body={{ urlencode($shareText . ' - ' . $shareUrl) }}" class="share-action share-action-email" aria-label="{{ __('events.share_email') }}"><i class="fa fa-envelope"></i><span>Email</span></a>
                             </div>
                         </div>
                         
@@ -164,14 +201,14 @@
                                                         @if($relatedEvent->image_path)
                                                             <img src="{{ Storage::url($relatedEvent->image_path) }}" alt="{{ $relatedEvent->title }}" width="570" height="370" loading="lazy" class="img-fluid" style="height: 280px; width: 100%; object-fit: cover;">
                                                         @else
-                                                            <img src="{{ asset('images/event-default.jpg') }}" alt="{{ $relatedEvent->title }}" width="570" height="370" loading="lazy" class="img-fluid" style="height: 280px; width: 100%; object-fit: cover;">
+                                                            <img src="{{ asset('images/FotoEventi1.webp') }}" alt="{{ $relatedEvent->title }}" width="570" height="370" loading="lazy" class="img-fluid" style="height: 280px; width: 100%; object-fit: cover;">
                                                         @endif
                                                     </a>
                                                     <div class="position-absolute top-0 left-0 bg-secondary text-white p-3 rounded-bottom bg-black-opacity-70">
                                                         <div class="text-center">
-                                                            <div class="mb-0 big font-weight-bold">{{ $relatedEvent->start_datetime->format('d') }}</div>
-                                                            <div class="text-uppercase">{{ $relatedEvent->start_datetime->translatedFormat('M') }}</div>
-                                                            <div class="text-uppercase">{{ $relatedEvent->start_datetime->translatedFormat('Y') }}</div>
+                                                            <div class="mb-0 big font-weight-bold">{{ $relatedEvent->start_datetime ? $relatedEvent->start_datetime->format('d') : '--' }}</div>
+                                                            <div class="text-uppercase">{{ $relatedEvent->start_datetime ? $relatedEvent->start_datetime->translatedFormat('M') : '' }}</div>
+                                                            <div class="text-uppercase">{{ $relatedEvent->start_datetime ? $relatedEvent->start_datetime->translatedFormat('Y') : '' }}</div>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -182,11 +219,11 @@
                                                     <div class="d-flex mb-3 gap-4">
                                                         <div>
                                                             <i class="fa fa-clock-o me-1"></i>
-                                                            <span class="text-muted">{{ $relatedEvent->start_datetime->format('H:i') }}</span>
+                                                            <span class="text-muted">{{ $relatedEvent->start_datetime ? $relatedEvent->start_datetime->format('H:i') : __('events.date_not_available') }}</span>
                                                         </div>
                                                         <div>
                                                             <i class="fa fa-map-marker me-1"></i>
-                                                            <span class="text-muted">{{ $relatedEvent->location }}</span>
+                                                            <span class="text-muted">{{ $relatedEvent->location ?: __('events.location_not_available') }}</span>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -209,65 +246,70 @@
 @endsection
 
 @section('structured_data')
-{
-    "@context": "https://schema.org",
-    "@graph": [
-        {
-            "@type": "BreadcrumbList",
-            "itemListElement": [
-                {
-                    "@type": "ListItem",
-                    "position": 1,
-                    "name": "{{ __('events.home') }}",
-                    "item": "{{ route('home') }}"
-                },
-                {
-                    "@type": "ListItem",
-                    "position": 2,
-                    "name": "{{ __('events.events') }}",
-                    "item": "{{ route('eventi') }}"
-                },
-                {
-                    "@type": "ListItem",
-                    "position": 3,
-                    "name": @json($event->title),
-                    "item": "{{ url()->current() }}"
-                }
-            ]
-        },
-        {
-            "@type": "Event",
-            "name": @json($event->title),
-            "description": @json($metaDescription),
-            "url": "{{ url()->current() }}",
-            "image": ["{{ url($eventImage) }}"],
-            "startDate": "{{ optional($event->start_datetime)->toIso8601String() }}",
-            @if($event->end_datetime)
-            "endDate": "{{ $event->end_datetime->toIso8601String() }}",
-            @endif
-            "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode",
-            "eventStatus": "https://schema.org/EventScheduled",
-            "location": {
-                "@type": "Place",
-                "name": @json($event->location),
-                @if($event->address)
-                "address": @json($event->address)
-                @else
-                "address": @json($event->location)
-                @endif
-            },
-            "organizer": {
-                "@type": "Organization",
-                "name": "Banda Folk di Castello Tesino",
-                "url": "{{ route('home') }}"
-            }
-        }
-    ]
-}
+@php
+    $eventSchema = [
+        '@type' => 'Event',
+        'name' => $event->title,
+        'description' => $metaDescription,
+        'url' => url()->current(),
+        'image' => [url($eventImage)],
+        'startDate' => optional($event->start_datetime)->toIso8601String(),
+        'eventAttendanceMode' => 'https://schema.org/OfflineEventAttendanceMode',
+        'eventStatus' => 'https://schema.org/EventScheduled',
+        'location' => [
+            '@type' => 'Place',
+            'name' => $event->location,
+            'address' => $event->address ?: $event->location,
+        ],
+        'organizer' => [
+            '@type' => 'Organization',
+            'name' => 'Banda Folk di Castello Tesino',
+            'url' => route('home'),
+        ],
+    ];
+
+    if ($event->end_datetime) {
+        $eventSchema['endDate'] = $event->end_datetime->toIso8601String();
+    }
+
+    $structuredData = [
+        '@context' => 'https://schema.org',
+        '@graph' => [
+            [
+                '@type' => 'BreadcrumbList',
+                'itemListElement' => [
+                    [
+                        '@type' => 'ListItem',
+                        'position' => 1,
+                        'name' => __('events.home'),
+                        'item' => route('home'),
+                    ],
+                    [
+                        '@type' => 'ListItem',
+                        'position' => 2,
+                        'name' => __('events.events'),
+                        'item' => route('eventi'),
+                    ],
+                    [
+                        '@type' => 'ListItem',
+                        'position' => 3,
+                        'name' => $event->title,
+                        'item' => url()->current(),
+                    ],
+                ],
+            ],
+            $eventSchema,
+        ],
+    ];
+@endphp
+
+@json($structuredData, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT)
 @endsection
 
 @section('scripts')
 @if($event->latitude && $event->longitude)
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         // Initialize map
@@ -279,7 +321,7 @@
         
         L.marker([{{ $event->latitude }}, {{ $event->longitude }}])
             .addTo(map)
-            .bindPopup("{{ $event->location }}")
+            .bindPopup(@json($event->location ?: __('events.location_not_available')))
             .openPopup();
     });
 </script>
@@ -322,22 +364,4 @@
         setInterval(step, delay);
     });
     </script>
-
-<script>
-    // Initialize lightbox
-    document.addEventListener('DOMContentLoaded', function() {
-        lightbox.option({
-            'resizeDuration': 200,
-            'wrapAround': true,
-            'albumLabel': 'Immagine %1 di %2',
-            'alwaysShowNavOnTouchDevices': true
-        });
-    });
-</script>
-
-<!-- Include only if not already in your layout -->
-<script src="https://cdn.jsdelivr.net/npm/lightbox2@2.11.3/dist/js/lightbox.min.js"></script>
-<link href="https://cdn.jsdelivr.net/npm/lightbox2@2.11.3/dist/css/lightbox.min.css" rel="stylesheet">
-<link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
-<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
 @endsection

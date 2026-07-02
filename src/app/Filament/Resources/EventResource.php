@@ -4,6 +4,7 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\EventResource\Pages;
 use App\Filament\Resources\EventResource\RelationManagers;
+use App\Filament\Support\OptimizedImageUpload;
 use App\Models\Event;
 use App\Models\GalleryAlbum;
 use App\Services\TranslationService;
@@ -173,7 +174,7 @@ class EventResource extends Resource
                                     ->openable()
                                     ->downloadable()
                                     ->previewable(true)
-                                    ->optimize('webp'),
+                                    ->saveUploadedFileUsing(OptimizedImageUpload::webp('event-images', quality: 65, maxWidth: 1920, maxHeight: 1920)),
                                 Forms\Components\Select::make('gallery_id')
                                     ->label(__('fields.event.photo_gallery'))
                                     ->relationship('galleryAlbum', 'title')

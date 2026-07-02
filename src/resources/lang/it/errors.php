@@ -15,4 +15,11 @@ return [
             'Come un assolo improvvisato… questa pagina non era prevista!',
         ],
     ],
+    '500' => [
+        'title' => 'Errore temporaneo - 500',
+        'description' => 'Si è verificato un problema temporaneo.',
+        'message' => 'Stiamo già lavorando per riportare tutto online. Riprova tra poco o contattaci se il problema continua.',
+        'cta_home' => 'Torna alla Home',
+        'cta_contact' => 'Contattaci',
+    ],
 ];

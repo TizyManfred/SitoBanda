@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\SectionResource\RelationManagers;
 
+use App\Filament\Support\OptimizedImageUpload;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\RelationManagers\RelationManager;
@@ -44,7 +45,7 @@ class SectionImagesRelationManager extends RelationManager
                     ])
                     ->imageResizeTargetWidth('2560')
                     ->imageResizeTargetHeight('2560')
-                    ->optimize('webp'),
+                    ->saveUploadedFileUsing(OptimizedImageUpload::webp('section-images', quality: 65, maxWidth: 1920, maxHeight: 1920)),
                 Forms\Components\TextInput::make('caption')
                     ->label(__('fields.gallery.caption'))
                     ->maxLength(255),

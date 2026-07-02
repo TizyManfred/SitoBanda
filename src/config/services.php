@@ -40,4 +40,9 @@ return [
         'timeout' => env('TRANSLATION_TIMEOUT', 10),
     ],
 
+    'artisan_commands' => [
+        'enabled' => env('ARTISAN_COMMANDS_ENABLED', false),
+        'allowed_emails' => env('ARTISAN_COMMANDS_ALLOWED_EMAILS', ''),
+    ],
+
 ];

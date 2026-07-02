@@ -69,7 +69,7 @@ class ContactController extends Controller
             $contact->email = $request->email;
             $contact->phone = $request->input('phone');
             $contact->subject = $fromFooter
-                ? __('Nuovo messaggio dal form nel footer')
+                ? __('contact.messages.footer_subject')
                 : $request->subject;
             $contact->message = $request->message;
             $contact->ip_address = $request->ip();
@@ -83,7 +83,7 @@ class ContactController extends Controller
                 ->send(new ContactFormSubmission($contact));
 
             // Set success message and redirect appropriately
-            $successMsg = __('Il tuo messaggio è stato inviato con successo. Ti risponderemo al più presto.');
+            $successMsg = __('contact.messages.success');
             if ($request->ajax()) {
                 // RD Mailform expects a short code on success
                 return response('MF000', 200);
@@ -100,11 +100,11 @@ class ContactController extends Controller
             }
             if ($fromFooter) {
                 return back()
-                    ->with('footer_error', __('Si è verificato un errore durante l\'invio del messaggio. Riprova più tardi.'))
+                    ->with('footer_error', __('contact.messages.error'))
                     ->withInput();
             }
             return redirect()->route('contatti')
-                ->with('error', __('Si è verificato un errore durante l\'invio del messaggio. Riprova più tardi.'))
+                ->with('error', __('contact.messages.error'))
                 ->withInput();
         }
     }

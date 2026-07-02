@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\Translatable\HasTranslations;
 use Illuminate\Support\Str;
@@ -80,5 +81,13 @@ class GalleryAlbum extends Model
     public function items(): HasMany
     {
         return $this->hasMany(GalleryItem::class, 'album_id');
+    }
+
+    /**
+     * Get the event associated with the gallery album.
+     */
+    public function event(): HasOne
+    {
+        return $this->hasOne(Event::class, 'gallery_id');
     }
 }

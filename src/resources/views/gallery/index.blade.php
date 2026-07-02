@@ -48,7 +48,7 @@ use Illuminate\Support\Str;
                         <div class="row">
                             @if(isset($albums) && $albums->count() > 0)
                                 @foreach($albums as $album)
-                                    <a href="{{ route('galleria.album', $album->slug ?? $album->slug->it) }}" class="d-block col-md-6 col-lg-4 mb-5 wow fadeInUp" data-wow-delay="0.{{ $loop->iteration }}s">
+                                    <a href="{{ route('galleria.album', $album->slug ?? $album->slug->it) }}" class="d-block col-md-6 col-lg-4 mb-5 wow fadeInUp gallery-album-card-link" data-wow-delay="0.{{ $loop->iteration }}s">
                                         <div >
                                             <div class="card h-100 border-0 shadow-sm overflow-hidden rounded-0 card-hover-scale">
                                                 <div class="position-relative img-hover-zoom">
@@ -68,7 +68,7 @@ use Illuminate\Support\Str;
                                                             </div>
                                                         </div>
                                                     @else
-                                                        <img src="{{ asset('images/placeholder-album.jpg') }}" 
+                                                        <img src="{{ asset('images/FotoGalleria1.webp') }}"
                                                             class="card-img-top img-fluid" 
                                                             alt="{{ $album->title }}" 
                                                             loading="lazy"
@@ -79,18 +79,24 @@ use Illuminate\Support\Str;
                                                     </div>
                                                 </div>
                                                 <div class="card-body">
-                                                    <h5 class="card-title mb-2">
+                                                    <h5 class="card-title mb-2 gallery-album-card-title">
                                                         <span class="text-dark text-decoration-none">{{ $album->title }}</span>
                                                     </h5>
                                                     @if($album->description)
                                                         <p class="card-text text-muted small mb-3">
-                                                            {{ Str::limit($album->description, 120) }}
+                                                            {{ Str::limit(strip_tags($album->description), 120) }}
                                                         </p>
                                                     @endif
                                                     <div class="d-flex justify-content-between align-items-center">
-                                                        <span class="badge bg-light text-dark">
-                                                            <i class="fa fa-calendar me-1"></i> {{ $album->start_date->translatedFormat(__('M Y')) }}
-                                                        </span>
+                                                        @if($album->start_date)
+                                                            <span class="badge bg-light text-dark">
+                                                                <i class="fa fa-calendar me-1"></i> {{ $album->start_date->translatedFormat('M Y') }}
+                                                            </span>
+                                                        @else
+                                                            <span class="badge bg-light text-dark">
+                                                                <i class="fa fa-images me-1"></i> {{ trans_choice('gallery.photos', $album->items_count ?? 0, ['count' => $album->items_count ?? 0]) }}
+                                                            </span>
+                                                        @endif
                                                         <span class="btn btn-sm btn-outline-primary">
                                                             {{ __('gallery.view_album') }} <i class="fa fa-arrow-right ms-1"></i>
                                                         </span>

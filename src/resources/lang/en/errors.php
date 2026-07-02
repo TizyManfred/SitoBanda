@@ -15,4 +15,11 @@ return [
             'Like an improvised solo… this page wasn’t planned!',
         ],
     ],
+    '500' => [
+        'title' => 'Temporary Error - 500',
+        'description' => 'A temporary problem occurred.',
+        'message' => 'We are working to bring everything back online. Please try again shortly or contact us if the problem continues.',
+        'cta_home' => 'Back to Home',
+        'cta_contact' => 'Contact Us',
+    ],
 ];

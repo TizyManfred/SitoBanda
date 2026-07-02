@@ -1,5 +1,13 @@
 <?php
 
+$publicDiskRoot = env('PUBLIC_DISK_ROOT');
+
+if (! $publicDiskRoot) {
+    $publicDiskRoot = env('APP_PUBLIC_PATH')
+        ? public_path('storage')
+        : storage_path('app/public');
+}
+
 return [
 
     /*
@@ -40,11 +48,11 @@ return [
 
         'public' => [
             'driver' => 'local',
-            'root' => storage_path('app/public'),
+            'root' => $publicDiskRoot,
             'url' => env('APP_URL').'/storage',
             'visibility' => 'public',
-            'throw' => false,
-            'report' => false,
+            'throw' => true,
+            'report' => true,
         ],
 
         's3' => [
@@ -73,8 +81,10 @@ return [
     |
     */
 
-    'links' => [
-        public_path('storage') => storage_path('app/public'),
-    ],
+    'links' => env('APP_PUBLIC_PATH')
+        ? []
+        : [
+            public_path('storage') => storage_path('app/public'),
+        ],
 
 ];

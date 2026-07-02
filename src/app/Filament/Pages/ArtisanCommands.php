@@ -7,13 +7,12 @@ use Filament\Forms\Components\Select;
 use Filament\Pages\Page;
 use Filament\Forms\Form;
 use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\Auth;
 use Filament\Notifications\Notification;
 
 class ArtisanCommands extends Page
 {
     protected static ?string $navigationIcon = 'heroicon-o-command-line';
-    protected static ?string $navigationLabel = 'Artisan Commands';
-    protected static ?string $navigationGroup = 'Sistema';
     protected static string $view = 'filament.pages.artisan-commands';
     
     public ?string $selectedCommand = '';
@@ -26,24 +25,8 @@ class ArtisanCommands extends Page
                 Card::make()
                     ->schema([
                         Select::make('selectedCommand')
-                            ->label('Select Command')
-                            ->options([
-                                'storage:link' => 'Create Storage Link',
-                                'migrate' => 'Run Migrations',
-                                'migrate --force' => 'Run Migrations (Production)',
-                                'migrate:fresh --seed' => 'Fresh Migrate + Seed',
-                                'optimize:clear' => 'Clear Cache',
-                                'package:discover' => 'Refresh Package Discovery',
-                                'view:clear' => 'Clear View Cache',
-                                'config:clear' => 'Clear Config Cache',
-                                'route:clear' => 'Clear Route Cache',
-                                'cache:clear' => 'Clear Application Cache',
-                                'lang:publish' => 'Publish languages',
-                                'filament:assets' => 'Publish Filament assets',
-                                'filament:upgrade' => 'Run Filament Upgrade Tasks',
-                                'filament:optimize-clear' => 'Clear Filament Cache',
-                                'filament:optimize' => 'Cache Filament Components',
-                            ])
+                            ->label(__('filament.artisan_commands.select_command'))
+                            ->options(static::allowedCommands())
                             ->required()
                             ->searchable(),
                     ])
@@ -53,21 +36,30 @@ class ArtisanCommands extends Page
     public function executeCommand()
     {
         $command = $this->selectedCommand;
+
+        if (! array_key_exists($command, static::allowedCommands())) {
+            Notification::make()
+                ->title(__('filament.artisan_commands.invalid_command'))
+                ->danger()
+                ->send();
+
+            return;
+        }
         
         try {
             Artisan::call($command);
             $output = Artisan::output();
             
             Notification::make()
-                ->title('Command executed successfully!')
+                ->title(__('filament.artisan_commands.executed'))
                 ->success()
                 ->send();
                 
-            $this->output = $output ?: 'Command executed successfully with no output';
+            $this->output = $output ?: __('filament.artisan_commands.empty_output');
             
         } catch (\Exception $e) {
             Notification::make()
-                ->title('Error executing command')
+                ->title(__('filament.artisan_commands.error'))
                 ->body($e->getMessage())
                 ->danger()
                 ->send();
@@ -78,12 +70,58 @@ class ArtisanCommands extends Page
     
     public static function canAccess(): bool
     {
-        // Allow all authenticated users to access this page
-        return true;
+        if (app()->isLocal()) {
+            return true;
+        }
+
+        if (! (bool) config('services.artisan_commands.enabled', false)) {
+            return false;
+        }
+
+        $allowedEmails = array_filter(array_map(
+            'trim',
+            explode(',', (string) config('services.artisan_commands.allowed_emails', ''))
+        ));
+
+        if ($allowedEmails === []) {
+            return false;
+        }
+
+        return in_array((string) Auth::user()?->email, $allowedEmails, true);
     }
     
     public static function shouldRegisterNavigation(): bool
     {
         return static::canAccess();
+    }
+
+    public static function getNavigationLabel(): string
+    {
+        return __('filament.artisan_commands.navigation_label');
+    }
+
+    public static function getNavigationGroup(): ?string
+    {
+        return __('filament.navigation_groups.system');
+    }
+
+    protected static function allowedCommands(): array
+    {
+        return [
+            'storage:link' => __('filament.artisan_commands.commands.storage_link'),
+            'migrate' => __('filament.artisan_commands.commands.migrate'),
+            'migrate --force' => __('filament.artisan_commands.commands.migrate_force'),
+            'optimize:clear' => __('filament.artisan_commands.commands.optimize_clear'),
+            'package:discover' => __('filament.artisan_commands.commands.package_discover'),
+            'view:clear' => __('filament.artisan_commands.commands.view_clear'),
+            'config:clear' => __('filament.artisan_commands.commands.config_clear'),
+            'route:clear' => __('filament.artisan_commands.commands.route_clear'),
+            'cache:clear' => __('filament.artisan_commands.commands.cache_clear'),
+            'lang:publish' => __('filament.artisan_commands.commands.lang_publish'),
+            'filament:assets' => __('filament.artisan_commands.commands.filament_assets'),
+            'filament:upgrade' => __('filament.artisan_commands.commands.filament_upgrade'),
+            'filament:optimize-clear' => __('filament.artisan_commands.commands.filament_optimize_clear'),
+            'filament:optimize' => __('filament.artisan_commands.commands.filament_optimize'),
+        ];
     }
 }

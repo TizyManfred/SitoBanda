@@ -10,17 +10,42 @@ use App\Http\Controllers\RepertoireController;
 use Illuminate\Support\Facades\Storage;
 
 Route::get('storage/{path}', function (string $path) {
-    abort_if(str_contains($path, '..') || str_starts_with($path, '/'), 404);
-    abort_unless(Storage::disk('public')->exists($path), 404);
+    abort_if(
+        str_contains($path, '..')
+        || str_contains($path, '\\')
+        || str_starts_with($path, '/'),
+        404
+    );
 
-    return response()->file(Storage::disk('public')->path($path), [
+    $publicDisk = Storage::disk('public');
+
+    if ($publicDisk->exists($path)) {
+        return response()->file($publicDisk->path($path), [
+            'Cache-Control' => 'public, max-age=31536000',
+        ]);
+    }
+
+    $publicStorageRoot = public_path('storage');
+    $publicStoragePath = $publicStorageRoot.'/'.$path;
+    $realPublicStorageRoot = realpath($publicStorageRoot);
+    $realPublicStoragePath = realpath($publicStoragePath);
+
+    abort_unless(
+        $realPublicStorageRoot
+        && $realPublicStoragePath
+        && str_starts_with($realPublicStoragePath, $realPublicStorageRoot.DIRECTORY_SEPARATOR)
+        && is_file($realPublicStoragePath),
+        404
+    );
+
+    return response()->file($realPublicStoragePath, [
         'Cache-Control' => 'public, max-age=31536000',
     ]);
 })->where('path', '.*')->name('storage.public');
 
 Route::group([
     'prefix' => LaravelLocalization::setLocale(),
-    'middleware' => [ 'localeSessionRedirect', 'localizationRedirect', 'localeViewPath' ],
+    'middleware' => [ 'localize', 'localeSessionRedirect', 'localizationRedirect', 'localeViewPath' ],
 ], function() {
 
     // Home page

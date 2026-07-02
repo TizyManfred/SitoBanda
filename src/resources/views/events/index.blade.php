@@ -51,7 +51,7 @@
                                                 @if($event->image_path)
                                                     <img src="{{ Storage::url($event->image_path) }}" alt="{{ $event->title }}" width="570" height="370" loading="lazy" class="img-fluid" style="height: 280px; width: 100%; object-fit: cover;">
                                                 @else
-                                                    <img src="{{ asset('images/event-default.jpg') }}" alt="{{ $event->title }}" width="570" height="370" loading="lazy" class="img-fluid" style="height: 280px; width: 100%; object-fit: cover;">
+                                                    <img src="{{ asset('images/FotoEventi1.webp') }}" alt="{{ $event->title }}" width="570" height="370" loading="lazy" class="img-fluid" style="height: 280px; width: 100%; object-fit: cover;">
                                                 @endif
                                             </a>
                                             <div class="position-absolute top-0 left-0 bg-secondary text-white p-3 rounded-bottom bg-black-opacity-70" >
@@ -108,7 +108,7 @@
                                                 @if($event->image_path)
                                                     <img src="{{ Storage::url($event->image_path) }}" alt="{{ $event->title }}" width="570" height="370" loading="lazy" class="img-fluid object-fit-cover" style="height: 280px; width: 100%;">
                                                 @else
-                                                    <img src="{{ asset('images/event-default.jpg') }}" alt="{{ $event->title }}" width="570" height="370" loading="lazy" class="img-fluid object-fit-cover" style="height: 280px; width: 100%;">
+                                                    <img src="{{ asset('images/FotoEventi1.webp') }}" alt="{{ $event->title }}" width="570" height="370" loading="lazy" class="img-fluid object-fit-cover" style="height: 280px; width: 100%;">
                                                 @endif
                                             </a>
                                             <div class="position-absolute top-0 left-0 bg-secondary text-white p-3 rounded-bottom bg-black-opacity-70" >

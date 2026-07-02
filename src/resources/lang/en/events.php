@@ -26,9 +26,17 @@ return [
     'view_all_photos' => 'View All Photos',
     'map' => 'Map',
     'share_event' => 'Share This Event',
+    'share_title' => 'Invite someone to join',
+    'share_facebook' => 'Share on Facebook',
+    'share_twitter' => 'Share on Twitter',
+    'share_whatsapp' => 'Share on WhatsApp',
+    'share_email' => 'Share by email',
     'related_events' => 'Related Events',
     'all_events' => 'All Events',
     'no_upcoming_events_sidebar' => 'There are no upcoming events at the moment.',
+    'date_not_available' => 'Date to be confirmed',
+    'location_not_available' => 'Location to be confirmed',
+    'description_not_available' => 'No description is available for this event.',
     
     // Empty states
     'no_upcoming_events' => 'There are no scheduled events at the moment. Come back soon for updates!',

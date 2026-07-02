@@ -3,6 +3,7 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\StaticPageResource\Pages;
+use App\Filament\Support\OptimizedImageUpload;
 use App\Models\StaticPage;
 use App\Services\TranslationService;
 use Filament\Forms;
@@ -125,7 +126,7 @@ class StaticPageResource extends Resource
                                                     ->openable()
                                                     ->downloadable()
                                                     ->previewable(true)
-                                                    ->optimize('webp')
+                                                    ->saveUploadedFileUsing(OptimizedImageUpload::webp('static-pages/content-images', quality: 65, maxWidth: 1920, maxHeight: 1920))
                                                     ->required()
                                                     ->columnSpanFull(),
                                                 Forms\Components\Tabs::make('image_description_translations')
@@ -137,6 +138,10 @@ class StaticPageResource extends Resource
                                                         Forms\Components\Tabs\Tab::make('Deutsch')
                                                             ->schema(static::imageDescriptionSchema('de')),
                                                     ])
+                                                    ->columnSpanFull(),
+                                                Forms\Components\Actions::make([
+                                                    static::translateImageDescriptionAction(),
+                                                ])
                                                     ->columnSpanFull(),
                                             ])
                                             ->itemLabel(function (array $state): ?string {
@@ -191,7 +196,7 @@ class StaticPageResource extends Resource
                                     ->openable()
                                     ->downloadable()
                                     ->previewable(true)
-                                    ->optimize('webp')
+                                    ->saveUploadedFileUsing(OptimizedImageUpload::webp('static-pages/header-images', quality: 70, maxWidth: 2560, maxHeight: 1440))
                                     ->helperText(__('fields.static_page.home_header_images_helper'))
                                     ->visible(fn (Forms\Get $get): bool => $get('page_key') === 'home'),
                                 Forms\Components\FileUpload::make('header_image_path')
@@ -213,7 +218,7 @@ class StaticPageResource extends Resource
                                     ->openable()
                                     ->downloadable()
                                     ->previewable(true)
-                                    ->optimize('webp')
+                                    ->saveUploadedFileUsing(OptimizedImageUpload::webp('static-pages/header-images', quality: 70, maxWidth: 2560, maxHeight: 1440))
                                     ->helperText(__('fields.static_page.header_image_path_helper'))
                                     ->visible(fn (Forms\Get $get): bool => $get('page_key') !== 'home'),
                                 Forms\Components\TextInput::make('fallback_header_image_path')
@@ -346,6 +351,64 @@ class StaticPageResource extends Resource
             });
     }
 
+    protected static function translateImageDescriptionAction(): Action
+    {
+        return Action::make('translateImageDescription')
+            ->label(__('fields.static_page.translate_image_description'))
+            ->icon('heroicon-o-language')
+            ->tooltip(__('fields.static_page.translate_image_description'))
+            ->size('sm')
+            ->color('gray')
+            ->action(function (Forms\Get $get, Forms\Set $set): void {
+                $locales = array_keys(LaravelLocalization::getSupportedLocales());
+                $description = (array) ($get('description') ?? []);
+                $sourceLocale = static::resolveImageDescriptionSourceLocale($locales, $description);
+
+                if (! $sourceLocale) {
+                    Notification::make()
+                        ->warning()
+                        ->title(__('fields.static_page.image_translation_source_missing'))
+                        ->body(__('fields.static_page.image_translation_source_missing_body'))
+                        ->send();
+
+                    return;
+                }
+
+                $sourceDescription = trim((string) ($description[$sourceLocale] ?? ''));
+                $translationService = app(TranslationService::class);
+                $translatedLocales = [];
+
+                foreach ($locales as $targetLocale) {
+                    if ($targetLocale === $sourceLocale || filled(trim((string) ($description[$targetLocale] ?? '')))) {
+                        continue;
+                    }
+
+                    $translatedDescription = $translationService->translate($sourceDescription, $sourceLocale, $targetLocale);
+
+                    if (filled($translatedDescription)) {
+                        $set("description.{$targetLocale}", $translatedDescription);
+                        $translatedLocales[] = $targetLocale;
+                    }
+                }
+
+                if ($translatedLocales === []) {
+                    Notification::make()
+                        ->warning()
+                        ->title(__('fields.static_page.translation_nothing_to_update'))
+                        ->body(__('fields.static_page.translation_nothing_to_update_body'))
+                        ->send();
+
+                    return;
+                }
+
+                Notification::make()
+                    ->success()
+                    ->title(__('fields.static_page.translation_completed'))
+                    ->body(__('fields.static_page.translation_completed_body', ['locales' => implode(', ', $translatedLocales)]))
+                    ->send();
+            });
+    }
+
     protected static function resolveContentBlockSourceLocale(array $locales, array $title, array $body): ?string
     {
         if (in_array('it', $locales, true) && (filled($title['it'] ?? null) || filled($body['it'] ?? null))) {
@@ -354,6 +417,21 @@ class StaticPageResource extends Resource
 
         foreach ($locales as $locale) {
             if (filled($title[$locale] ?? null) || filled($body[$locale] ?? null)) {
+                return $locale;
+            }
+        }
+
+        return null;
+    }
+
+    protected static function resolveImageDescriptionSourceLocale(array $locales, array $description): ?string
+    {
+        if (in_array('it', $locales, true) && filled($description['it'] ?? null)) {
+            return 'it';
+        }
+
+        foreach ($locales as $locale) {
+            if (filled($description[$locale] ?? null)) {
                 return $locale;
             }
         }

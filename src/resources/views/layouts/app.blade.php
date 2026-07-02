@@ -5,6 +5,10 @@
         $canonicalUrl = trim($__env->yieldContent('canonical', url()->current()));
         $defaultOgImage = asset('images/FotoSanIppolito1.webp');
         $ogImage = trim($__env->yieldContent('og_image', $defaultOgImage));
+        $supportedLocales = LaravelLocalization::getSupportedLocales();
+        $defaultLocale = LaravelLocalization::getDefaultLocale();
+        $currentLocaleProperties = $supportedLocales[app()->getLocale()] ?? [];
+        $ogLocale = str_replace('-', '_', $currentLocaleProperties['regional'] ?? app()->getLocale());
 
         if ($canonicalUrl !== '' && !\Illuminate\Support\Str::startsWith($canonicalUrl, ['http://', 'https://'])) {
             $canonicalUrl = url($canonicalUrl);
@@ -31,7 +35,12 @@
     <!-- Meta Tags -->
     <meta name="description" content="@yield('description', 'La Banda Folk di Castello Tesino, attiva dal 1901, porta avanti la tradizione musicale del Trentino con concerti, eventi e corsi di musica.')">
     <meta property="og:site_name" content="Banda Folk di Castello Tesino">
-    <meta property="og:locale" content="{{ str_replace('-', '_', app()->getLocale()) }}">
+    <meta property="og:locale" content="{{ $ogLocale }}">
+    @foreach($supportedLocales as $localeCode => $properties)
+        @if($localeCode !== app()->getLocale())
+            <meta property="og:locale:alternate" content="{{ str_replace('-', '_', $properties['regional'] ?? $localeCode) }}">
+        @endif
+    @endforeach
     <meta property="og:title" content="@yield('og_title', 'Banda Folk di Castello Tesino - Tradizione dal 1901')">
     <meta property="og:description" content="@yield('og_description', 'Scopri la Banda Folk di Castello Tesino, custode della tradizione musicale trentina dal 1901.')">
     <meta property="og:image" content="{{ $ogImage }}">
@@ -46,10 +55,14 @@
     <link rel="canonical" href="{{ $canonicalUrl }}">
 
     <!-- Hreflang tags -->
-    @foreach(LaravelLocalization::getSupportedLocales() as $localeCode => $properties)
-        <link rel="alternate" hreflang="{{ $localeCode }}" href="{{ LaravelLocalization::getLocalizedURL($localeCode, null, [], true) }}" />
-    @endforeach
-    <link rel="alternate" hreflang="x-default" href="{{ LaravelLocalization::getLocalizedURL(LaravelLocalization::getDefaultLocale(), null, [], true) }}" />
+    @hasSection('alternate_urls')
+        @yield('alternate_urls')
+    @else
+        @foreach($supportedLocales as $localeCode => $properties)
+            <link rel="alternate" hreflang="{{ $localeCode }}" href="{{ LaravelLocalization::getLocalizedURL($localeCode, null, [], $localeCode !== $defaultLocale) }}" />
+        @endforeach
+        <link rel="alternate" hreflang="x-default" href="{{ LaravelLocalization::getLocalizedURL($defaultLocale, null, [], false) }}" />
+    @endif
 
     <!-- Robots meta -->
     <meta name="robots" content="@yield('robots', 'index, follow')">
@@ -113,27 +126,33 @@
         </script>
     @else
     <script type="application/ld+json">
-    {
-        "@@context": "https://schema.org",
-        "@@type": "BreadcrumbList",
-        "itemListElement": [
-            {
-                "@@type": "ListItem",
-                "position": 1,
-                "name": "{{ __('header.home') }}",
-                "item": "{{ url('/') }}"
-            }@if(!empty($breadcrumbs))
-                @foreach($breadcrumbs as $index => $crumb)
-                ,{
-                    "@@type": "ListItem",
-                    "position": {{ $index + 2 }},
-                    "name": "{{ $crumb['name'] }}",
-                    "item": "{{ $crumb['url'] }}"
-                }
-                @endforeach
-            @endif
-        ]
-    }
+        @php
+            $breadcrumbItems = [
+                [
+                    '@type' => 'ListItem',
+                    'position' => 1,
+                    'name' => __('header.home'),
+                    'item' => url('/'),
+                ],
+            ];
+
+            foreach ($breadcrumbs ?? [] as $index => $crumb) {
+                $breadcrumbItems[] = [
+                    '@type' => 'ListItem',
+                    'position' => $index + 2,
+                    'name' => $crumb['name'],
+                    'item' => $crumb['url'],
+                ];
+            }
+
+            $breadcrumbStructuredData = [
+                '@context' => 'https://schema.org',
+                '@type' => 'BreadcrumbList',
+                'itemListElement' => $breadcrumbItems,
+            ];
+        @endphp
+
+        @json($breadcrumbStructuredData, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT)
     </script>
     @endif
 </body>

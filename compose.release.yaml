@@ -58,7 +58,8 @@ services:
           "$$LARAVEL_DIR/storage/framework/sessions"/* \
           "$$LARAVEL_DIR/storage/framework/testing"/* \
           "$$LARAVEL_DIR/storage/framework/views"/* \
-          "$$LARAVEL_DIR/storage/logs"/*.log 2>/dev/null || true
+          "$$LARAVEL_DIR/storage/logs"/*.log \
+          "$$LARAVEL_DIR/bootstrap/cache"/*.php 2>/dev/null || true
 
         echo "==> Installing production Composer dependencies"
         cd "$$LARAVEL_DIR"
@@ -140,6 +141,7 @@ services:
         APP_DEBUG=false
         APP_URL=$${app_url_env}
         ASSET_URL=$${app_url_env}
+        APP_PUBLIC_PATH=../public_html/$${PUBLIC_SUBDIR}
 
         APP_LOCALE=it
         APP_FALLBACK_LOCALE=it

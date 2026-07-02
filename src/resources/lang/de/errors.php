@@ -15,4 +15,11 @@ return [
             'Wie ein improvisiertes Solo… diese Seite war nicht geplant!',
         ],
     ],
+    '500' => [
+        'title' => 'Vorübergehender Fehler - 500',
+        'description' => 'Es ist ein vorübergehendes Problem aufgetreten.',
+        'message' => 'Wir arbeiten daran, alles wieder online zu bringen. Bitte versuchen Sie es gleich erneut oder kontaktieren Sie uns, falls das Problem weiterhin besteht.',
+        'cta_home' => 'Zur Startseite',
+        'cta_contact' => 'Kontakt',
+    ],
 ];

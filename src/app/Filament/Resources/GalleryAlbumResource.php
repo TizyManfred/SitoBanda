@@ -72,7 +72,7 @@ class GalleryAlbumResource extends Resource
                         Forms\Components\Grid::make(6)
                             ->schema([
                                 TranslatableContainer::make(
-                                    Forms\Components\Textarea::make('description')
+                                    Forms\Components\RichEditor::make('description')
                                         ->label(__('fields.gallery.description'))
                                         ->columnSpanFull()
                                 )->columnSpan(5),

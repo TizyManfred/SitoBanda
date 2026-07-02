@@ -36,4 +36,10 @@ return [
         'privacy_link' => 'Privacy Policy',
         'submit' => 'Send Message',
     ],
+
+    'messages' => [
+        'footer_subject' => 'New message from the footer form',
+        'success' => 'Your message has been sent successfully. We will reply as soon as possible.',
+        'error' => 'An error occurred while sending your message. Please try again later.',
+    ],
 ];

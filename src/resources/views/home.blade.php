@@ -170,7 +170,7 @@
                         @endphp
                         <img src="{{ $src }}" alt="{{ $event['title'] }}" width="570" height="370" loading="lazy" class="img-fluid" style="height: 280px; width: 100%; object-fit: cover;">
                       @else
-                        <img src="{{ asset('images/event-default.jpg') }}" alt="{{ $event['title'] }}" width="570" height="370" loading="lazy" class="img-fluid" style="height: 280px; width: 100%; object-fit: cover;">
+                        <img src="{{ asset('images/FotoEventi1.webp') }}" alt="{{ $event['title'] }}" width="570" height="370" loading="lazy" class="img-fluid" style="height: 280px; width: 100%; object-fit: cover;">
                       @endif
                     </a>
                     @if($start)
@@ -270,12 +270,15 @@
                         'addressCountry' => 'IT'
                     ]
                 ],
-                'image' => $event['image_path'] ?? asset('images/event-placeholder.jpg'),
+                'image' => !empty($event['image_path'])
+                    ? \Illuminate\Support\Facades\Storage::url($event['image_path'])
+                    : asset('images/FotoEventi1.webp'),
                 'description' => $event['short_description'] ?? __('home.structured.event_default_description')
             ];
         }
         $structuredData['event'] = $events;
     }
 @endphp
-{!! json_encode($structuredData, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES) !!}
+
+@json($structuredData, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT)
 @endsection

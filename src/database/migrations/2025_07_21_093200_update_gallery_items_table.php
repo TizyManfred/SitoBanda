@@ -28,7 +28,7 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('gallery_items', function (Blueprint $table) {
-            $table->dropIfExist('caption');
+            $table->dropColumn('caption');
 
             $table->text('description')->nullable()->default('');
             $table->text('title')->default('');

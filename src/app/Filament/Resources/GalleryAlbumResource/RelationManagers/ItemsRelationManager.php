@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\GalleryAlbumResource\RelationManagers;
 
 use App\Filament\Traits\WithAiTranslation;
+use App\Filament\Support\OptimizedImageUpload;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\RelationManagers\RelationManager;
@@ -29,6 +30,43 @@ class ItemsRelationManager extends RelationManager
     use WithAiTranslation;
 
     protected static string $relationship = 'items';
+
+    public function translateBulkUploadCaption(array $captions): array
+    {
+        $locales = array_keys(LaravelLocalization::getSupportedLocales());
+        $captions = collect($captions)
+            ->map(fn ($caption) => is_string($caption) ? trim($caption) : '')
+            ->only($locales)
+            ->all();
+
+        $sourceLocale = collect(['it', App::getLocale(), ...$locales])
+            ->first(fn ($locale) => filled($captions[$locale] ?? null));
+
+        if (! $sourceLocale) {
+            return $captions;
+        }
+
+        $sourceText = $captions[$sourceLocale];
+        $translationService = app(TranslationService::class);
+
+        foreach ($locales as $targetLocale) {
+            if ($targetLocale === $sourceLocale || filled($captions[$targetLocale] ?? null)) {
+                continue;
+            }
+
+            $translated = $translationService->translate($sourceText, $sourceLocale, $targetLocale);
+
+            if (filled($translated)) {
+                $captions[$targetLocale] = $translated;
+            }
+        }
+
+        foreach ($locales as $locale) {
+            $captions[$locale] ??= '';
+        }
+
+        return $captions;
+    }
 
     public function form(Form $form): Form
     {
@@ -69,7 +107,7 @@ class ItemsRelationManager extends RelationManager
                     ->imageResizeTargetHeight('2560')
                     ->visible(fn (): bool => !str_contains(Request::url(), '/edit') || !$this->getRecord()?->image_path)
                     ->dehydrated(true)
-                    ->optimize('webp'),
+                    ->saveUploadedFileUsing(OptimizedImageUpload::webp('gallery-items', quality: 65, maxWidth: 1920, maxHeight: 1920)),
 
                 Forms\Components\Grid::make(6)
                     ->schema([
@@ -145,7 +183,9 @@ class ItemsRelationManager extends RelationManager
                 Tables\Actions\Action::make('moveUp')
                     ->icon('heroicon-o-arrow-up')
                     ->action(function (Model $record) {
-                        $record->decrement('sort_order');
+                        if ((int) $record->sort_order > 0) {
+                            $record->decrement('sort_order');
+                        }
                     }),
 
                 Tables\Actions\Action::make('moveDown')
@@ -308,25 +348,9 @@ class ItemsRelationManager extends RelationManager
                     ->modalSubmitActionLabel(__('fields.gallery.upload_all_images'))
                     ->modalWidth('4xl'),
             ])
-            ->actions([
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
-            ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
-                    Tables\Actions\BulkAction::make('show')
-                        ->icon('heroicon-o-eye')
-                        ->label(__('fields.gallery.show_selected'))
-                        ->action(fn (\Illuminate\Support\Collection $records) =>
-                            $records->each->update(['is_visible' => true])
-                        ),
-                    Tables\Actions\BulkAction::make('hide')
-                        ->icon('heroicon-m-eye-slash')
-                        ->label(__('fields.gallery.hide_selected'))
-                        ->action(fn (\Illuminate\Support\Collection $records) =>
-                            $records->each->update(['is_visible' => false])
-                        ),
                 ]),
             ])
             ->reorderable('sort_order')

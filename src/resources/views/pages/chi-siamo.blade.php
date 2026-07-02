@@ -52,13 +52,14 @@
     @endif
 
     <!-- Discover More -->
-    <section class="section section-sm bg-gray-100 text-left">
+    <section class="section section-sm bg-gray-100 text-left discover-more-section">
         <div class="container">
             <h2 class="title-decoration-lines-left">{{ __('chi-siamo.discover_more_title') }}</h2>
-            <div class="row row-50">
+            <div class="row row-30 discover-more-grid">
                 <div class="col-md-6 col-lg-4">
-                    <article class="box-icon-modern box-icon-modern-custom">
+                    <article class="box-icon-modern box-icon-modern-custom discover-more-card">
                         <div>
+                            <div class="box-icon-modern-icon"><i class="fa fa-book"></i></div>
                             <h3 class="box-icon-modern-big-title">{{ __('chi-siamo.history_title') }}</h3>
                             <div class="box-icon-modern-decor"></div>
                             <p class="box-icon-modern-text">{{ __('chi-siamo.history_text') }}</p>
@@ -67,8 +68,9 @@
                     </article>
                 </div>
                 <div class="col-md-6 col-lg-4">
-                    <article class="box-icon-modern box-icon-modern-custom">
+                    <article class="box-icon-modern box-icon-modern-custom discover-more-card">
                         <div>
+                            <div class="box-icon-modern-icon"><i class="fa fa-star"></i></div>
                             <h3 class="box-icon-modern-big-title">{{ __('chi-siamo.attire_title') }}</h3>
                             <div class="box-icon-modern-decor"></div>
                             <p class="box-icon-modern-text">{{ __('chi-siamo.attire_text') }}</p>
@@ -77,8 +79,9 @@
                     </article>
                 </div>
                 <div class="col-md-6 col-lg-4">
-                    <article class="box-icon-modern box-icon-modern-custom">
+                    <article class="box-icon-modern box-icon-modern-custom discover-more-card">
                         <div>
+                            <div class="box-icon-modern-icon"><i class="fa fa-music"></i></div>
                             <h3 class="box-icon-modern-big-title">{{ __('chi-siamo.conductor_title') }}</h3>
                             <div class="box-icon-modern-decor"></div>
                             <p class="box-icon-modern-text">{{ __('chi-siamo.conductor_text') }}</p>
@@ -87,8 +90,9 @@
                     </article>
                 </div>
                 <div class="col-md-6 col-lg-4">
-                    <article class="box-icon-modern box-icon-modern-custom">
+                    <article class="box-icon-modern box-icon-modern-custom discover-more-card">
                         <div>
+                            <div class="box-icon-modern-icon"><i class="fa fa-users"></i></div>
                             <h3 class="box-icon-modern-big-title">{{ __('chi-siamo.members_title') }}</h3>
                             <div class="box-icon-modern-decor"></div>
                             <p class="box-icon-modern-text">{{ __('chi-siamo.members_text') }}</p>
@@ -97,8 +101,9 @@
                     </article>
                 </div>
                 <div class="col-md-6 col-lg-4">
-                    <article class="box-icon-modern box-icon-modern-custom">
+                    <article class="box-icon-modern box-icon-modern-custom discover-more-card">
                         <div>
+                            <div class="box-icon-modern-icon"><i class="fa fa-list"></i></div>
                             <h3 class="box-icon-modern-big-title">{{ __('chi-siamo.repertoire_title') }}</h3>
                             <div class="box-icon-modern-decor"></div>
                             <p class="box-icon-modern-text">{{ __('chi-siamo.repertoire_text') }}</p>

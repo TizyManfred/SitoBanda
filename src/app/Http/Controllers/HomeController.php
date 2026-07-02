@@ -56,7 +56,7 @@ class HomeController extends Controller
             // Set default image if none is provided
             $imagePath = !empty($event->image_path) ? 
                        asset($event->image_path) : 
-                       asset('assets/images/event-placeholder.jpg');
+                       asset('images/FotoEventi1.webp');
             
             // Animation class (alternate between fadeInLeft and fadeInRight)
             // Multiply by 10 to work with integers and avoid floating-point modulo

@@ -26,9 +26,17 @@ return [
     'view_all_photos' => 'Vedi tutte le foto',
     'map' => 'Mappa',
     'share_event' => 'Condividi questo evento',
+    'share_title' => 'Invita qualcuno a partecipare',
+    'share_facebook' => 'Condividi su Facebook',
+    'share_twitter' => 'Condividi su Twitter',
+    'share_whatsapp' => 'Condividi su WhatsApp',
+    'share_email' => 'Condividi via email',
     'related_events' => 'Eventi correlati',
     'all_events' => 'Tutti gli Eventi',
     'no_upcoming_events_sidebar' => 'Non ci sono eventi in programma al momento.',
+    'date_not_available' => 'Data da definire',
+    'location_not_available' => 'Luogo da definire',
+    'description_not_available' => 'Descrizione non disponibile per questo evento.',
     
     // Empty states
     'no_upcoming_events' => 'Non ci sono eventi in programma al momento. Torna a visitarci presto per aggiornamenti!',

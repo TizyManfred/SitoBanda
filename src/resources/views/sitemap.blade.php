@@ -1,6 +1,12 @@
 <?php echo '<?xml version="1.0" encoding="UTF-8"?>'; ?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<urlset
+  xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+  xmlns:xhtml="http://www.w3.org/1999/xhtml"
+>
   @php
+    $supportedLocales = LaravelLocalization::getSupportedLocales();
+    $defaultLocale = LaravelLocalization::getDefaultLocale();
+
     $namedRoutes = [
       'home'       => 1.0,
       'chi-siamo'  => 0.8,
@@ -19,13 +25,35 @@
 
     $events = \App\Models\Event::public()->get();
     $galleries = \App\Models\GalleryAlbum::where('is_published', 1)->get();
+
+    $localizedRouteUrl = function (string $routeName, string $localeCode, array|string|null $parameters = null) use ($defaultLocale) {
+      $parameters ??= [];
+
+      return LaravelLocalization::getLocalizedURL(
+        $localeCode,
+        route($routeName, $parameters),
+        [],
+        $localeCode !== $defaultLocale
+      );
+    };
   @endphp
 
-  @foreach(LaravelLocalization::getSupportedLocales() as $localeCode => $properties)
+  @foreach($supportedLocales as $localeCode => $properties)
     @foreach($namedRoutes as $routeName => $priority)
       @if(Route::has($routeName))
+        @php
+          $alternateUrls = [];
+
+          foreach ($supportedLocales as $alternateLocale => $alternateProperties) {
+            $alternateUrls[$alternateLocale] = $localizedRouteUrl($routeName, $alternateLocale);
+          }
+        @endphp
         <url>
-          <loc>{{ LaravelLocalization::localizeURL(route($routeName), $localeCode) }}</loc>
+          <loc>{{ $alternateUrls[$localeCode] }}</loc>
+          @foreach($alternateUrls as $alternateLocale => $alternateUrl)
+            <xhtml:link rel="alternate" hreflang="{{ $alternateLocale }}" href="{{ $alternateUrl }}" />
+          @endforeach
+          <xhtml:link rel="alternate" hreflang="x-default" href="{{ $alternateUrls[$defaultLocale] }}" />
           <changefreq>weekly</changefreq>
           <priority>{{ $priority }}</priority>
         </url>
@@ -34,8 +62,26 @@
 
     @foreach($events as $event)
       @continue(!Route::has('eventi.show'))
+      @php
+        $alternateUrls = [];
+
+        foreach ($supportedLocales as $alternateLocale => $alternateProperties) {
+          $localizedSlug = $event->getTranslation('slug', $alternateLocale, false);
+
+          if (filled($localizedSlug)) {
+            $alternateUrls[$alternateLocale] = $localizedRouteUrl('eventi.show', $alternateLocale, $localizedSlug);
+          }
+        }
+      @endphp
+      @continue(empty($alternateUrls[$localeCode]))
       <url>
-        <loc>{{ LaravelLocalization::localizeURL(route('eventi.show', $event->getTranslation('slug', $localeCode)), $localeCode) }}</loc>
+        <loc>{{ $alternateUrls[$localeCode] }}</loc>
+        @foreach($alternateUrls as $alternateLocale => $alternateUrl)
+          <xhtml:link rel="alternate" hreflang="{{ $alternateLocale }}" href="{{ $alternateUrl }}" />
+        @endforeach
+        @if(isset($alternateUrls[$defaultLocale]))
+          <xhtml:link rel="alternate" hreflang="x-default" href="{{ $alternateUrls[$defaultLocale] }}" />
+        @endif
         <lastmod>{{ $event->updated_at->toW3cString() }}</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.6</priority>
@@ -44,8 +90,26 @@
 
     @foreach($galleries as $album)
       @continue(!Route::has('galleria.album'))
+      @php
+        $alternateUrls = [];
+
+        foreach ($supportedLocales as $alternateLocale => $alternateProperties) {
+          $localizedSlug = $album->getTranslation('slug', $alternateLocale, false);
+
+          if (filled($localizedSlug)) {
+            $alternateUrls[$alternateLocale] = $localizedRouteUrl('galleria.album', $alternateLocale, $localizedSlug);
+          }
+        }
+      @endphp
+      @continue(empty($alternateUrls[$localeCode]))
       <url>
-        <loc>{{ LaravelLocalization::localizeURL(route('galleria.album', $album->getTranslation('slug', $localeCode)), $localeCode) }}</loc>
+        <loc>{{ $alternateUrls[$localeCode] }}</loc>
+        @foreach($alternateUrls as $alternateLocale => $alternateUrl)
+          <xhtml:link rel="alternate" hreflang="{{ $alternateLocale }}" href="{{ $alternateUrl }}" />
+        @endforeach
+        @if(isset($alternateUrls[$defaultLocale]))
+          <xhtml:link rel="alternate" hreflang="x-default" href="{{ $alternateUrls[$defaultLocale] }}" />
+        @endif
         <lastmod>{{ $album->updated_at->toW3cString() }}</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.6</priority>

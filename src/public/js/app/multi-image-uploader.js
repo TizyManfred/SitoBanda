@@ -8,8 +8,10 @@ function multiImageUploaderComponent(config) {
         acceptedFileTypes: config.acceptedFileTypes,
         maxSize: config.maxSize,
         locales: config.locales,
+        processingMessage: config.processingMessage || 'Processing images...',
         isDisabled: false,
         _batching: false,
+        translatingCaptions: {},
         // Track how many FileReader operations are in-flight
         _pendingReads: 0,
 
@@ -48,7 +50,8 @@ function multiImageUploaderComponent(config) {
                         url: null,
                         path: null,
                         captions: {},
-                        uploading: false
+                        uploading: false,
+                        processing: false
                     };
                     
                     // Carefully assign each property with logging (normalize id to string)
@@ -147,14 +150,16 @@ function multiImageUploaderComponent(config) {
                 this._batching = true;
                 const remainingSlots = this.maxFiles - this.images.length;
                 const filesToProcess = files.slice(0, remainingSlots);
+                const validFiles = filesToProcess.filter(file => this.validateFile(file));
 
-                filesToProcess.forEach((file, idx) => {
-                    if (this.validateFile(file)) {
-                        // Increment pending reads before adding, addImage will start FileReader
-                        this._pendingReads++;
-                        this.addImage(file);
-                    } else {
-                    }
+                if (validFiles.length > 0) {
+                    this.dispatchFormEvent('form-processing-started', { message: this.processingMessage });
+                }
+
+                validFiles.forEach((file) => {
+                    // Increment pending reads before adding, addImage will start FileReader
+                    this._pendingReads++;
+                    this.addImage(file);
                 });
             } catch (error) {
                 console.error('Error in processFiles():', error);
@@ -166,10 +171,32 @@ function multiImageUploaderComponent(config) {
                     if (!this._batching && this._pendingReads <= 0) {
                         this.updateState();
                     }
+                    this.refreshProcessingState();
                 };
                 // If no pending reads, sync immediately; otherwise onload/onerror will sync
                 trySync();
             }
+        },
+
+        dispatchFormEvent(name, detail = {}) {
+            try {
+                this.$el.closest('form')?.dispatchEvent(new CustomEvent(name, {
+                    composed: true,
+                    cancelable: true,
+                    detail,
+                }));
+            } catch (error) {
+                console.error(`Error dispatching form event ${name}:`, error);
+            }
+        },
+
+        refreshProcessingState() {
+            if ((this._pendingReads || 0) > 0) {
+                this.dispatchFormEvent('form-processing-started', { message: this.processingMessage });
+                return;
+            }
+
+            this.dispatchFormEvent('form-processing-finished');
         },
 
         validateFile(file) {
@@ -213,7 +240,8 @@ function multiImageUploaderComponent(config) {
                     path: imageUrl, 
                     url: imageUrl,
                     captions: this.initializeCaptions(),
-                    uploading: false
+                    uploading: false,
+                    processing: true
                 };
                 
                 // Create new array and add the new item
@@ -224,41 +252,44 @@ function multiImageUploaderComponent(config) {
                     this.$nextTick(() => { this.setupSortable(); });
                 }
                 
-                // Read as Data URL to populate preview (used by backend if file/path is unavailable)
-                reader.onload = (e) => {
+                const finishProcessing = (preview) => {
                     try {
                         const image = this.images.find(img => img && img.id === imageId);
                         if (image) {
-                            image.preview = e.target.result;
+                            image.preview = preview || '';
+                            image.processing = false;
                         }
                     } catch (error) {
-                        console.error('Error in reader.onload callback:', error);
+                        console.error('Error finishing image processing:', error);
                     } finally {
                         this._pendingReads = Math.max(0, (this._pendingReads || 0) - 1);
                         if (!this._batching && this._pendingReads === 0) {
                             this.updateState();
                         }
+                        this.refreshProcessingState();
                     }
                 };
+
+                // Build a compressed preview. The backend stores this data URL when no Livewire temp file exists.
+                this.createOptimizedPreview(file).then(finishProcessing).catch((error) => {
+                    console.error('Error optimizing image preview:', error);
+
+                    reader.onload = (e) => {
+                        finishProcessing(e.target.result);
+                    };
                 
-                reader.onerror = (error) => {
-                    console.error('FileReader error:', error);
-                    this._pendingReads = Math.max(0, (this._pendingReads || 0) - 1);
-                    if (!this._batching && this._pendingReads === 0) {
-                        this.updateState();
-                    }
-                };
+                    reader.onerror = (readerError) => {
+                        console.error('FileReader error:', readerError);
+                        finishProcessing('');
+                    };
                 
-                try {
-                    reader.readAsDataURL(file);
-                } catch (readError) {
-                    console.error('Error reading file as data URL:', readError);
-                    // Ensure we don't hang waiting for a read that failed
-                    this._pendingReads = Math.max(0, (this._pendingReads || 0) - 1);
-                    if (!this._batching && this._pendingReads === 0) {
-                        this.updateState();
+                    try {
+                        reader.readAsDataURL(file);
+                    } catch (readError) {
+                        console.error('Error reading file as data URL:', readError);
+                        finishProcessing('');
                     }
-                }
+                });
                 
                 // Do not update state here; processFiles() will perform a single batched update.
             } catch (error) {
@@ -325,6 +356,96 @@ function multiImageUploaderComponent(config) {
             } catch (error) {
                 console.error('CRITICAL ERROR in removeImage():', error);
                 console.error('Full error stack:', error.stack);
+            }
+        },
+
+        async createOptimizedPreview(file) {
+            const maxWidth = 1920;
+            const maxHeight = 1920;
+            const quality = 0.65;
+
+            if (!file || !file.type || !file.type.startsWith('image/')) {
+                return '';
+            }
+
+            const objectUrl = URL.createObjectURL(file);
+
+            try {
+                const image = await new Promise((resolve, reject) => {
+                    const img = new Image();
+                    img.onload = () => resolve(img);
+                    img.onerror = reject;
+                    img.src = objectUrl;
+                });
+
+                const ratio = Math.min(maxWidth / image.width, maxHeight / image.height, 1);
+                const width = Math.max(1, Math.round(image.width * ratio));
+                const height = Math.max(1, Math.round(image.height * ratio));
+                const canvas = document.createElement('canvas');
+                canvas.width = width;
+                canvas.height = height;
+
+                const context = canvas.getContext('2d');
+                context.drawImage(image, 0, 0, width, height);
+
+                return canvas.toDataURL('image/webp', quality);
+            } finally {
+                URL.revokeObjectURL(objectUrl);
+            }
+        },
+
+        canTranslateCaption(index) {
+            const image = this.images[index];
+
+            if (!image || !image.captions) {
+                return false;
+            }
+
+            return Object.values(image.captions).some(value => typeof value === 'string' && value.trim() !== '');
+        },
+
+        isTranslatingCaption(index) {
+            const image = this.images[index];
+
+            return !!(image && this.translatingCaptions && this.translatingCaptions[image.id]);
+        },
+
+        async translateCaption(index) {
+            const image = this.images[index];
+
+            if (!image || !image.captions || this.isTranslatingCaption(index)) {
+                return;
+            }
+
+            const wire = this.$wire;
+
+            if (!wire) {
+                this.showError('Translation is not available right now');
+                return;
+            }
+
+            this.translatingCaptions[image.id] = true;
+
+            try {
+                let translated = null;
+
+                if (typeof wire.translateBulkUploadCaption === 'function') {
+                    translated = await wire.translateBulkUploadCaption(image.captions);
+                } else if (typeof wire.$call === 'function') {
+                    translated = await wire.$call('translateBulkUploadCaption', image.captions);
+                } else if (typeof wire.call === 'function') {
+                    translated = await wire.call('translateBulkUploadCaption', image.captions);
+                }
+
+                if (translated && typeof translated === 'object') {
+                    image.captions = this.initializeCaptions(translated);
+                    this.updateState();
+                }
+            } catch (error) {
+                console.error('Error translating caption:', error);
+                this.showError('Unable to translate this caption');
+            } finally {
+                delete this.translatingCaptions[image.id];
             }
         },
 
@@ -472,6 +593,7 @@ function multiImageUploaderComponent(config) {
                             file: image.file || null,
                             // Include preview so backend can handle base64 data URLs if needed
                             preview: image.preview || '',
+                            processing: !!image.processing,
                             captions: image.captions || {}
                         };
                         state.push(stateItem);
