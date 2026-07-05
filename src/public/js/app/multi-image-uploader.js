@@ -11,6 +11,7 @@ function multiImageUploaderComponent(config) {
         processingMessage: config.processingMessage || 'Processing images...',
         isDisabled: false,
         _batching: false,
+        _formProcessingActive: false,
         translatingCaptions: {},
         // Track how many FileReader operations are in-flight
         _pendingReads: 0,
@@ -192,11 +193,17 @@ function multiImageUploaderComponent(config) {
 
         refreshProcessingState() {
             if ((this._pendingReads || 0) > 0) {
-                this.dispatchFormEvent('form-processing-started', { message: this.processingMessage });
+                if (!this._formProcessingActive) {
+                    this._formProcessingActive = true;
+                    this.dispatchFormEvent('form-processing-started', { message: this.processingMessage });
+                }
                 return;
             }
 
-            this.dispatchFormEvent('form-processing-finished');
+            if (this._formProcessingActive) {
+                this._formProcessingActive = false;
+                this.dispatchFormEvent('form-processing-finished');
+            }
         },
 
         validateFile(file) {

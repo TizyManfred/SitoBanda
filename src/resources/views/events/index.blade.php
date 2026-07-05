@@ -46,15 +46,13 @@
                             @foreach($upcomingEvents as $event)
                                 <div class="col-sm-6 col-lg-6 mb-4 wow fadeInUp" data-wow-delay="0.{{ $loop->iteration }}s">
                                     <div class="card h-100 border-0 shadow-sm overflow-hidden rounded-0 card-hover">
-                                        <div class="position-relative img-hover-zoom">
-                                            <a href="{{ route('eventi.show', $event->slug) }}">
-                                                @if($event->image_path)
+                                        <div class="position-relative{{ $event->image_path ? ' img-hover-zoom' : '' }}">
+                                            @if($event->image_path)
+                                                <a href="{{ route('eventi.show', $event->slug) }}">
                                                     <img src="{{ Storage::url($event->image_path) }}" alt="{{ $event->title }}" width="570" height="370" loading="lazy" class="img-fluid" style="height: 280px; width: 100%; object-fit: cover;">
-                                                @else
-                                                    <img src="{{ asset('images/FotoEventi1.webp') }}" alt="{{ $event->title }}" width="570" height="370" loading="lazy" class="img-fluid" style="height: 280px; width: 100%; object-fit: cover;">
-                                                @endif
-                                            </a>
-                                            <div class="position-absolute top-0 left-0 bg-secondary text-white p-3 rounded-bottom bg-black-opacity-70" >
+                                                </a>
+                                            @endif
+                                            <div class="{{ $event->image_path ? 'position-absolute top-0 left-0 rounded-bottom bg-black-opacity-70' : 'bg-secondary' }} text-white p-3">
                                                 <div class="text-center">
                                                     <div class="mb-0 big font-weight-bold">{{ $event->start_datetime->format('d') }}</div>
                                                     <div class="text-uppercase">{{ $event->start_datetime->translatedFormat('M') }}</div>
@@ -103,15 +101,13 @@
                             @foreach($pastEvents as $event)
                                 <div class="col-sm-6 col-lg-6 mb-4 wow fadeInUp" data-wow-delay="0.{{ $loop->iteration }}s">
                                     <div class="card h-100 border-0 shadow-sm overflow-hidden rounded-0 card-hover" style="opacity: 0.85;">
-                                        <div class="position-relative img-hover-zoom">
-                                            <a href="{{ route('eventi.show', $event->slug) }}">
-                                                @if($event->image_path)
+                                        <div class="position-relative{{ $event->image_path ? ' img-hover-zoom' : '' }}">
+                                            @if($event->image_path)
+                                                <a href="{{ route('eventi.show', $event->slug) }}">
                                                     <img src="{{ Storage::url($event->image_path) }}" alt="{{ $event->title }}" width="570" height="370" loading="lazy" class="img-fluid object-fit-cover" style="height: 280px; width: 100%;">
-                                                @else
-                                                    <img src="{{ asset('images/FotoEventi1.webp') }}" alt="{{ $event->title }}" width="570" height="370" loading="lazy" class="img-fluid object-fit-cover" style="height: 280px; width: 100%;">
-                                                @endif
-                                            </a>
-                                            <div class="position-absolute top-0 left-0 bg-secondary text-white p-3 rounded-bottom bg-black-opacity-70" >
+                                                </a>
+                                            @endif
+                                            <div class="{{ $event->image_path ? 'position-absolute top-0 left-0 rounded-bottom bg-black-opacity-70' : 'bg-secondary' }} text-white p-3">
                                                 <div class="text-center">
                                                     <div class="mb-0 big font-weight-bold">{{ $event->start_datetime->format('d') }}</div>
                                                     <div class="text-uppercase">{{ $event->start_datetime->translatedFormat('M') }}</div>

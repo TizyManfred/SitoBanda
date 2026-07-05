@@ -100,13 +100,9 @@ $shareText = $album->title . ' - ' . $metaDescription;
                                 </div>
                             </div>
                             
-                            @if($album->description)
+                            @if(filled(trim(strip_tags($album->description))))
                                 <div class="post-content gallery-detail-description mt-4">
                                     {!! $album->description !!}
-                                </div>
-                            @else
-                                <div class="gallery-detail-description gallery-detail-description-empty mt-4">
-                                    <p>{{ __('gallery.no_description') }}</p>
                                 </div>
                             @endif
                         </div>
@@ -161,11 +157,13 @@ $shareText = $album->title . ' - ' . $metaDescription;
                             @if(isset($event) && $event)
                                 <div class="col-lg-7">
                                     <article class="gallery-related-event">
-                                        <div class="gallery-related-event-image">
-                                            <a href="{{ route('eventi.show', $event->slug) }}">
-                                                <img src="{{ $event->image_path ? Storage::url($event->image_path) : asset('images/FotoEventi1.webp') }}" alt="{{ $event->title }}" loading="lazy">
-                                            </a>
-                                        </div>
+                                        @if($event->image_path)
+                                            <div class="gallery-related-event-image">
+                                                <a href="{{ route('eventi.show', $event->slug) }}">
+                                                    <img src="{{ Storage::url($event->image_path) }}" alt="{{ $event->title }}" loading="lazy">
+                                                </a>
+                                            </div>
+                                        @endif
                                         <div class="gallery-related-event-body">
                                             <span class="gallery-panel-eyebrow"><i class="fa fa-calendar mr-1"></i>{{ __('gallery.related_event') }}</span>
                                             <h4 class="heading-4"><a href="{{ route('eventi.show', $event->slug) }}">{{ $event->title }}</a></h4>

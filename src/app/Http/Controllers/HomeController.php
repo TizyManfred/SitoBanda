@@ -53,11 +53,6 @@ class HomeController extends Controller
             $eventDate = new DateTime($event->start_datetime);
             $formattedDate = $eventDate->format('d/m/Y');
             
-            // Set default image if none is provided
-            $imagePath = !empty($event->image_path) ? 
-                       asset($event->image_path) : 
-                       asset('images/FotoEventi1.webp');
-            
             // Animation class (alternate between fadeInLeft and fadeInRight)
             // Multiply by 10 to work with integers and avoid floating-point modulo
             $animationClass = (int)($delay * 10) % 2 == 0 ? 'fadeInLeft' : 'fadeInRight';
@@ -73,7 +68,7 @@ class HomeController extends Controller
                 'formatted_date' => $formattedDate,
                 'location' => $event->location ?? '',
                 'short_description' => $event->short_description ?? '',
-                'image_path' => $imagePath,
+                'image_path' => $event->image_path,
                 'is_featured' => $event->is_featured,
                 'animation_class' => $animationClass,
                 'featured_class' => $featuredClass,

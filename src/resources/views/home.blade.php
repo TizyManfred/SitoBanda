@@ -160,21 +160,19 @@
               @endphp
               <div class="col-sm-6 col-lg-4 mb-4 wow fadeInUp" data-wow-delay="0.{{ $loop->iteration }}s">
                 <div class="card h-100 border-0 shadow-sm overflow-hidden rounded-0 card-hover">
-                  <div class="position-relative img-hover-zoom">
-                    <a href="{{ route('eventi.show', $event['slug']) }}" title="{{ $event['title'] }}">
-                      @if (!empty($event['image_path']))
+                  <div class="position-relative{{ !empty($event['image_path']) ? ' img-hover-zoom' : '' }}">
+                    @if (!empty($event['image_path']))
+                      <a href="{{ route('eventi.show', $event['slug']) }}" title="{{ $event['title'] }}">
                         @php
                             $src = \Illuminate\Support\Str::startsWith($event['image_path'], ['http://', 'https://', '/', 'data:'])
                                 ? $event['image_path']
                                 : \Illuminate\Support\Facades\Storage::url($event['image_path']);
                         @endphp
                         <img src="{{ $src }}" alt="{{ $event['title'] }}" width="570" height="370" loading="lazy" class="img-fluid" style="height: 280px; width: 100%; object-fit: cover;">
-                      @else
-                        <img src="{{ asset('images/FotoEventi1.webp') }}" alt="{{ $event['title'] }}" width="570" height="370" loading="lazy" class="img-fluid" style="height: 280px; width: 100%; object-fit: cover;">
-                      @endif
-                    </a>
+                      </a>
+                    @endif
                     @if($start)
-                      <div class="position-absolute top-0 left-0 bg-secondary text-white p-3 rounded-bottom bg-black-opacity-70">
+                      <div class="{{ !empty($event['image_path']) ? 'position-absolute top-0 left-0 rounded-bottom bg-black-opacity-70' : 'bg-secondary' }} text-white p-3">
                         <div class="text-left">
                           <div class="mb-0 big font-weight-bold">{{ $start->format('d') }}</div>
                           <div class="text-uppercase">{{ $start->translatedFormat('M') }}</div>
@@ -270,11 +268,12 @@
                         'addressCountry' => 'IT'
                     ]
                 ],
-                'image' => !empty($event['image_path'])
-                    ? \Illuminate\Support\Facades\Storage::url($event['image_path'])
-                    : asset('images/FotoEventi1.webp'),
                 'description' => $event['short_description'] ?? __('home.structured.event_default_description')
             ];
+
+            if (!empty($event['image_path'])) {
+                $events[array_key_last($events)]['image'] = \Illuminate\Support\Facades\Storage::url($event['image_path']);
+            }
         }
         $structuredData['event'] = $events;
     }

@@ -17,7 +17,7 @@
         );
     }
 
-    $eventImage = $event->image_path ? \Illuminate\Support\Facades\Storage::url($event->image_path) : asset('images/FotoEventi1.webp');
+    $eventImage = $event->image_path ? \Illuminate\Support\Facades\Storage::url($event->image_path) : null;
     $eventDate = $event->start_datetime;
     $currentSlug = $event->getTranslation('slug', app()->getLocale(), false) ?: $event->slug;
     $canonicalUrl = route('eventi.show', $currentSlug);
@@ -47,7 +47,9 @@
 @section('og_title', $event->title . ' - Banda Folk di Castello Tesino')
 @section('og_description', $metaDescription)
 @section('og_type', 'article')
-@section('og_image', $eventImage)
+@if($eventImage)
+    @section('og_image', $eventImage)
+@endif
 
 @section('alternate_urls')
 @foreach($alternateUrls as $localeCode => $alternateUrl)
@@ -70,7 +72,7 @@
                     <li class="active">{{ $event->title }}</li>
                 </ul>
             </div>
-            <div class="box-position" style="background-image: url({{ $event->image_path ? Storage::url($event->image_path) : asset('images/FotoEventi1.webp') }});"></div>
+            <div class="box-position" style="background-image: url({{ \App\Models\StaticPage::headerImageUrl('events_index', 'images/FotoSanIppolito1.webp') }});"></div>
         </div>
     </section>
 
@@ -196,15 +198,13 @@
                                     @foreach($relatedEvents as $relatedEvent)
                                         <div class="col-sm-6 col-lg-6 mb-4 wow fadeInUp" data-wow-delay="0.{{ $loop->iteration }}s">
                                             <div class="card h-100 border-0 shadow-sm overflow-hidden rounded-0 card-hover">
-                                                <div class="position-relative img-hover-zoom">
-                                                    <a href="{{ route('eventi.show', $relatedEvent->slug) }}">
-                                                        @if($relatedEvent->image_path)
+                                                <div class="position-relative{{ $relatedEvent->image_path ? ' img-hover-zoom' : '' }}">
+                                                    @if($relatedEvent->image_path)
+                                                        <a href="{{ route('eventi.show', $relatedEvent->slug) }}">
                                                             <img src="{{ Storage::url($relatedEvent->image_path) }}" alt="{{ $relatedEvent->title }}" width="570" height="370" loading="lazy" class="img-fluid" style="height: 280px; width: 100%; object-fit: cover;">
-                                                        @else
-                                                            <img src="{{ asset('images/FotoEventi1.webp') }}" alt="{{ $relatedEvent->title }}" width="570" height="370" loading="lazy" class="img-fluid" style="height: 280px; width: 100%; object-fit: cover;">
-                                                        @endif
-                                                    </a>
-                                                    <div class="position-absolute top-0 left-0 bg-secondary text-white p-3 rounded-bottom bg-black-opacity-70">
+                                                        </a>
+                                                    @endif
+                                                    <div class="{{ $relatedEvent->image_path ? 'position-absolute top-0 left-0 rounded-bottom bg-black-opacity-70' : 'bg-secondary' }} text-white p-3">
                                                         <div class="text-center">
                                                             <div class="mb-0 big font-weight-bold">{{ $relatedEvent->start_datetime ? $relatedEvent->start_datetime->format('d') : '--' }}</div>
                                                             <div class="text-uppercase">{{ $relatedEvent->start_datetime ? $relatedEvent->start_datetime->translatedFormat('M') : '' }}</div>
@@ -252,7 +252,6 @@
         'name' => $event->title,
         'description' => $metaDescription,
         'url' => url()->current(),
-        'image' => [url($eventImage)],
         'startDate' => optional($event->start_datetime)->toIso8601String(),
         'eventAttendanceMode' => 'https://schema.org/OfflineEventAttendanceMode',
         'eventStatus' => 'https://schema.org/EventScheduled',
@@ -270,6 +269,10 @@
 
     if ($event->end_datetime) {
         $eventSchema['endDate'] = $event->end_datetime->toIso8601String();
+    }
+
+    if ($eventImage) {
+        $eventSchema['image'] = [url($eventImage)];
     }
 
     $structuredData = [

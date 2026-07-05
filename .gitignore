@@ -28,3 +28,4 @@ auth.json
 # Release artifacts
 release/
 deploy_package_php_hosting.zip
+scraped_events/

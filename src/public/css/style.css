@@ -15427,16 +15427,14 @@ Aggiunte CSS
 }
 
 .gallery-album-card-title {
-	min-height: 2.4em;
 	line-height: 1.2;
 }
 
 .gallery-album-card-title span,
 .gallery-mini-card strong {
-	display: -webkit-box;
-	-webkit-line-clamp: 2;
-	-webkit-box-orient: vertical;
-	overflow: hidden;
+	display: block;
+	white-space: normal;
+	word-break: break-word;
 }
 
 .gallery-detail-meta {
@@ -15444,7 +15442,7 @@ Aggiunte CSS
 }
 
 .gallery-detail-description {
-	max-width: 900px;
+	width: 100%;
 	padding: 24px 28px;
 	border-left: 4px solid #50ba87;
 	background: #f7f7f7;
@@ -15453,10 +15451,6 @@ Aggiunte CSS
 
 .gallery-detail-description p + p {
 	margin-top: 12px;
-}
-
-.gallery-detail-description-empty {
-	font-style: italic;
 }
 
 .gallery-detail-footer {
