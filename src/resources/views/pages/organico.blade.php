@@ -105,16 +105,25 @@
                                 <div class="row row-50 justify-content-center align-items-xl-center">
                                     <div class="col-md-10 col-lg-6 col-xl-6 {{ $loop->even ? 'order-lg-2' : '' }}">
                                         <div class="wow fadeInRight">
-                                            @if(isset($section->images) && $section->images->count() > 0)
+                                            @php
+                                                $sectionImages = $section->images
+                                                    ? $section->images->filter(fn ($image) => filled($image->resolved_image_path))->values()
+                                                    : collect();
+                                            @endphp
+                                            @if($sectionImages->count() > 0)
                                                 <div id="gallery-{{ $section->id }}" class="carousel slide w-100 figure-classic figure-classic-left" data-ride="carousel" data-interval="{{ random_int(2000, 4000) }}" data-lightgallery="group">
                                                     <div class="carousel-inner" style="overflow: hidden;">
-                                                        @foreach($section->images as $image)
+                                                        @foreach($sectionImages as $image)
+                                                            @php
+                                                                $imagePath = $image->resolved_image_path;
+                                                                $imageCaption = $image->resolved_caption;
+                                                            @endphp
                                                             <div class="carousel-item {{ $loop->first ? 'active' : '' }}" style="height: 350px;">
-                                                                <a href="{{ Storage::url($image->image_path) }}" data-lightgallery="item">
+                                                                <a href="{{ Storage::url($imagePath) }}" data-lightgallery="item">
                                                                     <img
-                                                                        src="{{ Storage::url($image->image_path) }}"
+                                                                        src="{{ Storage::url($imagePath) }}"
                                                                         class="d-block w-100 h-100"
-                                                                        alt="{{ $image->caption ?: $sectionName }}"
+                                                                        alt="{{ $imageCaption ?: $sectionName }}"
                                                                         loading="lazy"
                                                                         style="object-fit: cover; cursor: pointer;"
                                                                     >
@@ -122,7 +131,7 @@
                                                             </div>
                                                         @endforeach
                                                     </div>
-                                                    @if($section->images->count() > 1)
+                                                    @if($sectionImages->count() > 1)
                                                         <a class="carousel-control-prev" href="#gallery-{{ $section->id }}" role="button" data-slide="prev">
                                                             <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                                                             <span class="sr-only">{{ __('organico.previous') }}</span>

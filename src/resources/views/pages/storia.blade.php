@@ -6,7 +6,9 @@
 @section('og_description', __('storia.meta_description'))
 
 @section('content')
-    @php($dynamicBlocks = \App\Models\StaticPage::contentBlocks('storia'))
+    @php
+        $dynamicBlocks = \App\Models\StaticPage::contentBlocks('storia');
+    @endphp
 
     <!-- Breadcrumbs -->
     <section class="breadcrumbs-custom-inset">

@@ -7,7 +7,7 @@ services:
     volumes:
       - ./:/workspace
     environment:
-      PUBLIC_SUBDIR: ${PUBLIC_SUBDIR-new}
+      PUBLIC_SUBDIR: ${PUBLIC_SUBDIR-}
       RELEASE_DIR: ${RELEASE_DIR:-release}
       ZIP_NAME: ${ZIP_NAME:-deploy_package_php_hosting.zip}
       COMPOSER_ALLOW_SUPERUSER: 1
@@ -25,7 +25,7 @@ services:
         PACKAGE_DIR=$$RELEASE_DIR/deploy_package_php_hosting
         LARAVEL_DIR=$$PACKAGE_DIR/laravel_app
         PUBLIC_ROOT=$$PACKAGE_DIR/public_html
-        PUBLIC_SUBDIR=$${PUBLIC_SUBDIR-new}
+        PUBLIC_SUBDIR=$${PUBLIC_SUBDIR-}
 
         if [ ! -f "$$SRC_DIR/artisan" ]; then
           echo "Could not find $$SRC_DIR/artisan" >&2
@@ -134,6 +134,14 @@ services:
         app_url_env=https://bandacastellotesino.it$${public_path_env}
         session_path_env=$${public_path_env:-/}
 
+        if [ -n "$$PUBLIC_SUBDIR" ]; then
+          app_public_path_env=../public_html/$$PUBLIC_SUBDIR
+          deploy_target_label=public_html/$$PUBLIC_SUBDIR
+        else
+          app_public_path_env=../public_html
+          deploy_target_label=public_html
+        fi
+
         cat > "$$LARAVEL_DIR/.env.hosting.example" <<ENV
         APP_NAME="Banda Folk Castello Tesino"
         APP_ENV=production
@@ -141,7 +149,7 @@ services:
         APP_DEBUG=false
         APP_URL=$${app_url_env}
         ASSET_URL=$${app_url_env}
-        APP_PUBLIC_PATH=../public_html/$${PUBLIC_SUBDIR}
+        APP_PUBLIC_PATH=$${app_public_path_env}
 
         APP_LOCALE=it
         APP_FALLBACK_LOCALE=it
@@ -182,11 +190,11 @@ services:
         - laravel_app/ contains the private Laravel application and vendor dependencies.
         - public_html/ contains the web-visible files.
 
-        Current public subfolder:
-        public_html/$${PUBLIC_SUBDIR}
+        Current public target:
+        $${deploy_target_label}
 
         Upload:
-        - Upload public_html/$${PUBLIC_SUBDIR}/ contents to public_html/$${PUBLIC_SUBDIR}/ on hosting.
+        - Upload $${deploy_target_label}/ contents to $${deploy_target_label}/ on hosting.
         - Upload laravel_app/ next to public_html/.
         - In laravel_app/, copy .env.hosting.example to .env and fill APP_KEY and DB values.
 

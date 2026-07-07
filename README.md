@@ -57,7 +57,7 @@ The site is built with standard PHP, HTML, CSS, and JavaScript. There are no com
 
 ## Build Deployment Package
 
-Create a zipped hosting package for the `/new` staging subfolder:
+Create a zipped hosting package for the domain root:
 
 ```bash
 docker compose -f compose.release.yaml run --rm release-builder
@@ -75,19 +75,18 @@ It contains:
 deploy_package_php_hosting/
 ├── laravel_app/
 └── public_html/
-    └── new/
 ```
 
-Build for a different public subfolder:
+Build for a public subfolder when you explicitly want staging:
 
 ```bash
 PUBLIC_SUBDIR=staging docker compose -f compose.release.yaml run --rm release-builder
 ```
 
-Build for the domain root instead of a subfolder:
+For example, to build for `/new` again:
 
 ```bash
-PUBLIC_SUBDIR= docker compose -f compose.release.yaml run --rm release-builder
+PUBLIC_SUBDIR=new docker compose -f compose.release.yaml run --rm release-builder
 ```
 
 The builder runs entirely in Docker using `compose.release.yaml`; no host PHP or Composer installation is required.

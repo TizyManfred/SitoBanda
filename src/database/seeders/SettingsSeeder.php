@@ -49,6 +49,16 @@ class SettingsSeeder extends Seeder
             'location' => 'Sede della Banda - Via Roma, 15, Castello Tesino'
         ], 'courses', 'Informazioni sui corsi di musica');
 
+        // Analytics Settings
+        Setting::set('analytics_settings', [
+            'enabled' => false,
+            'provider' => 'none',
+            'ga4_measurement_id' => '',
+            'ga4_property_id' => '',
+            'plausible_domain' => '',
+            'plausible_script_url' => 'https://plausible.io/js/script.js',
+        ], 'analytics', 'Impostazioni analytics del sito');
+
         // Event Settings
         Setting::set('event_settings', [
             'show_upcoming_events' => true,

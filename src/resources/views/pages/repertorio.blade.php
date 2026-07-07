@@ -10,7 +10,9 @@
 @endsection
 
 @section('content')
-    @php($dynamicBlocks = \App\Models\StaticPage::contentBlocks('repertorio'))
+    @php
+        $dynamicBlocks = \App\Models\StaticPage::contentBlocks('repertorio');
+    @endphp
 
     <!-- Breadcrumbs -->
     <section class="breadcrumbs-custom-inset">

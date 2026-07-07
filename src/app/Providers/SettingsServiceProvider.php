@@ -24,6 +24,12 @@ class SettingsServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        $analyticsSettings = SettingsHelper::analytics();
+
+        if (($analyticsSettings['ga4_property_id'] ?? '') !== '') {
+            config(['analytics.property_id' => $analyticsSettings['ga4_property_id']]);
+        }
+
         // Share settings with all views
         View::composer('*', function ($view) {
             $view->with([
@@ -31,6 +37,7 @@ class SettingsServiceProvider extends ServiceProvider
                 'contactInfo' => SettingsHelper::contactInfo(),
                 'socialLinks' => SettingsHelper::socialLinks(),
                 'coursesInfo' => SettingsHelper::coursesInfo(),
+                'analyticsSettings' => SettingsHelper::analytics(),
             ]);
         });
 

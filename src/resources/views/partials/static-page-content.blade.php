@@ -27,7 +27,9 @@
 
                 <div class="row row-30" data-lightgallery="group">
                     @foreach ($images as $image)
-                        @php($caption = $image['caption'] ?? '')
+                        @php
+                            $caption = $image['caption'] ?? '';
+                        @endphp
                         <div class="col-sm-6 col-lg-4">
                             <a href="{{ $image['url'] }}" data-lightgallery="item" @if (filled($caption)) data-sub-html="{{ e($caption) }}" @endif>
                                 <img src="{{ $image['url'] }}" class="img-fluid w-100" alt="{{ $caption ?: ($block['title'] ?? '') }}" loading="lazy">
@@ -52,7 +54,9 @@
                     @if ($hasImages)
                         <div class="col-md-10 col-lg-5 col-xl-6 {{ $imageColumnClass }}">
                             @if (count($images) === 1)
-                                @php($caption = $images[0]['caption'] ?? '')
+                                @php
+                                    $caption = $images[0]['caption'] ?? '';
+                                @endphp
                                 <a href="{{ $images[0]['url'] }}" data-lightgallery="item" @if (filled($caption)) data-sub-html="{{ e($caption) }}" @endif>
                                     <div class="figure-classic figure-classic-left wow fadeInRight">
                                         <img src="{{ $images[0]['url'] }}" class="img-fluid w-100" alt="{{ $caption ?: ($block['title'] ?? '') }}" loading="lazy">
@@ -62,7 +66,9 @@
                                 <div id="static-page-content-carousel-{{ $loop->index }}" class="carousel slide w-100 figure-classic figure-classic-left wow fadeInLeft" data-ride="carousel" data-interval="{{ random_int(6000, 12000) }}" data-wrap="true">
                                     <div class="carousel-inner" data-lightgallery="group" data-lg-autoplay="true" data-lg-loop="true">
                                         @foreach ($images as $image)
-                                            @php($caption = $image['caption'] ?? '')
+                                            @php
+                                                $caption = $image['caption'] ?? '';
+                                            @endphp
                                             <div class="carousel-item {{ $loop->first ? 'active' : '' }}">
                                                 <a href="{{ $image['url'] }}" data-lightgallery="item" @if (filled($caption)) data-sub-html="{{ e($caption) }}" @endif>
                                                     <img src="{{ $image['url'] }}" class="d-block w-100 img-fluid" alt="{{ $caption ?: ($block['title'] ?? '') }}" loading="lazy" style="height: auto; cursor: pointer;">

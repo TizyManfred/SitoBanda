@@ -14,6 +14,7 @@
         "laravel/tinker": "^3.0",
         "mcamara/laravel-localization": "^2.4",
         "mvenghaus/filament-plugin-translatable-inline": "^3.0",
+        "spatie/laravel-analytics": "^5.7",
         "spatie/laravel-translatable": "^6.13",
         "stichoza/google-translate-php": "^5.3"
     },

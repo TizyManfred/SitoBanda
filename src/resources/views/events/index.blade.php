@@ -60,11 +60,11 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="card-body p-4">
-                                            <h5 class="card-title mb-3">
+                                        <div class="card-body p-4 event-card-body">
+                                            <h5 class="card-title mb-3 event-card-title">
                                                 <a href="{{ route('eventi.show', $event->slug) }}" class="text-dark text-decoration-none">{{ $event->title }}</a>
                                             </h5>
-                                            <div class="d-flex mb-3 gap-4">
+                                            <div class="d-flex mb-3 gap-4 event-card-meta">
                                                 @if($event->start_datetime->format('H:i') != '00:00')
                                                 <div>
                                                     <i class="fa fa-clock-o me-1"></i>
@@ -76,7 +76,7 @@
                                                     <span class="text-muted">{{ $event->location }}</span>
                                                 </div>
                                             </div>
-                                            <p class="card-text mb-4">{{ $event->short_description }}</p>
+                                            <p class="card-text mb-4 event-card-description">{{ $event->short_description }}</p>
                                             <div class="text-center text-md-right">
                                                 <a class="text-primary text-decoration-none small" href="{{ route('eventi.show', $event->slug) }}">
                                                     {{ __('events.details') }} <i class="fa fa-arrow-right ms-1"></i>
@@ -115,11 +115,11 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="card-body p-4">
-                                            <h5 class="card-title mb-3">
+                                        <div class="card-body p-4 event-card-body">
+                                            <h5 class="card-title mb-3 event-card-title">
                                                 <a href="{{ route('eventi.show', $event->slug) }}" class="text-dark text-decoration-none">{{ $event->title }}</a>
                                             </h5>
-                                            <div class="d-flex mb-3 gap-4">
+                                            <div class="d-flex mb-3 gap-4 event-card-meta">
                                                 @if($event->start_datetime->format('H:i') != '00:00')
                                                 <div>
                                                     <i class="fa fa-clock-o me-1"></i>
@@ -131,7 +131,7 @@
                                                     <span class="text-muted">{{ $event->location }}</span>
                                                 </div>
                                             </div>
-                                            <p class="card-text mb-4">{{ $event->short_description }}</p>
+                                            <p class="card-text mb-4 event-card-description">{{ $event->short_description }}</p>
                                             <div class="text-center text-md-right">
                                                 <a class="text-primary text-decoration-none small" href="{{ route('eventi.show', $event->slug) }}">
                                                     {{ __('events.details') }} <i class="fa fa-arrow-right ms-1"></i>

@@ -19,5 +19,6 @@ return [
     'facebook' => 'Facebook',
     'instagram' => 'Instagram',
     'youtube' => 'YouTube',
-    'full_band_name' => 'Banda Folk di Castello Tesino'
+    'full_band_name' => 'Banda Folk di Castello Tesino',
+    'manage_cookies' => 'Gestisci preferenze cookie',
 ];

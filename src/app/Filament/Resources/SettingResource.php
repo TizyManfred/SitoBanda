@@ -65,6 +65,7 @@ class SettingResource extends Resource
             'contact' => self::onlyKeys($value, ['phone', 'email', 'whatsapp', 'address']),
             'social' => self::onlyKeys($value, ['facebook', 'youtube', 'instagram', 'spotify']),
             'courses' => self::normalizeCoursesValue($value),
+            'analytics' => self::onlyKeys($value, ['enabled', 'provider', 'ga4_measurement_id', 'ga4_property_id', 'plausible_domain', 'plausible_script_url']),
             'general' => self::onlyKeys($value, ['title', 'tagline', 'description', 'logo_url']),
             default => $value,
         };
@@ -141,6 +142,41 @@ class SettingResource extends Resource
                         ->columnSpanFull(),
                 ])->columns(2),
             ],
+            'analytics' => [
+                Forms\Components\Group::make([
+                    Forms\Components\Toggle::make('value.enabled')
+                        ->label('Abilita analytics')
+                        ->default(false)
+                        ->live(),
+                    Forms\Components\Select::make('value.provider')
+                        ->label('Provider')
+                        ->options([
+                            'none' => 'Nessuno',
+                            'ga4' => 'Google Analytics 4',
+                            'plausible' => 'Plausible',
+                        ])
+                        ->default('none')
+                        ->live(),
+                    Forms\Components\TextInput::make('value.ga4_measurement_id')
+                        ->label('GA4 Measurement ID')
+                        ->placeholder('G-XXXXXXXXXX')
+                        ->visible(fn (Forms\Get $get): bool => ($get('value.provider') ?? 'none') === 'ga4'),
+                    Forms\Components\TextInput::make('value.ga4_property_id')
+                        ->label('GA4 Property ID')
+                        ->placeholder('123456789')
+                        ->visible(fn (Forms\Get $get): bool => ($get('value.provider') ?? 'none') === 'ga4'),
+                    Forms\Components\TextInput::make('value.plausible_domain')
+                        ->label('Plausible Domain')
+                        ->placeholder('bandacastellotesino.it')
+                        ->visible(fn (Forms\Get $get): bool => ($get('value.provider') ?? 'none') === 'plausible'),
+                    Forms\Components\TextInput::make('value.plausible_script_url')
+                        ->label('Plausible Script URL')
+                        ->placeholder('https://plausible.io/js/script.js')
+                        ->default('https://plausible.io/js/script.js')
+                        ->url()
+                        ->visible(fn (Forms\Get $get): bool => ($get('value.provider') ?? 'none') === 'plausible'),
+                ])->columns(2),
+            ],
             'general' => [
                 Forms\Components\Group::make([
                     Forms\Components\TextInput::make('value.title')
@@ -173,6 +209,7 @@ class SettingResource extends Resource
             'contact' => 'Contatti',
             'social' => 'Social Media',
             'courses' => 'Corsi',
+            'analytics' => 'Analytics',
             'events' => 'Eventi',
             'media' => 'Media',
         ];
@@ -224,6 +261,7 @@ class SettingResource extends Resource
                         'success' => 'contact',
                         'warning' => 'social',
                         'info' => 'courses',
+                        'gray' => 'analytics',
                         'danger' => 'events',
                         'secondary' => 'media',
                     ]),

@@ -76,6 +76,8 @@
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
     <link rel="stylesheet" href="{{ asset('css/instrument-icons.css') }}">
     <link rel="stylesheet" href="{{ asset('css/sections.css') }}">
+
+    @include('partials.analytics')
     
     @yield('styles')
     
@@ -118,6 +120,7 @@
     <script src="{{ asset('js/core.min.js') }}"></script>
     <script src="{{ asset('js/script.js') }}"></script>
     {{-- <script src="{{ asset('js/fslightbox.js') }}"></script> --}}
+    @include('partials.cookie-consent')
     @yield('scripts')
     
     @if(View::hasSection('structured_data'))

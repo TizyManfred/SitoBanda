@@ -69,6 +69,21 @@ class SettingsHelper
     }
 
     /**
+     * Get analytics settings
+     */
+    public static function analytics(): array
+    {
+        return Setting::get('analytics_settings', [
+            'enabled' => false,
+            'provider' => 'none',
+            'ga4_measurement_id' => '',
+            'ga4_property_id' => '',
+            'plausible_domain' => '',
+            'plausible_script_url' => 'https://plausible.io/js/script.js',
+        ]);
+    }
+
+    /**
      * Get a specific contact field
      */
     public static function phone(): string

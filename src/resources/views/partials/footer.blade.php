@@ -100,5 +100,21 @@
       <span>.&nbsp;</span>
       <span>{{ __('footer.all_rights_reserved') }}</span>
     </p>
+    @php
+      $analytics = \App\Helpers\SettingsHelper::analytics();
+      $showCookieSettings = (bool) ($analytics['enabled'] ?? false)
+        && ($analytics['provider'] ?? null) === 'ga4'
+        && trim((string) ($analytics['ga4_measurement_id'] ?? '')) !== '';
+    @endphp
+    @if ($showCookieSettings)
+      <p class="mt-2 mb-0">
+        <a
+          href="#"
+          onclick="event.preventDefault(); window.BandaCookieConsent?.reopen?.();"
+        >
+          {{ __('footer.manage_cookies') }}
+        </a>
+      </p>
+    @endif
   </div>
 </footer>

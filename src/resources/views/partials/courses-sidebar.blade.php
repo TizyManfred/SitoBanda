@@ -1,4 +1,6 @@
-@php($coursesInfo = \App\Helpers\SettingsHelper::coursesInfo())
+@php
+    $coursesInfo = \App\Helpers\SettingsHelper::coursesInfo();
+@endphp
 
 <div class="aside-component">
     <div class="card">

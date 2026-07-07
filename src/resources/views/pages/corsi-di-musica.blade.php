@@ -6,7 +6,9 @@
 @section('og_description', __('corsi-di-musica.meta.og_description'))
 
 @section('content')
-    @php($dynamicBlocks = \App\Models\StaticPage::contentBlocks('corsi_di_musica'))
+    @php
+        $dynamicBlocks = \App\Models\StaticPage::contentBlocks('corsi_di_musica');
+    @endphp
 
     <!-- Breadcrumbs -->
     <section class="breadcrumbs-custom-inset">

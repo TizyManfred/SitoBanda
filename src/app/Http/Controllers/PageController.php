@@ -50,7 +50,8 @@ class PageController extends Controller
                 },
                 'images' => function($query) {
                     $query->orderBy('display_order', 'asc');
-                }
+                },
+                'images.galleryItem.album',
             ])
             ->orderBy('display_order', 'asc')
             ->get();

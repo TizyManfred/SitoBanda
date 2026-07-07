@@ -39,7 +39,7 @@ use Illuminate\Support\Str;
             <div class="col-xl-9 pr-xl-5">
 
                 <!-- Gallery Section -->
-                <section class="section section-sm section-first bg-default text-left">
+                <section class="section section-sm section-first bg-default text-left gallery-index-section">
                     <div class="container">
                         <h2 class="title-decoration-lines-left mb-3">{{ __('gallery.header') }}</h2>
                         <p class="">{{ __('gallery.subheader') }}</p>
@@ -78,16 +78,16 @@ use Illuminate\Support\Str;
                                                         <i class="fa fa-image"></i> {{ $album->items_count }}
                                                     </div>
                                                 </div>
-                                                <div class="card-body">
+                                                <div class="card-body gallery-album-card-body">
                                                     <h5 class="card-title mb-2 gallery-album-card-title">
                                                         <span class="text-dark text-decoration-none">{{ $album->title }}</span>
                                                     </h5>
                                                     @if($album->description)
-                                                        <p class="card-text text-muted small mb-3">
-                                                            {{ Str::limit(strip_tags($album->description), 120) }}
+                                                        <p class="card-text text-muted small mb-3 gallery-album-card-description">
+                                                            {{ Str::limit(strip_tags($album->description), 220) }}
                                                         </p>
                                                     @endif
-                                                    <div class="d-flex justify-content-between align-items-center">
+                                                    <div class="d-flex justify-content-between align-items-center gallery-album-card-meta">
                                                         @if($album->start_date)
                                                             <span class="badge bg-light text-dark">
                                                                 <i class="fa fa-calendar me-1"></i> {{ $album->start_date->translatedFormat('M Y') }}

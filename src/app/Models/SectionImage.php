@@ -9,6 +9,7 @@ class SectionImage extends Model
 {
     protected $fillable = [
         'section_id',
+        'gallery_item_id',
         'image_path',
         'caption',
         'display_order',
@@ -17,5 +18,20 @@ class SectionImage extends Model
     public function section(): BelongsTo
     {
         return $this->belongsTo(Section::class);
+    }
+
+    public function galleryItem(): BelongsTo
+    {
+        return $this->belongsTo(GalleryItem::class);
+    }
+
+    public function getResolvedImagePathAttribute(): ?string
+    {
+        return $this->galleryItem?->image_path ?: $this->image_path;
+    }
+
+    public function getResolvedCaptionAttribute(): ?string
+    {
+        return $this->caption ?: $this->galleryItem?->caption;
     }
 }

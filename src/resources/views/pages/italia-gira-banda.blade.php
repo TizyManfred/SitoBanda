@@ -6,7 +6,9 @@
 @section('og_description', __('italia-gira-banda.meta.og_description'))
 
 @section('content')
-    @php($dynamicBlocks = \App\Models\StaticPage::contentBlocks('italia_gira_banda'))
+    @php
+        $dynamicBlocks = \App\Models\StaticPage::contentBlocks('italia_gira_banda');
+    @endphp
 
     <!-- Breadcrumbs -->
     <section class="breadcrumbs-custom-inset">

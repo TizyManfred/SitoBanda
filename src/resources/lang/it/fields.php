@@ -205,6 +205,13 @@ return [
         'display_order' => 'Ordine Visualizzazione',
         'icon_class' => 'Classe Icona',
         'icon_helper' => 'Seleziona uno strumento dalla lista',
+        'image_source' => 'Origine immagine',
+        'select_from_gallery' => 'Seleziona da galleria',
+        'upload_image' => 'Carica immagine',
+        'gallery_album' => 'Album galleria',
+        'gallery_item' => 'Immagine dalla galleria',
+        'gallery_item_helper' => 'Scegli prima un album, poi la foto da collegare alla sezione.',
+        'uploaded_image' => 'Immagine caricata',
         'icons' => [
             'clarinet' => 'Clarinetto',
             'drum-kit' => 'Batteria',

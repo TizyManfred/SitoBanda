@@ -6,7 +6,9 @@
 @section('og_description', __('abito.meta.og_description'))
 
 @section('content')
-    @php($dynamicBlocks = \App\Models\StaticPage::contentBlocks('abito_tradizionale'))
+    @php
+        $dynamicBlocks = \App\Models\StaticPage::contentBlocks('abito_tradizionale');
+    @endphp
 
     <!-- Breadcrumbs -->
     <section class="breadcrumbs-custom-inset">

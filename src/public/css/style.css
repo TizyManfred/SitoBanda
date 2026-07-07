@@ -15426,15 +15426,57 @@ Aggiunte CSS
 	color: inherit;
 }
 
+.gallery-index-section {
+	padding-top: 0;
+}
+
 .gallery-album-card-title {
 	line-height: 1.2;
+}
+
+.gallery-album-card-body,
+.gallery-album-card-title,
+.gallery-album-card-description {
+	text-align: left;
 }
 
 .gallery-album-card-title span,
 .gallery-mini-card strong {
 	display: block;
 	white-space: normal;
+	overflow-wrap: anywhere;
 	word-break: break-word;
+}
+
+.gallery-album-card-description {
+	display: -webkit-box;
+	min-height: 5.6em;
+	line-height: 1.4;
+	overflow: hidden;
+	-webkit-box-orient: vertical;
+	-webkit-line-clamp: 4;
+}
+
+.event-card-body,
+.event-card-title,
+.event-card-description {
+	text-align: left;
+}
+
+.event-card-title {
+	line-height: 1.25;
+}
+
+.event-card-title a,
+.event-card-description {
+	display: block;
+	white-space: normal;
+	overflow-wrap: anywhere;
+	word-break: normal;
+}
+
+.event-card-description {
+	line-height: 1.55;
 }
 
 .gallery-detail-meta {
@@ -15646,6 +15688,27 @@ Aggiunte CSS
 }
 
 @media (max-width: 991px) {
+	.gallery-album-card-meta {
+		align-items: flex-start !important;
+		flex-wrap: wrap;
+		gap: 10px;
+	}
+
+	.gallery-album-card-meta .btn {
+		white-space: normal;
+		text-align: left;
+	}
+
+	.event-card-meta {
+		flex-wrap: wrap;
+		gap: 8px 16px;
+		text-align: left;
+	}
+
+	.event-card-body .text-center {
+		text-align: left !important;
+	}
+
 	.gallery-related-event {
 		grid-template-columns: 1fr;
 	}

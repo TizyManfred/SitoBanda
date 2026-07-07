@@ -40,6 +40,51 @@ return [
         'dashboard' => 'Dashboard',
         'settings' => 'Impostazioni',
         'artisan_commands' => 'Comandi Artisan',
+        'analytics' => 'Analytics',
+    ],
+
+    'analytics' => [
+        'not_set' => 'non impostato',
+        'cards' => [
+            'visitors_7d' => 'Visitatori ultimi 7 giorni',
+            'pageviews_7d' => 'Pageview ultimi 7 giorni',
+            'visitors_30d' => 'Visitatori ultimi 30 giorni',
+            'pageviews_30d' => 'Pageview ultimi 30 giorni',
+        ],
+        'setup' => [
+            'title' => 'Configurazione Google Analytics',
+            'description' => 'Questa pagina legge i dati GA4 tramite il pacchetto Spatie e le credenziali service account.',
+            'credentials_hint' => 'Percorso file credenziali',
+            'provider' => 'Provider',
+            'measurement_id' => 'GA4 Measurement ID',
+            'property_id' => 'GA4 Property ID',
+            'credentials_file' => 'Credentials JSON',
+        ],
+        'traffic' => [
+            'title' => 'Traffico giornaliero',
+            'description' => 'Andamento visitatori e pageview degli ultimi 30 giorni.',
+        ],
+        'tables' => [
+            'top_pages' => 'Pagine più visitate',
+            'top_referrers' => 'Referrer principali',
+            'top_browsers' => 'Browser principali',
+            'top_countries' => 'Paesi principali',
+        ],
+        'columns' => [
+            'date' => 'Data',
+            'visitors' => 'Visitatori',
+            'pageviews' => 'Pageview',
+            'page' => 'Pagina',
+            'url' => 'URL',
+            'referrer' => 'Referrer',
+            'browser' => 'Browser',
+            'country' => 'Paese',
+        ],
+        'messages' => [
+            'missing_configuration' => 'Per vedere i dati devi impostare provider GA4, GA4 Property ID e caricare il file JSON del service account nel percorso indicato.',
+            'fetch_error' => 'Errore durante il recupero dei dati analytics.',
+            'no_data' => 'Nessun dato disponibile.',
+        ],
     ],
 
     'artisan_commands' => [
