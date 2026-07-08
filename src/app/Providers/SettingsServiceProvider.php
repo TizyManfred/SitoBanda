@@ -24,10 +24,12 @@ class SettingsServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        $analyticsSettings = SettingsHelper::analytics();
+        if (! $this->app->runningInConsole()) {
+            $analyticsSettings = SettingsHelper::analytics();
 
-        if (($analyticsSettings['ga4_property_id'] ?? '') !== '') {
-            config(['analytics.property_id' => $analyticsSettings['ga4_property_id']]);
+            if (($analyticsSettings['ga4_property_id'] ?? '') !== '') {
+                config(['analytics.property_id' => $analyticsSettings['ga4_property_id']]);
+            }
         }
 
         // Share settings with all views

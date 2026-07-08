@@ -56,7 +56,9 @@
 @endsection
 
 @section('content')
-    @php($dynamicBlocks = \App\Models\StaticPage::contentBlocks('organico'))
+    @php
+        $dynamicBlocks = \App\Models\StaticPage::contentBlocks('organico');
+    @endphp
 
     <section class="breadcrumbs-custom-inset">
         <div class="breadcrumbs-custom context-dark bg-overlay-60">
