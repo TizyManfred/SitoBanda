@@ -13,6 +13,7 @@ return [
         'description' => 'Soziale Folklore-Kapelle von Castello Tesino<br>Tradition, Musik & Kultur<br>seit 1901',
         'aria' => [
             'slideshow' => 'Haupt-Slideshow',
+            'slide' => 'Folie :number',
             'slide1' => 'Erste Folie - Kapelle in San Ippolito',
             'slide2' => 'Zweite Folie - Kapelle in Shanghai',
             'slide3' => 'Dritte Folie - Kapelle in Rom',

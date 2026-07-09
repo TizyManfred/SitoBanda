@@ -1,58 +1,37 @@
 @extends('layouts.app')
 
+@php
+    $homeCarouselSlides = \App\Models\StaticPage::homeCarouselSlides();
+    $homeFirstSlideImage = $homeCarouselSlides[0]['image_url'] ?? \App\Models\StaticPage::headerImageUrl('home', 'images/FotoSanIppolito1.webp', 0);
+@endphp
+
 @section('title', __('home.meta.title'))
 @section('description', __('home.meta.description'))
 @section('og_title', __('home.meta.og_title'))
 @section('og_description', __('home.meta.og_description'))
-@section('og_image', \App\Models\StaticPage::headerImageUrl('home', 'images/FotoSanIppolito1.webp', 0))
+@section('og_image', $homeFirstSlideImage)
+@section('preloads')
+    <link rel="preload" as="image" href="{{ $homeFirstSlideImage }}" fetchpriority="high">
+@endsection
 
 @section('content')
     <!-- Hero Slider -->
-    <section class="section swiper-container swiper-slider swiper-slider-classic" data-loop="true" data-autoplay="5000"
+    <section class="section swiper-container swiper-slider swiper-slider-classic home-hero-carousel" data-loop="true" data-autoplay="5000"
       data-simulate-touch="true" data-direction="vertical" data-nav="false" aria-label="{{ __('home.hero.aria.slideshow') }}">
       <div class="swiper-wrapper text-center">
-        <div class="swiper-slide context-dark" data-slide-bg="{{ \App\Models\StaticPage::headerImageUrl('home', 'images/FotoSanIppolito1.webp', 0) }}" aria-label="{{ __('home.hero.aria.slide1') }}">
-          <div class="swiper-slide-caption section-md">
-            <div class="container">
-              <div class="row">
-                <div class="col-md-10 col-lg-8 offset-md-1 offset-lg-2">
-                  <h1>
-                    <span class="d-block" data-caption-animate="fadeInUp" data-caption-delay="100">
-                      {{ __('home.hero.title') }} 
-                    </span>
-                    <span class="d-block text-light" data-caption-animate="fadeInUp"
-                      data-caption-delay="200">
-                      {{ __('home.hero.subtitle') }} 
-                    </span>
-                  </h1>
-                  <p class="lead" data-caption-animate="fadeInUp" data-caption-delay="350">{!! __('home.hero.description') !!}</p>
+        @foreach ($homeCarouselSlides as $slide)
+          <div class="swiper-slide context-dark" data-slide-bg="{{ $slide['image_url'] }}" aria-label="{{ __('home.hero.aria.slide', ['number' => $loop->iteration]) }}">
+            <div class="swiper-slide-caption section-md">
+              <div class="container">
+                <div class="row">
+                  <div class="col-md-10 col-lg-8 offset-md-1 offset-lg-2" data-caption-animate="fadeInUp" data-caption-delay="100">
+                    {!! $slide['description'] ?? '' !!}
+                  </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
-
-        <div class="swiper-slide context-dark" data-slide-bg="{{ \App\Models\StaticPage::headerImageUrl('home', 'images/FotoShanghai1.webp', 1) }}" aria-label="{{ __('home.hero.aria.slide2') }}">
-          <div class="swiper-slide-caption section-md">
-            <div class="container">
-              <h2 data-caption-animate="fadeInLeft" data-caption-delay="0">{!! __('home.hero.slide2.title') !!}</h2>
-              <p class="text-width-large" data-caption-animate="fadeInRight" data-caption-delay="100">{{ __('home.hero.slide2.text') }}</p>
-              <a class="button button-primary button-ujarak" href="{{ route('italia-gira-banda') }}" title="{{ __('home.hero.slide2.cta') }}"
-                data-caption-animate="fadeInUp" data-caption-delay="200">{{ __('home.hero.slide2.cta') }}</a>
-            </div>
-          </div>
-        </div>
-
-        <div class="swiper-slide context-dark" data-slide-bg="{{ \App\Models\StaticPage::headerImageUrl('home', 'images/FotoRoma1.webp', 2) }}" aria-label="{{ __('home.hero.aria.slide3') }}">
-          <div class="swiper-slide-caption section-md">
-            <div class="container">
-              <h2 data-caption-animate="fadeInLeft" data-caption-delay="0">{!! __('home.hero.slide3.title') !!}</h2>
-              <p class="text-width-large" data-caption-animate="fadeInRight" data-caption-delay="100">{{ __('home.hero.slide3.text') }}</p>
-              <a class="button button-primary button-ujarak" href="{{ route('chi-siamo') }}" title="{{ __('home.hero.slide3.cta') }}" data-caption-animate="fadeInUp"
-                data-caption-delay="200">{{ __('home.hero.slide3.cta') }}</a>
-            </div>
-          </div>
-        </div>
+        @endforeach
       </div>
 
       <!-- Swiper Pagination-->
@@ -71,7 +50,7 @@
         <div class="row row-30 justify-content-center">
           <div class="col-md-7 col-lg-5 col-xl-6 text-lg-left wow fadeInUp">
             <div class="figure-classic figure-classic-left">
-              <img src="{{ asset('images/FotoBiagio1.webp') }}" alt="{{ __('home.about.image_alt') }}" width="100%" height="auto" loading="lazy" />
+              <img src="{{ asset('images/FotoBiagio1.webp') }}" alt="{{ __('home.about.image_alt') }}" width="2048" height="1536" loading="lazy" class="img-fluid" />
             </div>
           </div>
 
@@ -235,7 +214,7 @@
         '@type' => 'MusicGroup',
         'name' => 'Banda Folk di Castello Tesino',
         'description' => __('home.structured.description'),
-        'image' => \App\Models\StaticPage::headerImageUrl('home', 'images/FotoSanIppolito1.webp', 0),
+        'image' => $homeFirstSlideImage,
         'url' => url('/'),
         'genre' => ['Folk', 'Traditional', 'Marching Band'],
         'foundingDate' => '1901',

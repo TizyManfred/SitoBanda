@@ -53,6 +53,7 @@
 
     <!-- Canonical URL -->
     <link rel="canonical" href="{{ $canonicalUrl }}">
+    @yield('preloads')
 
     <!-- Hreflang tags -->
     @hasSection('alternate_urls')
@@ -70,7 +71,7 @@
     <!-- Stylesheets-->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Poppins:400,500%7CTeko:300,400,500%7CMaven+Pro:500">
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Poppins:400,500%7CTeko:300,400,500%7CMaven+Pro:500&display=swap">
     <link rel="stylesheet" href="{{ asset('css/bootstrap.css') }}">
     <link rel="stylesheet" href="{{ asset('css/fonts.css') }}">
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
@@ -100,7 +101,9 @@
     <div class="page">
         @include('partials.header')
         
-        @yield('content')
+        <main id="main-content">
+            @yield('content')
+        </main>
         
         @include('partials.footer')
     </div>

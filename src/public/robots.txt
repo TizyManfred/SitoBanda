@@ -1,4 +1,4 @@
 User-agent: *
-Disallow: /admin
+Disallow: /admin/
 
-Sitemap: https://bandafolkcastellotesino.it/sitemap.xml
+Sitemap: https://www.bandacastellotesino.it/sitemap.xml

@@ -43,6 +43,17 @@ return [
         'analytics' => 'Analytics',
     ],
 
+    'homepage_static' => [
+        'navigation_label' => 'Homepage',
+        'title' => 'Homepage',
+        'carousel_section' => 'Carosello header',
+        'slides' => 'Slide',
+        'add_slide' => 'Aggiungi slide',
+        'slide_description' => 'Descrizione',
+        'save' => 'Salva homepage',
+        'saved' => 'Homepage salvata',
+    ],
+
     'analytics' => [
         'not_set' => 'non impostato',
         'cards' => [

@@ -13,6 +13,7 @@ return [
         'description' => 'Banda Sociale Folkloristica di Castello Tesino<br>Tradizione, Musica & Cultura<br>dal 1901',
         'aria' => [
             'slideshow' => 'Slideshow principale',
+            'slide' => 'Slide :number',
             'slide1' => 'Primo slide - Banda a San Ippolito',
             'slide2' => 'Secondo slide - Banda a Shanghai',
             'slide3' => 'Terzo slide - Banda a Roma',

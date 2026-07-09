@@ -41,6 +41,7 @@ class StaticPage extends Model
         'content_images',
         'header_image_path',
         'header_images',
+        'header_slides',
         'fallback_header_image_path',
         'is_active',
     ];
@@ -53,8 +54,48 @@ class StaticPage extends Model
         'content_blocks' => 'array',
         'content_images' => 'array',
         'header_images' => 'array',
+        'header_slides' => 'array',
         'is_active' => 'boolean',
     ];
+
+    public static function homeCarouselSlides(): array
+    {
+        try {
+            return Cache::remember('static_page.home_carousel_slides.' . app()->getLocale(), 3600, function (): array {
+                $staticPage = static::query()
+                    ->where('page_key', 'home')
+                    ->where('is_active', true)
+                    ->first();
+
+                $slides = collect($staticPage?->header_slides ?? [])
+                    ->map(fn (array $slide): ?array => static::normalizeHeaderSlide($slide))
+                    ->filter()
+                    ->values()
+                    ->all();
+
+                if ($slides !== []) {
+                    return $slides;
+                }
+
+                $imageSlides = collect($staticPage?->header_images ?? [])
+                    ->filter(fn (?string $path): bool => filled($path))
+                    ->map(fn (string $path): array => [
+                        'image_url' => static::pathToUrl($path),
+                        'description' => null,
+                    ])
+                    ->values()
+                    ->all();
+
+                if ($imageSlides !== []) {
+                    return $imageSlides;
+                }
+
+                return static::fallbackHomeCarouselSlides($staticPage);
+            });
+        } catch (\Throwable) {
+            return static::fallbackHomeCarouselSlides();
+        }
+    }
 
     public static function contentBlocks(string $pageKey): array
     {
@@ -193,6 +234,57 @@ class StaticPage extends Model
             ->first(fn ($text): bool => filled($text));
     }
 
+    protected static function normalizeHeaderSlide(array $slide): ?array
+    {
+        $path = $slide['image'] ?? null;
+
+        if (is_array($path)) {
+            $path = collect($path)->first();
+        }
+
+        if (! filled($path)) {
+            return null;
+        }
+
+        return [
+            'image_url' => static::pathToUrl($path),
+            'description' => static::localizedBlockText($slide['description'] ?? null),
+        ];
+    }
+
+    protected static function fallbackHomeCarouselSlides(?self $staticPage = null): array
+    {
+        $fallbacks = [
+            [
+                'image' => 'images/FotoSanIppolito1.webp',
+                'description' => '<h1><span class="d-block">' . e(__('home.hero.title')) . '</span><span class="d-block text-light">' . e(__('home.hero.subtitle')) . '</span></h1><p class="lead">' . __('home.hero.description') . '</p>',
+            ],
+            [
+                'image' => 'images/FotoShanghai1.webp',
+                'description' => '<h2>' . __('home.hero.slide2.title') . '</h2><p class="text-width-large">' . e(__('home.hero.slide2.text')) . '</p>',
+            ],
+            [
+                'image' => 'images/FotoRoma1.webp',
+                'description' => '<h2>' . __('home.hero.slide3.title') . '</h2><p class="text-width-large">' . e(__('home.hero.slide3.text')) . '</p>',
+            ],
+        ];
+
+        return collect($fallbacks)
+            ->map(function (array $fallback, int $index) use ($staticPage): array {
+                $path = $staticPage?->header_images[$index] ?? null;
+                $path = $path
+                    ?: ($index === 0 ? $staticPage?->header_image_path : null)
+                    ?: ($index === 0 ? $staticPage?->fallback_header_image_path : null)
+                    ?: $fallback['image'];
+
+                return [
+                    'image_url' => static::pathToUrl($path),
+                    'description' => $fallback['description'],
+                ];
+            })
+            ->all();
+    }
+
     public static function headerImageUrl(string $pageKey, string $fallbackPath, int $imageIndex = 0): string
     {
         try {
@@ -202,7 +294,13 @@ class StaticPage extends Model
                     ->where('is_active', true)
                     ->first();
 
-                $path = $staticPage?->header_images[$imageIndex] ?? null;
+                $slidePath = $staticPage?->header_slides[$imageIndex]['image'] ?? null;
+
+                if (is_array($slidePath)) {
+                    $slidePath = collect($slidePath)->first();
+                }
+
+                $path = $slidePath ?: ($staticPage?->header_images[$imageIndex] ?? null);
                 $path = $path
                     ?: $staticPage?->header_image_path
                     ?: $staticPage?->fallback_header_image_path
@@ -238,7 +336,13 @@ class StaticPage extends Model
 
     public function getHeaderImagePreviewUrlAttribute(): string
     {
-        $path = $this->header_images[0] ?? null;
+        $path = $this->header_slides[0]['image'] ?? null;
+
+        if (is_array($path)) {
+            $path = collect($path)->first();
+        }
+
+        $path = $path ?: ($this->header_images[0] ?? null);
 
         return static::pathToUrl($path ?: $this->header_image_path ?: $this->fallback_header_image_path);
     }
@@ -271,6 +375,7 @@ class StaticPage extends Model
         foreach (['it', 'en', 'de'] as $locale) {
             Cache::forget("static_page.content_html.{$pageKey}.{$locale}");
             Cache::forget("static_page.content_blocks.{$pageKey}.{$locale}");
+            Cache::forget("static_page.home_carousel_slides.{$locale}");
         }
 
         foreach (range(0, 9) as $index) {

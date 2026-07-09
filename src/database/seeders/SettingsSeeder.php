@@ -51,9 +51,9 @@ class SettingsSeeder extends Seeder
 
         // Analytics Settings
         Setting::set('analytics_settings', [
-            'enabled' => false,
-            'provider' => 'none',
-            'ga4_measurement_id' => '',
+            'enabled' => true,
+            'provider' => 'ga4',
+            'ga4_measurement_id' => 'G-FK7DDYZC1R',
             'ga4_property_id' => '',
             'plausible_domain' => '',
             'plausible_script_url' => 'https://plausible.io/js/script.js',

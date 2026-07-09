@@ -13,6 +13,7 @@ return [
         'description' => 'Social Folk Band of Castello Tesino<br>Tradition, Music & Culture<br>since 1901',
         'aria' => [
             'slideshow' => 'Main slideshow',
+            'slide' => 'Slide :number',
             'slide1' => 'First slide - Band in San Ippolito',
             'slide2' => 'Second slide - Band in Shanghai',
             'slide3' => 'Third slide - Band in Rome',

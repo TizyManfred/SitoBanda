@@ -13,6 +13,7 @@ use Filament\Notifications\Notification;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
 use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 
 class StaticPageResource extends Resource
@@ -48,7 +49,7 @@ class StaticPageResource extends Resource
                             ->schema([
                                 Forms\Components\Select::make('page_key')
                                     ->label(__('fields.static_page.page'))
-                                    ->options(StaticPage::PAGE_OPTIONS)
+                                    ->options(collect(StaticPage::PAGE_OPTIONS)->except('home')->all())
                                     ->required()
                                     ->unique(ignoreRecord: true)
                                     ->live()
@@ -442,6 +443,7 @@ class StaticPageResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+            ->modifyQueryUsing(fn (Builder $query): Builder => $query->where('page_key', '!=', 'home'))
             ->columns([
                 Tables\Columns\ImageColumn::make('header_image_preview_url')
                     ->label(__('fields.static_page.header_image'))

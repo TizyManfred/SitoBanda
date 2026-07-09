@@ -14,6 +14,17 @@ return [
         'analytics' => 'Analytics',
     ],
 
+    'homepage_static' => [
+        'navigation_label' => 'Homepage',
+        'title' => 'Homepage',
+        'carousel_section' => 'Header carousel',
+        'slides' => 'Slides',
+        'add_slide' => 'Add slide',
+        'slide_description' => 'Description',
+        'save' => 'Save homepage',
+        'saved' => 'Homepage saved',
+    ],
+
     'analytics' => [
         'not_set' => 'not set',
         'cards' => [
