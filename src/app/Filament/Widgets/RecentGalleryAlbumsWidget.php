@@ -13,7 +13,10 @@ use Illuminate\Support\Facades\Route;
 class RecentGalleryAlbumsWidget extends BaseWidget
 {
     protected static ?string $heading = 'Ultimi Album';
-    protected int|string|array $columnSpan = 2;
+    protected int|string|array $columnSpan = [
+        'default' => 'full',
+        'lg' => 1,
+    ];
     protected static ?string $pollingInterval = null;
     protected static bool $isLazy = false;
 

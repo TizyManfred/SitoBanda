@@ -22,13 +22,11 @@ class Dashboard extends BaseDashboard
         ];
     }
 
-    protected function getWidgetsColumns(): int|array
+    public function getColumns(): int|string|array
     {
         return [
-            'md' => 3,
-            '2xl' => 4,
+            'default' => 1,
+            'lg' => 2,
         ];
     }
 }
-
-

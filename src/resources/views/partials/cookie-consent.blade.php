@@ -95,6 +95,7 @@
             color: #fff;
         }
 
+
         @media (max-width: 767.98px) {
             .cookie-consent__inner {
                 flex-direction: column;
@@ -161,9 +162,6 @@
                     'analytics_storage': state === 'granted' ? 'granted' : 'denied'
                 });
 
-                if (state === 'granted') {
-                    window.BandaAnalytics?.load?.();
-                }
             }
 
             function persistChoice(state) {

@@ -1,0 +1,125 @@
+/* Mobile refinements shared by the Filament admin panel. */
+@media (max-width: 767px) {
+    .fi-main {
+        padding-left: 0.75rem !important;
+        padding-right: 0.75rem !important;
+    }
+
+    .fi-header,
+    .fi-ta-header,
+    .fi-ta-header-toolbar,
+    .fi-ta-header-ctn,
+    .fi-ta-actions,
+    .fi-ac {
+        align-items: stretch !important;
+        flex-direction: column !important;
+    }
+
+    .fi-header-actions,
+    .fi-ta-header-toolbar > div,
+    .fi-ta-actions > * {
+        width: 100%;
+    }
+
+    .fi-header-actions .fi-btn,
+    .fi-ta-header-toolbar .fi-btn,
+    .fi-ta-actions .fi-btn {
+        justify-content: center;
+        width: 100%;
+    }
+
+    .fi-section-header,
+    .fi-section-content-ctn,
+    .fi-modal-header,
+    .fi-modal-content,
+    .fi-modal-footer {
+        padding-left: 1rem !important;
+        padding-right: 1rem !important;
+    }
+
+    .fi-fo-grid {
+        grid-template-columns: minmax(0, 1fr) !important;
+    }
+
+    .fi-fo-grid > * {
+        grid-column: 1 / -1 !important;
+    }
+
+    /* Dashboard widgets must not retain Filament's desktop column spans. */
+    .fi-page .fi-wi {
+        grid-template-columns: minmax(0, 1fr) !important;
+    }
+
+    .fi-page .fi-wi-widget {
+        grid-column: 1 / -1 !important;
+        min-width: 0;
+        width: 100%;
+    }
+
+    .fi-page .fi-wi-stats-overview-stats-ctn {
+        grid-template-columns: minmax(0, 1fr) !important;
+        gap: 0.75rem;
+    }
+
+    .fi-page .fi-wi-stats-overview-stat {
+        min-width: 0;
+        width: 100%;
+    }
+
+    .fi-ta-content {
+        overscroll-behavior-x: contain;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .fi-ta-table {
+        min-width: 42rem;
+    }
+
+    .fi-modal-window {
+        max-height: calc(100dvh - 1rem) !important;
+        max-width: calc(100vw - 1rem) !important;
+        width: calc(100vw - 1rem) !important;
+    }
+
+    .fi-modal-footer {
+        position: sticky;
+        bottom: 0;
+        z-index: 5;
+        border-top: 1px solid rgb(229 231 235);
+        background: rgb(255 255 255 / 0.96);
+        backdrop-filter: blur(8px);
+    }
+
+    .dark .fi-modal-footer {
+        border-color: rgb(255 255 255 / 0.1);
+        background: rgb(17 24 39 / 0.96);
+    }
+
+    .fi-modal-footer-actions {
+        display: grid !important;
+        grid-template-columns: 1fr;
+        width: 100%;
+    }
+
+    .fi-modal-footer-actions .fi-btn {
+        justify-content: center;
+        width: 100%;
+    }
+
+    .multi-image-uploader [x-ref="grid"] {
+        grid-template-columns: minmax(0, 1fr) !important;
+    }
+
+    .multi-image-uploader .drag-handle {
+        padding: 0.5rem;
+        height: 2.5rem;
+        width: 2.5rem;
+    }
+}
+
+@media (min-width: 768px) and (max-width: 1100px) {
+    .multi-image-uploader [x-ref="grid"] {
+        grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    }
+}

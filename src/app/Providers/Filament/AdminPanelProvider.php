@@ -92,7 +92,8 @@ class AdminPanelProvider extends PanelProvider
 
         FilamentView::registerRenderHook(
             'panels::head.start',
-            fn (): string => '<link rel="stylesheet" href="' . asset('css/instrument-icons.css') . '">'
+            fn (): string => '<link rel="stylesheet" href="' . asset('css/instrument-icons.css') . '">' .
+                '<link rel="stylesheet" href="' . asset('css/filament-admin-responsive.css') . '">'
         );
     }
 }

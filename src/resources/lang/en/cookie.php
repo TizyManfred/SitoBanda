@@ -5,5 +5,7 @@ return [
     'title' => 'Your privacy',
     'message' => 'We use cookies to improve your browsing experience. You can accept or reject them; the site remains fully usable either way. Read our <a href=":privacyUrl">Privacy Policy</a>.',
     'accept' => 'Accept',
+    'options' => 'More options',
     'reject' => 'Reject',
+    'close_without_consent' => 'Close without consenting',
 ];

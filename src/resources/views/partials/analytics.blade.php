@@ -21,25 +21,11 @@
             'ad_personalization': 'denied',
             'analytics_storage': 'denied'
         });
-
-        window.BandaAnalytics = {
-            load: function () {
-                if (window.BandaAnalytics.loaded) {
-                    return;
-                }
-
-                window.BandaAnalytics.loaded = true;
-
-                var script = document.createElement('script');
-                script.async = true;
-                script.src = 'https://www.googletagmanager.com/gtag/js?id={{ urlencode($ga4MeasurementId) }}';
-                script.onload = function () {
-                    gtag('js', new Date());
-                    gtag('config', @json($ga4MeasurementId));
-                };
-                document.head.appendChild(script);
-            }
-        };
+    </script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id={{ urlencode($ga4MeasurementId) }}"></script>
+    <script>
+        gtag('js', new Date());
+        gtag('config', @json($ga4MeasurementId));
     </script>
 @endif
 

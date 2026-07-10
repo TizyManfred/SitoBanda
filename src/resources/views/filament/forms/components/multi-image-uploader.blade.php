@@ -50,6 +50,20 @@
         })"
         class="multi-image-uploader"
     >
+        <div
+            x-show="_pendingReads > 0 || _pendingSyncs > 0"
+            x-cloak
+            role="status"
+            aria-live="polite"
+            class="mb-4 flex items-center gap-3 rounded-lg border border-primary-200 bg-primary-50 px-4 py-3 text-sm font-medium text-primary-700 dark:border-primary-500/30 dark:bg-primary-500/10 dark:text-primary-300"
+        >
+            <svg class="h-5 w-5 shrink-0 animate-spin" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <circle class="opacity-25" cx="12" cy="12" r="9" stroke="currentColor" stroke-width="3"></circle>
+                <path class="opacity-80" fill="currentColor" d="M21 12a9 9 0 0 0-9-9v3a6 6 0 0 1 6 6h3Z"></path>
+            </svg>
+            <span>{{ $uploadingText }}... <span x-text="_pendingReads > 0 ? `(${_pendingReads})` : ''"></span></span>
+        </div>
+
         <!-- Upload Area -->
         <div class="mb-4">
             <div
@@ -170,7 +184,7 @@
                                         <input
                                             type="text"
                                             x-model="image.captions[localeshort]"
-                                            @input.debounce.400ms="updateState()"
+                                            @input.debounce.400ms="syncState()"
                                             class="block w-full rounded-md border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-sm text-gray-900 shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:text-white dark:placeholder-gray-500"
                                             :placeholder="`Didascalia ${localeshort}...`"
                                             :disabled="isDisabled"

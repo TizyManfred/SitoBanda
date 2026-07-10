@@ -166,12 +166,12 @@ class AnalyticsPage extends Page
             ],
             [
                 'label' => __('filament.analytics.setup.measurement_id'),
-                'value' => $this->analyticsSettings['ga4_measurement_id'] ?: __('filament.analytics.not_set'),
+                'value' => ($this->analyticsSettings['ga4_measurement_id'] ?? '') ?: __('filament.analytics.not_set'),
                 'ok' => ($this->analyticsSettings['ga4_measurement_id'] ?? '') !== '',
             ],
             [
                 'label' => __('filament.analytics.setup.property_id'),
-                'value' => $this->analyticsSettings['ga4_property_id'] ?: __('filament.analytics.not_set'),
+                'value' => ($this->analyticsSettings['ga4_property_id'] ?? '') ?: __('filament.analytics.not_set'),
                 'ok' => ($this->analyticsSettings['ga4_property_id'] ?? '') !== '',
             ],
             [

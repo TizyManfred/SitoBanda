@@ -12,6 +12,7 @@ function multiImageUploaderComponent(config) {
         isDisabled: false,
         _batching: false,
         _formProcessingActive: false,
+        _pendingSyncs: 0,
         translatingCaptions: {},
         // Track how many FileReader operations are in-flight
         _pendingReads: 0,
@@ -168,11 +169,12 @@ function multiImageUploaderComponent(config) {
             } finally {
                 // End batching; only sync state when all pending reads are done
                 this._batching = prevBatching;
-                const trySync = () => {
+                const trySync = async () => {
                     if (!this._batching && this._pendingReads <= 0) {
-                        this.updateState();
+                        await this.syncState();
+                    } else {
+                        this.refreshProcessingState();
                     }
-                    this.refreshProcessingState();
                 };
                 // If no pending reads, sync immediately; otherwise onload/onerror will sync
                 trySync();
@@ -192,7 +194,7 @@ function multiImageUploaderComponent(config) {
         },
 
         refreshProcessingState() {
-            if ((this._pendingReads || 0) > 0) {
+            if ((this._pendingReads || 0) > 0 || (this._pendingSyncs || 0) > 0) {
                 if (!this._formProcessingActive) {
                     this._formProcessingActive = true;
                     this.dispatchFormEvent('form-processing-started', { message: this.processingMessage });
@@ -203,6 +205,18 @@ function multiImageUploaderComponent(config) {
             if (this._formProcessingActive) {
                 this._formProcessingActive = false;
                 this.dispatchFormEvent('form-processing-finished');
+            }
+        },
+
+        async syncState() {
+            this._pendingSyncs++;
+            this.refreshProcessingState();
+
+            try {
+                await this.updateState();
+            } finally {
+                this._pendingSyncs = Math.max(0, this._pendingSyncs - 1);
+                this.refreshProcessingState();
             }
         },
 
@@ -259,7 +273,7 @@ function multiImageUploaderComponent(config) {
                     this.$nextTick(() => { this.setupSortable(); });
                 }
                 
-                const finishProcessing = (preview) => {
+                const finishProcessing = async (preview) => {
                     try {
                         const image = this.images.find(img => img && img.id === imageId);
                         if (image) {
@@ -271,14 +285,17 @@ function multiImageUploaderComponent(config) {
                     } finally {
                         this._pendingReads = Math.max(0, (this._pendingReads || 0) - 1);
                         if (!this._batching && this._pendingReads === 0) {
-                            this.updateState();
+                            await this.syncState();
+                        } else {
+                            this.refreshProcessingState();
                         }
-                        this.refreshProcessingState();
                     }
                 };
 
                 // Build a compressed preview. The backend stores this data URL when no Livewire temp file exists.
-                this.createOptimizedPreview(file).then(finishProcessing).catch((error) => {
+                this.createOptimizedPreview(file).then(
+                    (preview) => finishProcessing(preview),
+                    (error) => {
                     console.error('Error optimizing image preview:', error);
 
                     reader.onload = (e) => {
@@ -296,7 +313,8 @@ function multiImageUploaderComponent(config) {
                         console.error('Error reading file as data URL:', readError);
                         finishProcessing('');
                     }
-                });
+                    }
+                );
                 
                 // Do not update state here; processFiles() will perform a single batched update.
             } catch (error) {
@@ -305,7 +323,7 @@ function multiImageUploaderComponent(config) {
             }
         },
 
-        removeImage(index) {
+        async removeImage(index) {
             try {
                 // Validate index
                 if (typeof index !== 'number') {
@@ -359,7 +377,7 @@ function multiImageUploaderComponent(config) {
                     setTimeout(() => { this.setupSortable(); }, 0);
                 }
                 
-                this.updateState();
+                await this.syncState();
             } catch (error) {
                 console.error('CRITICAL ERROR in removeImage():', error);
                 console.error('Full error stack:', error.stack);
@@ -446,7 +464,7 @@ function multiImageUploaderComponent(config) {
 
                 if (translated && typeof translated === 'object') {
                     image.captions = this.initializeCaptions(translated);
-                    this.updateState();
+                    await this.syncState();
                 }
             } catch (error) {
                 console.error('Error translating caption:', error);
@@ -456,7 +474,7 @@ function multiImageUploaderComponent(config) {
             }
         },
 
-        updateOrder(items) {
+        async updateOrder(items) {
             try {
                 // Validate inputs
                 if (!Array.isArray(items)) {
@@ -505,7 +523,7 @@ function multiImageUploaderComponent(config) {
 
                 // Preserve Alpine’s proxy identity by mutating the array in place
                 this.images.splice(0, this.images.length, ...newOrder);
-                this.updateState();
+                await this.syncState();
 
                 // Wait for Alpine to render, then manually fix the DOM order to guarantee it matches the data
                 if (this.$nextTick) {
@@ -573,7 +591,7 @@ function multiImageUploaderComponent(config) {
             }
         },
 
-        updateState() {
+        async updateState() {
             try {
                 if (!this.images || !Array.isArray(this.images)) {
                     this.images = [];
@@ -611,7 +629,7 @@ function multiImageUploaderComponent(config) {
                 
                 if (this.$wire && typeof this.$wire.set === 'function') {
                     try {
-                        this.$wire.set(this.statePath, state);
+                        await this.$wire.set(this.statePath, state);
                     } catch (e) {
                         console.error('Error stack:', e.stack);
                     }

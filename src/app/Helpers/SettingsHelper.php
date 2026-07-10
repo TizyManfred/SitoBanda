@@ -73,14 +73,18 @@ class SettingsHelper
      */
     public static function analytics(): array
     {
-        return Setting::get('analytics_settings', [
+        $defaults = [
             'enabled' => false,
             'provider' => 'none',
             'ga4_measurement_id' => '',
             'ga4_property_id' => '',
             'plausible_domain' => '',
             'plausible_script_url' => 'https://plausible.io/js/script.js',
-        ]);
+        ];
+
+        $settings = Setting::get('analytics_settings', []);
+
+        return array_replace($defaults, is_array($settings) ? $settings : []);
     }
 
     /**
