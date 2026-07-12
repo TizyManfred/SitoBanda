@@ -69,6 +69,19 @@
                 <div class="text-danger small">{{ $message }}</div>
               @enderror
             </div>
+            @if(config('services.turnstile.site_key'))
+              <div class="form-wrap">
+                <div class="cf-turnstile"
+                     data-sitekey="{{ config('services.turnstile.site_key') }}"
+                     data-action="contact_footer"
+                     data-appearance="interaction-only"
+                     data-size="flexible"
+                     data-theme="auto"></div>
+                @error('cf-turnstile-response','footer')
+                  <div class="text-danger small">{{ $message }}</div>
+                @enderror
+              </div>
+            @endif
             @if(session('footer_error'))
               <div class="alert alert-danger" role="alert">{{ session('footer_error') }}</div>
             @endif

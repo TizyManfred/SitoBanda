@@ -122,6 +122,9 @@
     </script>
     <script src="{{ asset('js/core.min.js') }}"></script>
     <script src="{{ asset('js/script.js') }}"></script>
+    @if(config('services.turnstile.site_key'))
+        <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+    @endif
     {{-- <script src="{{ asset('js/fslightbox.js') }}"></script> --}}
     @include('partials.cookie-consent')
     @yield('scripts')

@@ -40,6 +40,11 @@ return [
         'timeout' => env('TRANSLATION_TIMEOUT', 10),
     ],
 
+    'turnstile' => [
+        'site_key' => env('TURNSTILE_SITE_KEY'),
+        'secret_key' => env('TURNSTILE_SECRET_KEY'),
+    ],
+
     'artisan_commands' => [
         'enabled' => env('ARTISAN_COMMANDS_ENABLED', false),
         'allowed_emails' => env('ARTISAN_COMMANDS_ALLOWED_EMAILS', ''),

@@ -1171,6 +1171,10 @@
 						if (formHasCaptcha) {
 							grecaptcha.reset();
 						}
+
+						if (typeof turnstile !== 'undefined' && form.find('.cf-turnstile').length) {
+							turnstile.reset(form.find('.cf-turnstile').get(0));
+						}
 					},
 					success: function (result) {
 						if (isNoviBuilder)
@@ -1206,6 +1210,10 @@
 						}
 
 						form.clearForm();
+
+						if (typeof turnstile !== 'undefined' && form.find('.cf-turnstile').length) {
+							turnstile.reset(form.find('.cf-turnstile').get(0));
+						}
 
 						if (select.length) {
 							select.select2("val", "");

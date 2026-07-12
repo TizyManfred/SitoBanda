@@ -2,13 +2,15 @@
 
 namespace App\Filament\Pages;
 
+use BladeUI\Icons\Console\CacheCommand as IconsCacheCommand;
+use BladeUI\Icons\Console\ClearCommand as IconsClearCommand;
 use Filament\Forms\Components\Card;
 use Filament\Forms\Components\Select;
-use Filament\Pages\Page;
 use Filament\Forms\Form;
+use Filament\Notifications\Notification;
+use Filament\Pages\Page;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Auth;
-use Filament\Notifications\Notification;
 
 class ArtisanCommands extends Page
 {
@@ -47,6 +49,13 @@ class ArtisanCommands extends Page
         }
         
         try {
+            if (in_array($command, ['filament:optimize', 'filament:optimize-clear'], true)) {
+                Artisan::resolveCommands([
+                    IconsCacheCommand::class,
+                    IconsClearCommand::class,
+                ]);
+            }
+
             Artisan::call($command);
             $output = Artisan::output();
             

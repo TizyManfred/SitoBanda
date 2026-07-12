@@ -41,5 +41,6 @@ return [
         'footer_subject' => 'New message from the footer form',
         'success' => 'Your message has been sent successfully. We will reply as soon as possible.',
         'error' => 'An error occurred while sending your message. Please try again later.',
+        'turnstile_error' => 'We could not verify that you are human. Please try again.',
     ],
 ];

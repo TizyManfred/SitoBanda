@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use App\Models\Contact;
-use Illuminate\Support\Facades\Mail;
 use App\Mail\ContactFormSubmission;
+use App\Models\Contact;
+use App\Services\TurnstileService;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
 
 class ContactController extends Controller
@@ -26,7 +27,7 @@ class ContactController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request, TurnstileService $turnstileService)
     {
         // Determine if the submission comes from the footer quick form
         $fromFooter = (bool) $request->boolean('from_footer');
@@ -36,13 +37,12 @@ class ContactController extends Controller
             'name' => 'required|string|max:100',
             'email' => 'required|email|max:100',
             'message' => 'required|string',
+            'cf-turnstile-response' => 'required|string|max:2048',
         ];
 
         if (!$fromFooter) {
             $rules['subject'] = 'required|string|max:200';
             $rules['privacy_policy'] = 'accepted';
-            // reCAPTCHA temporarily disabled
-            // $rules['g-recaptcha-response'] = 'required|recaptcha';
         } else {
             // Optional phone for footer if we later add it
             $rules['phone'] = 'nullable|string|max:50';
@@ -59,6 +59,28 @@ class ContactController extends Controller
             $redirect = $fromFooter ? redirect()->back() : redirect()->route('contatti');
             return $redirect
                 ->withErrors($validator, $bag)
+                ->withInput();
+        }
+
+        $turnstileAction = $fromFooter ? 'contact_footer' : 'contact_page';
+
+        if (! $turnstileService->verify(
+            (string) $request->input('cf-turnstile-response'),
+            $turnstileAction,
+            $request->getHost(),
+            $request->ip(),
+        )) {
+            if ($request->ajax()) {
+                return response('MF255', 422);
+            }
+
+            $bag = $fromFooter ? 'footer' : 'contact';
+            $redirect = $fromFooter ? redirect()->back() : redirect()->route('contatti');
+
+            return $redirect
+                ->withErrors([
+                    'cf-turnstile-response' => __('contact.messages.turnstile_error'),
+                ], $bag)
                 ->withInput();
         }
 

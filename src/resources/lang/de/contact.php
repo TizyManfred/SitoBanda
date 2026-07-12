@@ -41,5 +41,6 @@ return [
         'footer_subject' => 'Neue Nachricht aus dem Footer-Formular',
         'success' => 'Ihre Nachricht wurde erfolgreich gesendet. Wir antworten so bald wie möglich.',
         'error' => 'Beim Senden Ihrer Nachricht ist ein Fehler aufgetreten. Bitte versuchen Sie es später erneut.',
+        'turnstile_error' => 'Wir konnten nicht bestätigen, dass Sie ein Mensch sind. Bitte versuchen Sie es erneut.',
     ],
 ];

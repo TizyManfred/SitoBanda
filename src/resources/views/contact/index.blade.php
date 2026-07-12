@@ -132,7 +132,19 @@
                                     @enderror
                                 </div>
 
-                                <!-- reCAPTCHA temporarily removed -->
+                                @if(config('services.turnstile.site_key'))
+                                    <div class="form-group mb-3">
+                                        <div class="cf-turnstile"
+                                             data-sitekey="{{ config('services.turnstile.site_key') }}"
+                                             data-action="contact_page"
+                                             data-appearance="interaction-only"
+                                             data-size="flexible"
+                                             data-theme="auto"></div>
+                                        @error('cf-turnstile-response','contact')
+                                            <div class="invalid-feedback d-block">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                @endif
 
                                 <div class="form-group mb-3">
                                     <div class="form-input d-flex align-items-center @error('privacy_policy','contact') has-error @enderror" style="gap: 12px; min-height: 60px;">
@@ -156,8 +168,4 @@
             </div>
         </div>
     </section>
-@endsection
-
-@section('scripts')
-<script src="https://www.google.com/recaptcha/api.js" async defer></script>
 @endsection
