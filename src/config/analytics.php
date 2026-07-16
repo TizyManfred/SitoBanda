@@ -21,11 +21,9 @@ return [
     'cache_lifetime_in_minutes' => 60 * 24,
 
     /*
-     * Here you may configure the "store" that the underlying Google_Client will
-     * use to store it's data.  You may also add extra parameters that will
-     * be passed on setCacheConfig (see docs for google-api-php-client).
-     *
-     * Optional parameters: "lifetime", "prefix"
+     * Analytics responses contain binary protobuf data, so they must not use
+     * the database cache's text column. SettingsServiceProvider injects this
+     * store directly into Spatie's analytics client.
      */
     'cache' => [
         'store' => 'file',

@@ -35,12 +35,14 @@ return [
         'privacy_text' => 'Ho letto e accetto la',
         'privacy_link' => 'Privacy Policy',
         'submit' => 'Invia Messaggio',
+        'sending' => 'Invio in corso...',
     ],
 
     'messages' => [
         'footer_subject' => 'Nuovo messaggio dal form nel footer',
         'success' => 'Il tuo messaggio è stato inviato con successo. Ti risponderemo al più presto.',
         'error' => 'Si è verificato un errore durante l\'invio del messaggio. Riprova più tardi.',
+        'validation_error' => 'Controlla i campi evidenziati e riprova.',
         'turnstile_error' => 'Non è stato possibile verificare che tu sia una persona. Riprova.',
     ],
 ];

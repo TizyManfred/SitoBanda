@@ -84,12 +84,26 @@
 }
 /* Homepage hero: keep the original landscape proportion without an oversized viewport-height carousel. */
 .swiper-slider-classic.home-hero-carousel {
+    height: clamp(300px, 38.54167vw, 560px);
     min-height: clamp(300px, 38.54167vw, 560px);
+    max-height: clamp(300px, 38.54167vw, 560px);
+}
+
+.home-hero-carousel .swiper-wrapper,
+.home-hero-carousel .swiper-slide {
+    height: 100%;
 }
 
 .home-hero-carousel .swiper-slide {
     background-position: center;
     background-size: cover;
+    background-repeat: no-repeat;
+}
+
+.home-hero-carousel .home-hero-title {
+    max-width: 900px;
+    margin-right: auto;
+    margin-left: auto;
 }
 
 /* Privacy policy */

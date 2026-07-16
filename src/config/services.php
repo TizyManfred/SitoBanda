@@ -40,7 +40,15 @@ return [
         'timeout' => env('TRANSLATION_TIMEOUT', 10),
     ],
 
+    'nominatim' => [
+        'endpoint' => env('NOMINATIM_ENDPOINT', 'https://nominatim.openstreetmap.org'),
+        'user_agent' => env('NOMINATIM_USER_AGENT', 'SitoBanda/1.0 (+'.env('APP_URL', 'https://www.bandacastellotesino.it').')'),
+        'email' => env('NOMINATIM_EMAIL'),
+        'timeout' => env('NOMINATIM_TIMEOUT', 10),
+    ],
+
     'turnstile' => [
+        'enabled' => env('TURNSTILE_ENABLED', env('APP_ENV', 'production') === 'production'),
         'site_key' => env('TURNSTILE_SITE_KEY'),
         'secret_key' => env('TURNSTILE_SECRET_KEY'),
     ],

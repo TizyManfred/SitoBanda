@@ -133,9 +133,13 @@ class ItemsRelationManager extends RelationManager
             ->columns([
                 Tables\Columns\ImageColumn::make('image_path')
                     ->label(__('fields.gallery.image'))
-                    ->width(200)
-                    ->height(100)
-                    ->square(),
+                    ->width(320)
+                    ->height(200)
+                    ->extraImgAttributes([
+                        'class' => 'rounded-lg bg-gray-100 object-contain dark:bg-gray-800',
+                    ])
+                    ->url(fn (GalleryItem $record): string => Storage::disk('public')->url($record->image_path))
+                    ->openUrlInNewTab(),
 
                 Tables\Columns\TextColumn::make('caption')
                     ->label(__('fields.gallery.caption'))

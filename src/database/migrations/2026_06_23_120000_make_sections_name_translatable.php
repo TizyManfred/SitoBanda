@@ -93,11 +93,8 @@ return new class extends Migration
 
     private function indexExists(string $table, string $index): bool
     {
-        return (bool) DB::table('information_schema.statistics')
-            ->where('table_schema', DB::raw('database()'))
-            ->where('table_name', $table)
-            ->where('index_name', $index)
-            ->exists();
+        return collect(Schema::getIndexes($table))
+            ->contains(fn (array $existingIndex): bool => ($existingIndex['name'] ?? null) === $index);
     }
 
     private function normalizeTranslations(mixed $value): array

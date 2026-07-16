@@ -81,6 +81,7 @@ class StaticPage extends Model
                     ->filter(fn (?string $path): bool => filled($path))
                     ->map(fn (string $path): array => [
                         'image_url' => static::pathToUrl($path),
+                        'title' => null,
                         'description' => null,
                     ])
                     ->values()
@@ -248,6 +249,7 @@ class StaticPage extends Model
 
         return [
             'image_url' => static::pathToUrl($path),
+            'title' => static::localizedBlockText($slide['title'] ?? null),
             'description' => static::localizedBlockText($slide['description'] ?? null),
         ];
     }
@@ -257,15 +259,18 @@ class StaticPage extends Model
         $fallbacks = [
             [
                 'image' => 'images/FotoSanIppolito1.webp',
-                'description' => '<h1><span class="d-block">' . e(__('home.hero.title')) . '</span><span class="d-block text-light">' . e(__('home.hero.subtitle')) . '</span></h1><p class="lead">' . __('home.hero.description') . '</p>',
+                'title' => __('home.hero.title') . ' ' . __('home.hero.subtitle'),
+                'description' => '<p class="lead">' . __('home.hero.description') . '</p>',
             ],
             [
                 'image' => 'images/FotoShanghai1.webp',
-                'description' => '<h2>' . __('home.hero.slide2.title') . '</h2><p class="text-width-large">' . e(__('home.hero.slide2.text')) . '</p>',
+                'title' => strip_tags(__('home.hero.slide2.title')),
+                'description' => '<p class="text-width-large">' . e(__('home.hero.slide2.text')) . '</p>',
             ],
             [
                 'image' => 'images/FotoRoma1.webp',
-                'description' => '<h2>' . __('home.hero.slide3.title') . '</h2><p class="text-width-large">' . e(__('home.hero.slide3.text')) . '</p>',
+                'title' => strip_tags(__('home.hero.slide3.title')),
+                'description' => '<p class="text-width-large">' . e(__('home.hero.slide3.text')) . '</p>',
             ],
         ];
 
@@ -279,6 +284,7 @@ class StaticPage extends Model
 
                 return [
                     'image_url' => static::pathToUrl($path),
+                    'title' => $fallback['title'],
                     'description' => $fallback['description'],
                 ];
             })

@@ -25,6 +25,13 @@
               <div class="container">
                 <div class="row">
                   <div class="col-md-10 col-lg-8 offset-md-1 offset-lg-2" data-caption-animate="fadeInUp" data-caption-delay="100">
+                    @if(filled($slide['title'] ?? null))
+                      @if($loop->first)
+                        <h1 class="home-hero-title">{{ $slide['title'] }}</h1>
+                      @else
+                        <h2 class="home-hero-title">{{ $slide['title'] }}</h2>
+                      @endif
+                    @endif
                     {!! $slide['description'] ?? '' !!}
                   </div>
                 </div>
@@ -131,67 +138,19 @@
           </div>
         </div>
         
-        <div class="row row-30 justify-content-center text-left">
-          @if (!empty($upcomingEvents))
+        <div class="event-list event-list-home text-left">
+          @if (collect($upcomingEvents)->isNotEmpty())
             @foreach ($upcomingEvents as $event)
-              @php
-                  $start = !empty($event['start_datetime']) ? \Carbon\Carbon::parse($event['start_datetime']) : null;
-              @endphp
-              <div class="col-sm-6 col-lg-4 mb-4 wow fadeInUp" data-wow-delay="0.{{ $loop->iteration }}s">
-                <div class="card h-100 border-0 shadow-sm overflow-hidden rounded-0 card-hover">
-                  <div class="position-relative{{ !empty($event['image_path']) ? ' img-hover-zoom' : '' }}">
-                    @if (!empty($event['image_path']))
-                      <a href="{{ route('eventi.show', $event['slug']) }}" title="{{ $event['title'] }}">
-                        @php
-                            $src = \Illuminate\Support\Str::startsWith($event['image_path'], ['http://', 'https://', '/', 'data:'])
-                                ? $event['image_path']
-                                : \Illuminate\Support\Facades\Storage::url($event['image_path']);
-                        @endphp
-                        <img src="{{ $src }}" alt="{{ $event['title'] }}" width="570" height="370" loading="lazy" class="img-fluid" style="height: 280px; width: 100%; object-fit: cover;">
-                      </a>
-                    @endif
-                    @if($start)
-                      <div class="{{ !empty($event['image_path']) ? 'position-absolute top-0 left-0 rounded-bottom bg-black-opacity-70' : 'bg-secondary' }} text-white p-3">
-                        <div class="text-left">
-                          <div class="mb-0 big font-weight-bold">{{ $start->format('d') }}</div>
-                          <div class="text-uppercase">{{ $start->translatedFormat('M') }}</div>
-                          <div class="text-uppercase">{{ $start->translatedFormat('Y') }}</div>
-                        </div>
-                      </div>
-                    @endif
-                  </div>
-                  <div class="card-body p-4">
-                    <h5 class="card-title mb-3">
-                      <a href="{{ route('eventi.show', $event['slug']) }}" class="text-dark text-decoration-none" title="{{ $event['title'] }}">{{ $event['title'] }}</a>
-                    </h5>
-                    <div class="d-flex mb-3 gap-4">
-                      @if($start && $start->format('H:i') !== '00:00')
-                        <div>
-                          <i class="fa fa-clock-o me-1"></i>
-                          <span class="text-muted">{{ $start->format('H:i') }}</span>
-                        </div>
-                      @endif
-                      @if (!empty($event['location']))
-                        <div>
-                          <i class="fa fa-map-marker me-1"></i>
-                          <span class="text-muted">{{ $event['location'] }}</span>
-                        </div>
-                      @endif
-                    </div>
-                    @if (!empty($event['short_description']))
-                      <p class="card-text mb-4">{{ $event['short_description'] }}</p>
-                    @endif
-                    <div class="text-center text-md-right">
-                      <a class="text-primary text-decoration-none small" href="{{ route('eventi.show', $event['slug']) }}" title="{{ __('home.events.details') }}: {{ $event['title'] }}">
-                        {{ __('home.events.details') }} <i class="fa fa-arrow-right ms-1"></i>
-                      </a>
-                    </div>
-                  </div>
-                </div>
-              </div>
+              @include('partials.event-card', [
+                'event' => $event,
+                'variant' => 'upcoming',
+                'detailsText' => __('home.events.details'),
+                'animated' => true,
+                'animationDelay' => '0.' . $loop->iteration . 's',
+              ])
             @endforeach
           @else
-            <div class="col-12 text-center">
+            <div class="text-center">
               <p>{{ __('home.events.no_events') }}</p>
             </div>
           @endif

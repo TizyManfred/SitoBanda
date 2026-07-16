@@ -3,9 +3,12 @@
 namespace App\Providers;
 
 use App\Helpers\SettingsHelper;
-use Illuminate\Support\ServiceProvider;
-use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Blade;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\View;
+use Illuminate\Support\ServiceProvider;
+use Spatie\Analytics\AnalyticsClient;
+use Spatie\Analytics\AnalyticsClientFactory;
 
 class SettingsServiceProvider extends ServiceProvider
 {
@@ -15,7 +18,7 @@ class SettingsServiceProvider extends ServiceProvider
     public function register(): void
     {
         $this->app->singleton('settings', function () {
-            return new SettingsHelper();
+            return new SettingsHelper;
         });
     }
 
@@ -24,6 +27,20 @@ class SettingsServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        $this->app->bind(AnalyticsClient::class, function (): AnalyticsClient {
+            $analyticsConfig = config('analytics');
+            $cacheStore = (string) ($analyticsConfig['cache']['store'] ?? 'file');
+            $googleClient = AnalyticsClientFactory::createAuthenticatedGoogleClient($analyticsConfig);
+            $analyticsClient = new AnalyticsClient(
+                $googleClient,
+                Cache::store($cacheStore),
+            );
+
+            return $analyticsClient->setCacheLifeTimeInMinutes(
+                (int) $analyticsConfig['cache_lifetime_in_minutes'],
+            );
+        });
+
         if (! $this->app->runningInConsole()) {
             $analyticsSettings = SettingsHelper::analytics();
 

@@ -2,8 +2,8 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
-use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
@@ -14,7 +14,7 @@ return new class extends Migration
     {
         // First, get all existing events to migrate data
         $events = DB::table('events')->get();
-        
+
         Schema::table('events', function (Blueprint $table) {
             // Add new JSON columns for translations (only translatable fields)
             $table->json('title_json')->after('title')->nullable();
@@ -35,32 +35,33 @@ return new class extends Migration
                 ->update([
                     'title_json' => json_encode([
                         'it' => $title,
-                        'en' => $title
+                        'en' => $title,
                     ], JSON_UNESCAPED_UNICODE),
                     'description_json' => json_encode([
                         'it' => $description,
-                        'en' => $description
+                        'en' => $description,
                     ], JSON_UNESCAPED_UNICODE),
                     'short_description_json' => json_encode([
                         'it' => $shortDescription,
-                        'en' => $shortDescription
+                        'en' => $shortDescription,
                     ], JSON_UNESCAPED_UNICODE),
                     'slug_json' => json_encode([
                         'it' => $slug,
-                        'en' => $slug
-                    ], JSON_UNESCAPED_UNICODE)
+                        'en' => $slug,
+                    ], JSON_UNESCAPED_UNICODE),
                 ]);
         }
 
         // Drop old columns and rename JSON columns
         Schema::table('events', function (Blueprint $table) {
+            $table->dropUnique(['slug']);
             $table->dropColumn([
                 'title',
                 'description',
                 'short_description',
-                'slug'
+                'slug',
             ]);
-            
+
             $table->renameColumn('title_json', 'title');
             $table->renameColumn('description_json', 'description');
             $table->renameColumn('short_description_json', 'short_description');
@@ -70,7 +71,7 @@ return new class extends Migration
         // Update FULLTEXT index for MySQL to work with JSON columns
         if (DB::getDriverName() === 'mysql') {
             DB::statement('ALTER TABLE events DROP INDEX ft_search');
-            // Note: MySQL doesn't support FULLTEXT on JSON columns, 
+            // Note: MySQL doesn't support FULLTEXT on JSON columns,
             // we'll use generated columns or search in application layer
         }
     }
@@ -82,7 +83,7 @@ return new class extends Migration
     {
         // First, get all existing events to migrate data back
         $events = DB::table('events')->get();
-        
+
         Schema::table('events', function (Blueprint $table) {
             // Add back the original columns (only translatable fields)
             $table->string('title_string')->after('title')->nullable();
@@ -104,7 +105,7 @@ return new class extends Migration
                     'title_string' => $titleData['it'] ?? $titleData['en'] ?? '',
                     'description_string' => $descriptionData['it'] ?? $descriptionData['en'] ?? null,
                     'short_description_string' => $shortDescriptionData['it'] ?? $shortDescriptionData['en'] ?? null,
-                    'slug_string' => $slugData['it'] ?? $slugData['en'] ?? ''
+                    'slug_string' => $slugData['it'] ?? $slugData['en'] ?? '',
                 ]);
         }
 
@@ -114,9 +115,9 @@ return new class extends Migration
                 'title',
                 'description',
                 'short_description',
-                'slug'
+                'slug',
             ]);
-            
+
             $table->renameColumn('title_string', 'title');
             $table->renameColumn('description_string', 'description');
             $table->renameColumn('short_description_string', 'short_description');

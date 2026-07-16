@@ -50,10 +50,8 @@ class ArtisanCommands extends Page
         
         try {
             if (in_array($command, ['filament:optimize', 'filament:optimize-clear'], true)) {
-                Artisan::resolveCommands([
-                    IconsCacheCommand::class,
-                    IconsClearCommand::class,
-                ]);
+                Artisan::registerCommand(app(IconsCacheCommand::class));
+                Artisan::registerCommand(app(IconsClearCommand::class));
             }
 
             Artisan::call($command);

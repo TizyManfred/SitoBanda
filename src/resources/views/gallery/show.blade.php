@@ -156,35 +156,12 @@ $shareText = $album->title . ' - ' . $metaDescription;
                         <div class="row row-30 align-items-stretch">
                             @if(isset($event) && $event)
                                 <div class="col-lg-7">
-                                    <article class="gallery-related-event">
-                                        @if($event->image_path)
-                                            <div class="gallery-related-event-image">
-                                                <a href="{{ route('eventi.show', $event->slug) }}">
-                                                    <img src="{{ Storage::url($event->image_path) }}" alt="{{ $event->title }}" loading="lazy">
-                                                </a>
-                                            </div>
-                                        @endif
-                                        <div class="gallery-related-event-body">
-                                            <span class="gallery-panel-eyebrow"><i class="fa fa-calendar mr-1"></i>{{ __('gallery.related_event') }}</span>
-                                            <h4 class="heading-4"><a href="{{ route('eventi.show', $event->slug) }}">{{ $event->title }}</a></h4>
-                                            @if($event->start_datetime || $event->location)
-                                                <div class="gallery-related-event-meta">
-                                                    @if($event->start_datetime)
-                                                        <span><i class="fa fa-clock-o mr-1"></i>{{ $event->start_datetime->translatedFormat('d M Y') }}</span>
-                                                    @endif
-                                                    @if($event->location)
-                                                        <span><i class="fa fa-map-marker mr-1"></i>{{ $event->location }}</span>
-                                                    @endif
-                                                </div>
-                                            @endif
-                                            @if($event->short_description)
-                                                <p>{{ Str::limit($event->short_description, 150) }}</p>
-                                            @endif
-                                            <a href="{{ route('eventi.show', $event->slug) }}" class="button button-sm button-default-outline button-wapasha">
-                                                {{ __('gallery.event_details') }}
-                                            </a>
-                                        </div>
-                                    </article>
+                                    @include('partials.event-card', [
+                                        'event' => $event,
+                                        'variant' => 'compact',
+                                        'detailsText' => __('gallery.event_details'),
+                                        'eyebrow' => __('gallery.related_event'),
+                                    ])
                                 </div>
                             @endif
 

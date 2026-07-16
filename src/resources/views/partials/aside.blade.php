@@ -26,77 +26,28 @@
 @unless(!empty($hideAsideEvents) && $hideAsideEvents)
     {{-- Events Section --}}
     @if($title || $items->count() > 0)
-        <div class="box-contacts mb-4 wow fadeInUp" data-wow-delay=".1s">
+        <div class="box-contacts aside-events mb-4 wow fadeInUp" data-wow-delay=".1s">
             <div class="">
                 @if($title)
-                    <div class="box-contacts-icon">
-                        <i class="fas fa-calendar-alt"></i>
-                    </div>
-                    <h5 class="box-contacts-link mb-3">
+                    <h5 class="box-contacts-link aside-events-title">
+                        <i class="fas fa-calendar-alt" aria-hidden="true"></i>
                         {{ $title }}
                     </h5>
                 @endif
                 
                 @if($items->count() > 0)
-                    <div class="mb-3">
+                    <div class="event-list event-list-aside mb-3">
                         @foreach($items as $item)
-                            <a href="{{ route('eventi.show', $item->slug) }}">
-                                <div class="mb-3 pb-3" style="border-bottom: 1px solid #f0f0f0;">
-                                    <div class="d-flex">
-                                        <div class="d-flex px-4 w-100 gap-3">
-                                            {{-- Event Image (Small) --}}
-                                            @if(isset($item->image_path) && $item->image_path)
-                                                <div class="ms-2 position-relative">
-                                                    <img 
-                                                        src="{{ Storage::url($item->image_path) }}" 
-                                                        alt="{{ $item->title }}" 
-                                                        style="width: 100px; height: 100px; min-width: 100px; min-height: 100px; object-fit: cover;"
-                                                    >
-
-                                                    {{-- Event Date --}}
-                                                    <div class="text-center me-3 position-absolute top-0 start-0 z-index-1 bg-black-opacity-70" style="min-width: 48px;">
-                                                        <div class="bg-primary text-white rounded px-2 py-1">
-                                                            <div style="font-size: 18px; font-weight: bold; line-height: 1;">{{ $item->start_datetime->translatedFormat('d') }}</div>
-                                                            <div style="font-size: 12px; text-transform: uppercase;">{{ $item->start_datetime->translatedFormat('M') }}</div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            @endif
-
-                                            {{-- Event Content --}}
-                                            <div class="flex-grow-1">
-                                                <h6 class="text-left" style="font-weight: 600;">{{ $item->title }}</h6>
-                                                @if(isset($item->start_datetime))
-                                                    <p class="text-left small text-muted">
-                                                        <i class="fa fa-calendar me-1"></i>
-                                                        {{ $item->start_datetime->translatedFormat('d M Y') }}
-                                                        @if($item->start_datetime->format('H:i') != '00:00')
-                                                            - {{ $item->start_datetime->format('H:i') }}
-                                                        @endif
-                                                    </p>
-                                                @endif
-                                                @if(isset($item->location))
-                                                    <p class="text-left small text-muted">
-                                                        <i class="fa fa-map-marker me-1"></i>
-                                                        {{ $item->location }}
-                                                    </p>
-                                                @endif
-                                                @if(isset($item->short_description))
-                                                    <p class="text-left small text-muted">
-                                                        {{ Str::limit($item->short_description, 80, '...') }}
-                                                    </p>
-                                                @endif
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </a>
+                            @include('partials.event-card', [
+                                'event' => $item,
+                                'variant' => 'compact',
+                            ])
                         @endforeach
                     </div>
                     
                     @if($showViewAll)
-                        <div class="text-center mb-3">
-                            <a href="{{ $viewAllUrl }}" class="button button-primary button-ujarak" style="min-width: auto; padding: 10px 20px; font-size: 14px;">
+                        <div class="aside-events-action">
+                            <a href="{{ $viewAllUrl }}" class="button button-primary button-ujarak aside-events-button">
                                 <i class="fas fa-calendar-week me-1"></i>{{ $viewAllText }}
                             </a>
                         </div>
@@ -152,4 +103,3 @@
     </div>
 </div>
 @endif
-

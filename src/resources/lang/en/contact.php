@@ -35,12 +35,14 @@ return [
         'privacy_text' => 'I have read and accept the',
         'privacy_link' => 'Privacy Policy',
         'submit' => 'Send Message',
+        'sending' => 'Sending...',
     ],
 
     'messages' => [
         'footer_subject' => 'New message from the footer form',
         'success' => 'Your message has been sent successfully. We will reply as soon as possible.',
         'error' => 'An error occurred while sending your message. Please try again later.',
+        'validation_error' => 'Please check the highlighted fields and try again.',
         'turnstile_error' => 'We could not verify that you are human. Please try again.',
     ],
 ];

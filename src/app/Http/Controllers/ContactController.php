@@ -6,6 +6,7 @@ use App\Mail\ContactFormSubmission;
 use App\Models\Contact;
 use App\Services\TurnstileService;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
 
@@ -14,7 +15,7 @@ class ContactController extends Controller
     /**
      * Display the contact form.
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function index()
     {
@@ -24,23 +25,27 @@ class ContactController extends Controller
     /**
      * Store a new contact form submission.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function store(Request $request, TurnstileService $turnstileService)
     {
         // Determine if the submission comes from the footer quick form
         $fromFooter = (bool) $request->boolean('from_footer');
+        $expectsJson = $request->expectsJson();
+        $turnstileEnabled = (bool) config('services.turnstile.enabled');
 
         // Validate form data (footer has fewer fields)
         $rules = [
             'name' => 'required|string|max:100',
             'email' => 'required|email|max:100',
             'message' => 'required|string',
-            'cf-turnstile-response' => 'required|string|max:2048',
         ];
 
-        if (!$fromFooter) {
+        if ($turnstileEnabled) {
+            $rules['cf-turnstile-response'] = 'required|string|max:2048';
+        }
+
+        if (! $fromFooter) {
             $rules['subject'] = 'required|string|max:200';
             $rules['privacy_policy'] = 'accepted';
         } else {
@@ -51,12 +56,25 @@ class ContactController extends Controller
         $validator = Validator::make($request->all(), $rules);
 
         if ($validator->fails()) {
+            $validationMessage = $validator->errors()->count() === 1
+                && $validator->errors()->has('cf-turnstile-response')
+                    ? __('contact.messages.turnstile_error')
+                    : __('contact.messages.validation_error');
+
+            if ($expectsJson) {
+                return response()->json([
+                    'message' => $validationMessage,
+                    'errors' => $validator->errors(),
+                ], 422);
+            }
+
             // If this is an AJAX submission (RD Mailform), return a short error code
             if ($request->ajax()) {
                 return response('MF255', 422);
             }
             $bag = $fromFooter ? 'footer' : 'contact';
             $redirect = $fromFooter ? redirect()->back() : redirect()->route('contatti');
+
             return $redirect
                 ->withErrors($validator, $bag)
                 ->withInput();
@@ -64,12 +82,21 @@ class ContactController extends Controller
 
         $turnstileAction = $fromFooter ? 'contact_footer' : 'contact_page';
 
-        if (! $turnstileService->verify(
+        if ($turnstileEnabled && ! $turnstileService->verify(
             (string) $request->input('cf-turnstile-response'),
             $turnstileAction,
             $request->getHost(),
             $request->ip(),
         )) {
+            if ($expectsJson) {
+                return response()->json([
+                    'message' => __('contact.messages.turnstile_error'),
+                    'errors' => [
+                        'cf-turnstile-response' => [__('contact.messages.turnstile_error')],
+                    ],
+                ], 422);
+            }
+
             if ($request->ajax()) {
                 return response('MF255', 422);
             }
@@ -86,7 +113,7 @@ class ContactController extends Controller
 
         try {
             // Save contact submission to database
-            $contact = new Contact();
+            $contact = new Contact;
             $contact->name = $request->name;
             $contact->email = $request->email;
             $contact->phone = $request->input('phone');
@@ -101,11 +128,30 @@ class ContactController extends Controller
 
             // Send email notification
             $adminRecipient = config('mail.admin_address') ?? config('mail.from.address');
-            Mail::to($adminRecipient)
-                ->send(new ContactFormSubmission($contact));
+            $bccRecipients = collect((array) config('mail.bcc_addresses', []))
+                ->map(fn ($address) => trim((string) $address))
+                ->filter(fn ($address) => filter_var($address, FILTER_VALIDATE_EMAIL) !== false)
+                ->reject(fn ($address) => strcasecmp($address, (string) $adminRecipient) === 0)
+                ->unique(fn ($address) => strtolower($address))
+                ->values()
+                ->all();
+
+            $pendingMail = Mail::to($adminRecipient);
+
+            if ($bccRecipients !== []) {
+                $pendingMail->bcc($bccRecipients);
+            }
+
+            $pendingMail->send(new ContactFormSubmission($contact));
 
             // Set success message and redirect appropriately
             $successMsg = __('contact.messages.success');
+            if ($expectsJson) {
+                return response()->json([
+                    'message' => $successMsg,
+                ]);
+            }
+
             if ($request->ajax()) {
                 // RD Mailform expects a short code on success
                 return response('MF000', 200);
@@ -113,9 +159,16 @@ class ContactController extends Controller
             if ($fromFooter) {
                 return back()->with('footer_success', $successMsg);
             }
+
             return redirect()->route('contatti')->with('success', $successMsg);
         } catch (\Exception $e) {
-            \Log::error('Error processing contact form: ' . $e->getMessage());
+            \Log::error('Error processing contact form: '.$e->getMessage());
+            if ($expectsJson) {
+                return response()->json([
+                    'message' => __('contact.messages.error'),
+                ], 500);
+            }
+
             // If AJAX, respond with error code for RD Mailform
             if ($request->ajax()) {
                 return response('MF255', 500);
@@ -125,6 +178,7 @@ class ContactController extends Controller
                     ->with('footer_error', __('contact.messages.error'))
                     ->withInput();
             }
+
             return redirect()->route('contatti')
                 ->with('error', __('contact.messages.error'))
                 ->withInput();

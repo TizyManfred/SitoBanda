@@ -42,50 +42,61 @@
       <div class="col-md-10 col-lg-6 col-xl-4 wow fadeInRight" data-wow-delay=".1s">
         <div class="box-footer">
           <h4 class="font-weight-normal">{{ __('footer.contact_us') }}</h4>
-          <form class="rd-form rd-mailform" data-form-output="form-output-global" data-form-type="contact" method="post" action="{{ route('contatti.store') }}">
+          <form class="rd-form js-contact-form"
+                method="post"
+                action="{{ route('contatti.store') }}"
+                data-error-message="{{ __('contact.messages.error') }}"
+                data-turnstile-message="{{ __('contact.messages.turnstile_error') }}">
             @csrf
             <input type="hidden" name="from_footer" value="1">
-            @if(session('footer_success'))
-              <div class="alert alert-success" role="alert">{{ session('footer_success') }}</div>
-            @endif
+            <div class="contact-form-status alert @if(session('footer_success')) alert-success @elseif(session('footer_error')) alert-danger @else d-none @endif"
+                 role="status"
+                 aria-live="polite"
+                 tabindex="-1">
+              {{ session('footer_success') ?? session('footer_error') }}
+            </div>
             <div class="form-wrap">
-              <input class="form-input" id="contact-name-6" type="text" name="name" value="{{ old('name') }}" data-constraints="@@Required" required />
+              <input class="form-input @error('name','footer') is-invalid @enderror" id="contact-name-6" type="text" name="name" value="{{ old('name') }}" required autocomplete="name" />
               <label class="form-label" for="contact-name-6">{{ __('footer.name') }}</label>
               @error('name','footer')
-                <div class="text-danger small">{{ $message }}</div>
+                <div class="invalid-feedback d-block">{{ $message }}</div>
               @enderror
             </div>
             <div class="form-wrap">
-              <input class="form-input" id="contact-email-6" type="email" name="email" value="{{ old('email') }}" data-constraints="@@Email @@Required" required />
+              <input class="form-input @error('email','footer') is-invalid @enderror" id="contact-email-6" type="email" name="email" value="{{ old('email') }}" required autocomplete="email" />
               <label class="form-label" for="contact-email-6">{{ __('footer.email') }}</label>
               @error('email','footer')
-                <div class="text-danger small">{{ $message }}</div>
+                <div class="invalid-feedback d-block">{{ $message }}</div>
               @enderror
             </div>
             <div class="form-wrap">
               <label class="form-label" for="contact-message-6">{{ __('footer.message') }}</label>
-              <textarea class="form-input" id="contact-message-6" name="message" data-constraints="@@Required" required>{{ old('message') }}</textarea>
+              <textarea class="form-input @error('message','footer') is-invalid @enderror" id="contact-message-6" name="message" required>{{ old('message') }}</textarea>
               @error('message','footer')
-                <div class="text-danger small">{{ $message }}</div>
+                <div class="invalid-feedback d-block">{{ $message }}</div>
               @enderror
             </div>
-            @if(config('services.turnstile.site_key'))
+            @if(config('services.turnstile.enabled') && config('services.turnstile.site_key'))
               <div class="form-wrap">
-                <div class="cf-turnstile"
+                <input type="hidden" name="cf-turnstile-response" value="">
+                <div class="js-contact-turnstile"
                      data-sitekey="{{ config('services.turnstile.site_key') }}"
                      data-action="contact_footer"
                      data-appearance="interaction-only"
                      data-size="flexible"
                      data-theme="auto"></div>
                 @error('cf-turnstile-response','footer')
-                  <div class="text-danger small">{{ $message }}</div>
+                  <div class="invalid-feedback d-block">{{ $message }}</div>
                 @enderror
               </div>
             @endif
-            @if(session('footer_error'))
-              <div class="alert alert-danger" role="alert">{{ session('footer_error') }}</div>
-            @endif
-            <button class="button button-block button-ujarak button-secondary" type="submit">{{ __('footer.send_message') }}</button>
+            <button class="button button-block button-ujarak button-secondary contact-submit" type="submit">
+              <span class="contact-submit-label">{{ __('footer.send_message') }}</span>
+              <span class="contact-submit-progress" hidden>
+                <i class="fa fa-circle-o-notch fa-spin" aria-hidden="true"></i>
+                {{ __('contact.form.sending') }}
+              </span>
+            </button>
           </form>
         </div>
       </div>

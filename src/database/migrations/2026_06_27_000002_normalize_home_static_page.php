@@ -21,7 +21,14 @@ return new class extends Migration
 
         $heroImages = DB::table('static_pages')
             ->whereIn('page_key', ['home_hero_1', 'home_hero_2', 'home_hero_3'])
-            ->orderByRaw("field(page_key, 'home_hero_1', 'home_hero_2', 'home_hero_3')")
+            ->orderByRaw(<<<'SQL'
+                CASE page_key
+                    WHEN 'home_hero_1' THEN 1
+                    WHEN 'home_hero_2' THEN 2
+                    WHEN 'home_hero_3' THEN 3
+                    ELSE 4
+                END
+                SQL)
             ->get();
 
         $headerImages = $heroImages

@@ -194,41 +194,14 @@
                         @if($relatedEvents->count() > 0)
                             <div class="mb-5">
                                 <h3 class="oh-desktop mb-4"><span class="d-inline-block">{{ __('events.related_events') }}</span></h3>
-                                <div class="row row-30">
+                                <div class="event-list event-list-related">
                                     @foreach($relatedEvents as $relatedEvent)
-                                        <div class="col-sm-6 col-lg-6 mb-4 wow fadeInUp" data-wow-delay="0.{{ $loop->iteration }}s">
-                                            <div class="card h-100 border-0 shadow-sm overflow-hidden rounded-0 card-hover">
-                                                <div class="position-relative{{ $relatedEvent->image_path ? ' img-hover-zoom' : '' }}">
-                                                    @if($relatedEvent->image_path)
-                                                        <a href="{{ route('eventi.show', $relatedEvent->slug) }}">
-                                                            <img src="{{ Storage::url($relatedEvent->image_path) }}" alt="{{ $relatedEvent->title }}" width="570" height="370" loading="lazy" class="img-fluid" style="height: 280px; width: 100%; object-fit: cover;">
-                                                        </a>
-                                                    @endif
-                                                    <div class="{{ $relatedEvent->image_path ? 'position-absolute top-0 left-0 rounded-bottom bg-black-opacity-70' : 'bg-secondary' }} text-white p-3">
-                                                        <div class="text-center">
-                                                            <div class="mb-0 big font-weight-bold">{{ $relatedEvent->start_datetime ? $relatedEvent->start_datetime->format('d') : '--' }}</div>
-                                                            <div class="text-uppercase">{{ $relatedEvent->start_datetime ? $relatedEvent->start_datetime->translatedFormat('M') : '' }}</div>
-                                                            <div class="text-uppercase">{{ $relatedEvent->start_datetime ? $relatedEvent->start_datetime->translatedFormat('Y') : '' }}</div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="card-body p-4">
-                                                    <h5 class="card-title mb-3">
-                                                        <a href="{{ route('eventi.show', $relatedEvent->slug) }}" class="text-dark text-decoration-none">{{ $relatedEvent->title }}</a>
-                                                    </h5>
-                                                    <div class="d-flex mb-3 gap-4">
-                                                        <div>
-                                                            <i class="fa fa-clock-o me-1"></i>
-                                                            <span class="text-muted">{{ $relatedEvent->start_datetime ? $relatedEvent->start_datetime->format('H:i') : __('events.date_not_available') }}</span>
-                                                        </div>
-                                                        <div>
-                                                            <i class="fa fa-map-marker me-1"></i>
-                                                            <span class="text-muted">{{ $relatedEvent->location ?: __('events.location_not_available') }}</span>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
+                                        @include('partials.event-card', [
+                                            'event' => $relatedEvent,
+                                            'variant' => 'upcoming',
+                                            'animated' => true,
+                                            'animationDelay' => '0.' . $loop->iteration . 's',
+                                        ])
                                     @endforeach
                                 </div>
                             </div>

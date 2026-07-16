@@ -42,49 +42,14 @@
                     <h3 class="oh-desktop"><span class="d-inline-block wow slideInUp">{{ __('events.upcoming_events') }}</span></h3>
                     
                     @if($upcomingEvents->count() > 0)
-                        <div class="row row-30">
+                        <div class="event-list event-list-upcoming">
                             @foreach($upcomingEvents as $event)
-                                <div class="col-sm-6 col-lg-6 mb-4 wow fadeInUp" data-wow-delay="0.{{ $loop->iteration }}s">
-                                    <div class="card h-100 border-0 shadow-sm overflow-hidden rounded-0 card-hover">
-                                        <div class="position-relative{{ $event->image_path ? ' img-hover-zoom' : '' }}">
-                                            @if($event->image_path)
-                                                <a href="{{ route('eventi.show', $event->slug) }}">
-                                                    <img src="{{ Storage::url($event->image_path) }}" alt="{{ $event->title }}" width="570" height="370" loading="lazy" class="img-fluid" style="height: 280px; width: 100%; object-fit: cover;">
-                                                </a>
-                                            @endif
-                                            <div class="{{ $event->image_path ? 'position-absolute top-0 left-0 rounded-bottom bg-black-opacity-70' : 'bg-secondary' }} text-white p-3">
-                                                <div class="text-center">
-                                                    <div class="mb-0 big font-weight-bold">{{ $event->start_datetime->format('d') }}</div>
-                                                    <div class="text-uppercase">{{ $event->start_datetime->translatedFormat('M') }}</div>
-                                                    <div class="text-uppercase">{{ $event->start_datetime->translatedFormat('Y') }}</div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="card-body p-4 event-card-body">
-                                            <h5 class="card-title mb-3 event-card-title">
-                                                <a href="{{ route('eventi.show', $event->slug) }}" class="text-dark text-decoration-none">{{ $event->title }}</a>
-                                            </h5>
-                                            <div class="d-flex mb-3 gap-4 event-card-meta">
-                                                @if($event->start_datetime->format('H:i') != '00:00')
-                                                <div>
-                                                    <i class="fa fa-clock-o me-1"></i>
-                                                    <span class="text-muted">{{ $event->start_datetime->format('H:i') }}</span>
-                                                </div>
-                                                @endif
-                                                <div>
-                                                    <i class="fa fa-map-marker me-1"></i>
-                                                    <span class="text-muted">{{ $event->location }}</span>
-                                                </div>
-                                            </div>
-                                            <p class="card-text mb-4 event-card-description">{{ $event->short_description }}</p>
-                                            <div class="text-center text-md-right">
-                                                <a class="text-primary text-decoration-none small" href="{{ route('eventi.show', $event->slug) }}">
-                                                    {{ __('events.details') }} <i class="fa fa-arrow-right ms-1"></i>
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+                                @include('partials.event-card', [
+                                    'event' => $event,
+                                    'variant' => 'upcoming',
+                                    'animated' => true,
+                                    'animationDelay' => '0.' . $loop->iteration . 's',
+                                ])
                             @endforeach
                         </div>
                     @else
@@ -97,49 +62,14 @@
                     <h3 class="oh-desktop mt-5"><span class="d-inline-block wow slideInUp">{{ __('events.past_events') }}</span></h3>
                     
                     @if($pastEvents->count() > 0)
-                        <div class="row row-30">
+                        <div class="event-list event-list-past">
                             @foreach($pastEvents as $event)
-                                <div class="col-sm-6 col-lg-6 mb-4 wow fadeInUp" data-wow-delay="0.{{ $loop->iteration }}s">
-                                    <div class="card h-100 border-0 shadow-sm overflow-hidden rounded-0 card-hover" style="opacity: 0.85;">
-                                        <div class="position-relative{{ $event->image_path ? ' img-hover-zoom' : '' }}">
-                                            @if($event->image_path)
-                                                <a href="{{ route('eventi.show', $event->slug) }}">
-                                                    <img src="{{ Storage::url($event->image_path) }}" alt="{{ $event->title }}" width="570" height="370" loading="lazy" class="img-fluid object-fit-cover" style="height: 280px; width: 100%;">
-                                                </a>
-                                            @endif
-                                            <div class="{{ $event->image_path ? 'position-absolute top-0 left-0 rounded-bottom bg-black-opacity-70' : 'bg-secondary' }} text-white p-3">
-                                                <div class="text-center">
-                                                    <div class="mb-0 big font-weight-bold">{{ $event->start_datetime->format('d') }}</div>
-                                                    <div class="text-uppercase">{{ $event->start_datetime->translatedFormat('M') }}</div>
-                                                    <div class="text-uppercase">{{ $event->start_datetime->translatedFormat('Y') }}</div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="card-body p-4 event-card-body">
-                                            <h5 class="card-title mb-3 event-card-title">
-                                                <a href="{{ route('eventi.show', $event->slug) }}" class="text-dark text-decoration-none">{{ $event->title }}</a>
-                                            </h5>
-                                            <div class="d-flex mb-3 gap-4 event-card-meta">
-                                                @if($event->start_datetime->format('H:i') != '00:00')
-                                                <div>
-                                                    <i class="fa fa-clock-o me-1"></i>
-                                                    <span class="text-muted">{{ $event->start_datetime->format('H:i') }}</span>
-                                                </div>
-                                                @endif
-                                                <div>
-                                                    <i class="fa fa-map-marker me-1"></i>
-                                                    <span class="text-muted">{{ $event->location }}</span>
-                                                </div>
-                                            </div>
-                                            <p class="card-text mb-4 event-card-description">{{ $event->short_description }}</p>
-                                            <div class="text-center text-md-right">
-                                                <a class="text-primary text-decoration-none small" href="{{ route('eventi.show', $event->slug) }}">
-                                                    {{ __('events.details') }} <i class="fa fa-arrow-right ms-1"></i>
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+                                @include('partials.event-card', [
+                                    'event' => $event,
+                                    'variant' => 'past',
+                                    'animated' => true,
+                                    'animationDelay' => '0.' . $loop->iteration . 's',
+                                ])
                             @endforeach
                         </div>
                         

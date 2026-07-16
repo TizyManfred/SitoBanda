@@ -39,6 +39,7 @@ class HomepageStaticPage extends Page implements HasForms
                 ->filter()
                 ->map(fn (string $image): array => [
                     'image' => $image,
+                    'title' => [],
                     'description' => [],
                 ])
                 ->values()
@@ -98,18 +99,18 @@ class HomepageStaticPage extends Page implements HasForms
                                     ->saveUploadedFileUsing(OptimizedImageUpload::webp('static-pages/header-images', quality: 70, maxWidth: 2560, maxHeight: 1440))
                                     ->required()
                                     ->columnSpanFull(),
-                                Forms\Components\Tabs::make('slide_description_translations')
+                                Forms\Components\Tabs::make('slide_content_translations')
                                     ->tabs([
                                         Forms\Components\Tabs\Tab::make('Italiano')
-                                            ->schema(static::descriptionSchema('it')),
+                                            ->schema(static::slideContentSchema('it')),
                                         Forms\Components\Tabs\Tab::make('English')
-                                            ->schema(static::descriptionSchema('en')),
+                                            ->schema(static::slideContentSchema('en')),
                                         Forms\Components\Tabs\Tab::make('Deutsch')
-                                            ->schema(static::descriptionSchema('de')),
+                                            ->schema(static::slideContentSchema('de')),
                                     ])
                                     ->columnSpanFull(),
                                 Forms\Components\Actions::make([
-                                    static::translateSlideDescriptionAction(),
+                                    static::translateSlideContentAction(),
                                 ])
                                     ->columnSpanFull(),
                             ])
@@ -120,7 +121,9 @@ class HomepageStaticPage extends Page implements HasForms
                                     $image = collect($image)->first();
                                 }
 
-                                return strip_tags($state['description']['it'] ?? '') ?: $image;
+                                return collect($state['title'] ?? [])->filter()->first()
+                                    ?: strip_tags(collect($state['description'] ?? [])->filter()->first() ?? '')
+                                    ?: $image;
                             })
                             ->addActionLabel(__('filament.homepage_static.add_slide'))
                             ->reorderable()
@@ -143,9 +146,13 @@ class HomepageStaticPage extends Page implements HasForms
             ->statePath('data');
     }
 
-    protected static function descriptionSchema(string $locale): array
+    protected static function slideContentSchema(string $locale): array
     {
         return [
+            Forms\Components\TextInput::make("title.{$locale}")
+                ->label(__('filament.homepage_static.slide_title'))
+                ->maxLength(160)
+                ->columnSpanFull(),
             Forms\Components\RichEditor::make("description.{$locale}")
                 ->label(__('filament.homepage_static.slide_description'))
                 ->toolbarButtons([
@@ -166,42 +173,61 @@ class HomepageStaticPage extends Page implements HasForms
         ];
     }
 
-    protected static function translateSlideDescriptionAction(): Action
+    protected static function translateSlideContentAction(): Action
     {
-        return Action::make('translateSlideDescription')
-            ->label(__('fields.static_page.translate_image_description'))
+        return Action::make('translateSlideContent')
+            ->label(__('filament.homepage_static.translate_slide'))
             ->icon('heroicon-o-language')
-            ->tooltip(__('fields.static_page.translate_image_description'))
+            ->tooltip(__('filament.homepage_static.translate_slide'))
             ->size('sm')
             ->color('gray')
             ->action(function (Forms\Get $get, Forms\Set $set): void {
                 $locales = array_keys(LaravelLocalization::getSupportedLocales());
+                $title = (array) ($get('title') ?? []);
                 $description = (array) ($get('description') ?? []);
-                $sourceLocale = static::resolveDescriptionSourceLocale($locales, $description);
+                $sourceLocale = static::resolveSlideSourceLocale($locales, $title, $description);
 
                 if (! $sourceLocale) {
                     Notification::make()
                         ->warning()
-                        ->title(__('fields.static_page.image_translation_source_missing'))
-                        ->body(__('fields.static_page.image_translation_source_missing_body'))
+                        ->title(__('fields.static_page.translation_source_missing'))
+                        ->body(__('fields.static_page.translation_source_missing_body'))
                         ->send();
 
                     return;
                 }
 
+                $sourceTitle = trim((string) ($title[$sourceLocale] ?? ''));
                 $sourceDescription = trim((string) ($description[$sourceLocale] ?? ''));
                 $translationService = app(TranslationService::class);
                 $translatedLocales = [];
 
                 foreach ($locales as $targetLocale) {
-                    if ($targetLocale === $sourceLocale || filled(trim((string) ($description[$targetLocale] ?? '')))) {
+                    if ($targetLocale === $sourceLocale) {
                         continue;
                     }
 
-                    $translatedDescription = $translationService->translate($sourceDescription, $sourceLocale, $targetLocale);
+                    $localeUpdated = false;
 
-                    if (filled($translatedDescription)) {
-                        $set("description.{$targetLocale}", $translatedDescription);
+                    if ($sourceTitle !== '' && blank(trim((string) ($title[$targetLocale] ?? '')))) {
+                        $translatedTitle = $translationService->translate($sourceTitle, $sourceLocale, $targetLocale);
+
+                        if (filled($translatedTitle)) {
+                            $set("title.{$targetLocale}", $translatedTitle);
+                            $localeUpdated = true;
+                        }
+                    }
+
+                    if ($sourceDescription !== '' && blank(trim((string) ($description[$targetLocale] ?? '')))) {
+                        $translatedDescription = $translationService->translate($sourceDescription, $sourceLocale, $targetLocale);
+
+                        if (filled($translatedDescription)) {
+                            $set("description.{$targetLocale}", $translatedDescription);
+                            $localeUpdated = true;
+                        }
+                    }
+
+                    if ($localeUpdated) {
                         $translatedLocales[] = $targetLocale;
                     }
                 }
@@ -224,14 +250,14 @@ class HomepageStaticPage extends Page implements HasForms
             });
     }
 
-    protected static function resolveDescriptionSourceLocale(array $locales, array $description): ?string
+    protected static function resolveSlideSourceLocale(array $locales, array $title, array $description): ?string
     {
-        if (in_array('it', $locales, true) && filled($description['it'] ?? null)) {
+        if (in_array('it', $locales, true) && (filled($title['it'] ?? null) || filled($description['it'] ?? null))) {
             return 'it';
         }
 
         foreach ($locales as $locale) {
-            if (filled($description[$locale] ?? null)) {
+            if (filled($title[$locale] ?? null) || filled($description[$locale] ?? null)) {
                 return $locale;
             }
         }

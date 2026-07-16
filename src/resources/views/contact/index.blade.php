@@ -86,18 +86,21 @@
                 <div class="col-lg-7">
                     <h3>{{ __('contact.headings.send_message') }}</h3>
 
-                    @if(session('success'))
-                        <div class="alert alert-success">{{ session('success') }}</div>
-                    @endif
-
-                    @if(session('error'))
-                        <div class="alert alert-danger">{{ session('error') }}</div>
-                    @endif
-
                     <div class="card border-0 shadow-sm">
                         <div class="card-body">
-                            <form method="POST" action="{{ route('contatti.store') }}" novalidate>
+                            <form class="js-contact-form"
+                                  method="POST"
+                                  action="{{ route('contatti.store') }}"
+                                  data-error-message="{{ __('contact.messages.error') }}"
+                                  data-turnstile-message="{{ __('contact.messages.turnstile_error') }}">
                                 @csrf
+                                <div class="contact-form-status alert @if(session('success')) alert-success @elseif(session('error')) alert-danger @else d-none @endif"
+                                     role="status"
+                                     aria-live="polite"
+                                     tabindex="-1">
+                                    {{ session('success') ?? session('error') }}
+                                </div>
+
                                 <div class="form-row">
                                     <div class="form-group col-md-6 mb-3">
                                         <label class="sr-only" for="name">{{ __('contact.form.name') }} *</label>
@@ -132,9 +135,10 @@
                                     @enderror
                                 </div>
 
-                                @if(config('services.turnstile.site_key'))
+                                @if(config('services.turnstile.enabled') && config('services.turnstile.site_key'))
                                     <div class="form-group mb-3">
-                                        <div class="cf-turnstile"
+                                        <input type="hidden" name="cf-turnstile-response" value="">
+                                        <div class="js-contact-turnstile"
                                              data-sitekey="{{ config('services.turnstile.site_key') }}"
                                              data-action="contact_page"
                                              data-appearance="interaction-only"
@@ -160,7 +164,13 @@
                                     @enderror
                                 </div>
 
-                                <button class="btn btn-primary btn-lg btn-block" type="submit">{{ __('contact.form.submit') }}</button>
+                                <button class="btn btn-primary btn-lg btn-block contact-submit" type="submit">
+                                    <span class="contact-submit-label">{{ __('contact.form.submit') }}</span>
+                                    <span class="contact-submit-progress" hidden>
+                                        <i class="fa fa-circle-o-notch fa-spin" aria-hidden="true"></i>
+                                        {{ __('contact.form.sending') }}
+                                    </span>
+                                </button>
                             </form>
                         </div>
                     </div>

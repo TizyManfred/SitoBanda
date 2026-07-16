@@ -12,7 +12,7 @@ return new class extends Migration
         // Convert existing string values to JSON before changing column type
         DB::table('sections')->get()->each(function ($section) {
             $name = $section->name;
-            if ($name && !$this->isJson($name)) {
+            if ($name && ! $this->isJson($name)) {
                 DB::table('sections')
                     ->where('id', $section->id)
                     ->update(['name' => json_encode(['it' => $name])]);
@@ -49,15 +49,13 @@ return new class extends Migration
     private function isJson(string $value): bool
     {
         json_decode($value);
+
         return json_last_error() === JSON_ERROR_NONE;
     }
 
     private function indexExists(string $table, string $index): bool
     {
-        return (bool) DB::table('information_schema.statistics')
-            ->where('table_schema', DB::raw('database()'))
-            ->where('table_name', $table)
-            ->where('index_name', $index)
-            ->exists();
+        return collect(Schema::getIndexes($table))
+            ->contains(fn (array $existingIndex): bool => ($existingIndex['name'] ?? null) === $index);
     }
 };

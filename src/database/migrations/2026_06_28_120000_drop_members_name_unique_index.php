@@ -2,7 +2,6 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
@@ -27,10 +26,7 @@ return new class extends Migration
 
     private function indexExists(string $table, string $index): bool
     {
-        return (bool) DB::table('information_schema.statistics')
-            ->where('table_schema', DB::raw('database()'))
-            ->where('table_name', $table)
-            ->where('index_name', $index)
-            ->exists();
+        return collect(Schema::getIndexes($table))
+            ->contains(fn (array $existingIndex): bool => ($existingIndex['name'] ?? null) === $index);
     }
 };

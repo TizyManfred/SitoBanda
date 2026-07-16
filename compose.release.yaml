@@ -38,15 +38,23 @@ services:
         echo "==> Copying Laravel app"
         tar \
           --exclude='./.env' \
+          --exclude='./.env.example' \
+          --exclude='./.git' \
+          --exclude='./.gitattributes' \
+          --exclude='./.gitignore' \
+          --exclude='./.agents' \
+          --exclude='./.codex' \
+          --exclude='./.editorconfig' \
           --exclude='./.phpunit.result.cache' \
+          --exclude='./.spdx-laravel.json' \
+          --exclude='./.spdx-laravel.spdx' \
           --exclude='./home' \
+          --exclude='./phpunit.xml' \
+          --exclude='./README.md' \
+          --exclude='./tests' \
           --exclude='./vendor' \
           --exclude='./public' \
-          --exclude='./storage/framework/cache/data/*' \
-          --exclude='./storage/framework/sessions/*' \
-          --exclude='./storage/framework/testing/*' \
-          --exclude='./storage/framework/views/*' \
-          --exclude='./storage/logs/*.log' \
+          --exclude='./storage' \
           -C "$$SRC_DIR" \
           -cf - . | tar -C "$$LARAVEL_DIR" -xf -
         rm -rf \
@@ -54,12 +62,18 @@ services:
           "$$LARAVEL_DIR/.phpunit.result.cache" \
           "$$LARAVEL_DIR/vendor" \
           "$$LARAVEL_DIR/public" \
-          "$$LARAVEL_DIR/storage/framework/cache/data"/* \
-          "$$LARAVEL_DIR/storage/framework/sessions"/* \
-          "$$LARAVEL_DIR/storage/framework/testing"/* \
-          "$$LARAVEL_DIR/storage/framework/views"/* \
-          "$$LARAVEL_DIR/storage/logs"/*.log \
           "$$LARAVEL_DIR/bootstrap/cache"/*.php 2>/dev/null || true
+
+        # Laravel needs writable storage paths while Composer runs, but source
+        # storage data must never be included in the deployment package.
+        mkdir -p \
+          "$$LARAVEL_DIR/storage/app/private" \
+          "$$LARAVEL_DIR/storage/app/public" \
+          "$$LARAVEL_DIR/storage/framework/cache/data" \
+          "$$LARAVEL_DIR/storage/framework/sessions" \
+          "$$LARAVEL_DIR/storage/framework/testing" \
+          "$$LARAVEL_DIR/storage/framework/views" \
+          "$$LARAVEL_DIR/storage/logs"
 
         echo "==> Installing production Composer dependencies"
         cd "$$LARAVEL_DIR"
@@ -72,7 +86,7 @@ services:
           echo "==> Composer install failed; using existing src/vendor fallback"
           rm -rf "$$LARAVEL_DIR/vendor"
           cp -a "$$SRC_DIR/vendor" "$$LARAVEL_DIR/vendor"
-          composer dump-autoload --no-dev --optimize --no-interaction
+          composer install --no-dev --optimize-autoloader --no-interaction
         fi
 
         echo "==> Preparing public files"
@@ -85,11 +99,6 @@ services:
         mkdir -p "$$PUBLIC_DIR"
         cp -a "$$SRC_DIR/public/." "$$PUBLIC_DIR/"
         rm -rf "$$PUBLIC_DIR/index.php" "$$PUBLIC_DIR/storage"
-
-        if [ -d "$$SRC_DIR/storage/app/public" ]; then
-          mkdir -p "$$PUBLIC_DIR/storage"
-          cp -a "$$SRC_DIR/storage/app/public/." "$$PUBLIC_DIR/storage/"
-        fi
 
         echo "==> Writing public index.php"
         if [ -n "$$PUBLIC_SUBDIR" ]; then
@@ -175,12 +184,24 @@ services:
         CACHE_STORE=database
         QUEUE_CONNECTION=database
 
-        MAIL_MAILER=log
+        MAIL_MAILER=smtp
+        MAIL_SCHEME=smtps
+        MAIL_HOST=out.clamehost.it
+        MAIL_PORT=465
+        MAIL_USERNAME=
+        MAIL_PASSWORD=
         MAIL_FROM_ADDRESS="info@bandacastellotesino.it"
         MAIL_FROM_NAME="Banda Folk Castello Tesino"
+        MAIL_ADMIN_ADDRESS=
+        MAIL_BCC_ADDRESSES=
+        MAIL_EHLO_DOMAIN=bandacastellotesino.it
 
         DEEPL_API_KEY=
         DEEPL_API_URL=https://api-free.deepl.com/v2/translate
+
+        TURNSTILE_ENABLED=true
+        TURNSTILE_SITE_KEY=
+        TURNSTILE_SECRET_KEY=
         ENV
 
         cat > "$$PACKAGE_DIR/DEPLOY_README.txt" <<EOF
@@ -196,10 +217,21 @@ services:
         Upload:
         - Upload $${deploy_target_label}/ contents to $${deploy_target_label}/ on hosting.
         - Upload laravel_app/ next to public_html/.
-        - In laravel_app/, copy .env.hosting.example to .env and fill APP_KEY and DB values.
+        - For production updates, keep the existing laravel_app/.env unchanged.
+        - Only for a new installation, copy .env.hosting.example to .env and configure every required value.
+        - Merge/overwrite files; do not use a mirror mode that deletes remote-only files.
 
         Do not leave temporary runner files online after use.
+
+        Storage:
+        - This package deliberately excludes laravel_app/storage and public_html/storage.
+        - Keep the existing production storage folders and files on the server.
+        - For a new installation, create Laravel's writable storage directories separately.
         EOF
+
+        # The temporary skeleton above is only for the build. Production
+        # storage must remain server-owned and must not be overwritten.
+        rm -rf "$$LARAVEL_DIR/storage" "$$PUBLIC_DIR/storage"
 
         echo "==> Creating zip"
         cd "$$RELEASE_DIR"

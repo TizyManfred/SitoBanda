@@ -117,4 +117,9 @@ return [
 
     'admin_address' => env('MAIL_ADMIN_ADDRESS'),
 
+    'bcc_addresses' => array_values(array_filter(array_map(
+        'trim',
+        explode(',', (string) env('MAIL_BCC_ADDRESSES', '')),
+    ))),
+
 ];

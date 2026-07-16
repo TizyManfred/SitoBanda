@@ -74,7 +74,7 @@
     <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Poppins:400,500%7CTeko:300,400,500%7CMaven+Pro:500&display=swap">
     <link rel="stylesheet" href="{{ asset('css/bootstrap.css') }}">
     <link rel="stylesheet" href="{{ asset('css/fonts.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/style.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/style.css') }}?v={{ filemtime(public_path('css/style.css')) }}">
     <link rel="stylesheet" href="{{ asset('css/instrument-icons.css') }}">
     <link rel="stylesheet" href="{{ asset('css/sections.css') }}">
 
@@ -121,9 +121,9 @@
         };
     </script>
     <script src="{{ asset('js/core.min.js') }}"></script>
-    <script src="{{ asset('js/script.js') }}"></script>
-    @if(config('services.turnstile.site_key'))
-        <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+    <script src="{{ asset('js/script.js') }}?v={{ filemtime(public_path('js/script.js')) }}"></script>
+    @if(config('services.turnstile.enabled') && config('services.turnstile.site_key'))
+        <script src="https://challenges.cloudflare.com/turnstile/v0/api.js?onload=bandaTurnstileOnload&render=explicit" async defer></script>
     @endif
     {{-- <script src="{{ asset('js/fslightbox.js') }}"></script> --}}
     @include('partials.cookie-consent')

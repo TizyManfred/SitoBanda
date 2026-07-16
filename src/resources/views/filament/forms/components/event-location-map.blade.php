@@ -22,8 +22,8 @@
             ></script>
         @endonce
 
-        <div class="text-sm text-gray-600">
-            Clicca sulla mappa o trascina il marker per aggiornare latitudine e longitudine.
+        <div class="text-sm text-gray-600 dark:text-gray-400">
+            {{ __('geocoding.map_instructions') }}
         </div>
 
         <div
@@ -38,6 +38,7 @@
         return {
             map: null,
             marker: null,
+            geocodedHandler: null,
             defaultCenter: [46.0703, 11.6417],
 
             init() {
@@ -98,6 +99,26 @@
                     latitudeInput.addEventListener('change', syncMarkerFromInputs);
                     longitudeInput.addEventListener('change', syncMarkerFromInputs);
 
+                    this.geocodedHandler = (event) => {
+                        const geocodedLatitude = parseFloat(event.detail?.latitude);
+                        const geocodedLongitude = parseFloat(event.detail?.longitude);
+
+                        if (! Number.isFinite(geocodedLatitude) || ! Number.isFinite(geocodedLongitude)) {
+                            return;
+                        }
+
+                        latitudeInput.value = geocodedLatitude.toFixed(7);
+                        longitudeInput.value = geocodedLongitude.toFixed(7);
+                        latitudeInput.dispatchEvent(new Event('input', { bubbles: true }));
+                        longitudeInput.dispatchEvent(new Event('input', { bubbles: true }));
+
+                        const latlng = L.latLng(geocodedLatitude, geocodedLongitude);
+                        this.marker.setLatLng(latlng);
+                        this.map.setView(latlng, 16);
+                    };
+
+                    window.addEventListener('event-location-geocoded', this.geocodedHandler);
+
                     setTimeout(() => {
                         this.map.invalidateSize();
                     }, 200);
@@ -116,6 +137,16 @@
                     window.clearInterval(waitForLeaflet);
                     boot();
                 }, 100);
+            },
+
+            destroy() {
+                if (this.geocodedHandler) {
+                    window.removeEventListener('event-location-geocoded', this.geocodedHandler);
+                }
+
+                if (this.map) {
+                    this.map.remove();
+                }
             },
         };
     }

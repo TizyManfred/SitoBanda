@@ -3,42 +3,34 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\EventResource\Pages;
-use App\Filament\Resources\EventResource\RelationManagers;
 use App\Filament\Support\OptimizedImageUpload;
+use App\Filament\Traits\WithAiTranslation;
 use App\Models\Event;
-use App\Models\GalleryAlbum;
-use App\Services\TranslationService;
+use App\Services\NominatimGeocoder;
 use Filament\Forms;
 use Filament\Forms\Components\Actions;
-use Filament\Notifications\Notification;
-use Illuminate\Support\Facades\App;
-use Illuminate\Support\Arr;
-use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\Config;
 // Import helpers for IDE support
-use function Illuminate\Support\data_get;
-use function Illuminate\Support\data_set;
-use function app;
-use Filament\Forms\Form;
-use Filament\Resources\Resource;
-use Filament\Resources\Concerns\Translatable;
-use Filament\Tables;
-use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
-use Illuminate\Support\Str;
-use Filament\Forms\Set;
 use Filament\Forms\Components\Group;
 use Filament\Forms\Components\Section;
+use Filament\Forms\Form;
+use Filament\Forms\Get;
+use Filament\Forms\Set;
+use Filament\Notifications\Notification;
+use Filament\Resources\Concerns\Translatable;
+use Filament\Resources\Resource;
+use Filament\Tables;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Filters\TrashedFilter;
-use Filament\SpatieLaravelTranslatablePlugin;
+use Filament\Tables\Table;
 use Mvenghaus\FilamentPluginTranslatableInline\Forms\Components\TranslatableContainer;
+
+use function app;
 
 class EventResource extends Resource
 {
     use Translatable;
-    use \App\Filament\Traits\WithAiTranslation;
+    use WithAiTranslation;
+
     protected static ?string $model = Event::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-calendar-days';
@@ -77,8 +69,8 @@ class EventResource extends Resource
                                                 ->live(onBlur: true)
                                         )->columnSpan(5),
 
-                                        Forms\Components\Actions::make([
-                                            static::getTranslateAction('title')
+                                        Actions::make([
+                                            static::getTranslateAction('title'),
                                         ])->columnSpan(1),
                                     ])
                                     ->columns(6),
@@ -91,8 +83,8 @@ class EventResource extends Resource
                                                 ->maxLength(255)
                                         )->columnSpan(5),
 
-                                        Forms\Components\Actions::make([
-                                            static::getTranslateAction('short_description')
+                                        Actions::make([
+                                            static::getTranslateAction('short_description'),
                                         ])->columnSpan(1),
                                     ])
                                     ->columns(6),
@@ -104,8 +96,8 @@ class EventResource extends Resource
                                                 ->label(__('fields.event.description'))
                                         )->columnSpan(5),
 
-                                        Forms\Components\Actions::make([
-                                            static::getTranslateAction('description')
+                                        Actions::make([
+                                            static::getTranslateAction('description'),
                                         ])->columnSpan(1),
                                     ])
                                     ->columns(6),
@@ -121,21 +113,83 @@ class EventResource extends Resource
                                 Forms\Components\Textarea::make('address')
                                     ->label(__('fields.event.address'))
                                     ->columnSpanFull(),
+                                Actions::make([
+                                    Actions\Action::make('placeOnMap')
+                                        ->label(__('geocoding.place_on_map'))
+                                        ->icon('heroicon-o-map-pin')
+                                        ->color('gray')
+                                        ->action(function (Get $get, Set $set, $livewire): void {
+                                            $query = collect([$get('location'), $get('address')])
+                                                ->filter(fn ($value): bool => filled(trim((string) $value)))
+                                                ->implode(', ');
+
+                                            if ($query === '') {
+                                                Notification::make()
+                                                    ->warning()
+                                                    ->title(__('geocoding.missing_address_title'))
+                                                    ->body(__('geocoding.missing_address_body'))
+                                                    ->send();
+
+                                                return;
+                                            }
+
+                                            try {
+                                                $match = app(NominatimGeocoder::class)->geocode($query);
+
+                                                if ($match === null) {
+                                                    Notification::make()
+                                                        ->warning()
+                                                        ->title(__('geocoding.not_found_title'))
+                                                        ->body(__('geocoding.not_found_body'))
+                                                        ->send();
+
+                                                    return;
+                                                }
+
+                                                $latitude = number_format($match['latitude'], 7, '.', '');
+                                                $longitude = number_format($match['longitude'], 7, '.', '');
+
+                                                $set('latitude', $latitude);
+                                                $set('longitude', $longitude);
+                                                $livewire->dispatch(
+                                                    'event-location-geocoded',
+                                                    latitude: $latitude,
+                                                    longitude: $longitude,
+                                                );
+
+                                                Notification::make()
+                                                    ->success()
+                                                    ->title(__('geocoding.success_title'))
+                                                    ->body(__('geocoding.success_body', ['place' => $match['display_name']]))
+                                                    ->send();
+                                            } catch (\Throwable $exception) {
+                                                report($exception);
+
+                                                Notification::make()
+                                                    ->danger()
+                                                    ->title(__('geocoding.error_title'))
+                                                    ->body(__('geocoding.error_body'))
+                                                    ->send();
+                                            }
+                                        }),
+                                ])
+                                    ->alignEnd()
+                                    ->columnSpanFull(),
                                 Forms\Components\Grid::make([
                                     'default' => 2,
                                 ])
-                                ->schema([
-                                    Forms\Components\TextInput::make('latitude')
-                                        ->label(__('fields.event.latitude'))
-                                        ->numeric()
-                                        ->placeholder(__('fields.event.lat_placeholder'))
-                                        ->helperText(__('fields.event.decimal_format')),
-                                    Forms\Components\TextInput::make('longitude')
-                                        ->label(__('fields.event.longitude'))
-                                        ->numeric()
-                                        ->placeholder(__('fields.event.long_placeholder'))
-                                        ->helperText(__('fields.event.decimal_format')),
-                                ]),
+                                    ->schema([
+                                        Forms\Components\TextInput::make('latitude')
+                                            ->label(__('fields.event.latitude'))
+                                            ->numeric()
+                                            ->placeholder(__('fields.event.lat_placeholder'))
+                                            ->helperText(__('fields.event.decimal_format')),
+                                        Forms\Components\TextInput::make('longitude')
+                                            ->label(__('fields.event.longitude'))
+                                            ->numeric()
+                                            ->placeholder(__('fields.event.long_placeholder'))
+                                            ->helperText(__('fields.event.decimal_format')),
+                                    ]),
                                 Forms\Components\ViewField::make('location_map')
                                     ->view('filament.forms.components.event-location-map')
                                     ->columnSpanFull(),
@@ -156,7 +210,7 @@ class EventResource extends Resource
                                     ->directory('event-images')
                                     ->imageEditor()
                                     ->imageResizeMode('cover')
-                                    ->maxSize(5120*2) // 10MB
+                                    ->maxSize(5120 * 2) // 10MB
                                     ->helperText(__('fields.common.max_filesize', ['size' => '10MB']))
                                     ->imageEditorAspectRatios([
                                         null,
@@ -188,10 +242,12 @@ class EventResource extends Resource
                                     ->required()
                                     ->label(__('fields.event.start_datetime'))
                                     ->native(false)
+                                    ->live()
                                     ->displayFormat('D, d M Y H:i'),
                                 Forms\Components\DateTimePicker::make('end_datetime')
                                     ->label(__('fields.event.end_datetime'))
                                     ->native(false)
+                                    ->live()
                                     ->displayFormat('D, d M Y H:i')
                                     ->after('start_datetime'),
                             ]),
@@ -218,6 +274,7 @@ class EventResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+            ->defaultSort('start_datetime', 'desc')
             ->columns([
                 Tables\Columns\ImageColumn::make('image_path')->label(__('fields.event.cover_image'))
                     ->width(100)

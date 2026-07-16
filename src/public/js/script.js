@@ -45,6 +45,37 @@
 			copyrightYear:           $( ".copyright-year" )
 		};
 
+	window.bandaTurnstileOnload = function () {
+		document.querySelectorAll( ".js-contact-turnstile" ).forEach( function ( container ) {
+			var form = container.closest( "form" ),
+				tokenInput = form ? form.querySelector( "input[name='cf-turnstile-response']" ) : null;
+
+			if ( !form || !tokenInput || container.bandaTurnstileWidgetId !== undefined ) {
+				return;
+			}
+
+			function clearToken() {
+				tokenInput.value = "";
+			}
+
+			container.bandaTurnstileWidgetId = turnstile.render( container, {
+				sitekey: container.dataset.sitekey,
+				action: container.dataset.action,
+				appearance: container.dataset.appearance || "interaction-only",
+				size: container.dataset.size || "flexible",
+				theme: container.dataset.theme || "auto",
+				"response-field": false,
+				callback: function ( token ) {
+					tokenInput.value = token;
+				},
+				"expired-callback": clearToken,
+				"timeout-callback": clearToken,
+				"error-callback": clearToken,
+				"unsupported-callback": clearToken
+			} );
+		} );
+	};
+
 	// Initialize scripts that require a finished document
 	$( function () {
 		isNoviBuilder = window.xMode;
@@ -1047,6 +1078,155 @@
 		if (plugins.regula.length) {
 			attachFormValidator(plugins.regula);
 		}
+
+		// Contact forms
+		$( ".js-contact-form" ).each( function () {
+			var form = this,
+				$form = $( form ),
+				$status = $form.find( ".contact-form-status" ),
+				$submit = $form.find( ".contact-submit" );
+
+			function clearErrors() {
+				$form.find( ".contact-ajax-error" ).remove();
+				$form.find( ".is-invalid" ).removeClass( "is-invalid" );
+			}
+
+			function setLoading( loading ) {
+				form.dataset.submitting = loading ? "true" : "false";
+				$form.toggleClass( "is-submitting", loading );
+				$submit.prop( "disabled", loading ).attr( "aria-busy", loading ? "true" : "false" );
+				$submit.find( ".contact-submit-label" ).prop( "hidden", loading );
+				$submit.find( ".contact-submit-progress" ).prop( "hidden", !loading );
+			}
+
+			function showStatus( type, message ) {
+				$status
+					.removeClass( "d-none alert-success alert-danger" )
+					.addClass( type === "success" ? "alert-success" : "alert-danger" )
+					.text( message );
+
+				if ( $status.length ) {
+					try {
+						$status.get( 0 ).focus( { preventScroll: true } );
+					} catch ( error ) {
+						$status.get( 0 ).focus();
+					}
+				}
+			}
+
+			function showFieldErrors( errors ) {
+				Object.keys( errors || {} ).forEach( function ( fieldName ) {
+					if ( fieldName === "cf-turnstile-response" ) {
+						$form.find( ".js-contact-turnstile" ).addClass( "is-invalid" );
+						return;
+					}
+
+					var field = form.elements.namedItem( fieldName ),
+						$field = field ? $( field ) : $(),
+						$error = $( "<div>", {
+							class: "invalid-feedback d-block contact-ajax-error",
+							text: errors[ fieldName ][ 0 ]
+						} ),
+						$container;
+
+					if ( $field.length ) {
+						$field.addClass( "is-invalid" );
+						$container = $field.closest( ".form-wrap" );
+
+						if ( $container.length ) {
+							$container.append( $error );
+						} else if ( $field.is( ":checkbox" ) ) {
+							$error.insertAfter( $field.closest( ".form-input" ) );
+						} else {
+							$error.insertAfter( $field );
+						}
+					}
+				} );
+			}
+
+			function resetTurnstile() {
+				var widget = $form.find( ".js-contact-turnstile" ).get( 0 ),
+					tokenInput = form.querySelector( "input[name='cf-turnstile-response']" );
+
+				if ( tokenInput ) {
+					tokenInput.value = "";
+				}
+
+				if ( typeof turnstile !== "undefined" && widget && widget.bandaTurnstileWidgetId !== undefined ) {
+					turnstile.reset( widget.bandaTurnstileWidgetId );
+				}
+			}
+
+			$form.on( "submit", function ( event ) {
+				event.preventDefault();
+
+				if ( form.dataset.submitting === "true" ) {
+					return;
+				}
+
+				clearErrors();
+				$status.addClass( "d-none" ).removeClass( "alert-success alert-danger" ).empty();
+
+				if ( !form.checkValidity() ) {
+					form.reportValidity();
+					return;
+				}
+
+				var turnstileToken = form.querySelector( "input[name='cf-turnstile-response']" );
+
+				if ( turnstileToken && !turnstileToken.value ) {
+					var turnstileMessage = $form.data( "turnstile-message" ),
+						turnstileErrors = {
+							"cf-turnstile-response": [ turnstileMessage ]
+						};
+
+					showFieldErrors( turnstileErrors );
+					showStatus( "error", turnstileMessage );
+					resetTurnstile();
+					return;
+				}
+
+				setLoading( true );
+
+				fetch( form.action, {
+					method: "POST",
+					body: new FormData( form ),
+					credentials: "same-origin",
+					headers: {
+						"Accept": "application/json",
+						"X-Requested-With": "XMLHttpRequest"
+					}
+				} )
+					.then( function ( response ) {
+						return response.json().catch( function () {
+							return {};
+						} ).then( function ( payload ) {
+							if ( !response.ok ) {
+								var requestError = new Error( payload.message || $form.data( "error-message" ) );
+								requestError.payload = payload;
+								throw requestError;
+							}
+
+							return payload;
+						} );
+					} )
+					.then( function ( payload ) {
+						form.reset();
+						$form.find( "input, textarea" ).trigger( "blur" );
+						showStatus( "success", payload.message );
+					} )
+					.catch( function ( error ) {
+						var payload = error.payload || {};
+
+						showFieldErrors( payload.errors );
+						showStatus( "error", payload.message || $form.data( "error-message" ) );
+					} )
+					.finally( function () {
+						resetTurnstile();
+						setLoading( false );
+					} );
+			} );
+		} );
 
 		// RD Mailform
 		if (plugins.rdMailForm.length) {
