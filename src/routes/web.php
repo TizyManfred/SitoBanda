@@ -9,6 +9,8 @@ use App\Http\Controllers\PageController;
 use App\Http\Controllers\RepertoireController;
 use Illuminate\Support\Facades\Storage;
 
+Route::permanentRedirect('/portale', '/')->name('legacy.portale');
+
 Route::get('storage/{path}', function (string $path) {
     abort_if(
         str_contains($path, '..')
