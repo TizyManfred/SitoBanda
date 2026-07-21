@@ -5,9 +5,31 @@
 @section('og_title', __('abito.meta.og_title'))
 @section('og_description', __('abito.meta.og_description'))
 
+@section('styles')
+    <link rel="stylesheet" href="{{ asset('css/abito.css') }}?v={{ filemtime(public_path('css/abito.css')) }}">
+@endsection
+
 @section('content')
     @php
         $dynamicBlocks = \App\Models\StaticPage::contentBlocks('abito_tradizionale');
+        $costumeElementGroups = [
+            [
+                'title' => __('abito.elements.accessories'),
+                'items' => [
+                    ['key' => 'apron', 'image' => 'images/abito/grembiule-scialle.webp', 'icon' => 'fa-star'],
+                    ['key' => 'jewelry', 'image' => 'images/abito/gioielli.webp', 'icon' => 'fa-diamond'],
+                    ['key' => 'hairstyle', 'image' => 'images/abito/acconciatura.webp', 'icon' => 'fa-user'],
+                ],
+            ],
+            [
+                'title' => __('abito.elements.structure'),
+                'items' => [
+                    ['key' => 'dress', 'image' => 'images/abito/veste.webp', 'icon' => 'fa-female'],
+                    ['key' => 'colors', 'image' => 'images/abito/colori-dape.webp', 'icon' => 'fa-heart'],
+                    ['key' => 'protection', 'image' => 'images/abito/salvacore.webp', 'icon' => 'fa-shield'],
+                ],
+            ],
+        ];
     @endphp
 
     <!-- Breadcrumbs -->
@@ -53,77 +75,45 @@
                 </section>
 
                 <!-- Elementi dell'Abito -->
-                <section class="section section-sm bg-default">
+                <section class="section section-sm bg-default costume-elements">
                     <div class="container">
-                        <h3 class="oh-desktop"><span class="d-inline-block wow slideInUp">{{ __('abito.elements.title') }}</span></h3>
-                        
-                        <!-- Accessori e Ornamenti -->
-                        <div class="row row-30 mb-5">
-                            <div class="col-12">
-                                <h4 class="text-center mb-4" style="color: #666; font-weight: 300;">{{ __('abito.elements.accessories') }}</h4>
-                            </div>
-                            <div class="col-sm-6 col-lg-4">
-                                <article class="box-icon-classic">
-                                    <div class="unit-left"><div class="box-icon-classic-icon"><i class="fa fa-star"></i></div></div>
-                                    <div class="unit-body">
-                                        <h5 class="box-icon-classic-title">{{ __('abito.elements.apron.title') }}</h5>
-                                        <p class="box-icon-classic-text">{{ __('abito.elements.apron.text') }}</p>
-                                    </div>
-                                </article>
-                            </div>
-                            <div class="col-sm-6 col-lg-4">
-                                <article class="box-icon-classic">
-                                    <div class="unit-left"><div class="box-icon-classic-icon"><i class="fa fa-diamond"></i></div></div>
-                                    <div class="unit-body">
-                                        <h5 class="box-icon-classic-title">{{ __('abito.elements.jewelry.title') }}</h5>
-                                        <p class="box-icon-classic-text">{{ __('abito.elements.jewelry.text') }}</p>
-                                    </div>
-                                </article>
-                            </div>
-                            <div class="col-sm-6 col-lg-4">
-                                <article class="box-icon-classic">
-                                    <div class="unit-left"><div class="box-icon-classic-icon"><i class="fa fa-user"></i></div></div>
-                                    <div class="unit-body">
-                                        <h5 class="box-icon-classic-title">{{ __('abito.elements.hairstyle.title') }}</h5>
-                                        <p class="box-icon-classic-text">{{ __('abito.elements.hairstyle.text') }}</p>
-                                    </div>
-                                </article>
-                            </div>
+                        <div class="costume-elements-heading text-center">
+                            <span class="costume-elements-mark" aria-hidden="true"><i class="fa fa-star"></i></span>
+                            <h3 class="oh-desktop"><span class="d-inline-block wow slideInUp">{{ __('abito.elements.title') }}</span></h3>
                         </div>
 
-                        <!-- Struttura dell'Abito -->
-                        <div class="row row-30">
-                            <div class="col-12">
-                                <h4 class="text-center mb-4" style="color: #666; font-weight: 300;">{{ __('abito.elements.structure') }}</h4>
+                        @foreach ($costumeElementGroups as $group)
+                            <div class="costume-elements-group{{ $loop->last ? '' : ' mb-5' }}">
+                                <h4 class="costume-elements-group-title">{{ $group['title'] }}</h4>
+
+                                <div class="row row-30 costume-elements-grid">
+                                    @foreach ($group['items'] as $element)
+                                        @php
+                                            $imageExists = file_exists(public_path($element['image']));
+                                            $title = __('abito.elements.' . $element['key'] . '.title');
+                                        @endphp
+                                        <div class="col-md-6 col-lg-4 d-flex">
+                                            <article class="costume-element-card wow fadeInUp">
+                                                <div class="costume-element-media">
+                                                    @if ($imageExists)
+                                                        <img src="{{ asset($element['image']) }}" alt="{{ $title }}" width="640" height="480" loading="lazy">
+                                                    @else
+                                                        <div class="costume-element-placeholder" aria-hidden="true">
+                                                            <i class="fa {{ $element['icon'] }}"></i>
+                                                        </div>
+                                                    @endif
+                                                </div>
+                                                <div class="costume-element-body">
+                                                    <span class="costume-element-icon" aria-hidden="true"><i class="fa {{ $element['icon'] }}"></i></span>
+                                                    <h5 class="costume-element-title">{{ $title }}</h5>
+                                                    <p class="costume-element-text">{{ __('abito.elements.' . $element['key'] . '.text') }}</p>
+                                                </div>
+                                            </article>
+                                        </div>
+                                    @endforeach
+                                </div>
                             </div>
-                            <div class="col-sm-6 col-lg-4">
-                                <article class="box-icon-classic">
-                                    <div class="unit-left"><div class="box-icon-classic-icon"><i class="fa fa-female"></i></div></div>
-                                    <div class="unit-body">
-                                        <h5 class="box-icon-classic-title">{{ __('abito.elements.dress.title') }}</h5>
-                                        <p class="box-icon-classic-text">{{ __('abito.elements.dress.text') }}</p>
-                                    </div>
-                                </article>
-                            </div>
-                            <div class="col-sm-6 col-lg-4">
-                                <article class="box-icon-classic">
-                                    <div class="unit-left"><div class="box-icon-classic-icon"><i class="fa fa-heart"></i></div></div>
-                                    <div class="unit-body">
-                                        <h5 class="box-icon-classic-title">{{ __('abito.elements.colors.title') }}</h5>
-                                        <p class="box-icon-classic-text">{{ __('abito.elements.colors.text') }}</p>
-                                    </div>
-                                </article>
-                            </div>
-                            <div class="col-sm-6 col-lg-4">
-                                <article class="box-icon-classic">
-                                    <div class="unit-left"><div class="box-icon-classic-icon"><i class="fa fa-shield"></i></div></div>
-                                    <div class="unit-body">
-                                        <h5 class="box-icon-classic-title">{{ __('abito.elements.protection.title') }}</h5>
-                                        <p class="box-icon-classic-text">{{ __('abito.elements.protection.text') }}</p>
-                                    </div>
-                                </article>
-                            </div>
-                        </div>
+                        @endforeach
                     </div>
                 </section>
 

@@ -2,28 +2,26 @@
 
 namespace App\Filament\Resources\GalleryAlbumResource\RelationManagers;
 
-use App\Filament\Traits\WithAiTranslation;
+use App\Filament\Forms\Components\MultiImageUploader;
 use App\Filament\Support\OptimizedImageUpload;
+use App\Filament\Traits\WithAiTranslation;
+use App\Models\GalleryItem;
+use App\Services\TranslationService;
 use Filament\Forms;
 use Filament\Forms\Form;
+use Filament\Notifications\Notification;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\App;
-use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Request;
-use Filament\Notifications\Notification;
-use App\Models\GalleryItem;
-use App\Services\TranslationService;
-use Mvenghaus\FilamentPluginTranslatableInline\Forms\Components\TranslatableContainer;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
-use Illuminate\Http\UploadedFile;
 use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
+use Mvenghaus\FilamentPluginTranslatableInline\Forms\Components\TranslatableContainer;
 
 class ItemsRelationManager extends RelationManager
 {
@@ -85,7 +83,7 @@ class ItemsRelationManager extends RelationManager
                     ->label(__('fields.gallery.image'))
                     ->image()
                     ->directory('gallery-items')
-                    ->required(!str_contains(Request::url(), '/edit'))
+                    ->required(! str_contains(Request::url(), '/edit'))
                     ->columnSpanFull()
                     ->helperText(fn () => str_contains(Request::url(), '/edit') ? __('fields.gallery.replace_image_helper') : __('fields.gallery.upload_image_helper'))
                     ->downloadable()
@@ -105,7 +103,7 @@ class ItemsRelationManager extends RelationManager
                     ])
                     ->imageResizeTargetWidth('2560')
                     ->imageResizeTargetHeight('2560')
-                    ->visible(fn (): bool => !str_contains(Request::url(), '/edit') || !$this->getRecord()?->image_path)
+                    ->visible(fn (): bool => ! str_contains(Request::url(), '/edit') || ! $this->getRecord()?->image_path)
                     ->dehydrated(true)
                     ->saveUploadedFileUsing(OptimizedImageUpload::webp('gallery-items', quality: 65, maxWidth: 1920, maxHeight: 1920)),
 
@@ -128,76 +126,55 @@ class ItemsRelationManager extends RelationManager
     {
         return $table
             ->recordTitleAttribute('image_path')
-            ->reorderable('sort_order')
-            ->defaultSort('sort_order')
+            ->contentGrid([
+                'default' => 1,
+                'md' => 2,
+                'xl' => 3,
+                '2xl' => 4,
+            ])
             ->columns([
-                Tables\Columns\ImageColumn::make('image_path')
-                    ->label(__('fields.gallery.image'))
-                    ->width(320)
-                    ->height(200)
-                    ->extraImgAttributes([
-                        'class' => 'rounded-lg bg-gray-100 object-contain dark:bg-gray-800',
-                    ])
-                    ->url(fn (GalleryItem $record): string => Storage::disk('public')->url($record->image_path))
-                    ->openUrlInNewTab(),
+                Tables\Columns\Layout\Stack::make([
+                    Tables\Columns\ImageColumn::make('image_path')
+                        ->label(__('fields.gallery.image'))
+                        ->width('100%')
+                        ->height(200)
+                        ->extraImgAttributes([
+                            'class' => 'rounded-lg bg-gray-100 object-contain dark:bg-gray-800',
+                        ])
+                        ->url(fn (GalleryItem $record): string => Storage::disk('public')->url($record->image_path))
+                        ->openUrlInNewTab(),
 
-                Tables\Columns\TextColumn::make('caption')
-                    ->label(__('fields.gallery.caption'))
-                    ->formatStateUsing(function ($record) {
+                    Tables\Columns\TextColumn::make('caption')
+                        ->label(__('fields.gallery.caption'))
+                        ->searchable(query: function (Builder $query, string $search): Builder {
+                            return $query->where(function ($query) use ($search) {
+                                $locales = array_keys(LaravelLocalization::getSupportedLocales());
+
+                                foreach ($locales as $locale) {
+                                    $query->orWhere("caption->{$locale}", 'like', "%{$search}%");
+                                }
+                            });
+                        })
+                        ->sortable(query: function (Builder $query, string $direction): Builder {
+                            $locale = App::getLocale();
+
+                            return $query->orderBy("caption->{$locale}", $direction);
+                        })
+                        ->wrap()
+                        ->html()
+                        ->formatStateUsing(function (GalleryItem $record): string {
                             $translations = $record->getTranslations('caption');
-                        $output = [];
+                            $output = [];
 
-                        foreach ($translations as $locale => $translation) {
-                            $output[] = "{$locale}: {$translation}";
-                        }
-
-                        return implode('\n', $output);
-                    })
-                    ->searchable(query: function (Builder $query, string $search): Builder {
-                        return $query->where(function($q) use ($search) {
-                            $locales = array_keys(LaravelLocalization::getSupportedLocales());
-                            foreach ($locales as $locale) {
-                                $q->orWhere("caption->{$locale}", 'like', "%{$search}%");
+                            foreach ($translations as $locale => $translation) {
+                                $output[] = "<div><span class='font-medium'>{$locale}:</span> {$translation}</div>";
                             }
-                        });
-                    })
-                    ->sortable(query: function (Builder $query, string $direction): Builder {
-                        $locale = App::getLocale();
-                        return $query->orderBy("caption->{$locale}", $direction);
-                    })
-                    ->wrap()
-                    ->html()
-                    ->formatStateUsing(function ($record) {
-                        $translations = $record->getTranslations('caption');
-                        $output = [];
 
-                        foreach ($translations as $locale => $translation) {
-                            $output[] = "<div><span class='font-medium'>{$locale}:</span> {$translation}</div>";
-                        }
-
-                        return implode('', $output);
-                    }),
-
-                Tables\Columns\TextColumn::make('sort_order')
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true)
-                    ->label(__('fields.gallery.order')),
+                            return implode('', $output);
+                        }),
+                ])->space(3),
             ])
             ->actions([
-                Tables\Actions\Action::make('moveUp')
-                    ->icon('heroicon-o-arrow-up')
-                    ->action(function (Model $record) {
-                        if ((int) $record->sort_order > 0) {
-                            $record->decrement('sort_order');
-                        }
-                    }),
-
-                Tables\Actions\Action::make('moveDown')
-                    ->icon('heroicon-o-arrow-down')
-                    ->action(function (Model $record) {
-                        $record->increment('sort_order');
-                    }),
-
                 Tables\Actions\EditAction::make(),
 
                 Tables\Actions\DeleteAction::make(),
@@ -208,24 +185,25 @@ class ItemsRelationManager extends RelationManager
                     ->icon('heroicon-o-photo')
                     ->form([
                         // Use our new multi-image uploader component
-                        \App\Filament\Forms\Components\MultiImageUploader::make('images')
+                        MultiImageUploader::make('images')
                             ->label(__('fields.gallery.images'))
                             ->directory('gallery-items')
                             ->acceptedFileTypes(['image/jpeg', 'image/png', 'image/gif', 'image/webp'])
                             ->maxFiles(50)
                             ->maxSize(5120) // 5MB
-                            ->columnSpanFull()
+                            ->columnSpanFull(),
                     ])
 
                     ->action(function (array $data): void {
                         $record = $this->getOwnerRecord();
                         $images = $data['images'] ?? [];
 
-                        if (empty($images) || !is_array($images)) {
+                        if (empty($images) || ! is_array($images)) {
                             Notification::make()
                                 ->title(__('fields.gallery.no_images_selected'))
                                 ->warning()
                                 ->send();
+
                             return;
                         }
 
@@ -236,9 +214,9 @@ class ItemsRelationManager extends RelationManager
                         $count = 0;
                         foreach ($images as $imageData) {
                             // Skip invalid entries - handle both old and new format
-                            if (!is_array($imageData)) {
+                            if (! is_array($imageData)) {
                                 // Handle simple string paths (fallback)
-                                if (is_string($imageData) && !empty($imageData)) {
+                                if (is_string($imageData) && ! empty($imageData)) {
                                     GalleryItem::create([
                                         'album_id' => $record->id,
                                         'image_path' => $imageData,
@@ -251,6 +229,7 @@ class ItemsRelationManager extends RelationManager
                                     ]);
                                     $count++;
                                 }
+
                                 continue;
                             }
 
@@ -299,7 +278,7 @@ class ItemsRelationManager extends RelationManager
                                         $binary = base64_decode($data, true);
                                         if ($binary !== false) {
                                             $uuid = method_exists(Str::class, 'uuid') ? (string) Str::uuid() : uniqid('img_', true);
-                                            $filename = 'gallery-items/' . $uuid . '.' . $ext;
+                                            $filename = 'gallery-items/'.$uuid.'.'.$ext;
                                             Storage::disk('public')->put($filename, $binary);
                                             $imagePath = $filename;
                                         }

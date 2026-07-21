@@ -11,6 +11,56 @@ return [
     'title' => 'The Traditional Costume',
     'home' => 'Home',
 
+    'hero' => [
+        'eyebrow' => 'Four centuries of history, worn',
+        'lead' => 'Rotate the model, tap each element and discover what it tells: from the embroidered salvacore to the red of the dapè, every detail of the Tesino dress is the souvenir of a journey.',
+    ],
+
+    'viewer' => [
+        'title' => 'Interactive 3D model of the costume',
+        'parts_title' => 'Parts of the costume',
+        'card_hint' => 'Select a part of the costume — on the model or from the list — to read its description.',
+        'drag_hint' => 'Drag to rotate · scroll to zoom',
+        'loading' => 'Building the model…',
+        'variant_label' => 'Costume version',
+        'female' => 'Female',
+        'male' => 'Male',
+        'reset' => 'Reset the view',
+        'dape_red' => 'Red · unmarried',
+        'dape_yellow' => 'Yellow · married',
+        'fallback' => 'The 3D model is not available on this device. Below is a photo of the real costume.',
+        'fallback_alt' => 'Traditional Tesino costume worn by a member of the Folk Band',
+    ],
+
+    'sections' => [
+        'origins' => 'The origins',
+        'male' => 'The male version',
+        'history' => 'History and adoption',
+        'care' => 'Care and preservation',
+    ],
+
+    'figure' => [
+        'female_alt' => 'Black pleated dress with red dapè, floral shawl and garnet necklaces',
+        'female_caption' => 'The pleated dress and the red dapè, mark of unmarried women and young brides.',
+        'male_alt' => 'Male and female costume of the Folk Band of Castello Tesino',
+        'male_caption' => 'The male costume, with black hat, red flower and green ribbon tie.',
+    ],
+
+    'male_parts' => [
+        'hat' => [
+            'title' => 'The Hat',
+            'text' => 'A wide-brimmed black hat, ringed by a red and black cord, with a bold cluster of red flowers on one side and a white plume on the other. It is the element that most clearly reveals the Tyrolean inspiration of the male costume.',
+        ],
+        'jacket' => [
+            'title' => 'The Jacket and Breeches',
+            'text' => 'A black cloth jacket with lapels, worn over knee-length breeches, white woollen socks and dark buckled shoes — a sober Alpine cut, in deliberate contrast with the chromatic richness of the female dress.',
+        ],
+        'tie' => [
+            'title' => 'Shirt and Ribbon Tie',
+            'text' => 'A white shirt with a stiff collar and a green ribbon tie knotted into a bow: the touch of colour that, together with the flower on the hat, lightens the black of the jacket.',
+        ],
+    ],
+
     'main' => [
         'title' => 'The Traditional Tesino Costume',
         'intro' => 'The traditional Tesino dress is the direct reflection of centuries of travels, exchanges and cultural contaminations that few other folkloric costumes can boast. Born from the transformation of the Tesino people from mountain shepherds to traveling merchants ("crömeri"), this costume tells the story of a people who knew how to reinvent themselves when, starting from the mid-16th century, the pastoral economic model went into crisis.',
@@ -57,6 +107,8 @@ return [
     'history' => [
         'title' => 'History and Adoption',
         'text' => 'The costume\'s history is linked to the epic of the "crömeri" merchants. Curiosity: during World War I, many women preferred to wear their traditional dress rather than risk losing it – it was their pride and personal wealth. Since 1981, the Folk Band has worn it with pride, a living testimony of centuries of tradition.',
+        'quote' => 'It is not a stage outfit: it is an archive of journeys. Every shawl, every garnet necklace reached Tesino in a travelling merchant\'s pack, as a gift for whoever was waiting at home.',
+        'quote_source' => 'On the tradition of the Tesino crömeri',
     ],
 
     'care' => [

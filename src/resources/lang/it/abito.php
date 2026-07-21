@@ -11,6 +11,56 @@ return [
     'title' => 'L\'Abito Tradizionale',
     'home' => 'Home',
 
+    'hero' => [
+        'eyebrow' => 'Quattro secoli di storia indossata',
+        'lead' => 'Ruota il modello, tocca ogni elemento e scopri che cosa racconta: dal salvacore ricamato al rosso del dapè, ogni dettaglio dell\'abito tesino è il souvenir di un viaggio.',
+    ],
+
+    'viewer' => [
+        'title' => 'Modello 3D interattivo del costume',
+        'parts_title' => 'Le parti del costume',
+        'card_hint' => 'Seleziona una parte del costume — sul modello o dall\'elenco — per leggerne la descrizione.',
+        'drag_hint' => 'Trascina per ruotare · scorri per zoomare',
+        'loading' => 'Costruzione del modello…',
+        'variant_label' => 'Versione del costume',
+        'female' => 'Femminile',
+        'male' => 'Maschile',
+        'reset' => 'Reimposta la vista',
+        'dape_red' => 'Rosso · nubili',
+        'dape_yellow' => 'Giallo · maritate',
+        'fallback' => 'Il modello 3D non è disponibile su questo dispositivo. Qui sotto una foto del costume reale.',
+        'fallback_alt' => 'Costume tradizionale tesino indossato da una componente della Banda Folk',
+    ],
+
+    'sections' => [
+        'origins' => 'Le origini',
+        'male' => 'La versione maschile',
+        'history' => 'Storia e adozione',
+        'care' => 'Cura e conservazione',
+    ],
+
+    'figure' => [
+        'female_alt' => 'Veste plissettata nera con dapè rosso, scialle floreale e collane di granati',
+        'female_caption' => 'La veste plissettata e il dapè rosso, segno delle nubili e delle giovani spose.',
+        'male_alt' => 'Costume maschile e femminile della Banda Folk di Castello Tesino',
+        'male_caption' => 'Il costume maschile, con cappello nero, fiore rosso e cravattino verde.',
+    ],
+
+    'male_parts' => [
+        'hat' => [
+            'title' => 'Il Cappello',
+            'text' => 'Cappello nero a tesa larga, cinto da un cordoncino rosso e nero, con un vistoso mazzetto di fiori rossi su un lato e un pennacchio bianco sull\'altro. È l\'elemento che più chiaramente rivela l\'ispirazione tirolese del costume maschile.',
+        ],
+        'jacket' => [
+            'title' => 'La Giacca e i Calzoni',
+            'text' => 'Giacca nera di panno con risvolti, portata su calzoni al ginocchio, calzettoni bianchi di lana e scarpe scure con fibbia — una foggia alpina sobria, in contrasto voluto con la ricchezza cromatica dell\'abito femminile.',
+        ],
+        'tie' => [
+            'title' => 'Camicia e Cravattino',
+            'text' => 'Camicia bianca con colletto rigido e cravattino di nastro verde annodato a fiocco: il tocco di colore che, insieme al fiore sul cappello, alleggerisce il nero della giacca.',
+        ],
+    ],
+
     'main' => [
         'title' => 'Il Costume Tradizionale Tesino',
         'intro' => 'L\'abito tradizionale tesino è il riflesso diretto di secoli di viaggi, scambi e contaminazioni culturali che pochi altri costumi folkloristici possono vantare. Nato dalla trasformazione dei Tesini da pastori montani a commercianti ambulanti ("crömeri"), questo costume racconta la storia di un popolo che ha saputo reinventarsi quando, a partire dalla metà del XVI secolo, il modello economico pastorale entrò in crisi.',
@@ -57,6 +107,8 @@ return [
     'history' => [
         'title' => 'Storia e Adozione',
         'text' => 'La storia del costume è legata all\'epopea dei "crömeri" tesini. Curiosità: durante la Prima Guerra Mondiale, molte donne preferirono indossare l\'abito tradizionale piuttosto che rischiare di perderlo – era il loro orgoglio e ricchezza personale. Dal 1981 la Banda Folk lo indossa con orgoglio, testimonianza vivente di secoli di tradizione.',
+        'quote' => 'Non è un vestito da spettacolo: è un archivio di viaggi. Ogni scialle, ogni collana di granati è arrivata in Tesino nello zaino di un venditore ambulante, come dono per chi lo aspettava a casa.',
+        'quote_source' => 'Sulla tradizione dei crömeri tesini',
     ],
 
     'care' => [

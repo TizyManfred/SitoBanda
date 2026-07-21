@@ -11,6 +11,56 @@ return [
     'title' => 'Die Traditionelle Tracht',
     'home' => 'Startseite',
 
+    'hero' => [
+        'eyebrow' => 'Vier Jahrhunderte getragene Geschichte',
+        'lead' => 'Drehen Sie das Modell, tippen Sie auf die einzelnen Elemente und entdecken Sie, was sie erzählen: vom bestickten Salvacore bis zum Rot des Dapè ist jedes Detail der Tesino-Tracht das Andenken an eine Reise.',
+    ],
+
+    'viewer' => [
+        'title' => 'Interaktives 3D-Modell der Tracht',
+        'parts_title' => 'Die Teile der Tracht',
+        'card_hint' => 'Wählen Sie ein Teil der Tracht — am Modell oder aus der Liste — um die Beschreibung zu lesen.',
+        'drag_hint' => 'Ziehen zum Drehen · Scrollen zum Zoomen',
+        'loading' => 'Modell wird aufgebaut…',
+        'variant_label' => 'Version der Tracht',
+        'female' => 'Damen',
+        'male' => 'Herren',
+        'reset' => 'Ansicht zurücksetzen',
+        'dape_red' => 'Rot · ledig',
+        'dape_yellow' => 'Gelb · verheiratet',
+        'fallback' => 'Das 3D-Modell ist auf diesem Gerät nicht verfügbar. Unten ein Foto der echten Tracht.',
+        'fallback_alt' => 'Traditionelle Tesino-Tracht, getragen von einem Mitglied der Volkskapelle',
+    ],
+
+    'sections' => [
+        'origins' => 'Die Ursprünge',
+        'male' => 'Die Herrenversion',
+        'history' => 'Geschichte und Annahme',
+        'care' => 'Pflege und Erhaltung',
+    ],
+
+    'figure' => [
+        'female_alt' => 'Schwarzes Faltenkleid mit rotem Dapè, Blumenschal und Granatketten',
+        'female_caption' => 'Das Faltenkleid und der rote Dapè, Zeichen der Ledigen und jungen Bräute.',
+        'male_alt' => 'Herren- und Damentracht der Volkskapelle von Castello Tesino',
+        'male_caption' => 'Die Herrentracht mit schwarzem Hut, roter Blume und grüner Schleife.',
+    ],
+
+    'male_parts' => [
+        'hat' => [
+            'title' => 'Der Hut',
+            'text' => 'Schwarzer breitkrempiger Hut, umschlungen von einer rot-schwarzen Kordel, mit einem auffälligen Strauß roter Blumen auf der einen und einem weißen Federbusch auf der anderen Seite. Er ist das Element, das die Tiroler Inspiration der Herrentracht am deutlichsten zeigt.',
+        ],
+        'jacket' => [
+            'title' => 'Jacke und Kniebundhose',
+            'text' => 'Schwarze Tuchjacke mit Revers, getragen über Kniebundhosen, weißen Wollstrümpfen und dunklen Schnallenschuhen — ein nüchterner alpiner Schnitt, im bewussten Kontrast zur Farbenpracht der Damentracht.',
+        ],
+        'tie' => [
+            'title' => 'Hemd und Schleife',
+            'text' => 'Weißes Hemd mit steifem Kragen und einer zur Schleife gebundenen grünen Bandkrawatte: der Farbtupfer, der zusammen mit der Blume am Hut das Schwarz der Jacke auflockert.',
+        ],
+    ],
+
     'main' => [
         'title' => 'Die Traditionelle Tesino-Tracht',
         'intro' => 'Die traditionelle Tesino-Tracht ist die direkte Widerspiegelung jahrhundertelanger Reisen, Austausch und kultureller Kontamination, die nur wenige andere Volkstrachten vorweisen können. Geboren aus der Verwandlung der Tesino-Bewohner von Bergschäfern zu Wanderhändlern ("crömeri"), erzählt dieses Kostüm die Geschichte eines Volkes, das sich neu zu erfinden wusste, als ab Mitte des 16. Jahrhunderts das pastorale Wirtschaftsmodell in die Krise geriet.',
@@ -57,6 +107,8 @@ return [
     'history' => [
         'title' => 'Geschichte und Annahme',
         'text' => 'Die Geschichte des Kostüms ist mit der Epopöe der "crömeri"-Händler verbunden. Kuriosität: Während des Ersten Weltkriegs zogen es viele Frauen vor, ihre Tracht zu tragen, anstatt zu riskieren, sie zu verlieren – sie war ihr Stolz und persönlicher Reichtum. Seit 1981 trägt die Banda Folk sie stolz, ein lebendiges Zeugnis jahrhundertealter Tradition.',
+        'quote' => 'Es ist kein Bühnenkostüm: Es ist ein Archiv von Reisen. Jeder Schal, jede Granatkette kam im Rucksack eines Wanderhändlers ins Tesino, als Geschenk für die, die zu Hause warteten.',
+        'quote_source' => 'Über die Tradition der Tesiner Crömeri',
     ],
 
     'care' => [
