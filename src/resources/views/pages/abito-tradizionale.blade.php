@@ -24,8 +24,8 @@
             [
                 'title' => __('abito.elements.structure'),
                 'items' => [
-                    ['key' => 'dress', 'image' => 'images/abito/veste.webp', 'icon' => 'fa-female'],
-                    ['key' => 'colors', 'image' => 'images/abito/colori-dape.webp', 'icon' => 'fa-heart'],
+                    ['key' => 'dress', 'image' => 'images/abito/veste-smoothed.webp', 'icon' => 'fa-female'],
+                    ['key' => 'colors', 'image' => 'images/abito/colori-dape-smoothed.webp', 'icon' => 'fa-heart'],
                     ['key' => 'protection', 'image' => 'images/abito/salvacore.webp', 'icon' => 'fa-shield'],
                 ],
             ],
@@ -78,7 +78,6 @@
                 <section class="section section-sm bg-default costume-elements">
                     <div class="container">
                         <div class="costume-elements-heading text-center">
-                            <span class="costume-elements-mark" aria-hidden="true"><i class="fa fa-star"></i></span>
                             <h3 class="oh-desktop"><span class="d-inline-block wow slideInUp">{{ __('abito.elements.title') }}</span></h3>
                         </div>
 
@@ -90,13 +89,13 @@
                                     @foreach ($group['items'] as $element)
                                         @php
                                             $imageExists = file_exists(public_path($element['image']));
-                                            $title = __('abito.elements.' . $element['key'] . '.title');
+                                            $elementTitle = __('abito.elements.' . $element['key'] . '.title');
                                         @endphp
                                         <div class="col-md-6 col-lg-4 d-flex">
                                             <article class="costume-element-card wow fadeInUp">
                                                 <div class="costume-element-media">
                                                     @if ($imageExists)
-                                                        <img src="{{ asset($element['image']) }}" alt="{{ $title }}" width="640" height="480" loading="lazy">
+                                                        <img src="{{ asset($element['image']) }}" alt="{{ $elementTitle }}" width="640" height="480" loading="lazy">
                                                     @else
                                                         <div class="costume-element-placeholder" aria-hidden="true">
                                                             <i class="fa {{ $element['icon'] }}"></i>
@@ -105,7 +104,7 @@
                                                 </div>
                                                 <div class="costume-element-body">
                                                     <span class="costume-element-icon" aria-hidden="true"><i class="fa {{ $element['icon'] }}"></i></span>
-                                                    <h5 class="costume-element-title">{{ $title }}</h5>
+                                                    <h5 class="costume-element-title">{{ $elementTitle }}</h5>
                                                     <p class="costume-element-text">{{ __('abito.elements.' . $element['key'] . '.text') }}</p>
                                                 </div>
                                             </article>
@@ -142,29 +141,34 @@
                 </section>
 
                 <!-- Cura e Conservazione -->
-                <section class="section section-sm section-last bg-default">
+                <section class="section section-sm section-last bg-default costume-care">
                     <div class="container">
-                        <h3 class="oh-desktop"><span class="d-inline-block wow slideInUp">{{ __('abito.care.title') }}</span></h3>
-                        <div class="row row-30 justify-content-center">
-                            <div class="col-sm-6 col-lg-4">
-                                <article class="box-minimal">
-                                    <div class="box-minimal-icon"><i class="fa fa-wrench"></i></div>
-                                    <h5 class="box-minimal-title">{{ __('abito.care.maintenance.title') }}</h5>
-                                    <div class="box-minimal-text">{{ __('abito.care.maintenance.text') }}</div>
+                        <header class="costume-care-heading text-center">
+                            <h3 class="title-decoration-lines oh-desktop"><span class="title-decoration-lines-content d-inline-block wow slideInUp">{{ __('abito.care.title') }}</span></h3>
+                        </header>
+                        <div class="row row-30 justify-content-center costume-care-grid">
+                            <div class="col-md-6 col-lg-4 d-flex">
+                                <article class="box-icon-modern box-icon-modern-2 costume-care-card wow fadeInUp">
+                                    <div class="box-icon-modern-icon costume-care-icon" aria-hidden="true"><i class="fa fa-wrench"></i></div>
+                                    <h5 class="box-icon-modern-title costume-care-title">{{ __('abito.care.maintenance.title') }}</h5>
+                                    <div class="box-icon-modern-decor"></div>
+                                    <p class="box-icon-modern-text costume-care-text">{{ __('abito.care.maintenance.text') }}</p>
                                 </article>
                             </div>
-                            <div class="col-sm-6 col-lg-4">
-                                <article class="box-minimal">
-                                    <div class="box-minimal-icon"><i class="fa fa-archive"></i></div>
-                                    <h5 class="box-minimal-title">{{ __('abito.care.storage.title') }}</h5>
-                                    <div class="box-minimal-text">{{ __('abito.care.storage.text') }}</div>
+                            <div class="col-md-6 col-lg-4 d-flex">
+                                <article class="box-icon-modern box-icon-modern-2 costume-care-card wow fadeInUp" data-wow-delay=".1s">
+                                    <div class="box-icon-modern-icon costume-care-icon" aria-hidden="true"><i class="fa fa-shield"></i></div>
+                                    <h5 class="box-icon-modern-title costume-care-title">{{ __('abito.care.storage.title') }}</h5>
+                                    <div class="box-icon-modern-decor"></div>
+                                    <p class="box-icon-modern-text costume-care-text">{{ __('abito.care.storage.text') }}</p>
                                 </article>
                             </div>
-                            <div class="col-sm-6 col-lg-4">
-                                <article class="box-minimal">
-                                    <div class="box-minimal-icon"><i class="fa fa-users"></i></div>
-                                    <h5 class="box-minimal-title">{{ __('abito.care.tradition.title') }}</h5>
-                                    <div class="box-minimal-text">{{ __('abito.care.tradition.text') }}</div>
+                            <div class="col-md-6 col-lg-4 d-flex">
+                                <article class="box-icon-modern box-icon-modern-2 costume-care-card wow fadeInUp" data-wow-delay=".2s">
+                                    <div class="box-icon-modern-icon costume-care-icon" aria-hidden="true"><i class="fa fa-users"></i></div>
+                                    <h5 class="box-icon-modern-title costume-care-title">{{ __('abito.care.tradition.title') }}</h5>
+                                    <div class="box-icon-modern-decor"></div>
+                                    <p class="box-icon-modern-text costume-care-text">{{ __('abito.care.tradition.text') }}</p>
                                 </article>
                             </div>
                         </div>
