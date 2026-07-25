@@ -15,6 +15,8 @@
 @endsection
 
 @section('content')
+    @include('partials.home-banner')
+
     <!-- Hero Slider -->
     <section class="section swiper-container swiper-slider swiper-slider-classic home-hero-carousel" data-loop="true" data-autoplay="5000"
       data-simulate-touch="true" data-direction="vertical" data-nav="false" aria-label="{{ __('home.hero.aria.slideshow') }}">

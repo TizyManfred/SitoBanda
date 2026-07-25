@@ -7,7 +7,6 @@ use App\Models\RepertoireProgram;
 use Carbon\Carbon;
 
 use Illuminate\Http\Request;
-use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 use App\Models\Member;
 use App\Models\Section;
 use App\Models\SectionImage;
@@ -142,10 +141,6 @@ class PageController extends Controller
      */
     public function corsiDiMusica()
     {
-        if (app()->getLocale() !== 'it') {
-            return redirect()->to(LaravelLocalization::getLocalizedURL('it', route('corsi-di-musica')));
-        }
-
         return view('pages.corsi-di-musica');
     }
 

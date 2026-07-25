@@ -104,6 +104,11 @@
     max-width: 900px;
     margin-right: auto;
     margin-left: auto;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.9), 0 0 10px rgba(0, 0, 0, 0.55);
+}
+
+.home-hero-carousel .swiper-slide-caption p {
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.9), 0 0 10px rgba(0, 0, 0, 0.55);
 }
 
 /* Privacy policy */
@@ -178,4 +183,208 @@
     border-left: 3px solid #eb6e6e;
     margin: 20px 0 0;
     padding-left: 18px;
+}
+
+/* Reusable homepage banner */
+.home-banner {
+    position: relative;
+    z-index: 3;
+    border-bottom: 4px solid #50ba87;
+    background: #222222;
+}
+
+.home-banner__inner {
+    display: grid;
+    min-height: 108px;
+    align-items: center;
+    gap: 32px;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    padding: 15px 0;
+}
+
+.home-banner__visual {
+    position: relative;
+    width: 150px;
+    height: auto;
+    overflow: hidden;
+    background: transparent;
+}
+
+.home-banner__visual img {
+    display: block;
+    width: 100%;
+    height: auto;
+}
+
+.home-banner__badge {
+    display: inline-flex;
+    min-width: 126px;
+    min-height: 50px;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid rgba(255, 255, 255, 0.24);
+    border-left: 4px solid #50ba87;
+    padding: 11px 18px;
+    color: #ffffff;
+    font-family: "Teko", sans-serif;
+    font-size: 22px;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    line-height: 1.05;
+    text-align: center;
+    text-transform: uppercase;
+}
+
+.home-banner__badge--overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    min-width: 0;
+    min-height: 0;
+    border: 0;
+    padding: 7px 11px 6px;
+    background: rgba(21, 21, 21, 0.9);
+    font-size: 18px;
+}
+
+.home-banner__content {
+    max-width: 670px;
+    text-align: left;
+}
+
+.home-banner__headline {
+    display: block;
+    color: #ffffff;
+    font-family: "Teko", sans-serif;
+    font-size: clamp(28px, 2.05vw, 34px);
+    font-weight: 400;
+    letter-spacing: 0.02em;
+    line-height: 1.08;
+}
+
+.home-banner__text {
+    max-width: 650px;
+    margin: 5px 0 0;
+    color: #bdbdbd;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+.home-banner__cta {
+    display: inline-flex;
+    min-width: 220px;
+    min-height: 50px;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    padding: 13px 23px 11px;
+}
+
+.home-banner__cta:hover,
+.home-banner__cta:active {
+    color: #151515;
+    border-color: #ffffff;
+    background: #ffffff;
+}
+
+.home-banner__cta.button-ujarak::before {
+    background: #ffffff;
+}
+
+.home-banner__cta:focus-visible {
+    outline: 3px solid #ffffff !important;
+    outline-offset: 3px;
+}
+
+.home-banner__arrow {
+    position: relative;
+    z-index: 1;
+    font-size: 19px;
+    line-height: 1;
+    transition: transform 0.2s ease;
+}
+
+.home-banner__cta:hover .home-banner__arrow {
+    transform: translateX(4px);
+}
+
+@media (max-width: 991.98px) {
+    .home-banner__inner {
+        min-height: 0;
+        grid-template-columns: 126px minmax(0, 1fr);
+        gap: 8px 26px;
+        padding: 22px 0;
+    }
+
+    .home-banner__badge {
+        grid-row: 1 / span 2;
+        min-width: 0;
+        align-self: start;
+        padding: 12px 14px;
+        font-size: 21px;
+    }
+
+    .home-banner__visual {
+        grid-row: 1 / span 2;
+        align-self: start;
+    }
+
+    .home-banner__badge--overlay {
+        grid-row: auto;
+        font-size: 18px;
+    }
+
+    .home-banner__content {
+        max-width: none;
+    }
+
+    .home-banner__headline {
+        font-size: 27px;
+    }
+
+    .home-banner__text {
+        font-size: 14px;
+    }
+
+    .home-banner__cta {
+        justify-self: start;
+        min-width: 205px;
+    }
+}
+
+@media (max-width: 575.98px) {
+    .home-banner__inner {
+        display: flex;
+        min-height: 0;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 15px;
+        padding: 24px 0;
+    }
+
+    .home-banner__badge {
+        align-self: flex-start;
+        min-width: 124px;
+        min-height: 42px;
+        padding: 9px 14px;
+        font-size: 20px;
+    }
+
+    .home-banner__visual {
+        width: 150px;
+        height: auto;
+        align-self: center;
+    }
+
+    .home-banner__badge--overlay {
+        font-size: 18px;
+    }
+
+    .home-banner__headline {
+        font-size: 27px;
+    }
+
+    .home-banner__cta {
+        width: 100%;
+    }
 }

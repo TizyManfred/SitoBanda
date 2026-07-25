@@ -90,14 +90,9 @@ class StaticPageResource extends Resource
                                             ->default('text_image_right')
                                             ->required(),
                                         Forms\Components\Tabs::make('content_block_translations')
-                                            ->tabs([
-                                                Forms\Components\Tabs\Tab::make('Italiano')
-                                                    ->schema(static::contentBlockTranslationSchema('it')),
-                                                Forms\Components\Tabs\Tab::make('English')
-                                                    ->schema(static::contentBlockTranslationSchema('en')),
-                                                Forms\Components\Tabs\Tab::make('Deutsch')
-                                                    ->schema(static::contentBlockTranslationSchema('de')),
-                                            ])
+                                            ->tabs(static::translationTabs(
+                                                fn (string $locale): array => static::contentBlockTranslationSchema($locale),
+                                            ))
                                             ->columnSpanFull(),
                                         Forms\Components\Actions::make([
                                             static::translateContentBlockAction(),
@@ -131,14 +126,9 @@ class StaticPageResource extends Resource
                                                     ->required()
                                                     ->columnSpanFull(),
                                                 Forms\Components\Tabs::make('image_description_translations')
-                                                    ->tabs([
-                                                        Forms\Components\Tabs\Tab::make('Italiano')
-                                                            ->schema(static::imageDescriptionSchema('it')),
-                                                        Forms\Components\Tabs\Tab::make('English')
-                                                            ->schema(static::imageDescriptionSchema('en')),
-                                                        Forms\Components\Tabs\Tab::make('Deutsch')
-                                                            ->schema(static::imageDescriptionSchema('de')),
-                                                    ])
+                                                    ->tabs(static::translationTabs(
+                                                        fn (string $locale): array => static::imageDescriptionSchema($locale),
+                                                    ))
                                                     ->columnSpanFull(),
                                                 Forms\Components\Actions::make([
                                                     static::translateImageDescriptionAction(),
@@ -152,7 +142,7 @@ class StaticPageResource extends Resource
                                                     $image = collect($image)->first();
                                                 }
 
-                                                return $state['description']['it'] ?? $image;
+                                                return collect($state['description'] ?? [])->filter()->first() ?: $image;
                                             })
                                             ->addActionLabel(__('fields.static_page.add_content_block_image'))
                                             ->reorderable()
@@ -162,7 +152,9 @@ class StaticPageResource extends Resource
                                             ->columnSpanFull(),
                                     ])
                                     ->columns(2)
-                                    ->itemLabel(fn (array $state): ?string => $state['admin_label'] ?? $state['title']['it'] ?? null)
+                                    ->itemLabel(fn (array $state): ?string => $state['admin_label']
+                                        ?? collect($state['title'] ?? [])->filter()->first()
+                                        ?? null)
                                     ->addActionLabel(__('fields.static_page.add_content_block'))
                                     ->reorderable()
                                     ->collapsible()
@@ -272,6 +264,16 @@ class StaticPageResource extends Resource
                 ->rows(2)
                 ->maxLength(500),
         ];
+    }
+
+    protected static function translationTabs(callable $schemaFactory): array
+    {
+        return collect(LaravelLocalization::getSupportedLocales())
+            ->map(fn (array $properties, string $locale): Forms\Components\Tabs\Tab => Forms\Components\Tabs\Tab::make(
+                $properties['native'] ?? strtoupper($locale),
+            )->schema($schemaFactory($locale)))
+            ->values()
+            ->all();
     }
 
     protected static function translateContentBlockAction(): Action

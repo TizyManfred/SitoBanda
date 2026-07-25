@@ -145,6 +145,53 @@
                                 <p class="text-muted">{{ __('events.description_not_available') }}</p>
                             @endif
                         </div>
+
+                        @if($event->attachments->isNotEmpty())
+                            <div class="mb-5">
+                                <h3 class="oh-desktop mb-4"><span class="d-inline-block">{{ __('events.attachments') }}</span></h3>
+                                <div class="row">
+                                    @foreach($event->attachments as $attachment)
+                                        @php
+                                            $extension = strtolower($attachment->extension());
+                                            $icon = match ($extension) {
+                                                'pdf' => 'fa-file-pdf-o',
+                                                'doc', 'docx' => 'fa-file-word-o',
+                                                'xls', 'xlsx', 'csv' => 'fa-file-excel-o',
+                                                'ppt', 'pptx' => 'fa-file-powerpoint-o',
+                                                'jpg', 'jpeg', 'png', 'webp' => 'fa-file-image-o',
+                                                default => 'fa-file-o',
+                                            };
+                                        @endphp
+                                        <div class="col-12 mb-3">
+                                            <div class="d-flex flex-column flex-md-row align-items-md-center justify-content-between p-4 bg-light shadow-sm border-start border-primary border-3">
+                                                <div class="d-flex align-items-start mb-3 mb-md-0 pr-md-4">
+                                                    <i class="fa {{ $icon }} fa-2x text-primary mr-3" aria-hidden="true"></i>
+                                                    <div>
+                                                        <h4 class="heading-5 mb-1">{{ $attachment->displayTitle() }}</h4>
+                                                        @if($attachment->description)
+                                                            <p class="mb-1 text-muted">{{ $attachment->description }}</p>
+                                                        @endif
+                                                        <small class="text-muted">
+                                                            {{ $attachment->extension() }}
+                                                            @if($attachment->humanReadableSize())
+                                                                · {{ $attachment->humanReadableSize() }}
+                                                            @endif
+                                                        </small>
+                                                    </div>
+                                                </div>
+                                                <a
+                                                    href="{{ $attachment->url() }}"
+                                                    class="button button-primary button-pipaluk"
+                                                    download
+                                                >
+                                                    <i class="fa fa-download mr-2" aria-hidden="true"></i>{{ __('events.download_attachment') }}
+                                                </a>
+                                            </div>
+                                        </div>
+                                    @endforeach
+                                </div>
+                            </div>
+                        @endif
                         
                         <!-- Event Gallery -->
                         @if(isset($gallery) && $gallery && $gallery->items->count() > 0)

@@ -29,6 +29,14 @@ return [
             'cta' => 'Mehr erfahren'
         ]
     ],
+    'banner' => [
+        'aria_label' => 'Hervorgehobene Mitteilung',
+        'badge' => '125 Jahre',
+        'headline' => '125 Jahre Musik, Geschichte und Gemeinschaft',
+        'body' => 'Feiern Sie mit uns und entdecken Sie unsere Jubiläumsveranstaltungen.',
+        'cta' => 'Veranstaltungen entdecken',
+        'cta_url' => '/de/veranstaltungen',
+    ],
     'about' => [
         'image_alt' => 'Banda Folk di Castello Tesino in Konzert',
         'events' => 'Kommende Veranstaltungen',

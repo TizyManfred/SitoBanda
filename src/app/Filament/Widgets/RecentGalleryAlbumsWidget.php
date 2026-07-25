@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\Route;
 
 class RecentGalleryAlbumsWidget extends BaseWidget
 {
-    protected static ?string $heading = 'Ultimi Album';
+    protected static ?string $heading = null;
     protected int|string|array $columnSpan = [
         'default' => 'full',
         'lg' => 1,
@@ -23,6 +23,7 @@ class RecentGalleryAlbumsWidget extends BaseWidget
     public function table(Table $table): Table
     {
         return $table
+            ->heading(__('filament.dashboard.recent_albums_title'))
             ->query(
                 GalleryAlbum::query()
                     ->withCount('items')
@@ -31,20 +32,20 @@ class RecentGalleryAlbumsWidget extends BaseWidget
             )
             ->headerActions([
                 Action::make('create')
-                    ->label('Nuovo Album')
+                    ->label(__('filament.dashboard.new_album'))
                     ->icon('heroicon-m-plus')
                     ->color('primary')
                     ->url(fn () => Route::has('filament.admin.resources.gallery-albums.create') ? route('filament.admin.resources.gallery-albums.create') : '#')
             ])
             ->columns([
                 Tables\Columns\TextColumn::make('title')
-                    ->label('Titolo')
+                    ->label(__('filament.dashboard.title'))
                     ->searchable(),
                 Tables\Columns\TextColumn::make('items_count')
-                    ->label('Immagini')
+                    ->label(__('filament.dashboard.images'))
                     ->counts('items'),
                 Tables\Columns\TextColumn::make('created_at')
-                    ->label('Creato il')
+                    ->label(__('filament.dashboard.created_at'))
                     ->dateTime(),
             ]);
     }

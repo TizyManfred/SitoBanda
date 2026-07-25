@@ -18,7 +18,7 @@
             $ogImage = url($ogImage);
         }
     @endphp
-    <title>@yield('title', 'Banda Folk di Castello Tesino - Musica Tradizionale dal 1901')</title>
+    <title>@yield('title', __('home.meta.title'))</title>
     <meta name="format-detection" content="telephone=no">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -33,7 +33,7 @@
     <link rel="manifest" href="{{ asset('images/site.webmanifest') }}" />
     
     <!-- Meta Tags -->
-    <meta name="description" content="@yield('description', 'La Banda Folk di Castello Tesino, attiva dal 1901, porta avanti la tradizione musicale del Trentino con concerti, eventi e corsi di musica.')">
+    <meta name="description" content="@yield('description', __('home.meta.description'))">
     <meta property="og:site_name" content="Banda Folk di Castello Tesino">
     <meta property="og:locale" content="{{ $ogLocale }}">
     @foreach($supportedLocales as $localeCode => $properties)
@@ -41,14 +41,14 @@
             <meta property="og:locale:alternate" content="{{ str_replace('-', '_', $properties['regional'] ?? $localeCode) }}">
         @endif
     @endforeach
-    <meta property="og:title" content="@yield('og_title', 'Banda Folk di Castello Tesino - Tradizione dal 1901')">
-    <meta property="og:description" content="@yield('og_description', 'Scopri la Banda Folk di Castello Tesino, custode della tradizione musicale trentina dal 1901.')">
+    <meta property="og:title" content="@yield('og_title', __('home.meta.og_title'))">
+    <meta property="og:description" content="@yield('og_description', __('home.meta.og_description'))">
     <meta property="og:image" content="{{ $ogImage }}">
     <meta property="og:url" content="{{ $canonicalUrl }}">
     <meta property="og:type" content="@yield('og_type', 'website')">
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="@yield('og_title', 'Banda Folk di Castello Tesino - Tradizione dal 1901')">
-    <meta name="twitter:description" content="@yield('og_description', 'Scopri la Banda Folk di Castello Tesino, custode della tradizione musicale trentina dal 1901.')">
+    <meta name="twitter:title" content="@yield('og_title', __('home.meta.og_title'))">
+    <meta name="twitter:description" content="@yield('og_description', __('home.meta.og_description'))">
     <meta name="twitter:image" content="{{ $ogImage }}">
 
     <!-- Canonical URL -->
@@ -76,7 +76,7 @@
     <link rel="stylesheet" href="{{ asset('css/fonts.css') }}">
     <link rel="stylesheet" href="{{ asset('css/style.css') }}?v={{ filemtime(public_path('css/style.css')) }}">
     <link rel="stylesheet" href="{{ asset('css/instrument-icons.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/sections.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/sections.css') }}?v={{ filemtime(public_path('css/sections.css')) }}">
 
     @include('partials.analytics')
     

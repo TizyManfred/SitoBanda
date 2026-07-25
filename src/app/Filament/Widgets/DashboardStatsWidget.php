@@ -20,23 +20,23 @@ class DashboardStatsWidget extends BaseWidget
     protected function getStats(): array
     {
         return [
-            StatWidget::make('Totale Eventi', Event::count())
-                ->description('Eventi in programma: ' . Event::upcoming()->count())
+            StatWidget::make(__('filament.dashboard.total_events'), Event::count())
+                ->description(__('filament.dashboard.upcoming_events', ['count' => Event::upcoming()->count()]))
                 ->descriptionIcon('heroicon-m-calendar')
                 ->color('success'),
                 
-            StatWidget::make('Album Fotografici', GalleryAlbum::count())
-                ->description('Immagini totali: ' . GalleryItem::count())
+            StatWidget::make(__('filament.dashboard.photo_albums'), GalleryAlbum::count())
+                ->description(__('filament.dashboard.total_images', ['count' => GalleryItem::count()]))
                 ->descriptionIcon('heroicon-m-photo')
                 ->color('primary'),
                 
-            StatWidget::make('Pezzi nel Repertorio', RepertoirePiece::count())
-                ->description('Programmi: ' . RepertoireProgram::count())
+            StatWidget::make(__('filament.dashboard.repertoire_pieces'), RepertoirePiece::count())
+                ->description(__('filament.dashboard.programs', ['count' => RepertoireProgram::count()]))
                 ->descriptionIcon('heroicon-m-musical-note')
                 ->color('warning'),
                 
-            StatWidget::make('Membri della Banda', Member::count())
-                ->description('Sezioni: ' . Section::count())
+            StatWidget::make(__('filament.dashboard.band_members'), Member::count())
+                ->description(__('filament.dashboard.sections', ['count' => Section::count()]))
                 ->descriptionIcon('heroicon-m-user-group')
                 ->color('info'),
         ];

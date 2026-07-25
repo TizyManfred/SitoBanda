@@ -15154,6 +15154,18 @@ Aggiunte CSS
 	border-radius: 2px;
 }
 
+.language-flag-es {
+	background: linear-gradient(to bottom, #aa151b 0 25%, #f1bf00 25% 75%, #aa151b 75% 100%);
+	background-size: contain;
+	background-repeat: no-repeat;
+	background-position: center;
+	width: 24px;
+	height: 18px;
+	display: inline-block;
+	border: 1px solid #e0e0e0;
+	border-radius: 2px;
+}
+
 /* Responsive adjustments */
 @media (max-width: 767px) {
 	.language-switcher {

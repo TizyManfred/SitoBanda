@@ -2,17 +2,18 @@
 
 namespace App\Models;
 
+use App\Models\Traits\HasAttachments;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Spatie\Translatable\HasTranslations;
 use Illuminate\Support\Str;
 use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
+use Spatie\Translatable\HasTranslations;
 
 class Event extends Model
 {
-    use HasFactory, SoftDeletes, HasTranslations;
+    use HasAttachments, HasFactory, HasTranslations, SoftDeletes;
 
     /**
      * The translatable attributes.
@@ -65,15 +66,15 @@ class Event extends Model
     {
         static::saving(function ($model) {
             // Only update slug if the title has changed or if it's a new model
-            if ($model->isDirty('title') || !$model->exists) {
+            if ($model->isDirty('title') || ! $model->exists) {
                 $slugs = [];
                 $locales = LaravelLocalization::getSupportedLocales();
-                
+
                 foreach ($locales as $locale => $properties) {
                     $title = $model->getTranslation('title', $locale);
                     $slugs[$locale] = Str::slug($title);
                 }
-                
+
                 $model->slug = $slugs;
             }
         });

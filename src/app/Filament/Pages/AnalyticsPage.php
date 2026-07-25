@@ -27,13 +27,19 @@ class AnalyticsPage extends Page
 
     public array $chartPageViews = [];
 
+    public array $dailyTraffic = [];
+
     public array $topPages = [];
 
     public array $topReferrers = [];
 
+    public array $userTypes = [];
+
     public array $topBrowsers = [];
 
     public array $topCountries = [];
+
+    public array $topOperatingSystems = [];
 
     public ?string $analyticsError = null;
 
@@ -54,6 +60,8 @@ class AnalyticsPage extends Page
             'pageViews7d' => 0,
             'visitors30d' => 0,
             'pageViews30d' => 0,
+            'pageViewsPerVisitor7d' => 0,
+            'pageViewsPerVisitor30d' => 0,
         ];
 
         if (! $this->hasAnalyticsConfiguration()) {
@@ -63,41 +71,66 @@ class AnalyticsPage extends Page
         try {
             $last7Days = Analytics::fetchTotalVisitorsAndPageViews(Period::days(7));
             $last30Days = Analytics::fetchTotalVisitorsAndPageViews(Period::days(30));
+            $chartDays = $last30Days
+                ->sortBy(fn (array $row): int => $row['date']->getTimestamp())
+                ->values();
+            $dailyDays = $last30Days
+                ->sortByDesc(fn (array $row): int => $row['date']->getTimestamp())
+                ->values();
+
+            $visitors7d = (int) $last7Days->sum('activeUsers');
+            $pageViews7d = (int) $last7Days->sum('screenPageViews');
+            $visitors30d = (int) $last30Days->sum('activeUsers');
+            $pageViews30d = (int) $last30Days->sum('screenPageViews');
 
             $this->summary = [
-                'visitors7d' => (int) $last7Days->sum('activeUsers'),
-                'pageViews7d' => (int) $last7Days->sum('screenPageViews'),
-                'visitors30d' => (int) $last30Days->sum('activeUsers'),
-                'pageViews30d' => (int) $last30Days->sum('screenPageViews'),
+                'visitors7d' => $visitors7d,
+                'pageViews7d' => $pageViews7d,
+                'visitors30d' => $visitors30d,
+                'pageViews30d' => $pageViews30d,
+                'pageViewsPerVisitor7d' => $visitors7d > 0 ? $pageViews7d / $visitors7d : 0,
+                'pageViewsPerVisitor30d' => $visitors30d > 0 ? $pageViews30d / $visitors30d : 0,
             ];
 
-            $this->chartLabels = $last30Days
-                ->map(fn (array $row): string => $row['date']->format('d/m'))
-                ->values()
-                ->all();
-
-            $this->chartVisitors = $last30Days
-                ->map(fn (array $row): int => (int) $row['activeUsers'])
-                ->values()
-                ->all();
-
-            $this->chartPageViews = $last30Days
-                ->map(fn (array $row): int => (int) $row['screenPageViews'])
-                ->values()
-                ->all();
-
-            $this->topPages = Analytics::fetchMostVisitedPages(Period::days(30), 10)
+            $this->dailyTraffic = $dailyDays
                 ->map(function (array $row): array {
                     return [
-                        'title' => $row['pageTitle'] ?: '(senza titolo)',
-                        'url' => $row['fullPageUrl'],
+                        'date' => $row['date']->format('Y-m-d'),
+                        'date_label' => $row['date']->translatedFormat('d M Y'),
+                        'visitors' => (int) $row['activeUsers'],
                         'page_views' => (int) $row['screenPageViews'],
                     ];
                 })
                 ->values()
                 ->all();
 
-            $this->topReferrers = Analytics::fetchTopReferrers(Period::days(30), 10)
+            $this->chartLabels = $chartDays
+                ->map(fn (array $row): string => $row['date']->format('d/m'))
+                ->values()
+                ->all();
+
+            $this->chartVisitors = $chartDays
+                ->map(fn (array $row): int => (int) $row['activeUsers'])
+                ->values()
+                ->all();
+
+            $this->chartPageViews = $chartDays
+                ->map(fn (array $row): int => (int) $row['screenPageViews'])
+                ->values()
+                ->all();
+
+            $this->topPages = Analytics::fetchMostVisitedPages(Period::days(30), 20)
+                ->map(function (array $row): array {
+                    return [
+                        'title' => $row['pageTitle'] ?: __('filament.analytics.untitled_page'),
+                        'url' => (string) $row['fullPageUrl'],
+                        'page_views' => (int) $row['screenPageViews'],
+                    ];
+                })
+                ->values()
+                ->all();
+
+            $this->topReferrers = Analytics::fetchTopReferrers(Period::days(30), 20)
                 ->filter(fn (array $row): bool => ($row['pageReferrer'] ?? '') !== '')
                 ->map(function (array $row): array {
                     return [
@@ -108,7 +141,22 @@ class AnalyticsPage extends Page
                 ->values()
                 ->all();
 
-            $this->topBrowsers = Analytics::fetchTopBrowsers(Period::days(30), 10)
+            $this->userTypes = Analytics::fetchUserTypes(Period::days(30))
+                ->map(function (array $row): array {
+                    $type = trim((string) ($row['newVsReturning'] ?? ''));
+                    $translationKey = in_array($type, ['new', 'returning'], true)
+                        ? $type
+                        : 'not_set';
+
+                    return [
+                        'type' => __("filament.analytics.user_types.{$translationKey}"),
+                        'visitors' => (int) $row['activeUsers'],
+                    ];
+                })
+                ->values()
+                ->all();
+
+            $this->topBrowsers = Analytics::fetchTopBrowsers(Period::days(30), 20)
                 ->map(function (array $row): array {
                     return [
                         'browser' => $row['browser'],
@@ -118,10 +166,24 @@ class AnalyticsPage extends Page
                 ->values()
                 ->all();
 
-            $this->topCountries = Analytics::fetchTopCountries(Period::days(30), 10)
+            $this->topCountries = Analytics::fetchTopCountries(Period::days(30), 20)
+                ->map(function (array $row): array {
+                    $country = trim((string) ($row['country'] ?? ''));
+
+                    return [
+                        'country' => $country === '' || $country === '(not set)'
+                            ? __('filament.analytics.not_set')
+                            : $country,
+                        'page_views' => (int) $row['screenPageViews'],
+                    ];
+                })
+                ->values()
+                ->all();
+
+            $this->topOperatingSystems = Analytics::fetchTopOperatingSystems(Period::days(30), 20)
                 ->map(function (array $row): array {
                     return [
-                        'country' => $row['country'],
+                        'operating_system' => $row['operatingSystem'],
                         'page_views' => (int) $row['screenPageViews'],
                     ];
                 })

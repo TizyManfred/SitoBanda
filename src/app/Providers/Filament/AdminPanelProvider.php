@@ -53,7 +53,7 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->plugin(
                 SpatieLaravelTranslatablePlugin::make()
-                    ->defaultLocales(['it', 'en', 'de'])
+                    ->defaultLocales(array_keys(config('laravellocalization.supportedLocales', [])))
             )
 
             ->middleware([

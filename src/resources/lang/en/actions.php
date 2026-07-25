@@ -1,0 +1,25 @@
+<?php
+
+return [
+    'edit' => 'Edit',
+    'create' => 'Create',
+    'delete' => 'Delete',
+    'force_delete' => 'Delete permanently',
+    'restore' => 'Restore',
+    'save' => 'Save',
+    'cancel' => 'Cancel',
+    'select' => 'Select',
+    'upload' => 'Upload',
+    'download' => 'Download',
+    'view' => 'View',
+    'preview' => 'Preview',
+    'back' => 'Back',
+    'close' => 'Close',
+    'confirm' => 'Confirm',
+    'filter' => 'Filter',
+    'search' => 'Search',
+    'reset' => 'Reset',
+    'export' => 'Export',
+    'import' => 'Import',
+    'translate' => 'Translate',
+];

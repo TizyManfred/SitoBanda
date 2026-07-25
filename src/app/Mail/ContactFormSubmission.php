@@ -21,15 +21,18 @@ class ContactFormSubmission extends Mailable
      */
     public $contact;
 
+    public string $mailLocale;
+
     /**
      * Create a new message instance.
      *
      * @param  \App\Models\Contact  $contact
      * @return void
      */
-    public function __construct(Contact $contact)
+    public function __construct(Contact $contact, ?string $locale = null)
     {
         $this->contact = $contact;
+        $this->mailLocale = $locale ?: app()->getLocale();
     }
 
     /**
@@ -40,7 +43,7 @@ class ContactFormSubmission extends Mailable
     public function envelope()
     {
         return new Envelope(
-            subject: 'Nuovo messaggio dal sito: ' . $this->contact->subject,
+            subject: __('emails.contact.subject', ['subject' => $this->contact->subject], $this->mailLocale),
             replyTo: $this->contact->email,
         );
     }
@@ -54,6 +57,7 @@ class ContactFormSubmission extends Mailable
     {
         return new Content(
             view: 'emails.contact-form',
+            with: ['locale' => $this->mailLocale],
         );
     }
 

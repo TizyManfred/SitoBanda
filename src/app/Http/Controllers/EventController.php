@@ -2,18 +2,20 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\Event;
 use Carbon\Carbon;
+use Illuminate\Http\Request;
+use Illuminate\Http\Response;
+use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 
 class EventController extends Controller
 {
     /**
      * Display a listing of events.
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
-    public function index(\Illuminate\Http\Request $request)
+    public function index(Request $request)
     {
         try {
             // Read filters from query
@@ -26,18 +28,19 @@ class EventController extends Controller
 
             // Base query with optional filters
             $applyFilters = function ($query) use ($filters) {
-                if (!empty($filters['year'])) {
+                if (! empty($filters['year'])) {
                     $query->whereYear('start_datetime', $filters['year']);
                 }
-                if (!empty($filters['location'])) {
+                if (! empty($filters['location'])) {
                     $query->where('location', $filters['location']);
                 }
-                if (!empty($filters['has_photos'])) {
+                if (! empty($filters['has_photos'])) {
                     $query->whereNotNull('gallery_id');
                 }
-                if (!empty($filters['featured'])) {
+                if (! empty($filters['featured'])) {
                     $query->where('is_featured', true);
                 }
+
                 return $query;
             };
 
@@ -47,7 +50,7 @@ class EventController extends Controller
             $upcomingEvents = $upcomingQuery
                 ->orderBy('start_datetime', 'asc')
                 ->get();
-            
+
             // Past events with filters
             $pastQuery = Event::public()->past();
             $pastQuery = $applyFilters($pastQuery);
@@ -69,16 +72,16 @@ class EventController extends Controller
                 ->distinct()
                 ->orderBy('location')
                 ->pluck('location');
-                
+
         } catch (\Exception $e) {
-            \Log::error("Error fetching events: " . $e->getMessage());
+            \Log::error('Error fetching events: '.$e->getMessage());
             $upcomingEvents = collect([]);
             $pastEvents = collect([]);
             $years = collect([]);
             $locations = collect([]);
             $filters = [];
         }
-        
+
         return view('events.index', compact('upcomingEvents', 'pastEvents', 'years', 'locations', 'filters'));
     }
 
@@ -86,64 +89,68 @@ class EventController extends Controller
      * Display the specified event.
      *
      * @param  string  $slug
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function show($slug)
     {
         try {
             // Find event by slug - support for multilanguage slugs
             $event = Event::public()
-                ->where(function($query) use ($slug) {
-                    // Search in all language variations of the slug
-                    $query->where('slug->it', $slug)
-                          ->orWhere('slug->en', $slug)
-                          ->orWhere('slug->de', $slug);
+                ->with([
+                    'attachments' => fn ($query) => $query->public()->ordered(),
+                ])
+                ->where(function ($query) use ($slug) {
+                    // Search in all configured language variations of the slug.
+                    foreach (array_keys(LaravelLocalization::getSupportedLocales()) as $index => $locale) {
+                        $method = $index === 0 ? 'where' : 'orWhere';
+                        $query->{$method}("slug->{$locale}", $slug);
+                    }
                 })
                 ->firstOrFail();
-                
+
             // Get related gallery if exists
             $gallery = null;
             if ($event->gallery_id) {
                 $gallery = $event->galleryAlbum;
             }
-            
+
             // Format event date for display
             $eventDate = Carbon::parse($event->start_datetime);
             $formattedDate = $eventDate->format('d/m/Y');
             $formattedTime = $eventDate->format('H:i');
-            
+
             // Get related events (same location or similar date)
             $relatedEvents = Event::where('id', '!=', $event->id)
                 ->public()
-                ->where(function($query) use ($event) {
+                ->where(function ($query) use ($event) {
                     // Same location or within 30 days of this event
                     $query->where('location', $event->location)
                         ->orWhereBetween('start_datetime', [
                             Carbon::parse($event->start_datetime)->subDays(30),
-                            Carbon::parse($event->start_datetime)->addDays(30)
+                            Carbon::parse($event->start_datetime)->addDays(30),
                         ]);
                 })
                 ->orderBy('start_datetime', 'asc')
                 ->limit(3)
                 ->get();
-                
+
             // Get upcoming events for the sidebar
             $upcomingEvents = Event::public()
                 ->upcoming()
                 ->orderBy('start_datetime', 'asc')
                 ->limit(3)
                 ->get();
-                
+
         } catch (\Exception $e) {
-            \Log::error("Error fetching event details: " . $e->getMessage());
+            \Log::error('Error fetching event details: '.$e->getMessage());
             abort(404);
         }
-        
+
         return view('events.show', compact(
-            'event', 
-            'gallery', 
-            'formattedDate', 
-            'formattedTime', 
+            'event',
+            'gallery',
+            'formattedDate',
+            'formattedTime',
             'relatedEvents',
             'upcomingEvents'
         ));

@@ -72,10 +72,11 @@ class MultiImageUploader extends Field
 
     public function getLocales(): array
     {
-        return [
-            'it' => 'Italiano',
-            'en' => 'English'
-        ];
+        return collect(config('laravellocalization.supportedLocales', []))
+            ->mapWithKeys(fn (array $properties, string $locale): array => [
+                $locale => $properties['native'] ?? strtoupper($locale),
+            ])
+            ->all();
     }
 
     protected function setUp(): void

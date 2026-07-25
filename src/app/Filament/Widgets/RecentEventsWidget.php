@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\Route;
 
 class RecentEventsWidget extends BaseWidget
 {
-    protected static ?string $heading = 'Prossimi Eventi';
+    protected static ?string $heading = null;
     protected int|string|array $columnSpan = 'full';
     protected static ?string $pollingInterval = null;
     protected static bool $isLazy = false;
@@ -20,6 +20,7 @@ class RecentEventsWidget extends BaseWidget
     public function table(Table $table): Table
     {
         return $table
+            ->heading(__('filament.dashboard.upcoming_events_title'))
             ->query(
                 Event::query()
                     ->upcoming()
@@ -28,20 +29,20 @@ class RecentEventsWidget extends BaseWidget
             )
             ->headerActions([
                 Action::make('create')
-                    ->label('Nuovo Evento')
+                    ->label(__('filament.dashboard.new_event'))
                     ->icon('heroicon-m-plus')
                     ->color('primary')
                     ->url(fn () => Route::has('filament.admin.resources.events.create') ? route('filament.admin.resources.events.create') : '#'),
             ])
             ->columns([
                 Tables\Columns\TextColumn::make('start_datetime')
-                    ->label('Data')
+                    ->label(__('filament.dashboard.date'))
                     ->dateTime(),
                 Tables\Columns\TextColumn::make('title')
-                    ->label('Titolo')
+                    ->label(__('filament.dashboard.title'))
                     ->searchable(),
                 Tables\Columns\TextColumn::make('location')
-                    ->label('Luogo'),
+                    ->label(__('filament.dashboard.location')),
             ]);
     }
 }

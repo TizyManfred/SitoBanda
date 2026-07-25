@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\Route;
 
 class RecentRepertoireWidget extends BaseWidget
 {
-    protected static ?string $heading = 'Ultimi Pezzi Aggiunti al Repertorio';
+    protected static ?string $heading = null;
     protected int|string|array $columnSpan = [
         'default' => 'full',
         'lg' => 1,
@@ -23,6 +23,7 @@ class RecentRepertoireWidget extends BaseWidget
     public function table(Table $table): Table
     {
         return $table
+            ->heading(__('filament.dashboard.recent_pieces_title'))
             ->query(
                 RepertoirePiece::query()
                     ->with('program')
@@ -31,19 +32,19 @@ class RecentRepertoireWidget extends BaseWidget
             )
             ->headerActions([
                 Action::make('create')
-                    ->label('Nuovo Pezzo')
+                    ->label(__('filament.dashboard.new_piece'))
                     ->icon('heroicon-m-plus')
                     ->color('warning')
                     ->url(fn () => Route::has('filament.admin.resources.repertoire-pieces.create') ? route('filament.admin.resources.repertoire-pieces.create') : '#'),
             ])
             ->columns([
                 Tables\Columns\TextColumn::make('title')
-                    ->label('Titolo')
+                    ->label(__('filament.dashboard.title'))
                     ->searchable(),
                 Tables\Columns\TextColumn::make('composer')
-                    ->label('Compositore'),
+                    ->label(__('filament.dashboard.composer')),
                 Tables\Columns\TextColumn::make('program.title')
-                    ->label('Programma'),
+                    ->label(__('filament.dashboard.program')),
             ]);
     }
 }

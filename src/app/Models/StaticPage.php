@@ -378,7 +378,7 @@ class StaticPage extends Model
 
     protected static function clearCache(string $pageKey): void
     {
-        foreach (['it', 'en', 'de'] as $locale) {
+        foreach (array_keys(config('laravellocalization.supportedLocales', [])) as $locale) {
             Cache::forget("static_page.content_html.{$pageKey}.{$locale}");
             Cache::forget("static_page.content_blocks.{$pageKey}.{$locale}");
             Cache::forget("static_page.home_carousel_slides.{$locale}");

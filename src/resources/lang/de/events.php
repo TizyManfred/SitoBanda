@@ -37,6 +37,8 @@ return [
     'date_not_available' => 'Datum wird noch bekannt gegeben',
     'location_not_available' => 'Ort wird noch bekannt gegeben',
     'description_not_available' => 'Für diese Veranstaltung ist keine Beschreibung verfügbar.',
+    'attachments' => 'Angehängte Dokumente',
+    'download_attachment' => 'Herunterladen',
     
     // Empty states
     'no_upcoming_events' => 'Derzeit sind keine Veranstaltungen geplant. Schauen Sie bald wieder vorbei für Updates!',

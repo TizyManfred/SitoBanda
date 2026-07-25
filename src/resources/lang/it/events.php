@@ -37,6 +37,8 @@ return [
     'date_not_available' => 'Data da definire',
     'location_not_available' => 'Luogo da definire',
     'description_not_available' => 'Descrizione non disponibile per questo evento.',
+    'attachments' => 'Documenti allegati',
+    'download_attachment' => 'Scarica',
     
     // Empty states
     'no_upcoming_events' => 'Non ci sono eventi in programma al momento. Torna a visitarci presto per aggiornamenti!',

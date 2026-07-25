@@ -142,7 +142,7 @@ class ContactController extends Controller
                 $pendingMail->bcc($bccRecipients);
             }
 
-            $pendingMail->send(new ContactFormSubmission($contact));
+            $pendingMail->send(new ContactFormSubmission($contact, app()->getLocale()));
 
             // Set success message and redirect appropriately
             $successMsg = __('contact.messages.success');

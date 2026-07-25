@@ -17,8 +17,8 @@
     
     // Define the 5xMille donation information
     $cinquePerMille = [
-        'title' => __('aside.cinque_per_mille.title') ?? '5 x Mille',
-        'text' => __('aside.cinque_per_mille.text') ?? 'Dona il tuo 5 x mille alla Banda Folk di Castello Tesino! A te non costa nulla e per noi è un gesto prezioso. Il nostro codice fiscale è 01517580229 Grazie!',
+        'title' => __('aside.cinque_per_mille.title'),
+        'text' => __('aside.cinque_per_mille.text'),
         'icon' => 'fas fa-hand-holding-heart'
     ];
 @endphp
@@ -80,7 +80,6 @@
     </div>
 </div>
 
-@if (LaravelLocalization::getCurrentLocale() == "it")
 {{-- 5 x Mille Donation Section --}}
 <div class="box-contacts wow fadeInUp py-4" data-wow-delay=".2s" style="min-height: auto;">
     <div class="box-contacts-body">        
@@ -94,7 +93,7 @@
         
         <div class="text-center">
             <div class="bg-light border rounded p-3 mb-3">
-                <div class="text-muted mb-1" style="font-size: 12px; text-transform: uppercase;">Codice Fiscale</div>
+                <div class="text-muted mb-1" style="font-size: 12px; text-transform: uppercase;">{{ __('aside.cinque_per_mille.fiscal_code') }}</div>
                 <div style="font-family: 'Courier New', monospace; font-size: 18px; font-weight: bold; color: #50ba87;">
                     01517580229
                 </div>
@@ -102,4 +101,3 @@
         </div>
     </div>
 </div>
-@endif

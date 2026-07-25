@@ -74,6 +74,23 @@ return [
         'public_helper' => 'Gli eventi pubblici sono visibili sul sito pubblico',
         'featured_helper' => 'Gli eventi in evidenza possono essere mostrati nella homepage o nelle sezioni principali',
     ],
+
+    'attachment' => [
+        'relation_title' => 'Documenti allegati',
+        'add' => 'Aggiungi documento',
+        'title' => 'Titolo',
+        'title_it' => 'Titolo (Italiano)',
+        'title_en' => 'Titolo (English)',
+        'title_de' => 'Titolo (Deutsch)',
+        'title_es' => 'Titolo (Spagnolo)',
+        'description' => 'Descrizione',
+        'file' => 'File',
+        'file_type' => 'Tipo',
+        'file_size' => 'Dimensione',
+        'file_helper' => 'PDF, documenti Office, file di testo o immagini. Dimensione massima: 20 MB.',
+        'is_public' => 'Visibile pubblicamente',
+        'is_public_helper' => 'Se disattivato, il documento non viene mostrato sul sito pubblico.',
+    ],
     
     // Gallery specific fields
     'gallery' => [

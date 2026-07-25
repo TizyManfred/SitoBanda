@@ -57,6 +57,7 @@ class SettingsServiceProvider extends ServiceProvider
                 'socialLinks' => SettingsHelper::socialLinks(),
                 'coursesInfo' => SettingsHelper::coursesInfo(),
                 'analyticsSettings' => SettingsHelper::analytics(),
+                'homeBanner' => SettingsHelper::localizedHomeBanner(),
             ]);
         });
 

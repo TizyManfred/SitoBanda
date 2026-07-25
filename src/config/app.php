@@ -90,11 +90,12 @@ return [
     | language related features.
     |
     */
-    
+
     'available_locales' => [
         'it' => 'Italiano',
         'en' => 'English',
         'de' => 'Deutsch',
+        'es' => 'Español',
     ],
 
     /*
@@ -109,7 +110,7 @@ return [
     */
 
     'fallback_locale' => 'it',
-    
+
     /*
     |--------------------------------------------------------------------------
     | Faker Locale
@@ -120,7 +121,7 @@ return [
     | localized telephone numbers, street address information and more.
     |
     */
-    
+
     'faker_locale' => env('APP_FAKER_LOCALE', 'it_IT'),
 
     /*

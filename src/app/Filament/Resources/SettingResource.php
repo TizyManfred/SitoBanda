@@ -16,11 +16,26 @@ class SettingResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-cog-6-tooth';
 
-    protected static ?string $navigationLabel = 'Impostazioni';
+    protected static ?string $navigationLabel = null;
 
-    protected static ?string $modelLabel = 'Impostazione';
+    protected static ?string $modelLabel = null;
 
-    protected static ?string $pluralModelLabel = 'Impostazioni';
+    protected static ?string $pluralModelLabel = null;
+
+    public static function getNavigationLabel(): string
+    {
+        return __('filament.navigation.settings');
+    }
+
+    public static function getModelLabel(): string
+    {
+        return __('filament.settings.model');
+    }
+
+    public static function getPluralModelLabel(): string
+    {
+        return __('filament.settings.models');
+    }
 
     protected static ?int $navigationSort = 100;
 
@@ -28,26 +43,26 @@ class SettingResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\Section::make('Informazioni Generali')
+                Forms\Components\Section::make(__('filament.settings.general_section'))
                     ->schema([
                         Forms\Components\TextInput::make('key')
-                            ->label('Chiave')
+                            ->label(__('filament.settings.key'))
                             ->required()
                             ->unique(ignoreRecord: true)
                             ->maxLength(255),
                         Forms\Components\Select::make('group')
-                            ->label('Gruppo')
+                            ->label(__('filament.settings.group'))
                             ->options(self::getGroupOptions())
                             ->required()
                             ->default('general')
                             ->live(),
                         Forms\Components\Textarea::make('description')
-                            ->label('Descrizione')
+                            ->label(__('filament.settings.description'))
                             ->rows(2)
                             ->columnSpanFull(),
                     ])
                     ->columns(2),
-                Forms\Components\Section::make('Valori')
+                Forms\Components\Section::make(__('filament.settings.values'))
                     ->schema([
                         Forms\Components\Grid::make()
                             ->schema(fn (Forms\Get $get): array => self::getValueSchema($get('group') ?? 'general'))
@@ -77,16 +92,16 @@ class SettingResource extends Resource
             'contact' => [
                 Forms\Components\Group::make([
                     Forms\Components\TextInput::make('value.phone')
-                        ->label('Telefono')
+                        ->label(__('fields.common.phone'))
                         ->tel(),
                     Forms\Components\TextInput::make('value.email')
-                        ->label('Email')
+                        ->label(__('fields.common.email'))
                         ->email(),
                     Forms\Components\TextInput::make('value.whatsapp')
-                        ->label('WhatsApp')
+                        ->label(__('filament.settings.whatsapp'))
                         ->tel(),
                     Forms\Components\Textarea::make('value.address')
-                        ->label('Indirizzo')
+                        ->label(__('fields.common.address'))
                         ->rows(2),
                 ])->columns(2),
             ],
@@ -113,30 +128,30 @@ class SettingResource extends Resource
             'courses' => [
                 Forms\Components\Group::make([
                     Forms\Components\DatePicker::make('value.start_date')
-                        ->label('Data Inizio'),
+                        ->label(__('filament.settings.start_date')),
                     Forms\Components\DatePicker::make('value.end_date')
-                        ->label('Data Fine'),
+                        ->label(__('filament.settings.end_date')),
                     Forms\Components\DatePicker::make('value.expiration_date')
-                        ->label('Scadenza Iscrizioni'),
+                        ->label(__('filament.settings.expiration_date')),
                     Forms\Components\TextInput::make('value.contact_email')
-                        ->label('Email Contatto')
+                        ->label(__('filament.settings.contact_email'))
                         ->email(),
                     Forms\Components\TextInput::make('value.phone')
-                        ->label('Telefono Contatto')
+                        ->label(__('filament.settings.contact_phone'))
                         ->tel(),
                     Forms\Components\Textarea::make('value.price')
-                        ->label('Prezzo'),
+                        ->label(__('filament.settings.price')),
                     Forms\Components\TextInput::make('value.forms_link')
-                        ->label('Link Form'),
+                        ->label(__('filament.settings.forms_link')),
                     Forms\Components\TextInput::make('value.location')
-                        ->label('Luogo')
+                        ->label(__('fields.event.location'))
                         ->columnSpanFull(),
                     Forms\Components\Repeater::make('value.testimonials')
                         ->schema([
                             Forms\Components\TextInput::make('name')
-                                ->label('Nome'),
+                                ->label(__('fields.common.name')),
                             Forms\Components\Textarea::make('text')
-                                ->label('Testo'),
+                                ->label(__('filament.settings.text')),
                         ])
                         ->columns(1)
                         ->columnSpanFull(),
@@ -145,13 +160,13 @@ class SettingResource extends Resource
             'analytics' => [
                 Forms\Components\Group::make([
                     Forms\Components\Toggle::make('value.enabled')
-                        ->label('Abilita analytics')
+                        ->label(__('filament.settings.enable_analytics'))
                         ->default(false)
                         ->live(),
                     Forms\Components\Select::make('value.provider')
-                        ->label('Provider')
+                        ->label(__('filament.settings.provider'))
                         ->options([
-                            'none' => 'Nessuno',
+                            'none' => __('filament.settings.none'),
                             'ga4' => 'Google Analytics 4',
                             'plausible' => 'Plausible',
                         ])
@@ -180,22 +195,22 @@ class SettingResource extends Resource
             'general' => [
                 Forms\Components\Group::make([
                     Forms\Components\TextInput::make('value.title')
-                        ->label('Titolo Sito')
+                        ->label(__('filament.settings.site_title'))
                         ->maxLength(255),
                     Forms\Components\TextInput::make('value.tagline')
-                        ->label('Slogan')
+                        ->label(__('filament.settings.tagline'))
                         ->maxLength(255),
                     Forms\Components\Textarea::make('value.description')
-                        ->label('Descrizione')
+                        ->label(__('filament.settings.description'))
                         ->rows(3),
                     Forms\Components\TextInput::make('value.logo_url')
-                        ->label('URL Logo')
+                        ->label(__('filament.settings.logo_url'))
                         ->url(),
                 ])->columns(2),
             ],
             default => [
                 Forms\Components\KeyValue::make('value')
-                    ->label('Valori')
+                    ->label(__('filament.settings.values'))
                     ->keyLabel('Chiave')
                     ->valueLabel('Valore'),
             ],
@@ -205,13 +220,13 @@ class SettingResource extends Resource
     protected static function getGroupOptions(): array
     {
         return [
-            'general' => 'Generale',
-            'contact' => 'Contatti',
-            'social' => 'Social Media',
-            'courses' => 'Corsi',
-            'analytics' => 'Analytics',
-            'events' => 'Eventi',
-            'media' => 'Media',
+            'general' => __('filament.settings.groups.general'),
+            'contact' => __('filament.settings.groups.contact'),
+            'social' => __('filament.settings.groups.social'),
+            'courses' => __('filament.settings.groups.courses'),
+            'analytics' => __('filament.settings.groups.analytics'),
+            'events' => __('filament.settings.groups.events'),
+            'media' => __('filament.settings.groups.media'),
         ];
     }
 
@@ -251,11 +266,11 @@ class SettingResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('key')
-                    ->label('Chiave')
+                    ->label(__('filament.settings.key'))
                     ->searchable()
                     ->sortable(),
                 Tables\Columns\BadgeColumn::make('group')
-                    ->label('Gruppo')
+                    ->label(__('filament.settings.group'))
                     ->colors([
                         'primary' => 'general',
                         'success' => 'contact',
@@ -266,7 +281,7 @@ class SettingResource extends Resource
                         'secondary' => 'media',
                     ]),
                 Tables\Columns\TextColumn::make('description')
-                    ->label('Descrizione')
+                    ->label(__('filament.settings.description'))
                     ->limit(50)
                     ->tooltip(function (Tables\Columns\TextColumn $column): ?string {
                         $state = (string) $column->getState();
@@ -278,14 +293,14 @@ class SettingResource extends Resource
                         return $state;
                     }),
                 Tables\Columns\TextColumn::make('updated_at')
-                    ->label('Aggiornato')
+                    ->label(__('filament.settings.updated_at'))
                     ->dateTime('d/m/Y H:i')
                     ->sortable()
                     ->toggleable(),
             ])
             ->filters([
                 Tables\Filters\SelectFilter::make('group')
-                    ->label('Gruppo')
+                    ->label(__('filament.settings.group'))
                     ->options(self::getGroupOptions()),
             ])
             ->actions([
@@ -300,7 +315,7 @@ class SettingResource extends Resource
             ->defaultSort('group')
             ->groups([
                 Tables\Grouping\Group::make('group')
-                    ->label('Gruppo')
+                    ->label(__('filament.settings.group'))
                     ->collapsible(),
             ]);
     }

@@ -23,9 +23,9 @@ trait WithAiTranslation
     public static function getTranslateAction(string $field): \Filament\Forms\Components\Actions\Action
     {
         return Action::make('translate' . ucfirst($field))
-            ->label('Traduci')
+            ->label(__('filament.translation.button'))
             ->icon('heroicon-o-language')
-            ->tooltip('Traduci')
+            ->tooltip(__('filament.translation.button'))
             ->size('sm')
             ->color('gray')
             ->action(function ($livewire, $component) use ($field) {
@@ -38,8 +38,8 @@ trait WithAiTranslation
                 if (empty(trim($sourceText))) {
                     Notification::make()
                         ->warning()
-                        ->title('Testo sorgente mancante')
-                        ->body('Inserisci prima il contenuto in un\'altra lingua.')
+                        ->title(__('filament.translation.source_missing'))
+                        ->body(__('filament.translation.source_missing_body'))
                         ->send();
                     return;
                 }
@@ -54,8 +54,8 @@ trait WithAiTranslation
                     if ($targetLocales->isEmpty()) {
                         Notification::make()
                             ->warning()
-                            ->title('Nessuna traduzione da completare')
-                            ->body('Tutte le lingue disponibili per questo campo hanno gia un valore.')
+                            ->title(__('filament.translation.nothing_to_update'))
+                            ->body(__('filament.translation.nothing_to_update_body'))
                             ->send();
 
                         return;
@@ -75,8 +75,8 @@ trait WithAiTranslation
                     if ($translatedLocales === []) {
                         Notification::make()
                             ->danger()
-                            ->title('Traduzione non riuscita')
-                            ->body('Impossibile tradurre il testo. Riprova più tardi.')
+                        ->title(__('filament.translation.failed'))
+                        ->body(__('filament.translation.failed_body'))
                             ->send();
 
                         return;
@@ -84,13 +84,13 @@ trait WithAiTranslation
 
                     Notification::make()
                         ->success()
-                        ->title('Traduzione completata')
-                        ->body('Lingue aggiornate: ' . implode(', ', $translatedLocales))
+                    ->title(__('filament.translation.completed'))
+                    ->body(__('filament.translation.completed_body', ['locales' => implode(', ', $translatedLocales)]))
                         ->send();
                 } catch (\Exception $e) {
                     Notification::make()
                         ->danger()
-                        ->title('Errore di traduzione')
+                    ->title(__('filament.translation.error'))
                         ->body($e->getMessage())
                         ->send();
                 }

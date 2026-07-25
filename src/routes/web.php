@@ -1,12 +1,13 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\HomeController;
-use App\Http\Controllers\EventController;
+use App\Http\Controllers\AttachmentController;
 use App\Http\Controllers\ContactController;
+use App\Http\Controllers\EventController;
 use App\Http\Controllers\GalleryController;
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\RepertoireController;
+use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Storage;
 
 Route::permanentRedirect('/portale', '/')->name('legacy.portale');
@@ -45,10 +46,13 @@ Route::get('storage/{path}', function (string $path) {
     ]);
 })->where('path', '.*')->name('storage.public');
 
+// Attachments use a language-neutral URL because the download filename is localized separately.
+Route::get('allegati/{attachment}', AttachmentController::class)->name('attachments.download');
+
 Route::group([
     'prefix' => LaravelLocalization::setLocale(),
-    'middleware' => [ 'localize', 'localeSessionRedirect', 'localizationRedirect', 'localeViewPath' ],
-], function() {
+    'middleware' => ['localize', 'localeSessionRedirect', 'localizationRedirect', 'localeViewPath'],
+], function () {
 
     // Home page
     Route::get('/', [HomeController::class, 'index'])->name('home');

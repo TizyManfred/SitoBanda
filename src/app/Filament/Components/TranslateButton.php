@@ -30,7 +30,7 @@ class TranslateButton extends Component
     public static function make(): static
     {
         return (new static())
-            ->label('Traduci')
+            ->label(__('filament.translation.button'))
             ->icon('heroicon-o-language')
             ->color('gray')
             ->size('sm')
@@ -52,8 +52,8 @@ class TranslateButton extends Component
         if (empty(trim($sourceText))) {
             Notification::make()
                 ->warning()
-                ->title('Testo sorgente mancante')
-                ->body('Inserisci prima il contenuto in un\'altra lingua.')
+                ->title(__('filament.translation.source_missing'))
+                ->body(__('filament.translation.source_missing_body'))
                 ->send();
             return;
         }
@@ -68,8 +68,8 @@ class TranslateButton extends Component
             if ($targetLocales->isEmpty()) {
                 Notification::make()
                     ->warning()
-                    ->title('Nessuna traduzione da completare')
-                    ->body('Tutte le lingue disponibili per questo campo hanno gia un valore.')
+                    ->title(__('filament.translation.nothing_to_update'))
+                    ->body(__('filament.translation.nothing_to_update_body'))
                     ->send();
 
                 return;
@@ -89,8 +89,8 @@ class TranslateButton extends Component
             if ($translatedLocales === []) {
                 Notification::make()
                     ->danger()
-                    ->title('Traduzione non riuscita')
-                    ->body('Impossibile tradurre il testo. Riprova più tardi.')
+                    ->title(__('filament.translation.failed'))
+                    ->body(__('filament.translation.failed_body'))
                     ->send();
 
                 return;
@@ -98,13 +98,13 @@ class TranslateButton extends Component
 
             Notification::make()
                 ->success()
-                ->title('Traduzione completata')
-                ->body('Lingue aggiornate: ' . implode(', ', $translatedLocales))
+                ->title(__('filament.translation.completed'))
+                ->body(__('filament.translation.completed_body', ['locales' => implode(', ', $translatedLocales)]))
                 ->send();
         } catch (\Exception $e) {
             Notification::make()
                 ->danger()
-                ->title('Errore di traduzione')
+                ->title(__('filament.translation.error'))
                 ->body($e->getMessage())
                 ->send();
         }

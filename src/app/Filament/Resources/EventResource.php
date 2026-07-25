@@ -265,10 +265,72 @@ class EventResource extends Resource
                                     ->default(true)
                                     ->required(),
                             ]),
+
+                        Section::make(__('fields.attachment.relation_title'))
+                            ->schema([
+                                Forms\Components\Repeater::make('attachments')
+                                    ->hiddenLabel()
+                                    ->relationship()
+                                    ->schema([
+                                        Forms\Components\FileUpload::make('file_path')
+                                            ->label(__('fields.attachment.file'))
+                                            ->disk('local')
+                                            ->directory('attachments')
+                                            ->acceptedFileTypes([
+                                                'application/pdf',
+                                                'application/msword',
+                                                'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+                                                'application/vnd.ms-excel',
+                                                'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+                                                'application/vnd.ms-powerpoint',
+                                                'application/vnd.openxmlformats-officedocument.presentationml.presentation',
+                                                'text/plain',
+                                                'text/csv',
+                                                'image/jpeg',
+                                                'image/png',
+                                                'image/webp',
+                                            ])
+                                            ->maxSize(20480)
+                                            ->visibility('private')
+                                            ->openable()
+                                            ->downloadable()
+                                            ->required()
+                                            ->helperText(__('fields.attachment.file_helper')),
+                                        ...static::attachmentTitleFields(),
+                                        Forms\Components\Toggle::make('is_public')
+                                            ->label(__('fields.attachment.is_public'))
+                                            ->helperText(__('fields.attachment.is_public_helper'))
+                                            ->default(true)
+                                            ->required(),
+                                    ])
+                                    ->itemLabel(fn (array $state): ?string => collect($state['title'] ?? [])->filter()->first())
+                                    ->addActionLabel(__('fields.attachment.add'))
+                                    ->orderColumn('display_order')
+                                    ->collapsible()
+                                    ->collapsed()
+                                    ->defaultItems(0),
+                            ])
+                            ->collapsible(),
                     ])
                     ->columnSpan(['lg' => 1]),
             ])
             ->columns(3);
+    }
+
+    /**
+     * Build attachment title inputs for every configured public language.
+     *
+     * @return array<int, Forms\Components\TextInput>
+     */
+    protected static function attachmentTitleFields(): array
+    {
+        return collect(array_keys(config('laravellocalization.supportedLocales', [])))
+            ->map(fn (string $locale): Forms\Components\TextInput => Forms\Components\TextInput::make("title.{$locale}")
+                ->label(__('fields.attachment.title_'.$locale))
+                ->required($locale === 'it')
+                ->maxLength(255))
+            ->values()
+            ->all();
     }
 
     public static function table(Table $table): Table
@@ -335,9 +397,7 @@ class EventResource extends Resource
 
     public static function getRelations(): array
     {
-        return [
-            //
-        ];
+        return [];
     }
 
     public static function getPages(): array

@@ -37,6 +37,8 @@ return [
     'date_not_available' => 'Date to be confirmed',
     'location_not_available' => 'Location to be confirmed',
     'description_not_available' => 'No description is available for this event.',
+    'attachments' => 'Attached documents',
+    'download_attachment' => 'Download',
     
     // Empty states
     'no_upcoming_events' => 'There are no scheduled events at the moment. Come back soon for updates!',

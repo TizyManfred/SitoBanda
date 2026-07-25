@@ -1,9 +1,10 @@
 <!DOCTYPE html>
-<html lang="it">
+@php($emailLocale = $locale ?? app()->getLocale())
+<html lang="{{ str_replace('_', '-', $emailLocale) }}">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nuovo messaggio dal sito</title>
+    <title>{{ __('emails.contact.title', locale: $emailLocale) }}</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -49,46 +50,46 @@
 </head>
 <body>
     <div class="header">
-        <h1>Nuovo messaggio dal sito</h1>
+        <h1>{{ __('emails.contact.title', locale: $emailLocale) }}</h1>
     </div>
     
     <div class="content">
-        <p>È stato ricevuto un nuovo messaggio dal modulo di contatto del sito web della Banda Folk di Castello Tesino.</p>
+        <p>{{ __('emails.contact.intro', locale: $emailLocale) }}</p>
         
         <div class="field">
-            <div class="label">Nome:</div>
+            <div class="label">{{ __('emails.contact.name', locale: $emailLocale) }}:</div>
             <div class="value">{{ $contact->name }}</div>
         </div>
         
         <div class="field">
-            <div class="label">Email:</div>
+            <div class="label">{{ __('emails.contact.email', locale: $emailLocale) }}:</div>
             <div class="value">{{ $contact->email }}</div>
         </div>
         
         <div class="field">
-            <div class="label">Oggetto:</div>
+            <div class="label">{{ __('emails.contact.subject_label', locale: $emailLocale) }}:</div>
             <div class="value">{{ $contact->subject }}</div>
         </div>
         
         <div class="field">
-            <div class="label">Messaggio:</div>
+            <div class="label">{{ __('emails.contact.message', locale: $emailLocale) }}:</div>
             <div class="value">{{ $contact->message }}</div>
         </div>
         
         <div class="field">
-            <div class="label">Data e ora:</div>
+            <div class="label">{{ __('emails.contact.date', locale: $emailLocale) }}:</div>
             <div class="value">{{ $contact->created_at->format('d/m/Y H:i') }}</div>
         </div>
         
         <div class="field">
-            <div class="label">Indirizzo IP:</div>
+            <div class="label">{{ __('emails.contact.ip_address', locale: $emailLocale) }}:</div>
             <div class="value">{{ $contact->ip_address }}</div>
         </div>
     </div>
     
     <div class="footer">
-        <p>Questo è un messaggio automatico. Si prega di non rispondere a questa email.</p>
-        <p>© {{ date('Y') }} Banda Folk di Castello Tesino - Tutti i diritti riservati</p>
+        <p>{{ __('emails.contact.automatic', locale: $emailLocale) }}</p>
+        <p>© {{ date('Y') }} Banda Folk di Castello Tesino - {{ __('emails.contact.rights', locale: $emailLocale) }}</p>
     </div>
 </body>
 </html>
