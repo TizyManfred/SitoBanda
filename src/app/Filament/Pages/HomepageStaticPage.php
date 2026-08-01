@@ -265,7 +265,7 @@ class HomepageStaticPage extends Page implements HasForms
             ->size('sm')
             ->color('gray')
             ->action(function (Forms\Get $get, Forms\Set $set): void {
-                $locales = array_keys(LaravelLocalization::getSupportedLocales());
+                $locales = array_keys(LaravelLocalization::getLocalesOrder());
                 $title = (array) ($get('title') ?? []);
                 $description = (array) ($get('description') ?? []);
                 $sourceLocale = static::resolveTranslationSourceLocale($locales, $title, $description);
@@ -342,7 +342,7 @@ class HomepageStaticPage extends Page implements HasForms
             ->size('sm')
             ->color('gray')
             ->action(function (Forms\Get $get, Forms\Set $set): void {
-                $locales = array_keys(LaravelLocalization::getSupportedLocales());
+                $locales = array_keys(LaravelLocalization::getLocalesOrder());
                 $fields = ['badge', 'headline', 'body', 'cta_label'];
                 $content = collect($fields)
                     ->mapWithKeys(fn (string $field): array => [
@@ -430,7 +430,7 @@ class HomepageStaticPage extends Page implements HasForms
 
     protected static function translationTabs(callable $schemaFactory): array
     {
-        return collect(LaravelLocalization::getSupportedLocales())
+        return collect(LaravelLocalization::getLocalesOrder())
             ->map(fn (array $properties, string $locale): Forms\Components\Tabs\Tab => Forms\Components\Tabs\Tab::make(
                 $properties['native'] ?? strtoupper($locale),
             )->schema($schemaFactory($locale)))

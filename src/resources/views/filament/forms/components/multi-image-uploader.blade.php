@@ -6,7 +6,7 @@
     $maxFiles = $getMaxFiles();
     $acceptedFileTypes = implode(',', $getAcceptedFileTypes());
     $maxSize = $getMaxSize();
-    $locales = LaravelLocalization::getSupportedLocales();
+    $locales = LaravelLocalization::getLocalesOrder();
     $state = $getState() ?? [];
     
     // Helper function to safely get translations

@@ -44,7 +44,7 @@ class TranslateButton extends Component
      */
     protected static function handleTranslation($livewire, string $fieldName): void
     {
-        $locales = array_keys(LaravelLocalization::getSupportedLocales());
+        $locales = array_keys(LaravelLocalization::getLocalesOrder());
         $translations = data_get($livewire->data, $fieldName, []);
 
         [$sourceLocale, $sourceText] = static::resolveSourceTranslation($translations, $locales);

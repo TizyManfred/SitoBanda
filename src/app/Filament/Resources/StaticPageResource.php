@@ -268,7 +268,7 @@ class StaticPageResource extends Resource
 
     protected static function translationTabs(callable $schemaFactory): array
     {
-        return collect(LaravelLocalization::getSupportedLocales())
+        return collect(LaravelLocalization::getLocalesOrder())
             ->map(fn (array $properties, string $locale): Forms\Components\Tabs\Tab => Forms\Components\Tabs\Tab::make(
                 $properties['native'] ?? strtoupper($locale),
             )->schema($schemaFactory($locale)))
@@ -285,7 +285,7 @@ class StaticPageResource extends Resource
             ->size('sm')
             ->color('gray')
             ->action(function (Forms\Get $get, Forms\Set $set): void {
-                $locales = array_keys(LaravelLocalization::getSupportedLocales());
+                $locales = array_keys(LaravelLocalization::getLocalesOrder());
                 $title = (array) ($get('title') ?? []);
                 $body = (array) ($get('body') ?? []);
 
@@ -363,7 +363,7 @@ class StaticPageResource extends Resource
             ->size('sm')
             ->color('gray')
             ->action(function (Forms\Get $get, Forms\Set $set): void {
-                $locales = array_keys(LaravelLocalization::getSupportedLocales());
+                $locales = array_keys(LaravelLocalization::getLocalesOrder());
                 $description = (array) ($get('description') ?? []);
                 $sourceLocale = static::resolveImageDescriptionSourceLocale($locales, $description);
 

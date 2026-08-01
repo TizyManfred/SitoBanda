@@ -122,6 +122,6 @@ trait WithAiTranslation
 
     protected static function getTranslationLocales(): array
     {
-        return array_keys(LaravelLocalization::getSupportedLocales());
+        return array_keys(LaravelLocalization::getLocalesOrder());
     }
 }

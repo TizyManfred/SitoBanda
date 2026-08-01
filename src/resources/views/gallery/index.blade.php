@@ -48,7 +48,10 @@ use Illuminate\Support\Str;
                         <div class="row">
                             @if(isset($albums) && $albums->count() > 0)
                                 @foreach($albums as $album)
-                                    @php($albumSlug = $album->getTranslation('slug', app()->getLocale(), false) ?: $album->getTranslation('slug', 'it', false))
+                                    @php
+                                        $albumSlug = $album->getTranslation('slug', app()->getLocale(), false)
+                                            ?: $album->getTranslation('slug', 'it', false);
+                                    @endphp
                                     <a href="{{ route('galleria.album', $albumSlug) }}" class="d-block col-md-6 col-lg-4 mb-5 wow fadeInUp gallery-album-card-link" data-wow-delay="0.{{ $loop->iteration }}s">
                                         <div >
                                             <div class="card h-100 border-0 shadow-sm overflow-hidden rounded-0 card-hover-scale">

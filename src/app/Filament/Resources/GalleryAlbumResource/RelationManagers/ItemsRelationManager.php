@@ -31,7 +31,7 @@ class ItemsRelationManager extends RelationManager
 
     public function translateBulkUploadCaption(array $captions): array
     {
-        $locales = array_keys(LaravelLocalization::getSupportedLocales());
+        $locales = array_keys(LaravelLocalization::getLocalesOrder());
         $captions = collect($captions)
             ->map(fn ($caption) => is_string($caption) ? trim($caption) : '')
             ->only($locales)
@@ -148,7 +148,7 @@ class ItemsRelationManager extends RelationManager
                         ->label(__('fields.gallery.caption'))
                         ->searchable(query: function (Builder $query, string $search): Builder {
                             return $query->where(function ($query) use ($search) {
-                                $locales = array_keys(LaravelLocalization::getSupportedLocales());
+                                $locales = array_keys(LaravelLocalization::getLocalesOrder());
 
                                 foreach ($locales as $locale) {
                                     $query->orWhere("caption->{$locale}", 'like', "%{$search}%");

@@ -3,6 +3,7 @@
 namespace App\Filament\Forms\Components;
 
 use Filament\Forms\Components\Field;
+use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 
 class MultiImageUploader extends Field
 {
@@ -72,7 +73,7 @@ class MultiImageUploader extends Field
 
     public function getLocales(): array
     {
-        return collect(config('laravellocalization.supportedLocales', []))
+        return collect(LaravelLocalization::getLocalesOrder())
             ->mapWithKeys(fn (array $properties, string $locale): array => [
                 $locale => $properties['native'] ?? strtoupper($locale),
             ])

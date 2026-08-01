@@ -23,6 +23,7 @@ use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
 use Livewire\Livewire;
+use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 
 class AdminPanelProvider extends PanelProvider
 {
@@ -53,7 +54,7 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->plugin(
                 SpatieLaravelTranslatablePlugin::make()
-                    ->defaultLocales(array_keys(config('laravellocalization.supportedLocales', [])))
+                    ->defaultLocales(array_keys(LaravelLocalization::getLocalesOrder()))
             )
 
             ->middleware([

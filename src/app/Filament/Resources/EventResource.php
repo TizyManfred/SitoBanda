@@ -22,6 +22,7 @@ use Filament\Tables;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Filters\TrashedFilter;
 use Filament\Tables\Table;
+use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 use Mvenghaus\FilamentPluginTranslatableInline\Forms\Components\TranslatableContainer;
 
 use function app;
@@ -324,7 +325,7 @@ class EventResource extends Resource
      */
     protected static function attachmentTitleFields(): array
     {
-        return collect(array_keys(config('laravellocalization.supportedLocales', [])))
+        return collect(array_keys(LaravelLocalization::getLocalesOrder()))
             ->map(fn (string $locale): Forms\Components\TextInput => Forms\Components\TextInput::make("title.{$locale}")
                 ->label(__('fields.attachment.title_'.$locale))
                 ->required($locale === 'it')

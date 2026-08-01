@@ -148,7 +148,7 @@ class GalleryItemResource extends Resource
                     })
                     ->searchable(query: function (Builder $query, string $search): Builder {
                         return $query->where(function (Builder $query) use ($search): void {
-                            foreach (array_keys(LaravelLocalization::getSupportedLocales()) as $locale) {
+                            foreach (array_keys(LaravelLocalization::getLocalesOrder()) as $locale) {
                                 $query->orWhere("caption->{$locale}", 'like', "%{$search}%");
                             }
                         });
