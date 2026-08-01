@@ -19,21 +19,9 @@ class CreateEventTest extends TestCase
 
         Livewire::test(CreateEvent::class)
             ->fillForm([
-                'title' => [
-                    'it' => 'Evento di prova',
-                    'en' => 'Test event',
-                    'de' => 'Testveranstaltung',
-                ],
-                'short_description' => [
-                    'it' => 'Test',
-                    'en' => 'Test',
-                    'de' => 'Test',
-                ],
-                'description' => [
-                    'it' => '<p>Test</p>',
-                    'en' => '<p>Test</p>',
-                    'de' => '<p>Test</p>',
-                ],
+                'title' => $this->localizedValues('Evento di prova'),
+                'short_description' => $this->localizedValues('Test'),
+                'description' => $this->localizedValues('<p>Test</p>'),
                 'location' => 'Castello Tesino',
                 'start_datetime' => '2024-07-07 00:00:00',
                 'is_featured' => false,
@@ -54,11 +42,7 @@ class CreateEventTest extends TestCase
 
         $component = Livewire::test(CreateEvent::class)
             ->fillForm([
-                'title' => [
-                    'it' => 'Evento di prova',
-                    'en' => 'Test event',
-                    'de' => 'Testveranstaltung',
-                ],
+                'title' => $this->localizedValues('Evento di prova'),
                 'location' => 'Castello Tesino',
                 'is_featured' => false,
                 'is_public' => true,
@@ -72,5 +56,17 @@ class CreateEventTest extends TestCase
             ->assertHasNoFormErrors();
 
         $this->assertDatabaseCount(Event::class, 1);
+    }
+
+    /**
+     * Build a translatable value map with the same text for every supported locale.
+     *
+     * @return array<string, string>
+     */
+    private function localizedValues(string $value): array
+    {
+        $locales = array_keys(config('laravellocalization.supportedLocales', []));
+
+        return array_fill_keys($locales, $value);
     }
 }

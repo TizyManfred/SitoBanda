@@ -54,6 +54,16 @@ return [
         'completed' => 'Traduzione completata',
         'completed_body' => 'Lingue aggiornate: :locales',
         'error' => 'Errore di traduzione',
+        'bulk_label' => 'Traduci',
+        'bulk_all_label' => 'Traduci tutti',
+        'bulk_modal_title' => 'Traduzione automatica',
+        'bulk_modal_description' => 'Verranno tradotti solo i campi mancanti nelle lingue selezionate. Le traduzioni esistenti non saranno sovrascritte.',
+        'bulk_targets_label' => 'Lingue di destinazione',
+        'bulk_submit' => 'Traduci ora',
+        'bulk_completed' => 'Traduzione completata',
+        'bulk_completed_body' => ':count elementi aggiornati. Lingue: :locales',
+        'bulk_nothing' => 'Niente da tradurre',
+        'bulk_nothing_body' => 'Gli elementi selezionati hanno già tutte le traduzioni richieste.',
     ],
 
     'dashboard' => [

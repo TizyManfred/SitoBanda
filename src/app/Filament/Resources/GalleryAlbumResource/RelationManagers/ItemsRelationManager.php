@@ -2,6 +2,8 @@
 
 namespace App\Filament\Resources\GalleryAlbumResource\RelationManagers;
 
+use App\Filament\Actions\TranslateAllAction;
+use App\Filament\Actions\TranslateBulkAction;
 use App\Filament\Forms\Components\MultiImageUploader;
 use App\Filament\Support\OptimizedImageUpload;
 use App\Filament\Traits\WithAiTranslation;
@@ -180,6 +182,10 @@ class ItemsRelationManager extends RelationManager
                 Tables\Actions\DeleteAction::make(),
             ])
             ->headerActions([
+                TranslateAllAction::make()
+                    ->modelClass(GalleryItem::class)
+                    ->translatableFields(['caption']),
+
                 Tables\Actions\Action::make('bulkUpload')
                     ->label(__('fields.gallery.upload_multiple_images'))
                     ->icon('heroicon-o-photo')
@@ -333,6 +339,8 @@ class ItemsRelationManager extends RelationManager
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
+                    TranslateBulkAction::make()
+                        ->translatableFields(['caption']),
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
             ])

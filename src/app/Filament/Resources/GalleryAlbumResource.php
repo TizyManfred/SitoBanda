@@ -2,26 +2,21 @@
 
 namespace App\Filament\Resources;
 
+use App\Filament\Actions\TranslateAllAction;
+use App\Filament\Actions\TranslateBulkAction;
 use App\Filament\Resources\GalleryAlbumResource\Pages;
 use App\Filament\Resources\GalleryAlbumResource\RelationManagers;
 use App\Filament\Traits\WithAiTranslation;
 use App\Models\GalleryAlbum;
-use App\Services\TranslationService;
 use Filament\Forms;
 use Filament\Forms\Form;
-use Filament\Notifications\Notification;
-use Filament\Resources\Resource;
 use Filament\Resources\Concerns\Translatable;
+use Filament\Resources\Resource;
 use Filament\Tables;
-use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
-use Illuminate\Support\Str;
-use Filament\Forms\Set;
 use Filament\Tables\Filters\TrashedFilter;
-use Filament\SpatieLaravelTranslatablePlugin;
-use Mvenghaus\FilamentPluginTranslatableInline\Forms\Components\TranslatableContainer;
+use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Model;
+use Mvenghaus\FilamentPluginTranslatableInline\Forms\Components\TranslatableContainer;
 
 class GalleryAlbumResource extends Resource
 {
@@ -125,6 +120,7 @@ class GalleryAlbumResource extends Resource
                         if ($record->items()->count() > 0) {
                             return $record->items()->first()->image_path;
                         }
+
                         return $record->cover_image_path;
                     })
                     ->width(100)
@@ -162,8 +158,15 @@ class GalleryAlbumResource extends Resource
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
+                    TranslateBulkAction::make()
+                        ->translatableFields(['title', 'description']),
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
+            ])
+            ->headerActions([
+                TranslateAllAction::make()
+                    ->modelClass(GalleryAlbum::class)
+                    ->translatableFields(['title', 'description']),
             ]);
     }
 

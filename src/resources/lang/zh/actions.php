@@ -1,0 +1,25 @@
+<?php
+
+return [
+    'edit' => '编辑',
+    'create' => '新建',
+    'delete' => '删除',
+    'force_delete' => '彻底删除',
+    'restore' => '恢复',
+    'save' => '保存',
+    'cancel' => '取消',
+    'select' => '选择',
+    'upload' => '上传',
+    'download' => '下载',
+    'view' => '查看',
+    'preview' => '预览',
+    'back' => '返回',
+    'close' => '关闭',
+    'confirm' => '确认',
+    'filter' => '筛选',
+    'search' => '搜索',
+    'reset' => '重置',
+    'export' => '导出',
+    'import' => '导入',
+    'translate' => '翻译',
+];

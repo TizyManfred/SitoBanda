@@ -15166,6 +15166,78 @@ Aggiunte CSS
 	border-radius: 2px;
 }
 
+.language-flag-fr {
+	background-image: url('data:image/svg+xml,%3Csvg%20width%3D%2224%22%20height%3D%2218%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20id%3D%22flag-icons-fr%22%20viewBox%3D%220%200%20640%20480%22%3E%3Cpath%20fill%3D%22%23fff%22%20d%3D%22M0%200h640v480H0z%22%2F%3E%3Cpath%20fill%3D%22%23000091%22%20d%3D%22M0%200h213.3v480H0z%22%2F%3E%3Cpath%20fill%3D%22%23ce1126%22%20d%3D%22M426.7%200H640v480H426.7z%22%2F%3E%3C%2Fsvg%3E');
+	background-size: contain;
+	background-repeat: no-repeat;
+	background-position: center;
+	width: 24px;
+	height: 18px;
+	display: inline-block;
+	border: 1px solid #e0e0e0;
+	border-radius: 2px;
+}
+
+.language-flag-zh {
+	background-image: url('data:image/svg+xml,%3Csvg%20width%3D%2224%22%20height%3D%2218%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20id%3D%22flag-icons-cn%22%20viewBox%3D%220%200%20640%20480%22%3E%3Cdefs%3E%3Cpath%20id%3D%22a%22%20fill%3D%22%23ffde00%22%20d%3D%22M-.6.8%200-1%20.6.8-1-.3.9-.3z%22%2F%3E%3C%2Fdefs%3E%3Cpath%20fill%3D%22%23de2910%22%20d%3D%22M0%200h640v480H0z%22%2F%3E%3Cuse%20width%3D%2230%22%20height%3D%2220%22%20transform%3D%22matrix%2871.9991%200%200%2072%20120%20120%29%22%20href%3D%22%23a%22%2F%3E%3Cuse%20width%3D%2230%22%20height%3D%2220%22%20transform%3D%22matrix%28-12.33562%20-20.5871%2020.5871%20-12.33562%20240.3%2048%29%22%20href%3D%22%23a%22%2F%3E%3Cuse%20width%3D%2230%22%20height%3D%2220%22%20transform%3D%22matrix%28-3.38573%20-23.75998%2023.75998%20-3.38573%20288%2095.8%29%22%20href%3D%22%23a%22%2F%3E%3Cuse%20width%3D%2230%22%20height%3D%2220%22%20transform%3D%22matrix%286.5991%20-23.0749%2023.0749%206.5991%20288%20168%29%22%20href%3D%22%23a%22%2F%3E%3Cuse%20width%3D%2230%22%20height%3D%2220%22%20transform%3D%22matrix%2814.9991%20-18.73557%2018.73557%2014.9991%20216%20216%29%22%20href%3D%22%23a%22%2F%3E%3C%2Fsvg%3E');
+	background-size: contain;
+	background-repeat: no-repeat;
+	background-position: center;
+	width: 24px;
+	height: 18px;
+	display: inline-block;
+	border: 1px solid #e0e0e0;
+	border-radius: 2px;
+}
+
+.language-flag-ja {
+	background-image: url('data:image/svg+xml,%3Csvg%20width%3D%2224%22%20height%3D%2218%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20id%3D%22flag-icons-jp%22%20viewBox%3D%220%200%20640%20480%22%3E%3Cdefs%3E%3CclipPath%20id%3D%22a%22%3E%3Cpath%20fill-opacity%3D%22.7%22%20d%3D%22M-88%2032h640v480H-88z%22%2F%3E%3C%2FclipPath%3E%3C%2Fdefs%3E%3Cg%20fill-rule%3D%22evenodd%22%20stroke-width%3D%221pt%22%20clip-path%3D%22url%28%23a%29%22%3E%3Cpath%20fill%3D%22%23fff%22%20d%3D%22M-88%2032h640v480H-88z%22%2F%3E%3Ccircle%20cx%3D%22345.5%22%20cy%3D%22272%22%20r%3D%22138.7%22%20fill%3D%22%23d30000%22%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E');
+	background-size: contain;
+	background-repeat: no-repeat;
+	background-position: center;
+	width: 24px;
+	height: 18px;
+	display: inline-block;
+	border: 1px solid #e0e0e0;
+	border-radius: 2px;
+}
+
+.language-flag-pt {
+	background-image: url('data:image/svg+xml,%3Csvg%20width%3D%2224%22%20height%3D%2218%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20id%3D%22flag-icons-pt%22%20viewBox%3D%220%200%2024%2018%22%3E%3Cdefs%3E%3CclipPath%20id%3D%22s%22%3E%3Ccircle%20cx%3D%229.6%22%20cy%3D%229%22%20r%3D%224.5%22%2F%3E%3C%2FclipPath%3E%3C%2Fdefs%3E%3Cpath%20fill%3D%22%23046A38%22%20d%3D%22M0%200h9.6v18H0z%22%2F%3E%3Cpath%20fill%3D%22%23DA291C%22%20d%3D%22M9.6%200H24v18H9.6z%22%2F%3E%3Ccircle%20cx%3D%229.6%22%20cy%3D%229%22%20r%3D%224.5%22%20fill%3D%22%23FFE000%22%20stroke%3D%22%23C79A00%22%20stroke-width%3D%220.4%22%2F%3E%3Cg%20clip-path%3D%22url%28%23s%29%22%3E%3Cpath%20fill%3D%22%23FFFFFF%22%20d%3D%22M9.6%207.9h4.5v2.2H9.6z%22%2F%3E%3Cpath%20fill%3D%22%23FFFFFF%22%20d%3D%22M5.1%207.9h4.5v2.2H5.1z%22%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E');
+	background-size: contain;
+	background-repeat: no-repeat;
+	background-position: center;
+	width: 24px;
+	height: 18px;
+	display: inline-block;
+	border: 1px solid #e0e0e0;
+	border-radius: 2px;
+}
+
+.language-flag-ru {
+	background-image: url('data:image/svg+xml,%3Csvg%20width%3D%2224%22%20height%3D%2218%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20id%3D%22flag-icons-ru%22%20viewBox%3D%220%200%2024%2018%22%3E%3Cpath%20fill%3D%22%23ffffff%22%20d%3D%22M0%200h24v6H0z%22%2F%3E%3Cpath%20fill%3D%22%230039a6%22%20d%3D%22M0%206h24v6H0z%22%2F%3E%3Cpath%20fill%3D%22%23d52b1e%22%20d%3D%22M0%2012h24v6H0z%22%2F%3E%3C%2Fsvg%3E');
+	background-size: contain;
+	background-repeat: no-repeat;
+	background-position: center;
+	width: 24px;
+	height: 18px;
+	display: inline-block;
+	border: 1px solid #e0e0e0;
+	border-radius: 2px;
+}
+
+.language-flag-br {
+	background-image: url('data:image/svg+xml,%3Csvg%20width%3D%2224%22%20height%3D%2218%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20id%3D%22flag-icons-br%22%20viewBox%3D%220%200%2024%2018%22%3E%3Cpath%20fill%3D%22%232f9e45%22%20d%3D%22M0%200h24v18H0z%22%2F%3E%3Cpath%20fill%3D%22%23feca00%22%20d%3D%22M12%201.1%2022.9%209%2012%2016.9%201.1%209z%22%2F%3E%3Ccircle%20cx%3D%2212%22%20cy%3D%229%22%20r%3D%224.1%22%20fill%3D%22%232b4d9b%22%2F%3E%3Cpath%20fill%3D%22%23ffffff%22%20d%3D%22M8.2%209h7.6c.1%201.2-.8%201.8-1.6%201.8-.8%200-.9-.3-1.6-.3-.7%200-.8.3-1.6.3-.8%200-1.7-.6-1.6-1.8z%22%2F%3E%3C%2Fsvg%3E');
+	background-size: contain;
+	background-repeat: no-repeat;
+	background-position: center;
+	width: 24px;
+	height: 18px;
+	display: inline-block;
+	border: 1px solid #e0e0e0;
+	border-radius: 2px;
+}
+
 /* Responsive adjustments */
 @media (max-width: 767px) {
 	.language-switcher {

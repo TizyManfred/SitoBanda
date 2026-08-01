@@ -9,7 +9,7 @@ use App\Models\GalleryItem;
 use App\Models\RepertoireProgram;
 use App\Models\Section;
 use App\Models\StaticPage;
-use App\Services\TranslationService;
+use App\Services\ContentTranslationService;
 use Illuminate\Console\Command;
 use Illuminate\Database\Eloquent\Model;
 
@@ -23,12 +23,12 @@ class TranslateContent extends Command
 
     protected $description = 'Auto-translate all supported content from one language to another';
 
-    protected TranslationService $translationService;
+    protected ContentTranslationService $contentTranslationService;
 
-    public function __construct(TranslationService $translationService)
+    public function __construct(ContentTranslationService $contentTranslationService)
     {
         parent::__construct();
-        $this->translationService = $translationService;
+        $this->contentTranslationService = $contentTranslationService;
     }
 
     public function handle(): int
@@ -158,8 +158,8 @@ class TranslateContent extends Command
     }
 
     /**
-     * @param iterable<Model> $models
-     * @param array<int, string> $fields
+     * @param  iterable<Model>  $models
+     * @param  array<int, string>  $fields
      */
     protected function translateModels(
         iterable $models,
@@ -174,40 +174,12 @@ class TranslateContent extends Command
         $this->info("Translating {$label}...");
 
         foreach ($models as $model) {
-            $this->translateModel($model, $fields, $source, $target, $force);
+            $this->contentTranslationService->translateModel($model, $fields, [$target], $force, $source);
             $bar->advance();
         }
 
         $bar->finish();
         $this->newLine(2);
-    }
-
-    /**
-     * @param array<int, string> $fields
-     */
-    protected function translateModel(
-        Model $model,
-        array $fields,
-        string $source,
-        string $target,
-        bool $force,
-    ): void {
-        $changed = false;
-
-        foreach ($fields as $field) {
-            $translations = $model->getTranslations($field);
-
-            if (! $this->translateMap($translations, $source, $target, $force)) {
-                continue;
-            }
-
-            $model->setTranslations($field, $translations);
-            $changed = true;
-        }
-
-        if ($changed) {
-            $model->save();
-        }
     }
 
     protected function translateStaticPages(string $source, string $target, bool $force): void
@@ -217,118 +189,11 @@ class TranslateContent extends Command
         $this->info('Translating static pages...');
 
         foreach ($pages as $page) {
-            $changed = false;
-            $contentHtml = $page->getTranslations('content_html');
-
-            if ($this->translateMap($contentHtml, $source, $target, $force)) {
-                $page->setTranslations('content_html', $contentHtml);
-                $changed = true;
-            }
-
-            $contentBlocks = is_array($page->content_blocks) ? $page->content_blocks : [];
-
-            foreach ($contentBlocks as &$block) {
-                if (! is_array($block)) {
-                    continue;
-                }
-
-                foreach (['title', 'body'] as $field) {
-                    if (! array_key_exists($field, $block)) {
-                        continue;
-                    }
-
-                    if ($this->translateNestedValue($block[$field], $source, $target, $force)) {
-                        $changed = true;
-                    }
-                }
-
-                if (! is_array($block['image_items'] ?? null)) {
-                    continue;
-                }
-
-                foreach ($block['image_items'] as &$imageItem) {
-                    if (! is_array($imageItem) || ! array_key_exists('description', $imageItem)) {
-                        continue;
-                    }
-
-                    if ($this->translateNestedValue($imageItem['description'], $source, $target, $force)) {
-                        $changed = true;
-                    }
-                }
-                unset($imageItem);
-            }
-            unset($block);
-
-            $headerSlides = is_array($page->header_slides) ? $page->header_slides : [];
-
-            foreach ($headerSlides as &$slide) {
-                if (! is_array($slide)) {
-                    continue;
-                }
-
-                foreach (['title', 'description'] as $field) {
-                    if (! array_key_exists($field, $slide)) {
-                        continue;
-                    }
-
-                    if ($this->translateNestedValue($slide[$field], $source, $target, $force)) {
-                        $changed = true;
-                    }
-                }
-            }
-            unset($slide);
-
-            if ($changed) {
-                $page->content_blocks = $contentBlocks;
-                $page->header_slides = $headerSlides;
-                $page->save();
-            }
-
+            $this->contentTranslationService->translateStaticPage($page, [$target], $force, $source);
             $bar->advance();
         }
 
         $bar->finish();
         $this->newLine(2);
-    }
-
-    protected function translateNestedValue(
-        mixed &$value,
-        string $source,
-        string $target,
-        bool $force,
-    ): bool {
-        if (is_string($value) && filled(trim($value))) {
-            $value = [$source => $value];
-        }
-
-        if (! is_array($value)) {
-            return false;
-        }
-
-        return $this->translateMap($value, $source, $target, $force);
-    }
-
-    /**
-     * Translate one localized value map in place.
-     *
-     * @param array<string, mixed> $values
-     */
-    protected function translateMap(array &$values, string $source, string $target, bool $force): bool
-    {
-        $sourceText = trim((string) ($values[$source] ?? ''));
-
-        if ($sourceText === '' || (! $force && filled(trim((string) ($values[$target] ?? ''))))) {
-            return false;
-        }
-
-        $translated = $this->translationService->translate($sourceText, $source, $target);
-
-        if (! filled($translated)) {
-            return false;
-        }
-
-        $values[$target] = $translated;
-
-        return true;
     }
 }

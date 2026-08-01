@@ -34,7 +34,7 @@ return [
     'attachment' => [
         'relation_title' => 'Documentos adjuntos', 'add' => 'Añadir documento', 'title' => 'Título',
         'title_it' => 'Título (italiano)', 'title_en' => 'Título (inglés)', 'title_de' => 'Título (alemán)',
-        'title_es' => 'Título (español)', 'description' => 'Descripción', 'file' => 'Archivo', 'file_type' => 'Tipo',
+        'title_es' => 'Título (español)', 'title_fr' => 'Título (francés)', 'title_zh' => 'Título (chino)', 'title_ja' => 'Título (japonés)', 'title_pt' => 'Título (portugués)', 'title_ru' => 'Título (ruso)', 'title_pt-BR' => 'Título (portugués de Brasil)', 'description' => 'Descripción', 'file' => 'Archivo', 'file_type' => 'Tipo',
         'file_size' => 'Tamaño', 'file_helper' => 'PDF, documentos de Office, archivos de texto o imágenes. Tamaño máximo: 20 MB.',
         'is_public' => 'Visible públicamente', 'is_public_helper' => 'Si se desactiva, el documento no se mostrará en el sitio web.',
     ],

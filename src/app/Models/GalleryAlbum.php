@@ -7,13 +7,13 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Spatie\Translatable\HasTranslations;
 use Illuminate\Support\Str;
 use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
+use Spatie\Translatable\HasTranslations;
 
 class GalleryAlbum extends Model
 {
-    use HasFactory, SoftDeletes, HasTranslations;
+    use HasFactory, HasTranslations, SoftDeletes;
 
     /**
      * The table associated with the model.
@@ -48,16 +48,24 @@ class GalleryAlbum extends Model
     {
         static::saving(function ($model) {
             // Only update slug if the title has changed or if it's a new model
-            if ($model->isDirty('title') || !$model->exists) {
+            if ($model->isDirty('title') || ! $model->exists) {
                 $slugs = [];
                 $locales = LaravelLocalization::getSupportedLocales();
-                
+                $existingSlugs = $model->getTranslations('slug');
+
+                if (! is_array($existingSlugs)) {
+                    $existingSlugs = [];
+                }
+
                 foreach ($locales as $locale => $properties) {
                     $title = $model->getTranslation('title', $locale);
-                    
-                    $slugs[$locale] = Str::slug($title);
+                    $slug = Str::slug($title);
+
+                    // Keep the previous slug for locales whose title cannot be
+                    // transliterated (e.g. CJK scripts) instead of erasing it.
+                    $slugs[$locale] = $slug !== '' ? $slug : (string) ($existingSlugs[$locale] ?? '');
                 }
-                
+
                 $model->slug = $slugs;
             }
         });

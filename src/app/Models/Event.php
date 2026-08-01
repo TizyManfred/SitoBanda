@@ -69,10 +69,19 @@ class Event extends Model
             if ($model->isDirty('title') || ! $model->exists) {
                 $slugs = [];
                 $locales = LaravelLocalization::getSupportedLocales();
+                $existingSlugs = $model->getTranslations('slug');
+
+                if (! is_array($existingSlugs)) {
+                    $existingSlugs = [];
+                }
 
                 foreach ($locales as $locale => $properties) {
                     $title = $model->getTranslation('title', $locale);
-                    $slugs[$locale] = Str::slug($title);
+                    $slug = Str::slug($title);
+
+                    // Keep the previous slug for locales whose title cannot be
+                    // transliterated (e.g. CJK scripts) instead of erasing it.
+                    $slugs[$locale] = $slug !== '' ? $slug : (string) ($existingSlugs[$locale] ?? '');
                 }
 
                 $model->slug = $slugs;

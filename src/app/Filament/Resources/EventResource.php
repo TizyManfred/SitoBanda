@@ -2,6 +2,8 @@
 
 namespace App\Filament\Resources;
 
+use App\Filament\Actions\TranslateAllAction;
+use App\Filament\Actions\TranslateBulkAction;
 use App\Filament\Resources\EventResource\Pages;
 use App\Filament\Support\OptimizedImageUpload;
 use App\Filament\Traits\WithAiTranslation;
@@ -386,6 +388,9 @@ class EventResource extends Resource
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
+                    TranslateBulkAction::make()
+                        ->translatableFields(['title', 'short_description', 'description'])
+                        ->includeAttachments(),
                     Tables\Actions\DeleteBulkAction::make()
                         ->label(__('actions.delete')),
                     Tables\Actions\ForceDeleteBulkAction::make()
@@ -393,6 +398,12 @@ class EventResource extends Resource
                     Tables\Actions\RestoreBulkAction::make()
                         ->label(__('actions.restore')),
                 ]),
+            ])
+            ->headerActions([
+                TranslateAllAction::make()
+                    ->modelClass(Event::class)
+                    ->translatableFields(['title', 'short_description', 'description'])
+                    ->includeAttachments(),
             ]);
     }
 

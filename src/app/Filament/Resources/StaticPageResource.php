@@ -2,6 +2,8 @@
 
 namespace App\Filament\Resources;
 
+use App\Filament\Actions\TranslateAllAction;
+use App\Filament\Actions\TranslateBulkAction;
 use App\Filament\Resources\StaticPageResource\Pages;
 use App\Filament\Support\OptimizedImageUpload;
 use App\Models\StaticPage;
@@ -466,7 +468,17 @@ class StaticPageResource extends Resource
             ->actions([
                 Tables\Actions\EditAction::make(),
             ])
-            ->bulkActions([])
+            ->bulkActions([
+                Tables\Actions\BulkActionGroup::make([
+                    TranslateBulkAction::make()
+                        ->staticPage(),
+                ]),
+            ])
+            ->headerActions([
+                TranslateAllAction::make()
+                    ->modelClass(StaticPage::class)
+                    ->staticPage(),
+            ])
             ->defaultSort('label');
     }
 
@@ -478,5 +490,4 @@ class StaticPageResource extends Resource
             'edit' => Pages\EditStaticPage::route('/{record}/edit'),
         ];
     }
-
 }

@@ -2,18 +2,19 @@
 
 namespace App\Filament\Resources;
 
+use App\Filament\Actions\TranslateAllAction;
+use App\Filament\Actions\TranslateBulkAction;
 use App\Filament\Resources\SectionResource\Pages;
 use App\Filament\Resources\SectionResource\RelationManagers;
 use App\Filament\Traits\WithAiTranslation;
 use App\Models\Section;
-use App\Services\TranslationService;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Concerns\Translatable;
 use Filament\Resources\Resource;
 use Filament\Tables;
-use Filament\Tables\Table;
 use Filament\Tables\Filters\TrashedFilter;
+use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Model;
 use Mvenghaus\FilamentPluginTranslatableInline\Forms\Components\TranslatableContainer;
 
@@ -43,7 +44,7 @@ class SectionResource extends Resource
 
     protected static ?string $recordTitleAttribute = 'name';
 
-    public static function getRecordTitle(?Model $record): string|null
+    public static function getRecordTitle(?Model $record): ?string
     {
         if (! $record instanceof Section) {
             return null;
@@ -92,7 +93,7 @@ class SectionResource extends Resource
                             return '';
                         }
 
-                        return '<i class="' . e($state) . '"></i> ' . e($state);
+                        return '<i class="'.e($state).'"></i> '.e($state);
                     })
                     ->html()
                     ->searchable(),
@@ -108,8 +109,15 @@ class SectionResource extends Resource
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
+                    TranslateBulkAction::make()
+                        ->translatableFields(['name']),
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
+            ])
+            ->headerActions([
+                TranslateAllAction::make()
+                    ->modelClass(Section::class)
+                    ->translatableFields(['name']),
             ])
             ->reorderable('display_order');
     }
@@ -154,8 +162,8 @@ class SectionResource extends Resource
         $options = [];
 
         foreach ($instruments as $instrument) {
-            $class = 'ii ii-' . $instrument;
-            $options[$class] = '<i class="' . $class . '"></i> ' . __('fields.section.icons.' . $instrument);
+            $class = 'ii ii-'.$instrument;
+            $options[$class] = '<i class="'.$class.'"></i> '.__('fields.section.icons.'.$instrument);
         }
 
         return $options;

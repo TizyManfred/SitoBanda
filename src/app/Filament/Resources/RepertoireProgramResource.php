@@ -2,6 +2,8 @@
 
 namespace App\Filament\Resources;
 
+use App\Filament\Actions\TranslateAllAction;
+use App\Filament\Actions\TranslateBulkAction;
 use App\Filament\Resources\RepertoireProgramResource\Pages;
 use App\Filament\Traits\WithAiTranslation;
 use App\Models\RepertoireProgram;
@@ -19,19 +21,20 @@ class RepertoireProgramResource extends Resource
     use WithAiTranslation;
 
     protected static ?string $model = RepertoireProgram::class;
-    
+
     protected static ?string $navigationIcon = 'heroicon-o-musical-note';
-    
+
     protected static ?int $navigationSort = 1;
-    
+
     protected static ?string $navigationLabel = 'Repertorio';
-    
+
     public static function getNavigationGroup(): ?string
     {
         return __('filament.navigation_groups.content_management');
     }
+
     protected static ?string $modelLabel = 'Programma';
-    
+
     protected static ?string $pluralModelLabel = 'Repertorio';
 
     public static function form(Form $form): Form
@@ -51,14 +54,13 @@ class RepertoireProgramResource extends Resource
                             static::getTranslateAction('name'),
                         ])->columnSpan(1),
                     ]),
-                    
+
                 Forms\Components\TextInput::make('year')
                     ->label(__('fields.repertoire_program.year'))
                     ->required()
                     ->integer()
                     ->default(date('Y')),
-                    
-                
+
                 Forms\Components\Toggle::make('is_published')
                     ->label(__('fields.repertoire_program.is_published'))
                     ->default(true),
@@ -72,15 +74,15 @@ class RepertoireProgramResource extends Resource
                 Tables\Columns\TextColumn::make('name')
                     ->label(__('fields.repertoire_program.name'))
                     ->searchable(),
-                    
+
                 Tables\Columns\IconColumn::make('is_published')
                     ->label(__('fields.repertoire_program.is_published'))
                     ->boolean(),
-                    
+
                 Tables\Columns\TextColumn::make('pieces_count')
                     ->label(__('fields.repertoire_program.pieces_count'))
                     ->counts('pieces'),
-                    
+
                 Tables\Columns\TextColumn::make('created_at')
                     ->label(__('fields.common.created_at'))
                     ->dateTime()
@@ -92,7 +94,7 @@ class RepertoireProgramResource extends Resource
             ->groups(['year'])
             ->defaultGroup('year')
             ->filters([
-                    
+
                 Tables\Filters\SelectFilter::make('year')
                     ->label(__('fields.repertoire_program.year'))
                     ->options(function () {
@@ -101,7 +103,7 @@ class RepertoireProgramResource extends Resource
                             ->pluck('year', 'year')
                             ->toArray();
                     }),
-                    
+
                 Tables\Filters\TernaryFilter::make('is_published')
                     ->label(__('fields.repertoire_program.is_published')),
             ])
@@ -110,8 +112,15 @@ class RepertoireProgramResource extends Resource
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
+                    TranslateBulkAction::make()
+                        ->translatableFields(['name']),
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
+            ])
+            ->headerActions([
+                TranslateAllAction::make()
+                    ->modelClass(RepertoireProgram::class)
+                    ->translatableFields(['name']),
             ]);
     }
 

@@ -1,0 +1,25 @@
+<?php
+
+return [
+    'edit' => '編集',
+    'create' => '作成',
+    'delete' => '削除',
+    'force_delete' => '完全削除',
+    'restore' => '復元',
+    'save' => '保存',
+    'cancel' => 'キャンセル',
+    'select' => '選択',
+    'upload' => 'アップロード',
+    'download' => 'ダウンロード',
+    'view' => '表示',
+    'preview' => 'プレビュー',
+    'back' => '戻る',
+    'close' => '閉じる',
+    'confirm' => '確認',
+    'filter' => 'フィルター',
+    'search' => '検索',
+    'reset' => 'リセット',
+    'export' => 'エクスポート',
+    'import' => 'インポート',
+    'translate' => '翻訳',
+];

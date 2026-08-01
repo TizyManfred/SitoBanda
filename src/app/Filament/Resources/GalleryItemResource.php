@@ -2,6 +2,8 @@
 
 namespace App\Filament\Resources;
 
+use App\Filament\Actions\TranslateAllAction;
+use App\Filament\Actions\TranslateBulkAction;
 use App\Filament\Resources\GalleryItemResource\Pages;
 use App\Filament\Support\OptimizedImageUpload;
 use App\Filament\Traits\WithAiTranslation;
@@ -22,24 +24,26 @@ class GalleryItemResource extends Resource
     use WithAiTranslation;
 
     protected static ?string $model = GalleryItem::class;
+
     protected static ?string $navigationIcon = null; // Hidden from navigation menu
+
     protected static ?int $navigationSort = 2;
-    
+
     public static function getModelLabel(): string
     {
         return __('filament.resources.gallery_item');
     }
-    
+
     public static function getPluralModelLabel(): string
     {
         return __('filament.resources.gallery_item_plural');
     }
-    
+
     public static function getNavigationGroup(): ?string
     {
         return __('filament.navigation_groups.content_management');
     }
-    
+
     public static function shouldRegisterNavigation(): bool
     {
         return false; // This completely hides the resource from navigation
@@ -143,7 +147,7 @@ class GalleryItemResource extends Resource
 
                         return collect($translations)
                             ->filter(fn ($translation): bool => filled($translation))
-                            ->map(fn ($translation, string $locale): string => "<div><span class='font-medium'>{$locale}:</span> " . e($translation) . '</div>')
+                            ->map(fn ($translation, string $locale): string => "<div><span class='font-medium'>{$locale}:</span> ".e($translation).'</div>')
                             ->implode('');
                     })
                     ->searchable(query: function (Builder $query, string $search): Builder {
@@ -154,7 +158,7 @@ class GalleryItemResource extends Resource
                         });
                     })
                     ->sortable(query: function (Builder $query, string $direction): Builder {
-                        return $query->orderBy('caption->' . App::getLocale(), $direction);
+                        return $query->orderBy('caption->'.App::getLocale(), $direction);
                     })
                     ->wrap()
                     ->html(),
@@ -180,8 +184,15 @@ class GalleryItemResource extends Resource
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
+                    TranslateBulkAction::make()
+                        ->translatableFields(['caption']),
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
+            ])
+            ->headerActions([
+                TranslateAllAction::make()
+                    ->modelClass(GalleryItem::class)
+                    ->translatableFields(['caption']),
             ]);
     }
 
